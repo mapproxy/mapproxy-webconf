@@ -6,6 +6,8 @@ import yaml
 
 from bottle import PluginError
 
+from mapproxy_webconf import utils
+
 class YAMLStorePlugin(object):
     name = 'yamlstore'
 
@@ -42,6 +44,7 @@ class YAMLStorePlugin(object):
         # Replace the route callback with the wrapped one.
         return wrapper
 
+DEFAULT_VALUE = object()
 class YAMLStore(object):
     def __init__(self, storage_dir):
         self.storage_dir = storage_dir
@@ -49,38 +52,16 @@ class YAMLStore(object):
     def _filename(self, name):
         return os.path.join(self.storage_dir, name + '.yaml')
 
-    def get(self, name):
+    def get(self, name, default=DEFAULT_VALUE):
         try:
             with open(self._filename(name), 'rb') as f:
                 return yaml.load(f)
         except IOError, ex:
             if ex.errno == errno.ENOENT:
-                return {}
+                if default is DEFAULT_VALUE:
+                    return {}
+                return default
 
     def put(self, name, data):
         content = yaml.dump(data)
-        save_atomic(self._filename(name), content)
-
-
-def save_atomic(filename, content, makedirs=True):
-    """
-    Save `content` to `filename` atomicaly. This prevents others from
-    reading half-written files.
-
-    :param makedirs: create directories if needed
-    """
-    if makedirs:
-        try:
-            os.makedirs(os.path.dirname(filename))
-        except OSError, ex:
-            if ex.errno != errno.EEXIST:
-                raise
-
-
-    tmp_filename = filename + '~'
-    with open(tmp_filename, 'wb') as f:
-        f.write(content)
-        f.flush()
-        os.fsync(f.fileno())
-
-    os.rename(tmp_filename, filename)
+        utils.save_atomic(self._filename(name), content)
