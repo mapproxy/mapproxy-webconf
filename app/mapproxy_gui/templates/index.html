@@ -1,0 +1,131 @@
+<!doctype html>
+<html ng-app="mapproxy_gui">
+    <head>
+        <title>Mapproxy GUI</title>
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/custom.css">
+        <link rel="stylesheet" href="css/smoothness/jquery-ui-1.10.0.custom.min.css">
+
+        <script type="text/javascript" src="js/lib/angular.js"></script>
+
+        <!-- jquery and jqueryUI -->
+        <script type="text/javascript" src="js/lib/jquery-1.9.0.js"></script>
+        <script type="text/javascript" src="js/lib/jquery-ui-1.10.0.custom.js"></script>
+        <script type="text/javascript" src="js/services.js"></script>
+        <script type="text/javascript" src="js/directives.js"></script>
+        <script type="text/javascript" src="js/controllers.js"></script>
+        <script type="text/javascript">
+            /* add directives */
+            var app = angular.module('mapproxy_gui', ['mapproxy_gui.directives', 'mapproxy_gui.services']);
+        </script>
+
+    </head>
+    <body>
+        <tabs>
+            <pane title="Source">
+                <div class="row-fluid">
+
+                    <div class="span3 well" ng-controller="MapproxySourceListCtrl">
+                        <h3>Mapproxy Sources</h3>
+                        <ul class="unstyled">
+                            <li class="mapproxy_source label" ng-repeat="source in mapproxy_sources" ng-click="editSource(source)">
+                                {{source.name}}
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="span3 well">
+                        <h3>Edit Source</h3>
+                        <form name="source_form" ng-controller="MapproxySourceFormCtrl" droppable accepts="mapproxy_source" ng-model="source">
+                            <div style="display:none;" id="confirm_url_change_dialog" title="confirm url change"><p>Replace service URL deletes all layers depends to it!</p></div>
+
+                            <label for="source_name">Name:</label><input type="text" required ng-model="source.name" name="source_name"/><br>
+                            <!-- change-callback MUST provide parameters callback and new_data -->
+                            <label for="source_url">URL:</label><div droppable required change-callback="openDialog(callback, new_data)" accepts="wms_source" ng-model="source.wms_source" name="source_url" class="insertable_single">
+                                {{source.wms_source.url}}
+                            </div>
+                            <label for="source_layers">Layers:</label><div droppable required accepts="wms_layer" allow-array="true" ng-model="source.layers" name="source_layers" class="insertable_multi">
+                                <div sortable to-sort="source.layers" >
+                                    <div ng-repeat="layer in sortable_array" style="height: 30px">
+                                        {{layer.title}}
+                                        <button class="btn btn-mini btn-danger" style="float:right;" ng-click="remove(layer)">X</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <label for="source_transparent">Transparent:</label><input type="checkbox" ng-model="source.transparent" name="source_transparent"/><br>
+                            <button class="btn btn-small" ng-click="addSource()" ng-disabled="!source_form.$valid">Save</button><button class="btn btn-small" ng-click="resetForm()">Reset</button>
+                            <pre ng-bind="source|json"></pre>
+                        </form>
+                    </div>
+
+                    <div class="span3 well" ng-controller="TreeCtrl">
+                        <h3>Available WMS</h3>
+                        <script type="text/ng-template"  id="wms_layer_renderer.html">
+                            <div draggable item-data="{{itemData(layer)}}" ng-click="show_infos(layer)" class="wms_layer">
+                                Title: {{layer.title}}
+                                <span ng-show="layer.name">Name: {{layer.name}}<br></span>
+                            </div>
+                            <div ng-repeat="layer in layer.layers" ng-include="'wms_layer_renderer.html'" class="grp_layer"></div>
+                        </script>
+                        <toggle-group mode='hideOther'>
+                            <div ng-repeat="wms in wms_list" class="wms" >
+                                <h6 draggable item-data="{{wms}}" class="wms_source" toggle-element="next">{{wms.title}}</h6>
+                                <div ng-show="$first">
+                                    <p>URL: {{wms.url}}</p>
+                                    <div ng-repeat="layer in wms.layers" ng-include="'wms_layer_renderer.html'" class="layer"></div>
+                                </div>
+                            </div>
+                        </toggle-group>
+                        <hr>
+                        <label for="input_wms">Capabilities:</label><input name="input_wms" ng-model="capabilities">
+                        <button class="btn btn-small" ng-click="loadData(capabilities)">GetCapabilities</button><!-- add new wms -->
+                    </div>
+
+                </div>
+            </pane>
+            <pane title="Layer">
+                <div class="row-fluid">
+
+                    <div class="span3 well" ng-controller="MapproxyLayerListCtrl">
+                        <h3>Mapproxy Layer</h3>
+                        <ul class="unstyled">
+                            <li class="mapproxy_layer" ng-repeat="layer in mapproxy_layers" ng-click="editLayer(layer)">
+                                {{layer.name}}
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="span3 well">
+                        <h3>Edit Layer</h3>
+                        <form name="layer_form" ng-controller="MapproxyLayerFormCtrl" droppable accepts="mapproxy_layer" ng-model="layer">
+                            <label for="layer_name">Name:</label><input required type="text" required ng-model="layer.name" name="layer_name"/><br>
+                            <!-- change-callback MUST provide parameters callback and new_data -->
+                            <label for="layer_sources">Sources:</label><div droppable required accepts="mapproxy_source" allow-array="true" ng-model="layer.sources" name="layer_sources" class="insertable_multi">
+                                <div sortable to-sort="layer.sources" >
+                                    <div ng-repeat="source in sortable_array" style="height: 30px">
+                                        {{source.name}}
+                                        <button class="btn btn-mini btn-danger" style="float:right;" ng-click="remove(source)">X</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!layer_form.$valid">AddLayer</button><button class="btn btn-small" ng-click="resetForm()">ClearFrom</button>
+                        </form>
+                    </div>
+
+                    <div class="span3 well" ng-controller="MapproxySourceListCtrl">
+                        <h3>Mapproxy Sources</h3>
+                        <ul>
+                            <li draggable class="mapproxy_source" ng-repeat="source in mapproxy_sources" item-data="{{source}}">
+                                {{source.name}}
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </pane>
+            <pane title="test">
+
+            </pane>
+        </tabs>
+    </body>
+</html>

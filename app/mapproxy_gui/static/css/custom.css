@@ -1,0 +1,40 @@
+label {
+    min-width: 10em;
+    display: inline-block;
+}
+
+input {
+    margin-right: 1em;
+}
+
+/* wms list */
+.wms {
+    width: 30em;
+    background-color: lightgreen;
+    border: 1px solid black;
+}
+
+.layer {
+    margin-left: 2em;
+    background-color: lightyellow;
+    border: 1px solid black;
+}
+
+.grp_layer {
+    margin-left: 2em;
+    background-color: lightblue;
+    border: 1px solid black;
+}
+
+/*insertables*/
+.insertable_single {
+    min-width:10em;
+    min-height:2.5em;
+    background-color: gray;
+}
+
+.insertable_multi {
+    min-width:10em;
+    min-height:10em;
+    background-color: gray;
+}
