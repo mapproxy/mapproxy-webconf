@@ -115,7 +115,7 @@ directive('droppable', function($parse) {
             scope = scope.$new(false)
 
             scope.checkExist = function(item) {
-                exist = false;
+                var exist = false;
                 //because angular add a unique $$hashKey to objects
                 angular.forEach(scope.items, function(scope_item) {
                     //angular.forEach doesn't support break
@@ -126,7 +126,16 @@ directive('droppable', function($parse) {
                 if(!exist) {
                     scope.to_insert.push(item);
                 }
-            }
+            };
+            scope.checkClass = function(elem) {
+                var found = false;
+                angular.forEach(scope.accepts, function(accept) {
+                    if(!found) {
+                        found = elem.hasClass(accept);
+                    }
+                });
+                return found;
+            };
             scope.insertItems = function() {
                 if(angular.isUndefined(scope.items)) {
                     scope.items = [];
@@ -145,9 +154,14 @@ directive('droppable', function($parse) {
                 if(change) {
                     scope.insertItems();
                 } else {
-                    $(scope.ui.draggable).draggable('option', 'revert', true);
+                    scope.j_ui.draggable('option', 'revert', true);
                 }
             };
+            if(angular.isUndefined(attrs.accepts)) {
+                scope.accepts = [];
+            } else {
+                scope.accepts = attrs.accepts.split(',');
+            }
 
             //look for callback function
             if(!angular.isUndefined(attrs.changeCallback)) {
@@ -160,15 +174,16 @@ directive('droppable', function($parse) {
                     scope.items = ngModelCtrl.$modelValue;
                     scope.inserted = false;
                     scope.ui = ui;
+                    scope.j_ui = $(scope.ui.draggable);
 
                     //check element class against accepts
-                    if(!angular.element(ui.draggable).hasClass(attrs.accepts)) {
-                        $(scope.ui.draggable).draggable('option', 'revert', true);
+                    if(!scope.checkClass(scope.j_ui)) {
+                        scope.j_ui.draggable('option', 'revert', true);
                         return;
                     }
 
                     //get data (string) of dopped element and convert it to an object
-                    scope.new_item = angular.fromJson(angular.element(ui.draggable).attr('item-data'));
+                    scope.new_item = angular.fromJson(scope.j_ui.attr('item-data'));
                     scope.to_insert = [];
 
                     //check for data
@@ -188,7 +203,7 @@ directive('droppable', function($parse) {
                                 scope.insertItems();
                             }
                         } else {
-                            $(scope.ui.draggable).draggable('option', 'revert', true);
+                            scope.j_ui.draggable('option', 'revert', true);
                         }
                     }
                 }
