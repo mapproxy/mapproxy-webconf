@@ -215,49 +215,7 @@ directive('droppable', function($parse) {
 directive('toggleGroup', function() {
     return {
         restrict: 'E',
-        controller: function($scope, $element) {
-            var toggle_elements = [];
-
-            var toToggle = function(element) {
-                switch(element.attr('toggle-element')) {
-                    case 'next':
-                        return $(element).next();
-                        break;
-                    case 'child':
-                        return $(element).children()[0];
-                        break;
-                    default:
-                        return $(element);
-                }
-            };
-
-            this.addElement = function(element) {
-                toggle_elements.push(element);
-            };
-
-            this.multiShow = function(element) {
-                toToggle(element).toggle();
-            };
-            this.hideOther = function(element) {
-                angular.forEach(toggle_elements, function(t_element) {
-                    if (t_element == element) {
-                        toToggle(t_element).show();
-                    } else {
-                        toToggle(t_element).hide();
-                    }
-                });
-            };
-            this.getToggleFunc = function() {
-                switch($element.attr('mode')) {
-                    case 'multiShow':
-                        return this.multiShow;
-                        break;
-                    case 'hideOther':
-                    default:
-                        return this.hideOther;
-                }
-            };
-        }
+        controller: toggleGroupCtrl
     };
 }).
 
@@ -279,22 +237,7 @@ directive('tabs', function() {
         restrict: 'E',
         transclude: true,
         scope: {},
-        controller: function($scope, $element) {
-
-            this.addPane = function(pane) {
-                if (panes.length == 0) $scope.select(pane);
-                panes.push(pane);
-            };
-
-            $scope.select = function(pane) {
-                angular.forEach(panes, function(pane) {
-                    pane.selected = false;
-                });
-                pane.selected = true;
-            };
-
-            var panes = $scope.panes = [];
-        },
+        controller: tabsCtrl,
         template:
             '<div class="tabbable">' +
             '<ul class="nav nav-tabs">' +
@@ -322,3 +265,68 @@ directive('pane', function() {
         replace: true
     };
 });
+
+/* Controller for directives */
+
+// used by toggleGroup
+var toggleGroupCtrl = function($scope, $element) {
+    var toggle_elements = [];
+
+    var toToggle = function(element) {
+        switch(element.attr('toggle-element')) {
+            case 'next':
+                return $(element).next();
+                break;
+            case 'child':
+                return $(element).children()[0];
+                break;
+            default:
+                return $(element);
+        }
+    };
+
+    this.addElement = function(element) {
+        toggle_elements.push(element);
+    };
+
+    this.multiShow = function(element) {
+        toToggle(element).toggle();
+    };
+    this.hideOther = function(element) {
+        angular.forEach(toggle_elements, function(t_element) {
+            if (t_element == element) {
+                toToggle(t_element).show();
+            } else {
+                toToggle(t_element).hide();
+            }
+        });
+    };
+    this.getToggleFunc = function() {
+        switch($element.attr('mode')) {
+            case 'multiShow':
+                return this.multiShow;
+                break;
+            case 'hideOther':
+            default:
+                return this.hideOther;
+        }
+    };
+}
+
+// used by tabs
+var tabsCtrl = function($scope, $element) {
+
+    this.addPane = function(pane) {
+        if (panes.length == 0) $scope.select(pane);
+        panes.push(pane);
+    };
+
+    $scope.select = function(pane) {
+        angular.forEach(panes, function(pane) {
+            pane.selected = false;
+        });
+        pane.selected = true;
+    };
+
+    var panes = $scope.panes = [];
+};
