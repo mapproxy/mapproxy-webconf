@@ -78,6 +78,38 @@ function MapproxySourceFormCtrl($scope, MapproxySources) {
     });
 }
 
+function MapproxyCacheListCtrl($scope, MapproxyCaches) {
+
+    $scope.editCache = function(cache) {
+        MapproxyCaches.setEditCache(cache);
+    };
+
+    $scope.mapproxy_caches = MapproxyCaches.getCacheList();
+
+    $scope.$on('mapproxy_caches_change', function() {
+        $scope.mapproxy_caches = MapproxyCaches.getCacheList();
+    });
+}
+
+function MapproxyCacheFormCtrl($scope, MapproxyCaches) {
+
+    $scope.addCache = function() {
+        MapproxyCaches.addCache(angular.copy($scope.cache.name), angular.copy($scope.cache));
+        $scope.resetForm();
+    };
+    $scope.resetForm = function() {
+        $scope.cache = {};
+        $scope.cache_form.$setPristine();
+    };
+
+    $scope.cache = {};
+
+    $scope.$on('edit_cache_event', function() {
+        $scope.cache = MapproxyCaches.getEditCache();
+    });
+
+}
+
 function MapproxyLayerListCtrl($scope, MapproxyLayers) {
 
     $scope.editLayer = function(layer) {

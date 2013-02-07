@@ -82,6 +82,46 @@
 
                 </div>
             </pane>
+            <pane title="Cache">
+                <div class="row-fluid">
+
+                    <div class="span3 well" ng-controller="MapproxyCacheListCtrl">
+                        <h3>Mapproxy Cache</h3>
+                        <ul class="unstyled">
+                            <li class="mapproxy_cache" ng-repeat="cache in mapproxy_caches" ng-click="editCache(cache)">
+                                {{cache.name}}
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="span3 well">
+                        <h3>Edit Cache</h3>
+                        <form name="cache_form" ng-controller="MapproxyCacheFormCtrl" droppable accepts="mapproxy_cache" ng-model="cache">
+                            <label for="cache_name">Name:</label><input required type="text" required ng-model="cache.name" name="cache_name"/><br>
+                            <!-- change-callback MUST provide parameters callback and new_data -->
+                            <label for="cache_sources">Sources:</label><div droppable required accepts="mapproxy_source" allow-array="true" ng-model="cache.sources" name="cache_sources" class="insertable_multi">
+                                <div sortable to-sort="cache.sources" >
+                                    <div ng-repeat="source in sortable_array" style="height: 30px">
+                                        {{source.name}}
+                                        <button class="btn btn-mini btn-danger" style="float:right;" ng-click="remove(source)">X</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-small" ng-click="addCache()" ng-disabled="!cache_form.$valid">Save</button><button class="btn btn-small" ng-click="resetForm()">Reset</button>
+                        </form>
+                    </div>
+
+                    <div class="span3 well" ng-controller="MapproxySourceListCtrl">
+                        <h3>Mapproxy Sources</h3>
+                        <ul>
+                            <li draggable class="mapproxy_source" ng-repeat="source in mapproxy_sources" item-data="{{source}}">
+                                {{source.name}}
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </pane>
             <pane title="Layer">
                 <div class="row-fluid">
 
@@ -99,7 +139,7 @@
                         <form name="layer_form" ng-controller="MapproxyLayerFormCtrl" droppable accepts="mapproxy_layer" ng-model="layer">
                             <label for="layer_name">Name:</label><input required type="text" required ng-model="layer.name" name="layer_name"/><br>
                             <!-- change-callback MUST provide parameters callback and new_data -->
-                            <label for="layer_sources">Sources:</label><div droppable required accepts="mapproxy_source" allow-array="true" ng-model="layer.sources" name="layer_sources" class="insertable_multi">
+                            <label for="layer_sources">Sources:</label><div droppable required accepts="mapproxy_source,mapproxy_cache" allow-array="true" ng-model="layer.sources" name="layer_sources" class="insertable_multi">
                                 <div sortable to-sort="layer.sources" >
                                     <div ng-repeat="source in sortable_array" style="height: 30px">
                                         {{source.name}}
@@ -107,23 +147,27 @@
                                     </div>
                                 </div>
                             </div>
-                            <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!layer_form.$valid">AddLayer</button><button class="btn btn-small" ng-click="resetForm()">ClearFrom</button>
+                            <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!layer_form.$valid">Save</button><button class="btn btn-small" ng-click="resetForm()">Reset</button>
                         </form>
                     </div>
 
-                    <div class="span3 well" ng-controller="MapproxySourceListCtrl">
+                    <div class="span3 well">
                         <h3>Mapproxy Sources</h3>
-                        <ul>
+                        <ul ng-controller="MapproxySourceListCtrl">
                             <li draggable class="mapproxy_source" ng-repeat="source in mapproxy_sources" item-data="{{source}}">
                                 {{source.name}}
+                            </li>
+                        </ul>
+                        <hr>
+                        <h3>Mapproxy Caches</h3>
+                        <ul ng-controller="MapproxyCacheListCtrl">
+                            <li draggable class="mapproxy_cache" ng-repeat="cache in mapproxy_caches" item-data="{{cache}}">
+                                {{cache.name}}
                             </li>
                         </ul>
                     </div>
 
                 </div>
-            </pane>
-            <pane title="test">
-
             </pane>
         </tabs>
     </body>

@@ -31,6 +31,37 @@ service('MapproxySources', function($rootScope) {
     };
 }).
 
+service('MapproxyCaches', function($rootScope) {
+    var caches = {};
+    var edit_cache;
+    return {
+        addCache: function(name, value) {
+            caches[name] = value;
+            //trigger event in rootScope, so all scope notive about
+            $rootScope.$broadcast('mapproxy_caches_change');
+        },
+        getCacheByName: function(name) {
+            return caches[name];
+        },
+        getCacheList: function() {
+            var result = [];
+            for(var key in caches) {
+                result.push(caches[key]);
+            }
+            return result;
+        },
+        setEditCache: function(cache) {
+            edit_cache = cache;
+            $rootScope.$broadcast('edit_cache_event');
+        },
+        getEditCache: function(cache) {
+            if(edit_cache) {
+                return edit_cache;
+            }
+        }
+    };
+}).
+
 service('MapproxyLayers', function($rootScope) {
     var layers = {};
     var edit_layer;
