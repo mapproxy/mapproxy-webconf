@@ -100,10 +100,8 @@ directive('draggable', function() {
  *
  * allow-array: boolean
  * - true to allow insert arrays
- * template-url: string
- * - url of template
- * accepts: string
- * - classname of elements allowed to insert
+ * accepts: string - comma seppareted string for list
+ * - classname(s) of elements allowed to insert
  */
  //TODO: allow setting accepts
 directive('droppable', function($parse) {
@@ -157,6 +155,44 @@ directive('droppable', function($parse) {
                     scope.j_ui.draggable('option', 'revert', true);
                 }
             };
+            scope.dropHanlder = function(event,ui) {
+                //get current items from model
+                scope.items = ngModelCtrl.$modelValue;
+                scope.inserted = false;
+                scope.ui = ui;
+                scope.j_ui = $(scope.ui.draggable);
+                //only process draggable elements
+                if(!scope.j_ui.hasClass('ui-draggable')) return;
+
+                //check element class against accepts
+                if(!scope.checkClass(scope.j_ui)) {
+                    scope.j_ui.draggable('option', 'revert', true);
+                    return;
+                }
+                //get data (string) of dopped element and convert it to an object
+                scope.new_item = angular.fromJson(scope.j_ui.attr('item-data'));
+                scope.to_insert = [];
+                //check for data
+                if(!angular.isUndefined(scope.new_item)) {
+                    //check for existing items
+                    if(angular.isArray(scope.new_item)) {
+                        angular.forEach(scope.new_item, scope.checkExist);
+                    } else {
+                        scope.checkExist(scope.new_item);
+                    }
+                    //look if something to insert
+                    if(scope.to_insert.length > 0) {
+                        //run callback if present
+                        if(angular.isFunction(scope.change)) {
+                            scope.change(scope, {callback: scope.changeCallback, new_data: scope.new_item});
+                        } else {
+                            scope.insertItems();
+                        }
+                    } else {
+                        scope.j_ui.draggable('option', 'revert', true);
+                    }
+                }
+            }
             if(angular.isUndefined(attrs.accepts)) {
                 scope.accepts = [];
             } else {
@@ -169,44 +205,7 @@ directive('droppable', function($parse) {
             }
 
             $(element).droppable({
-                drop: function(event,ui) {
-                    //get current items from model
-                    scope.items = ngModelCtrl.$modelValue;
-                    scope.inserted = false;
-                    scope.ui = ui;
-                    scope.j_ui = $(scope.ui.draggable);
-                    //only process draggable elements
-                    if(!scope.j_ui.hasClass('ui-draggable')) return;
-
-                    //check element class against accepts
-                    if(!scope.checkClass(scope.j_ui)) {
-                        scope.j_ui.draggable('option', 'revert', true);
-                        return;
-                    }
-                    //get data (string) of dopped element and convert it to an object
-                    scope.new_item = angular.fromJson(scope.j_ui.attr('item-data'));
-                    scope.to_insert = [];
-                    //check for data
-                    if(!angular.isUndefined(scope.new_item)) {
-                        //check for existing items
-                        if(angular.isArray(scope.new_item)) {
-                            angular.forEach(scope.new_item, scope.checkExist);
-                        } else {
-                            scope.checkExist(scope.new_item);
-                        }
-                        //look if something to insert
-                        if(scope.to_insert.length > 0) {
-                            //run callback if present
-                            if(angular.isFunction(scope.change)) {
-                                scope.change(scope, {callback: scope.changeCallback, new_data: scope.new_item});
-                            } else {
-                                scope.insertItems();
-                            }
-                        } else {
-                            scope.j_ui.draggable('option', 'revert', true);
-                        }
-                    }
-                }
+                drop: scope.dropHandler
             });
         }
     };
