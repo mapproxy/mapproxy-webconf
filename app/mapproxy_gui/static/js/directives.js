@@ -151,6 +151,22 @@ directive('droppable', function($parse) {
                     ngModelCtrl.$setViewValue(scope.items);
                 });
             };
+            scope.removeItem = function(item) {
+                if(angular.isUndefined(scope.items) || angular.isUndefined(item)) return;
+
+                if(attrs.allowArray) {
+                    scope.items.splice(scope.items.indexOf(item), 1);
+                    if(scope.items.length == 0) {
+                        scope.items = undefined;
+                    }
+                } else {
+                    scope.items = undefined;
+                }
+
+                scope.$apply(function() {
+                    ngModelCtrl.$setViewValue(scope.items);
+                });
+            };
             scope.changeCallback = function(change) {
                 if(change) {
                     scope.insertItems();
@@ -195,7 +211,8 @@ directive('droppable', function($parse) {
                         scope.j_ui.draggable('option', 'revert', true);
                     }
                 }
-            }
+            };
+
             if(angular.isUndefined(attrs.accepts)) {
                 scope.accepts = [];
             } else {
