@@ -175,17 +175,17 @@ directive('droppable', function($parse) {
                     scope.inserted = false;
                     scope.ui = ui;
                     scope.j_ui = $(scope.ui.draggable);
+                    //only process draggable elements
+                    if(!scope.j_ui.hasClass('ui-draggable')) return;
 
                     //check element class against accepts
                     if(!scope.checkClass(scope.j_ui)) {
                         scope.j_ui.draggable('option', 'revert', true);
                         return;
                     }
-
                     //get data (string) of dopped element and convert it to an object
                     scope.new_item = angular.fromJson(scope.j_ui.attr('item-data'));
                     scope.to_insert = [];
-
                     //check for data
                     if(!angular.isUndefined(scope.new_item)) {
                         //check for existing items
