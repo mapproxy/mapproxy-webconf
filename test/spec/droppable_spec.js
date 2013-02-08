@@ -177,7 +177,6 @@ describe('droppable', function() {
         beforeEach(inject(function($rootScope, $compile) {
             scope = $rootScope;
             scope.callback_true = function(callback, new_data) {
-                console.log('here')
                 callback(true);
             };
             scope.callback_false = function(callback, new_data) {
