@@ -44,7 +44,7 @@ directive('sortable', function() {
                 //new item list index
                 var end = ui.item.index();
 
-                if(angular.isUndefinded(scope.sortable_array)) {
+                if(angular.isUndefined(scope.sortable_array)) {
                     scope.sortable_array = [];
                 }
                 //rearrange list
