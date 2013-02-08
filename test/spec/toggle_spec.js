@@ -1,14 +1,3 @@
-/* what to test
-
-    - default behavior
-    - toggle modes
-    - toggle-element types
-
-    notes:
-    default toggle element mode = self
-    default toggle-group mode = hideOther
-*/
-
 describe('toggleElement hideOther', function() {
     var elm, scope;
 
