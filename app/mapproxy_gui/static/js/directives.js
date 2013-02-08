@@ -127,6 +127,9 @@ directive('droppable', function($parse) {
             };
             scope.checkClass = function(elem) {
                 var found = false;
+
+                if(scope.accepts.length == 0) return true
+
                 angular.forEach(scope.accepts, function(accept) {
                     if(!found) {
                         found = elem.hasClass(accept);
