@@ -1,3 +1,5 @@
+/* Copied from https://github.com/vojtajina/ng-directive-testing/tree/master/test */
+
 describe('tabs', function() {
     var elm, scope;
 
