@@ -66,16 +66,31 @@ describe('sortable', function() {
             }
         };
 
+        expect(scope.list.length).toBe(3);
+
+        expect(scope.list[0]).toBe('foo');
+        expect(scope.list[1]).toBe('bar');
+        expect(scope.list[2]).toBe('foobar');
+
         elm.scope().dragEnd(null, ui);
 
         expect(scope.list.length).toBe(3);
+
         expect(scope.list[0]).toBe('bar');
         expect(scope.list[1]).toBe('foo');
         expect(scope.list[2]).toBe('foobar');
     });
     it('should remove the first element', function() {
+        expect(scope.list.length).toBe(3);
+
+        expect(scope.list[0]).toBe('foo');
+        expect(scope.list[1]).toBe('bar');
+        expect(scope.list[2]).toBe('foobar');
+
         elm.scope().remove(scope.list[0]);
+
         expect(scope.list.length).toBe(2);
+
         expect(scope.list[0]).toBe('bar');
         expect(scope.list[1]).toBe('foobar');
     });
