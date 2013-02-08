@@ -155,7 +155,7 @@ directive('droppable', function($parse) {
                     scope.j_ui.draggable('option', 'revert', true);
                 }
             };
-            scope.dropHanlder = function(event,ui) {
+            scope.dropHandler = function(event,ui) {
                 //get current items from model
                 scope.items = ngModelCtrl.$modelValue;
                 scope.inserted = false;
