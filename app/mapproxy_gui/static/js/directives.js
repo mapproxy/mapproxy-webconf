@@ -277,9 +277,6 @@ var toggleGroupCtrl = function($scope, $element) {
             case 'next':
                 return $(element).next();
                 break;
-            case 'child':
-                return $(element).children()[0];
-                break;
             default:
                 return $(element);
         }
