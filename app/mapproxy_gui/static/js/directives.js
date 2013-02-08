@@ -285,6 +285,9 @@ var toggleGroupCtrl = function($scope, $element) {
     this.addElement = function(element) {
         toggle_elements.push(element);
     };
+    this.getElementCount = function() {
+        return toggle_elements.length;
+    };
 
     this.multiShow = function(element) {
         toToggle(element).toggle();
