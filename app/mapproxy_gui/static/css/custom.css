@@ -7,23 +7,20 @@ input {
     margin-right: 1em;
 }
 
-/* wms list */
-.wms {
-    width: 30em;
-    background-color: lightgreen;
+/* wms tree */
+.wms, .layer, .grp_layer {
     border: 1px solid black;
+    display: block;
 }
 
-.layer {
+.layer, .grp_layer {
     margin-left: 2em;
-    background-color: lightyellow;
-    border: 1px solid black;
+    padding-top: 0em;
+    padding-bottom: 0.2em;
 }
 
-.grp_layer {
-    margin-left: 2em;
-    background-color: lightblue;
-    border: 1px solid black;
+.layer_infos {
+    padding-bottom: 1em;
 }
 
 /*insertables*/

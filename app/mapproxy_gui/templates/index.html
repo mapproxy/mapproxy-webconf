@@ -58,21 +58,21 @@
                         <button class="btn btn-small" ng-click="resetForm()">Reset</button>
                     </div>
 
-                    <div class="span3 well" ng-controller="TreeCtrl">
+                    <div class="span4 well" ng-controller="TreeCtrl">
                         <h3>Available WMS</h3>
                         <script type="text/ng-template"  id="wms_layer_renderer.html">
-                            <div draggable item-data="{{itemData(layer)}}" ng-click="show_infos(layer)" class="wms_layer">
-                                Title: {{layer.title}}
-                                <span ng-show="layer.name">Name: {{layer.name}}<br></span>
+                            <div ng-click="show_infos(layer)" class="layer_infos">
+                                <h6>{{layer.title}}</h6>
+                                <span ng-show="layer.name">Name: {{layer.name}}</span>
                             </div>
-                            <div ng-repeat="layer in layer.layers" ng-include="'wms_layer_renderer.html'" class="grp_layer"></div>
+                            <div ng-repeat="layer in layer.layers" ng-include="'wms_layer_renderer.html'" draggable item-data="{{itemData(layer)}}"  class="wms_layer grp_layer label"></div>
                         </script>
                         <toggle-group mode='hideOther'>
-                            <div ng-repeat="wms in wms_list" class="wms" >
-                                <h6 draggable item-data="{{wms}}" class="wms_source" toggle-element="next">{{wms.title}}</h6>
+                            <div ng-repeat="wms in wms_list" class="wms label label-success" >
+                                <h5 draggable item-data="{{wms}}" class="wms_source" toggle-element="next">{{wms.title}}</h5>
                                 <div ng-show="$first">
                                     <p>URL: {{wms.url}}</p>
-                                    <div ng-repeat="layer in wms.layers" ng-include="'wms_layer_renderer.html'" class="layer"></div>
+                                    <div ng-repeat="layer in wms.layers" ng-include="'wms_layer_renderer.html'" draggable item-data="{{itemData(layer)}}"  class="wms_layer layer label label-info"></div>
                                 </div>
                             </div>
                         </toggle-group>
@@ -171,6 +171,22 @@
                     </div>
 
                 </div>
+            </pane>
+            <pane title="test">
+                <toggle-group>
+                    <div toggle-element="child">
+                        Elem1
+                        <span ng-show="true">Child1</span>
+                    </div>
+                    <div toggle-element="child">
+                        Elem2
+                        <span ng-show="false">Child2</span>
+                    </div>
+                    <div toggle-element="child">
+                        Elem3
+                        <span ng-show="false">Child3</span>
+                    </div>
+                </toggle-group>
             </pane>
         </tabs>
     </body>
