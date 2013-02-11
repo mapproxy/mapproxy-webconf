@@ -36,15 +36,18 @@
 
                     <div class="span3 well" ng-controller="MapproxySourceFormCtrl">
                         <h3>Edit Source</h3>
-                        <form name="source_form" droppable accepts="mapproxy_source" ng-model="source">
+                        <form name="source_form" ng-model="source">
                             <div style="display:none;" id="confirm_url_change_dialog" title="confirm url change"><p>Replace service URL deletes all layers depends to it!</p></div>
 
-                            <label for="source_name">Name:</label><input type="text" required ng-model="source.name" name="source_name"/><br>
+                            <label for="source_name">Name:</label>
+                            <input type="text" required ng-model="source.name" name="source_name"/><br>
                             <!-- change-callback MUST provide parameters callback and new_data -->
-                            <label for="source_url">URL:</label><div droppable required change-callback="openDialog(callback, new_data)" accepts="wms_source" ng-model="source.wms_source" name="source_url" class="insertable_single">
+                            <label for="source_url">URL:</label>
+                            <div droppable required change-callback="openDialog(callback, new_data)" accepts="wms_source" ng-model="source.wms_source" name="source_url" class="insertable_single">
                                 {{source.wms_source.url}}
                             </div>
-                            <label for="source_layers">Layers:</label><div droppable required accepts="wms_layer" allow-array="true" ng-model="source.layers" name="source_layers" class="insertable_multi">
+                            <label for="source_layers">Layers:</label>
+                            <div droppable required accepts="wms_layer" allow-array="true" ng-model="source.layers" name="source_layers" class="insertable_multi">
                                 <div sortable to-sort="source.layers" >
                                     <div ng-repeat="layer in sortable_array" style="height: 30px">
                                         {{layer.title}}
@@ -97,7 +100,7 @@
 
                     <div class="span3 well" ng-controller="MapproxyCacheFormCtrl">
                         <h3>Edit Cache</h3>
-                        <form name="cache_form" droppable accepts="mapproxy_cache" ng-model="cache">
+                        <form name="cache_form" ng-model="cache">
                             <label for="cache_name">Name:</label><input required type="text" required ng-model="cache.name" name="cache_name"/><br>
                             <!-- change-callback MUST provide parameters callback and new_data -->
                             <label for="cache_sources">Sources:</label><div droppable required accepts="mapproxy_source" allow-array="true" ng-model="cache.sources" name="cache_sources" class="insertable_multi">
@@ -138,7 +141,7 @@
 
                     <div class="span3 well" ng-controller="MapproxyLayerFormCtrl">
                         <h3>Edit Layer</h3>
-                        <form name="layer_form" droppable accepts="mapproxy_layer" ng-model="layer">
+                        <form name="layer_form" ng-model="layer">
                             <label for="layer_name">Name:</label><input required type="text" required ng-model="layer.name" name="layer_name"/><br>
                             <!-- change-callback MUST provide parameters callback and new_data -->
                             <label for="layer_sources">Sources:</label><div droppable required accepts="mapproxy_source,mapproxy_cache" allow-array="true" ng-model="layer.sources" name="layer_sources" class="insertable_multi">
