@@ -61,7 +61,6 @@ directive('sortable', function() {
                     scope.sortable_array = undefined;
                 }
             };
-
             var sortable_element = $(element).sortable({
                 start: scope.dragStart,
                 update: scope.dragEnd
@@ -146,7 +145,7 @@ directive('droppable', function($parse) {
                 } else {
                     scope.items = scope.to_insert[0];
                 }
-                delete(scope.ui);
+                delete(scope.j_ui);
                 scope.$apply(function() {
                     ngModelCtrl.$setViewValue(scope.items);
                 });
@@ -178,8 +177,7 @@ directive('droppable', function($parse) {
                 //get current items from model
                 scope.items = ngModelCtrl.$modelValue;
                 scope.inserted = false;
-                scope.ui = ui;
-                scope.j_ui = $(scope.ui.draggable);
+                scope.j_ui = $(ui.draggable);
                 //only process draggable elements
                 if(!scope.j_ui.hasClass('ui-draggable')) return;
 
