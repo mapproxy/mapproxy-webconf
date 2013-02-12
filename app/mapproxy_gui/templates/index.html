@@ -132,8 +132,8 @@
 
                     <div class="span3 well" ng-controller="MapproxyLayerListCtrl">
                         <h3>Mapproxy Layer</h3>
-                        <ul class="unstyled">
-                            <li class="mapproxy_layer" ng-repeat="layer in mapproxy_layers" ng-click="editLayer(layer)">
+                        <ul sortable to-sort="mapproxy_layers">
+                            <li class="mapproxy_layer label" ng-repeat="layer in sortable_array" ng-click="editLayer(layer)">
                                 {{layer.name}}
                             </li>
                         </ul>
