@@ -8,7 +8,7 @@ input {
 }
 
 /* wms tree */
-.wms, .layer, .grp_layer {
+.mapproxy_source, .mapproxy_cache, .mapproxy_layer, .wms, .layer, .grp_layer {
     border: 1px solid black;
     display: block;
 }
