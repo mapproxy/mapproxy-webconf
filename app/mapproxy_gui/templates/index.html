@@ -27,8 +27,8 @@
 
                     <div class="span3 well" ng-controller="MapproxySourceListCtrl">
                         <h3>Mapproxy Sources</h3>
-                        <ul class="unstyled">
-                            <li class="mapproxy_source label" ng-repeat="source in mapproxy_sources" ng-click="editSource(source)">
+                        <ul>
+                            <li class="mapproxy_source label" ng-repeat="source in mapproxy_sources | orderBy:'name'" ng-click="editSource(source)">
                                 {{source.name}}
                             </li>
                         </ul>
@@ -91,8 +91,8 @@
 
                     <div class="span3 well" ng-controller="MapproxyCacheListCtrl">
                         <h3>Mapproxy Cache</h3>
-                        <ul class="unstyled">
-                            <li class="mapproxy_cache" ng-repeat="cache in mapproxy_caches" ng-click="editCache(cache)">
+                        <ul>
+                            <li class="mapproxy_cache label" ng-repeat="cache in mapproxy_caches | orderBy:'name'" ng-click="editCache(cache)">
                                 {{cache.name}}
                             </li>
                         </ul>
@@ -119,7 +119,7 @@
                     <div class="span3 well" ng-controller="MapproxySourceListCtrl">
                         <h3>Mapproxy Sources</h3>
                         <ul>
-                            <li draggable class="mapproxy_source" ng-repeat="source in mapproxy_sources" item-data="{{source}}">
+                            <li draggable class="mapproxy_source label" ng-repeat="source in mapproxy_sources | orderBy:'name'" item-data="{{source}}">
                                 {{source.name}}
                             </li>
                         </ul>
@@ -160,14 +160,14 @@
                     <div class="span3 well">
                         <h3>Mapproxy Sources</h3>
                         <ul ng-controller="MapproxySourceListCtrl">
-                            <li draggable class="mapproxy_source" ng-repeat="source in mapproxy_sources" item-data="{{source}}">
+                            <li draggable class="mapproxy_source label" ng-repeat="source in mapproxy_sources | orderBy:'name'" item-data="{{source}}">
                                 {{source.name}}
                             </li>
                         </ul>
                         <hr>
                         <h3>Mapproxy Caches</h3>
                         <ul ng-controller="MapproxyCacheListCtrl">
-                            <li draggable class="mapproxy_cache" ng-repeat="cache in mapproxy_caches" item-data="{{cache}}">
+                            <li draggable class="mapproxy_cache label" ng-repeat="cache in mapproxy_caches | orderBy:'name'" item-data="{{cache}}">
                                 {{cache.name}}
                             </li>
                         </ul>
