@@ -27,6 +27,10 @@ function MapproxySourceListCtrl($scope, MapproxySources) {
     $scope.editSource = function(source) {
         MapproxySources.setEditSource(source);
     };
+    $scope.removeSource = function(source) {
+        $scope.mapproxy_sources.splice($scope.mapproxy_sources.indexOf(source), 1);
+        $scope.$apply();
+    };
 
     $scope.mapproxy_sources = MapproxySources.getSourceList();
 
@@ -83,6 +87,10 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches) {
     $scope.editCache = function(cache) {
         MapproxyCaches.setEditCache(cache);
     };
+    $scope.removeCache = function(cache) {
+        $scope.mapproxy_caches.splice($scope.mapproxy_caches.indexOf(cache), 1);
+        $scope.$apply();
+    };
 
     $scope.mapproxy_caches = MapproxyCaches.getCacheList();
 
@@ -114,6 +122,10 @@ function MapproxyLayerListCtrl($scope, MapproxyLayers) {
 
     $scope.editLayer = function(layer) {
         MapproxyLayers.setEditLayer(layer);
+    };
+    $scope.removeLayer = function(layer) {
+        $scope.mapproxy_layers.splice($scope.mapproxy_layers.indexOf(layer), 1);
+        $scope.$apply();
     };
 
     $scope.mapproxy_layers = MapproxyLayers.getLayerList();
