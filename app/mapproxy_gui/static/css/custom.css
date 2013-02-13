@@ -7,10 +7,20 @@ input {
     margin-right: 1em;
 }
 
+.right {
+    float: right;
+}
+
+.label {
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+}
+
 /* wms tree */
 .mapproxy_source, .mapproxy_cache, .mapproxy_layer, .wms, .layer, .grp_layer {
     border: 1px solid black;
     display: block;
+    min-height: 2em;
 }
 
 .layer, .grp_layer {
