@@ -30,10 +30,10 @@ directive('sortable', function() {
     return {
         restrict: 'A',
         replace: false,
-        scope: {
-            sortable_array: '=toSort'
-        },
-        link: function(scope, element, attrs) {
+        require: 'ngModel',
+        link: function(scope, element, attrs, ngModelCtrl) {
+            scope = scope.$new(false);
+
             scope.dragStart = function(e, ui) {
                 ui.item.data('start', ui.item.index());
             };
@@ -43,24 +43,32 @@ directive('sortable', function() {
                 var start = ui.item.data('start');
                 //new item list index
                 var end = ui.item.index();
+                scope.items = ngModelCtrl.$modelValue;
 
-                if(angular.isUndefined(scope.sortable_array)) {
-                    scope.sortable_array = [];
+                if(angular.isUndefined(scope.items)) {
+                    scope.items = [];
                 }
                 //rearrange list
-                scope.sortable_array.splice(end, 0,
-                    scope.sortable_array.splice(start, 1)[0]);
+                scope.items.splice(end, 0,
+                    scope.items.splice(start, 1)[0]);
 
                 //tell angular $scope has changed
-                scope.$apply();
+                scope.$apply(function() {
+                    ngModelCtrl.$setViewValue(scope.items);
+                });
             };
 
             scope.remove = function(item) {
-                scope.sortable_array.splice(scope.sortable_array.indexOf(item), 1);
-                if(scope.sortable_array.length == 0) {
-                    scope.sortable_array = undefined;
+                scope.items = ngModelCtrl.$modelValue;
+                scope.items.splice(scope.items.indexOf(item), 1);
+                if(scope.items.length == 0) {
+                    scope.items = undefined;
                 }
+                scope.$apply(function() {
+                    ngModelCtrl.$setViewValue(scope.items);
+                });
             };
+
             var sortable_element = $(element).sortable({
                 start: scope.dragStart,
                 update: scope.dragEnd
