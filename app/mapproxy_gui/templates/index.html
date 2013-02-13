@@ -28,8 +28,16 @@
                     <div class="span3 well" ng-controller="MapproxySourceListCtrl">
                         <h3>Mapproxy Sources</h3>
                         <ul>
-                            <li class="mapproxy_source label" ng-repeat="source in mapproxy_sources | orderBy:'name'" ng-click="editSource(source)">
-                                {{source.name}}
+                            <li class="mapproxy_source label"
+                                ng-repeat="source in mapproxy_sources | orderBy:'name'"
+                                >
+                                <span ng-click="editSource(source)">{{source.name}}</span>
+                                <button
+                                    class="btn btn-mini btn-danger right"
+                                    ask-dialog
+                                    dialog-title="Confirm!"
+                                    dialog-text="Shold i do it?"
+                                    callback="removeSource(source)">X</button>
                             </li>
                         </ul>
                     </div>
@@ -37,25 +45,45 @@
                     <div class="span3 well" ng-controller="MapproxySourceFormCtrl">
                         <h3>Edit Source</h3>
                         <form name="source_form" ng-model="source">
-                            <div style="display:none;" id="confirm_url_change_dialog" title="confirm url change"><p>Replace service URL deletes all layers depends to it!</p></div>
+                            <div
+                                style="display:none;"
+                                id="confirm_url_change_dialog"
+                                title="confirm url change">
+                                <p>Replace service URL deletes all layers depends to it!</p>
+                            </div>
 
                             <label for="source_name">Name:</label>
                             <input type="text" required ng-model="source.name" name="source_name"/><br>
                             <!-- change-callback MUST provide parameters callback and new_data -->
                             <label for="source_url">URL:</label>
-                            <div droppable required change-callback="openDialog(callback, new_data)" accepts="wms_source" ng-model="source.wms_source" name="source_url" class="insertable_single">
+                            <div
+                                droppable
+                                required
+                                change-callback="openDialog(callback, new_data)"
+                                accepts="wms_source"
+                                ng-model="source.wms_source"
+                                name="source_url"
+                                class="insertable_single">
                                 {{source.wms_source.url}}
                             </div>
                             <label for="source_layers">Layers:</label>
-                            <div droppable required accepts="wms_layer" allow-array="true" ng-model="source.layers" name="source_layers" class="insertable_multi">
-                                <div sortable to-sort="source.layers" >
-                                    <div ng-repeat="layer in sortable_array" style="height: 30px">
+                            <div
+                                droppable
+                                required
+                                accepts="wms_layer"
+                                allow-array="true"
+                                ng-model="source.layers"
+                                name="source_layers"
+                                class="insertable_multi">
+                                <div sortable ng-model="source.layers" >
+                                    <div ng-repeat="layer in source.layers">
                                         {{layer.title}}
-                                        <button class="btn btn-mini btn-danger" style="float:right;" ng-click="remove(layer)">X</button>
+                                        <button class="btn btn-mini btn-danger right" ng-click="remove(layer)">X</button>
                                     </div>
                                 </div>
                             </div>
-                            <label for="source_transparent">Transparent:</label><input type="checkbox" ng-model="source.transparent" name="source_transparent"/><br>
+                            <label for="source_transparent">Transparent:</label>
+                            <input type="checkbox" ng-model="source.transparent" name="source_transparent"/><br>
                         </form>
                         <button class="btn btn-small" ng-click="addSource()" ng-disabled="!source_form.$valid">Save</button>
                         <button class="btn btn-small" ng-click="resetForm()">Reset</button>
@@ -68,14 +96,23 @@
                                 <h6>{{layer.title}}</h6>
                                 <span ng-show="layer.name">Name: {{layer.name}}</span>
                             </div>
-                            <div ng-repeat="layer in layer.layers" ng-include="'wms_layer_renderer.html'" draggable item-data="{{itemData(layer)}}"  class="wms_layer grp_layer label"></div>
+                            <div
+                                ng-repeat="layer in layer.layers"
+                                ng-include="'wms_layer_renderer.html'"
+                                draggable
+                                item-data="{{itemData(layer)}}"
+                                class="wms_layer grp_layer label"></div>
                         </script>
                         <toggle-group mode='hideOther'>
                             <div ng-repeat="wms in wms_list" class="wms label label-success" >
                                 <h5 draggable item-data="{{wms}}" class="wms_source" toggle-element="next">{{wms.title}}</h5>
                                 <div ng-show="$first">
                                     <p>URL: {{wms.url}}</p>
-                                    <div ng-repeat="layer in wms.layers" ng-include="'wms_layer_renderer.html'" draggable item-data="{{itemData(layer)}}"  class="wms_layer layer label label-info"></div>
+                                    <div
+                                        ng-repeat="layer in wms.layers"
+                                        ng-include="'wms_layer_renderer.html'"
+                                        draggable item-data="{{itemData(layer)}}"
+                                        class="wms_layer layer label label-info"></div>
                                 </div>
                             </div>
                         </toggle-group>
@@ -92,8 +129,17 @@
                     <div class="span3 well" ng-controller="MapproxyCacheListCtrl">
                         <h3>Mapproxy Cache</h3>
                         <ul>
-                            <li class="mapproxy_cache label" ng-repeat="cache in mapproxy_caches | orderBy:'name'" ng-click="editCache(cache)">
+                            <li
+                                class="mapproxy_cache label"
+                                ng-repeat="cache in mapproxy_caches | orderBy:'name'"
+                                ng-click="editCache(cache)">
                                 {{cache.name}}
+                                <button
+                                    class="btn btn-mini btn-danger right"
+                                    ask-dialog
+                                    dialog-title="Confirm!"
+                                    dialog-text="Shold i do it?"
+                                    callback="removeCache(cache)">X</button>
                             </li>
                         </ul>
                     </div>
@@ -101,13 +147,22 @@
                     <div class="span3 well" ng-controller="MapproxyCacheFormCtrl">
                         <h3>Edit Cache</h3>
                         <form name="cache_form" ng-model="cache">
-                            <label for="cache_name">Name:</label><input required type="text" required ng-model="cache.name" name="cache_name"/><br>
+                            <label for="cache_name">Name:</label>
+                            <input required type="text" required ng-model="cache.name" name="cache_name"/><br>
                             <!-- change-callback MUST provide parameters callback and new_data -->
-                            <label for="cache_sources">Sources:</label><div droppable required accepts="mapproxy_source" allow-array="true" ng-model="cache.sources" name="cache_sources" class="insertable_multi">
-                                <div sortable to-sort="cache.sources" >
-                                    <div ng-repeat="source in sortable_array" style="height: 30px">
+                            <label for="cache_sources">Sources:</label>
+                            <div
+                                droppable
+                                required
+                                accepts="mapproxy_source"
+                                allow-array="true"
+                                ng-model="cache.sources"
+                                name="cache_sources"
+                                class="insertable_multi">
+                                <div sortable ng-model="cache.sources" >
+                                    <div ng-repeat="source in cache.sources">
                                         {{source.name}}
-                                        <button class="btn btn-mini btn-danger" style="float:right;" ng-click="remove(source)">X</button>
+                                        <button class="btn btn-mini btn-danger right" ng-click="remove(source)">X</button>
                                     </div>
                                 </div>
                             </div>
@@ -119,7 +174,11 @@
                     <div class="span3 well" ng-controller="MapproxySourceListCtrl">
                         <h3>Mapproxy Sources</h3>
                         <ul>
-                            <li draggable class="mapproxy_source label" ng-repeat="source in mapproxy_sources | orderBy:'name'" item-data="{{source}}">
+                            <li
+                                draggable
+                                class="mapproxy_source label"
+                                ng-repeat="source in mapproxy_sources | orderBy:'name'"
+                                item-data="{{source}}">
                                 {{source.name}}
                             </li>
                         </ul>
@@ -132,9 +191,15 @@
 
                     <div class="span3 well" ng-controller="MapproxyLayerListCtrl">
                         <h3>Mapproxy Layer</h3>
-                        <ul sortable to-sort="mapproxy_layers">
-                            <li class="mapproxy_layer label" ng-repeat="layer in sortable_array" ng-click="editLayer(layer)">
-                                {{layer.name}}
+                        <ul sortable ng-model="mapproxy_layers">
+                            <li class="mapproxy_layer label" ng-repeat="layer in mapproxy_layers">
+                                <span ng-click="editLayer(layer)">{{layer.name}}</span>
+                                <button
+                                    class="btn btn-mini btn-danger right"
+                                    ask-dialog
+                                    dialog-title="Confirm!"
+                                    dialog-text="Shold i do it?"
+                                    callback="removeLayer(layer)">X</button>
                             </li>
                         </ul>
                     </div>
@@ -142,13 +207,22 @@
                     <div class="span3 well" ng-controller="MapproxyLayerFormCtrl">
                         <h3>Edit Layer</h3>
                         <form name="layer_form" ng-model="layer">
-                            <label for="layer_name">Name:</label><input required type="text" required ng-model="layer.name" name="layer_name"/><br>
+                            <label for="layer_name">Name:</label>
+                            <input required type="text" required ng-model="layer.name" name="layer_name"/><br>
                             <!-- change-callback MUST provide parameters callback and new_data -->
-                            <label for="layer_sources">Sources:</label><div droppable required accepts="mapproxy_source,mapproxy_cache" allow-array="true" ng-model="layer.sources" name="layer_sources" class="insertable_multi">
-                                <div sortable to-sort="layer.sources" >
-                                    <div ng-repeat="source in sortable_array" style="height: 30px">
+                            <label for="layer_sources">Sources:</label>
+                            <div
+                                droppable
+                                required
+                                accepts="mapproxy_source,mapproxy_cache"
+                                allow-array="true"
+                                ng-model="layer.sources"
+                                name="layer_sources"
+                                class="insertable_multi">
+                                <div sortable ng-model="layer.sources" >
+                                    <div ng-repeat="source in layer.sources">
                                         {{source.name}}
-                                        <button class="btn btn-mini btn-danger" style="float:right;" ng-click="remove(source)">X</button>
+                                        <button class="btn btn-mini btn-danger right" ng-click="remove(source)">X</button>
                                     </div>
                                 </div>
                             </div>
@@ -160,36 +234,28 @@
                     <div class="span3 well">
                         <h3>Mapproxy Sources</h3>
                         <ul ng-controller="MapproxySourceListCtrl">
-                            <li draggable class="mapproxy_source label" ng-repeat="source in mapproxy_sources | orderBy:'name'" item-data="{{source}}">
+                            <li
+                                draggable
+                                class="mapproxy_source label"
+                                ng-repeat="source in mapproxy_sources | orderBy:'name'"
+                                item-data="{{source}}">
                                 {{source.name}}
                             </li>
                         </ul>
                         <hr>
                         <h3>Mapproxy Caches</h3>
                         <ul ng-controller="MapproxyCacheListCtrl">
-                            <li draggable class="mapproxy_cache label" ng-repeat="cache in mapproxy_caches | orderBy:'name'" item-data="{{cache}}">
+                            <li
+                                draggable
+                                class="mapproxy_cache label"
+                                ng-repeat="cache in mapproxy_caches | orderBy:'name'"
+                                item-data="{{cache}}">
                                 {{cache.name}}
                             </li>
                         </ul>
                     </div>
 
                 </div>
-            </pane>
-            <pane title="test">
-                <toggle-group>
-                    <div toggle-element="child">
-                        Elem1
-                        <span ng-show="true">Child1</span>
-                    </div>
-                    <div toggle-element="child">
-                        Elem2
-                        <span ng-show="false">Child2</span>
-                    </div>
-                    <div toggle-element="child">
-                        Elem3
-                        <span ng-show="false">Child3</span>
-                    </div>
-                </toggle-group>
             </pane>
         </tabs>
     </body>
