@@ -289,6 +289,39 @@ directive('pane', function() {
             '<div class="tab-pane" ng-class="{active: selected}" ng-transclude></div>',
         replace: true
     };
+}).
+
+directive('askDialog', function($parse) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+
+            scope.openDialog = function() {
+                $('#dialog_' + scope.dialog_id).dialog({
+                    resizeable: false,
+                    width: 400,
+                    height: 200,
+                    model: true,
+                    buttons: {
+                        "Yes": function() {
+                            $(this).dialog("close");
+                            scope.callback(scope);
+                        },
+                        "No": function() {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+            };
+
+            scope.dialog_id = scope.$id;
+            scope.callback = $parse(attrs.callback);
+            var dialog = '<div style="display:none;" id="dialog_' + scope.dialog_id + '" title="'+ attrs.dialogTitle +'"><p>'+ attrs.dialogText +'</p></div>';
+            element.after(dialog);
+
+            element.bind('click', scope.openDialog);
+        }
+    };
 });
 
 /* Controller for directives */
