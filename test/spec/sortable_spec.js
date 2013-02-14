@@ -5,8 +5,8 @@ describe('sortable', function() {
 
     beforeEach(inject(function($rootScope, $compile) {
         elm = angular.element(
-            '<div class="sort" sortable to-sort="list">' +
-                '<div class="item" ng-repeat="item in sortable_array">{{item}}</div>' +
+            '<div class="sort" sortable to-sort="list" ng-model="list">' +
+                '<div class="item" ng-repeat="item in list">{{item}}</div>' +
             '</div>'
             );
         scope = $rootScope;
@@ -43,8 +43,7 @@ describe('sortable', function() {
                 }
             }
         };
-
-        elm.scope().dragStart(null, ui);
+        elm.scope().$$childHead.dragStart(null, ui);
 
         expect(ui.item.data('start')).toBe(1);
     });
@@ -72,7 +71,7 @@ describe('sortable', function() {
         expect(scope.list[1]).toBe('bar');
         expect(scope.list[2]).toBe('foobar');
 
-        elm.scope().dragEnd(null, ui);
+        elm.scope().$$childHead.dragEnd(null, ui);
 
         expect(scope.list.length).toBe(3);
 
@@ -87,7 +86,7 @@ describe('sortable', function() {
         expect(scope.list[1]).toBe('bar');
         expect(scope.list[2]).toBe('foobar');
 
-        elm.scope().remove(scope.list[0]);
+        elm.scope().$$childHead.remove(scope.list[0]);
 
         expect(scope.list.length).toBe(2);
 
