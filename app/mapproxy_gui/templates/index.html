@@ -56,15 +56,12 @@
                             <input type="text" required ng-model="source.name" name="source_name"/><br>
                             <!-- change-callback MUST provide parameters callback and new_data -->
                             <label for="source_url">URL:</label>
-                            <div
-                                droppable
-                                required
-                                change-callback="openDialog(callback, new_data)"
-                                accepts="wms_source"
-                                ng-model="source.wms_source"
-                                name="source_url"
-                                class="insertable_single">
-                                {{source.wms_source.url}}
+                            <!-- if an input field should be droppable, it must be wraped in an other element.
+                                 otherwise input field value will not be updated when something is dropped in.-->
+                            <div droppable change-callback="openDialog(callback, new_data)"
+                                accepts="wms_source" use-key-for-value="url" ng-model="source.wms_source">
+                                <input type="text" value="{{source.wms_source}}" name="source_url"
+                                    required ng-model="source.wms_source" />
                             </div>
                             <label for="source_layers">Layers:</label>
                             <div
