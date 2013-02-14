@@ -76,6 +76,17 @@ function MapproxySourceFormCtrl($scope, MapproxySources) {
         $scope.source = {};
         $scope.source_form.$setPristine();
     };
+    $scope.addLayerManual = function(event) {
+        event.preventDefault();
+        var new_layer = {'name': $scope.layer_manual, 'title': $scope.layer_manual};
+        if(!angular.isArray($scope.source.layers)) {
+            $scope.source.layers = [new_layer];
+        } else {
+            $scope.source.layers.append(new_layer);
+        }
+        $scope.layer_manual = undefined;
+    }
+
 
     $scope.source = {};
 

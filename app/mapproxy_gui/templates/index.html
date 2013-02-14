@@ -79,6 +79,9 @@
                                     </div>
                                 </div>
                             </div>
+                            <label for="add_layer_manual">Layer</label>
+                            <input type="text" id="add_layer_manual" name="add_layer_manual" ng-model="layer_manual">
+                            <button ng-click="addLayerManual($event)">Add Layer</button>
                             <label for="source_transparent">Transparent:</label>
                             <input type="checkbox" ng-model="source.transparent" name="source_transparent"/><br>
                             <button class="btn btn-small" ng-click="addSource($event)" ng-disabled="!source_form.$valid">Save</button>
