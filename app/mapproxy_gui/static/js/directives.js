@@ -116,6 +116,9 @@ directive('droppable', function($parse) {
 
             scope.checkExist = function(item) {
                 var exist = false;
+                if(scope.use_key) {
+                    item = item[scope.use_key];
+                }
                 //because angular add a unique $$hashKey to objects
                 angular.forEach(scope.items, function(scope_item) {
                     //angular.forEach doesn't support break
@@ -153,15 +156,21 @@ directive('droppable', function($parse) {
                     ngModelCtrl.$setViewValue(scope.items);
                 });
             };
-            scope.removeItem = function(item) {
-                if(angular.isUndefined(scope.items) || angular.isUndefined(item)) return;
+            scope.remove = function(item) {
+                console.log('droppable.remove', item)
+                if(angular.isUndefined(scope.items) || angular.isUndefined(item)) {
+                    console.log('droppable.remove.empty_items_or_emptry_item')
+                    return;
+                }
 
                 if(attrs.allowArray) {
+                    console.log('droppable.remove.remove_item_from_array')
                     scope.items.splice(scope.items.indexOf(item), 1);
                     if(scope.items.length == 0) {
                         scope.items = undefined;
                     }
                 } else {
+                    console.log('droppable.remove.remove_item')
                     scope.items = undefined;
                 }
 
@@ -170,22 +179,30 @@ directive('droppable', function($parse) {
                 });
             };
             scope.changeCallback = function(change) {
+                console.log('droppable.changeCallback')
                 if(change) {
+                    console.log('droppable.changeCallback.received_true')
                     scope.insertItems();
                 } else {
+                    console.log('droppable.changeCallback.received_false')
                     scope.j_ui.draggable('option', 'revert', true);
                 }
             };
             scope.dropHandler = function(event,ui) {
+                console.log('droppable.dropHander')
                 //get current items from model
                 scope.items = ngModelCtrl.$modelValue;
                 scope.inserted = false;
                 scope.j_ui = $(ui.draggable);
                 //only process draggable elements
-                if(!scope.j_ui.hasClass('ui-draggable')) return;
+                if(!scope.j_ui.hasClass('ui-draggable')) {
+                    console.log('droppable.dropHandler.not_draggable')
+                    return;
+                }
 
                 //check element class against accepts
                 if(!scope.checkClass(scope.j_ui)) {
+                    console.log('droppable.dropHandler.wrong_class')
                     scope.j_ui.draggable('option', 'revert', true);
                     return;
                 }
@@ -194,21 +211,27 @@ directive('droppable', function($parse) {
                 scope.to_insert = [];
                 //check for data
                 if(!angular.isUndefined(scope.new_item)) {
+                    console.log('droppable.dropHandler.got_new_item')
                     //check for existing items
                     if(angular.isArray(scope.new_item)) {
+                        console.log('droppable.dropHandler.item_is_array')
                         angular.forEach(scope.new_item, scope.checkExist);
                     } else {
+                        console.log('droppable.dropHandler.item_is_not_array')
                         scope.checkExist(scope.new_item);
                     }
                     //look if something to insert
                     if(scope.to_insert.length > 0) {
+                        console.log('droppable.dropHandler.items_to_insert')
                         //run callback if present
                         if(angular.isFunction(scope.change)) {
-                            scope.change(scope, {callback: scope.changeCallback, new_data: scope.new_item});
+                            console.log('droppable.dropHandler.call_change_function')
+                            scope.change(scope.$parent, {callback: scope.changeCallback, new_data: scope.new_item});
                         } else {
                             scope.insertItems();
                         }
                     } else {
+                        console.log('droppable.dropHandler.item_rejected')
                         scope.j_ui.draggable('option', 'revert', true);
                     }
                 }
@@ -219,9 +242,11 @@ directive('droppable', function($parse) {
             } else {
                 scope.accepts = attrs.accepts.split(',');
             }
+            scope.use_key = attrs.useKeyForValue;
 
             //look for callback function
             if(!angular.isUndefined(attrs.changeCallback)) {
+                console.log('droppable.got_changeCallback:', attrs.changeCallback)
                 scope.change = $parse(attrs.changeCallback);
             }
 
