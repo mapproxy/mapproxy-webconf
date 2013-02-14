@@ -12,15 +12,15 @@ input {
 }
 
 .label {
-    padding-top: 0.2em;
-    padding-bottom: 0.2em;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
 }
 
 /* wms tree */
 .mapproxy_source, .mapproxy_cache, .mapproxy_layer, .wms, .layer, .grp_layer {
     border: 1px solid black;
     display: block;
-    min-height: 2em;
+    white-space: normal;
 }
 
 .layer, .grp_layer {
