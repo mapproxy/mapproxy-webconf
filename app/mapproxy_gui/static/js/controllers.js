@@ -43,7 +43,7 @@ function MapproxySourceListCtrl($scope, MapproxySources) {
 function MapproxySourceFormCtrl($scope, MapproxySources) {
 
     $scope.openDialog = function(callback, new_data) {
-        if(!angular.isUndefined($scope.source.wms_source)) {
+        if(!angular.isUndefined($scope.source.wms_source) && $scope.source.layers) {
             $('#confirm_url_change_dialog').dialog({
                 resizeable: false,
                 width: 400,
