@@ -42,9 +42,9 @@
                         </ul>
                     </div>
 
-                    <div class="span3 well" ng-controller="MapproxySourceFormCtrl">
+                    <div class="span4 well">
                         <h3>Edit Source</h3>
-                        <form name="source_form" ng-model="source">
+                        <form name="source_form" ng-model="source" ng-controller="MapproxySourceFormCtrl">
                             <div
                                 style="display:none;"
                                 id="confirm_url_change_dialog"
@@ -81,9 +81,9 @@
                             </div>
                             <label for="source_transparent">Transparent:</label>
                             <input type="checkbox" ng-model="source.transparent" name="source_transparent"/><br>
+                            <button class="btn btn-small" ng-click="addSource($event)" ng-disabled="!source_form.$valid">Save</button>
+                            <button class="btn btn-small" ng-click="resetForm($event)">Reset</button>
                         </form>
-                        <button class="btn btn-small" ng-click="addSource()" ng-disabled="!source_form.$valid">Save</button>
-                        <button class="btn btn-small" ng-click="resetForm()">Reset</button>
                     </div>
 
                     <div class="span4 well" ng-controller="TreeCtrl">

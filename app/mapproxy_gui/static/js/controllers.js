@@ -66,11 +66,13 @@ function MapproxySourceFormCtrl($scope, MapproxySources) {
             callback(true);
         }
     };
-    $scope.addSource = function() {
+    $scope.addSource = function(event) {
+        event.preventDefault();
         MapproxySources.addSource(angular.copy($scope.source.name), angular.copy($scope.source));
         $scope.resetForm();
     };
-    $scope.resetForm = function() {
+    $scope.resetForm = function(event) {
+        event.preventDefault();
         $scope.source = {};
         $scope.source_form.$setPristine();
     };
