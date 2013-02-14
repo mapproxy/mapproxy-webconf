@@ -10,14 +10,14 @@ describe('tabs', function() {
     beforeEach(inject(function($rootScope, $compile) {
         elm = angular.element(
             '<div>' +
-                '<tabs>' +
-                    '<pane title="First Tab">' +
+                '<div tabs>' +
+                    '<div pane title="First Tab">' +
                         'first content is {{first}}' +
-                    '</pane>' +
-                    '<pane title="Second Tab">' +
+                    '</div>' +
+                    '<div pane title="Second Tab">' +
                         'second content is {{second}}' +
-                    '</pane>' +
-                '</tabs>' +
+                    '</div>' +
+                '</div>' +
             '</div>');
 
         scope = $rootScope;

@@ -259,7 +259,7 @@ directive('droppable', function($parse) {
 
 directive('toggleGroup', function() {
     return {
-        restrict: 'E',
+        restrict: 'A',
         controller: toggleGroupCtrl
     };
 }).
@@ -279,7 +279,7 @@ directive('toggleElement', function() {
 
 directive('tabs', function() {
     return {
-        restrict: 'E',
+        restrict: 'A',
         transclude: true,
         scope: {},
         controller: tabsCtrl,
@@ -299,7 +299,7 @@ directive('tabs', function() {
 directive('pane', function() {
     return {
         require: '^tabs',
-        restrict: 'E',
+        restrict: 'A',
         transclude: true,
         scope: { title: '@' },
         link: function(scope, element, attrs, tabsCtrl) {

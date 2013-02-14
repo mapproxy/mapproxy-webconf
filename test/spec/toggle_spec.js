@@ -7,11 +7,11 @@ describe('toggleElement hideOther', function() {
     describe('default mode (toggle element)', function() {
         beforeEach(inject(function($rootScope, $compile) {
             elm = angular.element(
-                '<toggle-group>' +
+                '<div toggle-group>' +
                     '<div ng-show="true" toggle-element>Elem1</div>' +
                     '<div ng-show="false" toggle-element>Elem2</div>' +
                     '<div ng-show="false" toggle-element>Elem3</div>' +
-                '</toggle-group>');
+                '</div>');
             scope = $rootScope;
             $compile(elm)(scope);
             scope.$digest();
@@ -50,14 +50,14 @@ describe('toggleElement hideOther', function() {
     describe('toggle next element', function() {
         beforeEach(inject(function($rootScope, $compile) {
             elm = angular.element(
-                '<toggle-group>' +
+                '<div toggle-group>' +
                     '<h3 toggle-element="next">Heading Elem1</h3>' +
                     '<div ng-show="true">Elem1</div>' +
                     '<h3 toggle-element="next">Heading Elem2</h3>' +
                     '<div ng-show="false">Elem2</div>' +
                     '<h3 toggle-element="next">Heading Elem3</h3>' +
                     '<div ng-show="false">Elem3</div>' +
-                '</toggle-group>');
+                '</div>');
             scope = $rootScope;
             $compile(elm)(scope);
             scope.$digest();
@@ -122,11 +122,11 @@ describe('toggleElement multiShow', function() {
     describe('default mode (toggle element)', function() {
         beforeEach(inject(function($rootScope, $compile) {
             elm = angular.element(
-                '<toggle-group mode="multiShow">' +
+                '<div toggle-group mode="multiShow">' +
                     '<div ng-show="true" toggle-element>Elem1</div>' +
                     '<div ng-show="false" toggle-element>Elem2</div>' +
                     '<div ng-show="false" toggle-element>Elem3</div>' +
-                '</toggle-group>');
+                '</div>');
             scope = $rootScope;
             $compile(elm)(scope);
             scope.$digest();
@@ -165,14 +165,14 @@ describe('toggleElement multiShow', function() {
     describe('toggle next element', function() {
         beforeEach(inject(function($rootScope, $compile) {
             elm = angular.element(
-                '<toggle-group mode="multiShow">' +
+                '<div toggle-group mode="multiShow">' +
                     '<h3 toggle-element="next">Heading Elem1</h3>' +
                     '<div ng-show="true">Elem1</div>' +
                     '<h3 toggle-element="next">Heading Elem2</h3>' +
                     '<div ng-show="false">Elem2</div>' +
                     '<h3 toggle-element="next">Heading Elem3</h3>' +
                     '<div ng-show="false">Elem3</div>' +
-                '</toggle-group>');
+                '</div>');
             scope = $rootScope;
             $compile(elm)(scope);
             scope.$digest();

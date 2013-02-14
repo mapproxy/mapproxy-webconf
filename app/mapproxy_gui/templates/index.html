@@ -1,10 +1,14 @@
 <!doctype html>
-<html ng-app="mapproxy_gui">
+<html xmlns:ng="http://angularjs.org" ng-app="mapproxy_gui">
     <head>
         <title>Mapproxy GUI</title>
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/custom.css">
         <link rel="stylesheet" href="css/smoothness/jquery-ui-1.10.0.custom.min.css">
+
+        <!--[if lte IE 8]>
+            <script type="text/javascript" src="js/ie8_fixtures.js"></script>
+        <![endif]-->
 
         <script type="text/javascript" src="js/lib/angular.js"></script>
 
@@ -21,8 +25,8 @@
 
     </head>
     <body>
-        <tabs>
-            <pane title="Source">
+        <div tabs>
+            <div pane title="Source">
                 <div class="row-fluid">
 
                     <div class="span3 well" ng-controller="MapproxySourceListCtrl">
@@ -103,7 +107,7 @@
                                 item-data="{{itemData(layer)}}"
                                 class="wms_layer grp_layer label"></div>
                         </script>
-                        <toggle-group mode='hideOther'>
+                        <div toggle-group mode='hideOther'>
                             <div ng-repeat="wms in wms_list" class="wms label label-success" >
                                 <h5 draggable item-data="{{wms}}" class="wms_source" toggle-element="next">{{wms.title}}</h5>
                                 <div ng-show="$first">
@@ -115,15 +119,15 @@
                                         class="wms_layer layer label label-info"></div>
                                 </div>
                             </div>
-                        </toggle-group>
+                        </div>
                         <hr>
                         <label for="input_wms">Capabilities:</label><input name="input_wms" ng-model="capabilities">
                         <button class="btn btn-small" ng-click="loadData(capabilities)">GetCapabilities</button><!-- add new wms -->
                     </div>
 
                 </div>
-            </pane>
-            <pane title="Cache">
+            </div>
+            <div pane title="Cache">
                 <div class="row-fluid">
 
                     <div class="span3 well" ng-controller="MapproxyCacheListCtrl">
@@ -185,8 +189,8 @@
                     </div>
 
                 </div>
-            </pane>
-            <pane title="Layer">
+            </div>
+            <div pane title="Layer">
                 <div class="row-fluid">
 
                     <div class="span3 well" ng-controller="MapproxyLayerListCtrl">
@@ -256,7 +260,7 @@
                     </div>
 
                 </div>
-            </pane>
-        </tabs>
+            </div>
+        </div>
     </body>
 </html>

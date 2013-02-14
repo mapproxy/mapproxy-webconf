@@ -8,7 +8,7 @@ function TreeCtrl($scope, $http, $element) {
     };
     $scope.loadData = function(url) {
         //XXX kai: replace with url
-        $http.get('/data/get_capabilities.json').success(function(data) {
+        $http.get('data/get_capabilities.json').success(function(data) {
             if($scope.wms_list) {
                 $scope.wms_list = $scope.wms_list.concat(data);
             } else {
@@ -17,7 +17,7 @@ function TreeCtrl($scope, $http, $element) {
         });
     };
 
-    $http.get('/data/get_capabilities.json').success(function(data) {
+    $http.get('data/get_capabilities.json').success(function(data) {
         $scope.wms_list = data;
     });
 }
