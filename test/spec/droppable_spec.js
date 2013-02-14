@@ -76,7 +76,7 @@ describe('droppable', function() {
             elm_scope.dropHandler(null, ui1);
             expect(scope.drop_data).toEqual({"foo": 2});
 
-            elm_scope.removeItem(scope.drop_data);
+            elm_scope.remove(scope.drop_data);
 
             expect(scope.drop_data).toBe(undefined);
         });
@@ -165,7 +165,7 @@ describe('droppable', function() {
             elm_scope.dropHandler(null, ui3);
             expect(scope.drop_data).toEqual([{"foo": 2}, {"foobar": 23}, {"bar": 14}]);
 
-            elm_scope.removeItem(scope.drop_data[1])
+            elm_scope.remove(scope.drop_data[1])
 
             expect(scope.drop_data).toEqual([{"foo": 2}, {"bar": 14}]);
         })
