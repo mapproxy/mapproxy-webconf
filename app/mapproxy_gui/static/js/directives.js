@@ -32,7 +32,6 @@ directive('sortable', function() {
         replace: false,
         require: 'ngModel',
         link: function(scope, element, attrs, ngModelCtrl) {
-            scope = scope.$new(false);
 
             scope.dragStart = function(e, ui) {
                 ui.item.data('start', ui.item.index());
@@ -53,20 +52,16 @@ directive('sortable', function() {
                     scope.items.splice(start, 1)[0]);
 
                 //tell angular $scope has changed
-                scope.$apply(function() {
-                    ngModelCtrl.$setViewValue(scope.items);
-                });
+                scope.$apply()
             };
 
             scope.remove = function(item) {
+                console.log('sortable.remove')
                 scope.items = ngModelCtrl.$modelValue;
                 scope.items.splice(scope.items.indexOf(item), 1);
                 if(scope.items.length == 0) {
-                    scope.items = undefined;
+                    ngModelCtrl.$setViewValue(undefined);
                 }
-                scope.$apply(function() {
-                    ngModelCtrl.$setViewValue(scope.items);
-                });
             };
 
             var sortable_element = $(element).sortable({
