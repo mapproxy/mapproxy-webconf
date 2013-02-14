@@ -4,40 +4,40 @@ import storage
 
 app = bottle.Bottle()
 
-@app.route('/grids')
-def grids_list(storage):
-    return {'grids': storage.get('grids')}
+@app.route('/conf/<project>/grids')
+def grids_list(project, storage):
+    return {'grids': storage.get('grids', project)}
 
-@app.route('/sources')
-def sources_list(storage):
-    return {'sources': storage.get('sources')}
+@app.route('/conf/<project>/sources')
+def sources_list(project, storage):
+    return {'sources': storage.get('sources', project)}
 
-@app.route('/caches')
-def caches_list(storage):
-    return {'caches': storage.get('caches')}
+@app.route('/conf/<project>/caches')
+def caches_list(project, storage):
+    return {'caches': storage.get('caches', project)}
 
-@app.route('/globals')
-def globals_list(storage):
-    return {'globals': storage.get('globals')}
+@app.route('/conf/<project>/globals')
+def globals_list(project, storage):
+    return {'globals': storage.get('globals', project)}
 
-@app.route('/services')
-def services_list(storage):
-    return {'services': storage.get('services')}
+@app.route('/conf/<project>/services')
+def services_list(project, storage):
+    return {'services': storage.get('services', project)}
 
-@app.route('/layers')
-def layers_list(storage):
-    return {'layers': storage.get('layers', [])}
+@app.route('/conf/<project>/layers')
+def layers_list(project, storage):
+    return {'layers': storage.get('layers', project, [])}
 
 
-@app.route('/wms')
-def wms_list(storage):
-    return storage.get('wms_sources')
+@app.route('/conf/<project>/wms')
+def wms_list(project, storage):
+    return storage.get('wms_sources', project)
 
-@app.route('/wms', method="POST")
-def wms_post(storage):
-    sources = storage.get('wms_sources')
+@app.route('/conf/<project>/wms', method="POST")
+def wms_post(project, storage):
+    sources = storage.get('wms_sources', project)
     sources.setdefault('servers', []).append(request.json)
-    storage.put('wms_sources', sources)
+    storage.put('wms_sources', project, sources)
     response.status = 201
 
 def init_app(storage_dir):

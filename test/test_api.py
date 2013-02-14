@@ -19,7 +19,7 @@ class TestServerAPI(helper.TempDirTest):
         self._app.uninstall('yamlstore')
 
     def test_wms_list_empty(self):
-        resp = self.app.get('/wms')
+        resp = self.app.get('/conf/base/wms')
         assert resp.status == '200 OK'
         assert resp.content_type == 'application/json'
         assert resp.json == {}
@@ -32,9 +32,9 @@ class TestServerAPI(helper.TempDirTest):
             'layers': [
             ]
         }
-        resp = self.app.post_json('/wms', doc)
+        resp = self.app.post_json('/conf/base/wms', doc)
         assert resp.status == '201 Created'
-        resp = self.app.get('/wms')
+        resp = self.app.get('/conf/base/wms')
         assert resp.status == '200 OK'
         assert resp.content_type == 'application/json'
         assert resp.json == {'servers': [doc]}
@@ -45,7 +45,7 @@ class TestServerAPIExistingConf(helper.TempDirTest):
         helper.TempDirTest.setup(self)
         self.storage_plugin = storage.YAMLStorePlugin(self.tmp_dir)
         mapproxy_conf = config.load_mapproxy_yaml(os.path.join(os.path.dirname(__file__), 'test.yaml'))
-        config.fill_storage_with_mapproxy_conf(self.storage_plugin.storage, mapproxy_conf)
+        config.fill_storage_with_mapproxy_conf(self.storage_plugin.storage, 'base', mapproxy_conf)
         self._app = app
         self._app.install(self.storage_plugin)
         self.app = TestApp(self._app)
@@ -55,5 +55,5 @@ class TestServerAPIExistingConf(helper.TempDirTest):
         self._app.uninstall('yamlstore')
 
     def test_grids(self):
-        resp = self.app.get('/grids')
+        resp = self.app.get('/conf/base/grids')
         assert 'global_geodetic_sqrt2' in resp.json['grids']

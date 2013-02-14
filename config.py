@@ -11,24 +11,24 @@ def write_mapproxy_yaml(mapproxy_conf, filename):
     content = yaml.dump(mapproxy_conf, default_flow_style=False)
     utils.save_atomic(filename, content=content)
 
-def fill_storage_with_mapproxy_conf(storage, mapproxy_conf):
+def fill_storage_with_mapproxy_conf(storage, project, mapproxy_conf):
     for section_name in ['services', 'layers', 'sources', 'grids', 'globals', 'caches']:
         section = mapproxy_conf.get(section_name, {})
-        storage.put(section_name, section)
+        storage.put(section_name, project, section)
 
 
-def mapproxy_conf_from_storage(storage):
+def mapproxy_conf_from_storage(storage, project):
     mapproxy_conf = {}
 
-    mapproxy_conf['services'] = storage.get('services')
+    mapproxy_conf['services'] = storage.get('services', project)
 
     used_sources = set()
     used_caches = set()
 
-    sources = storage.get('sources')
-    caches = storage.get('caches')
-    layers = storage.get('layers', [])
-    grids = storage.get('grids')
+    sources = storage.get('sources', project)
+    caches = storage.get('caches', project)
+    layers = storage.get('layers', project, [])
+    grids = storage.get('grids', project)
 
     used_caches, used_sources = used_caches_and_sources(layers, caches, sources)
 

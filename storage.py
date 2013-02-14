@@ -52,16 +52,21 @@ class YAMLStore(object):
     def _filename(self, name):
         return os.path.join(self.storage_dir, name + '.yaml')
 
-    def get(self, name, default=DEFAULT_VALUE):
+    def get(self, name, project, default=DEFAULT_VALUE):
         try:
             with open(self._filename(name), 'rb') as f:
-                return yaml.load(f)
+                data = yaml.load(f)
+                project_data = data.get(project, default)
+                if project_data is DEFAULT_VALUE:
+                    return {}
+                else:
+                    return project_data
         except IOError, ex:
             if ex.errno == errno.ENOENT:
                 if default is DEFAULT_VALUE:
                     return {}
                 return default
 
-    def put(self, name, data):
-        content = yaml.dump(data)
+    def put(self, name, project, data):
+        content = yaml.dump({project: data})
         utils.save_atomic(self._filename(name), content)

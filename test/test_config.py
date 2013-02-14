@@ -80,18 +80,18 @@ class TestRoundTrip(helper.TempDirTest):
         # read yaml into storage
         storage = YAMLStore(p.join(self.tmp_dir, 'storage1'))
         mapproxy_conf = config.load_mapproxy_yaml(p.join(p.dirname(__file__), 'test.yaml'))
-        config.fill_storage_with_mapproxy_conf(storage, mapproxy_conf)
+        config.fill_storage_with_mapproxy_conf(storage, 'base', mapproxy_conf)
 
         # write out config from storage1
-        tmp_mapproxy_conf = config.mapproxy_conf_from_storage(storage)
+        tmp_mapproxy_conf = config.mapproxy_conf_from_storage(storage, 'base')
         tmp_out_file = p.join(self.tmp_dir, 'out.yaml')
         config.write_mapproxy_yaml(tmp_mapproxy_conf, tmp_out_file)
 
         # read in config, writeout again
         storage = YAMLStore(p.join(self.tmp_dir, 'storage2'))
         mapproxy_conf = config.load_mapproxy_yaml(tmp_out_file)
-        config.fill_storage_with_mapproxy_conf(storage, mapproxy_conf)
-        new_mapproxy_conf = config.mapproxy_conf_from_storage(storage)
+        config.fill_storage_with_mapproxy_conf(storage, 'base', mapproxy_conf)
+        new_mapproxy_conf = config.mapproxy_conf_from_storage(storage, 'base')
 
         # compare output of storage1 with storage2
         assert tmp_mapproxy_conf == new_mapproxy_conf
