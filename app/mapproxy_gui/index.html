@@ -55,29 +55,32 @@
                                 title="confirm url change">
                                 <p>Replace service URL deletes all layers depends to it!</p>
                             </div>
-
+                        <!-- name -->
                             <label for="source_name">Name:</label>
                             <input type="text" required ng-model="source.name" name="source_name"/><br>
+                    <!-- req -->
+                        <!-- url -->
                             <!-- change-callback MUST provide parameters callback and new_data -->
                             <label for="source_url">URL:</label>
                             <!-- if an input field should be droppable, it must be wraped in an other element.
                                  otherwise input field value will not be updated when something is dropped in.-->
                             <div droppable change-callback="openDialog(callback, new_data)"
-                                accepts="wms_source" use-key-for-value="url" ng-model="source.wms_source">
+                                accepts="wms_source" use-key-for-value="url" ng-model="source.req.url">
                                 <input type="text" value="{{source.wms_source}}" name="source_url"
-                                    required ng-model="source.wms_source" />
+                                    required ng-model="source.req.url" />
                             </div>
+                        <!-- layer -->
                             <label for="source_layers">Layers:</label>
                             <div
                                 droppable
                                 required
                                 accepts="wms_layer"
                                 allow-array="true"
-                                ng-model="source.layers"
+                                ng-model="source.req.layer"
                                 name="source_layers"
                                 class="insertable_multi">
-                                <div sortable ng-model="source.layers" >
-                                    <div ng-repeat="layer in source.layers">
+                                <div sortable ng-model="source.req.layer" >
+                                    <div ng-repeat="layer in source.req.layer">
                                         {{layer.title}}
                                         <button class="btn btn-mini btn-danger right" ng-click="remove(layer)">X</button>
                                     </div>
@@ -86,11 +89,29 @@
                             <label for="add_layer_manual">Layer</label>
                             <input type="text" id="add_layer_manual" name="add_layer_manual" ng-model="layer_manual">
                             <button ng-click="addLayerManual($event)">Add Layer</button>
+                        <!-- transparent -->
                             <label for="source_transparent">Transparent:</label>
-                            <input type="checkbox" ng-model="source.transparent" name="source_transparent"/><br>
+                            <input type="checkbox" ng-model="source.req.transparent" name="source_transparent"/><br>
+                    <!-- wms_opts -->
+                        <!-- version -->
+                            <label for="source_wms_version">Version:</label>
+                            <select name="source_wms_version" ng-model="source.wms_opts.version">
+                                <option value="1.0.0">1.0.0</option>
+                                <option value="1.1.0">1.1.0</option>
+                                <option value="1.1.1">1.1.1</option>
+                                <option value="1.3.0">1.3.0</option>
+                            </select>
+                        <!-- map -->
+                            <label for="source_wms_map">Map</label>
+                            <input type="checkbox" ng-model="source.wms_opts.map">
+                        <!-- featureinfo -->
+                            <label for="source_wms_featureinfo">Featureinfo</label>
+                            <input type="checkbox" ng-model="source.wms_opts.featureinfo">
+                        <!-- buttons -->
                             <button class="btn btn-small" ng-click="addSource($event)" ng-disabled="!source_form.$valid">Save</button>
                             <button class="btn btn-small" ng-click="resetForm($event)">Reset</button>
                         </form>
+
                     </div>
 
                     <div class="span4 well" ng-controller="TreeCtrl">
