@@ -233,25 +233,27 @@
                         </ul>
                     </div>
 
-                    <div class="span3 well" ng-controller="MapproxyCacheFormCtrl">
+                    <div class="span4 well" ng-controller="MapproxyCacheFormCtrl">
                         <h3>Edit Cache</h3>
-                        <form name="cache_form" ng-model="cache">
-                            <label for="cache_name">Name:</label>
-                            <input required type="text" required ng-model="cache.name" name="cache_name"/><br>
+                        <form name="cache_form" ng-model="cache" class="form-horizontal">
+                            <div labeled-control-group name-for="cache_form.cache_name" text="Name">
+                                <input required type="text" required ng-model="cache.name" name="cache_form.cache_name"/>
+                            </div>
                             <!-- change-callback MUST provide parameters callback and new_data -->
-                            <label for="cache_sources">Sources:</label>
-                            <div
-                                droppable
-                                required
-                                accepts="mapproxy_source"
-                                allow-array="true"
-                                ng-model="cache.sources"
-                                name="cache_sources"
-                                class="insertable_multi">
-                                <div sortable ng-model="cache.sources" >
-                                    <div ng-repeat="source in cache.sources">
-                                        {{source.name}}
-                                        <button class="btn btn-mini btn-danger right" ng-click="remove(source)">X</button>
+                            <div labeled-control-group name-for="cache_form.sources" text="Sources">
+                                <div
+                                    droppable
+                                    required
+                                    accepts="mapproxy_source"
+                                    allow-array="true"
+                                    ng-model="cache.sources"
+                                    name="cache_form.sources"
+                                    class="insertable_multi uneditable-input">
+                                    <div sortable ng-model="cache.sources" >
+                                        <div ng-repeat="source in cache.sources" class="item">
+                                            {{source.name}}
+                                            <button class="btn btn-mini btn-danger right" ng-click="remove(source)">X</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -293,25 +295,27 @@
                         </ul>
                     </div>
 
-                    <div class="span3 well" ng-controller="MapproxyLayerFormCtrl">
+                    <div class="span4 well" ng-controller="MapproxyLayerFormCtrl">
                         <h3>Edit Layer</h3>
-                        <form name="layer_form" ng-model="layer">
-                            <label for="layer_name">Name:</label>
-                            <input required type="text" required ng-model="layer.name" name="layer_name"/><br>
+                        <form name="layer_form" ng-model="layer" class="form-horizontal">
+                            <div labeled-control-group name-for="layer_form.layer_name" text="Name">
+                                <input required type="text" required ng-model="layer.name" name="layer_form.layer_name"/><br>
+                            </div>
                             <!-- change-callback MUST provide parameters callback and new_data -->
-                            <label for="layer_sources">Sources:</label>
-                            <div
-                                droppable
-                                required
-                                accepts="mapproxy_source,mapproxy_cache"
-                                allow-array="true"
-                                ng-model="layer.sources"
-                                name="layer_sources"
-                                class="insertable_multi">
-                                <div sortable ng-model="layer.sources" >
-                                    <div ng-repeat="source in layer.sources">
-                                        {{source.name}}
-                                        <button class="btn btn-mini btn-danger right" ng-click="remove(source)">X</button>
+                            <div labeled-control-group name-for="layer_form.sources" text="Sources">
+                                <div
+                                    droppable
+                                    required
+                                    accepts="mapproxy_source,mapproxy_cache"
+                                    allow-array="true"
+                                    ng-model="layer.sources"
+                                    name="layer_sources"
+                                    class="insertable_multi uneditable-input">
+                                    <div sortable ng-model="layer.sources" >
+                                        <div ng-repeat="source in layer.sources" class="item">
+                                            {{source.name}}
+                                            <button class="btn btn-mini btn-danger right" ng-click="remove(source)">X</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
