@@ -81,7 +81,7 @@
                                 class="insertable_multi">
                                 <div sortable ng-model="source.req.layer" >
                                     <div ng-repeat="layer in source.req.layer">
-                                        {{layer.title}}
+                                        {{layer.name}} <span ng-show="layer.title">({{layer.title}})</span>
                                         <button class="btn btn-mini btn-danger right" ng-click="remove(layer)">X</button>
                                     </div>
                                 </div>
