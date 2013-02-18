@@ -47,7 +47,7 @@ function MapproxySourceFormCtrl($scope, MapproxySources) {
                 buttons: {
                     "Change url": function() {
                         $(this).dialog("close");
-                        $scope.source.layers = undefined;
+                        $scope.source.req.layer = undefined;
                         $scope.$apply();
                         callback(true);
                     },
