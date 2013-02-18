@@ -1,5 +1,37 @@
 angular.module('mapproxy_gui.services', []).
 
+service('WMSSources', function($rootScope, $http) {
+    var wms_list = undefined;
+    return {
+        loadData: function(url) {
+            //XXX kai: replace with url
+            $http.get(url).success(function(data) {
+                if(wms_list) {
+                    wms_list = wms_list.concat(data);
+                } else {
+                    wms_list = data;
+                }
+                $rootScope.$broadcast('wms_list_refreshed');
+            });
+        },
+        layerTitle: function(url, layer_name) {
+            angular.forEach(wms_list, function(wms) {
+                if(wms.url == url) {
+                    angular.forEach(wms.layers, function(layer) {
+                        if(layer.name == layer_name) {
+                            return layer.title;
+                        }
+                    });
+                }
+            });
+            return false;
+        },
+        wms_list: function() {
+            return wms_list;
+        }
+    };
+}).
+
 service('MapproxySources', function($rootScope) {
     var sources = {};
     var edit_source;
