@@ -49,4 +49,12 @@ input {
     min-height:10em;
     background-color: gray;
     display: inline-block;
+
+/* Form validation */
+/* Nested form */
+input.ng-invalid,
+div.ng-invalid,
+label.ng-invalid {
+    border-color: #FA787E;
+}
 }
