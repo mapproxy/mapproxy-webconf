@@ -1,4 +1,4 @@
-function TreeCtrl($scope, $http, $element) {
+function TreeCtrl($scope, WMSSources) {
 
     $scope.itemData = function(layer) {
         if(!layer.name) {
@@ -7,19 +7,14 @@ function TreeCtrl($scope, $http, $element) {
         return layer;
     };
     $scope.loadData = function(url) {
-        //XXX kai: replace with url
-        $http.get('data/get_capabilities.json').success(function(data) {
-            if($scope.wms_list) {
-                $scope.wms_list = $scope.wms_list.concat(data);
-            } else {
-                $scope.wms_list = data;
-            }
-        });
+        WMSSources.loadData('data/get_capabilities.json');
     };
 
-    $http.get('data/get_capabilities.json').success(function(data) {
-        $scope.wms_list = data;
+    $scope.$on('wms_list_refreshed', function() {
+        $scope.wms_list = WMSSources.wms_list();
     });
+
+    WMSSources.loadData('data/get_capabilities.json');
 }
 
 function MapproxySourceListCtrl($scope, MapproxySources) {
