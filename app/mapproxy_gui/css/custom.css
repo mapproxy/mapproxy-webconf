@@ -16,6 +16,10 @@ input {
     padding-bottom: 0.3em;
 }
 
+.droppable_input_wrapper {
+    display: inline;
+}
+
 /* wms tree */
 .mapproxy_source, .mapproxy_cache, .mapproxy_layer, .wms, .layer, .grp_layer {
     border: 1px solid black;
@@ -41,7 +45,8 @@ input {
 }
 
 .insertable_multi {
-    min-width:10em;
+    width:25em;
     min-height:10em;
     background-color: gray;
+    display: inline-block;
 }
