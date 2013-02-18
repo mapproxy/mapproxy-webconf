@@ -33,6 +33,12 @@ input {
     padding-bottom: 0.2em;
 }
 
+.insertable_multi .item {
+    white-space: normal;
+    display: block;
+    margin: 0.2em;
+}
+
 .layer_infos {
     padding-bottom: 1em;
 }
@@ -47,8 +53,10 @@ input {
 .insertable_multi {
     width:25em;
     min-height:10em;
-    background-color: gray;
+    /*background-color: gray;*/
     display: inline-block;
+    cursor: default;
+}
 
 /* Form validation */
 /* Nested form */

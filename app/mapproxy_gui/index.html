@@ -82,9 +82,9 @@
                                     ng-model="source.req.layer"
                                     name="source_form.req_layers"
                                     use-key-for-value="name"
-                                    class="insertable_multi">
+                                    class="insertable_multi uneditable-input">
                                     <div sortable ng-model="source.req.layer" >
-                                        <div ng-repeat="layer in source.req.layer">
+                                        <div ng-repeat="layer in source.req.layer" class="item">
                                             {{layer}} <span ng-show="layerTitle(layer)">({{layerTitle(layer)}})</span>
                                             <button class="btn btn-mini btn-danger right" ng-click="remove(layer)">X</button>
                                         </div>
@@ -95,7 +95,6 @@
                                 <input type="text" id="add_layer_manual" name="add_layer_manual" ng-model="custom.layer_manual">
                                 <button class="btn btn-small" ng-click="addLayerManual($event)">Add</button>
                             </div>
-
                         <!-- transparent -->
                             <!--<label for="source_form.req_transparent">Transparent:</label>-->
                             <div labeled-control-group name-for="source_form.req_transparent" text="Transparent">
