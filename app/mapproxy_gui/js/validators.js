@@ -1,6 +1,9 @@
 var INTEGER_REGEXP = /^\-?\d*$/;
 var FLOAT_REGEXP = /^\-?\d*((\.|\,)\d+)?$/;
-app.directive('integer', function() {
+
+angular.module('mapproxy_gui.validators', []).
+
+directive('integer', function() {
     return {
         require: 'ngModel',
         link: function(scope, elm, attrs, ctrl) {
@@ -17,9 +20,9 @@ app.directive('integer', function() {
             });
         }
     };
-});
+}).
 
-app.directive('float', function() {
+directive('float', function() {
     return {
         require: 'ngModel',
         link: function(scope, elm, attrs, ctrl) {
@@ -35,9 +38,9 @@ app.directive('float', function() {
             });
         }
     };
-});
+}).
 
-app.directive('biggerthan', function() {
+directive('biggerthan', function() {
     return {
         require: 'ngModel',
         link: function(scope, elm, attrs, ctrl) {
