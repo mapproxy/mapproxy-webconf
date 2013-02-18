@@ -35,10 +35,10 @@ function MapproxySourceListCtrl($scope, MapproxySources) {
 
 }
 
-function MapproxySourceFormCtrl($scope, MapproxySources) {
+function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
 
     $scope.openDialog = function(callback, new_data) {
-        if(!angular.isUndefined($scope.source.wms_source) && $scope.source.layers) {
+        if(!angular.isUndefined($scope.source.req.url) && $scope.source.req.layer) {
             $('#confirm_url_change_dialog').dialog({
                 resizeable: false,
                 width: 400,
@@ -67,17 +67,19 @@ function MapproxySourceFormCtrl($scope, MapproxySources) {
         $scope.resetForm();
     };
     $scope.resetForm = function(event) {
-        event.preventDefault();
+        if(event) {
+            event.preventDefault();
+        }
         $scope.source = {};
         $scope.source_form.$setPristine();
     };
     $scope.addLayerManual = function(event) {
         event.preventDefault();
-        var new_layer = {'name': $scope.layer_manual, 'title': $scope.layer_manual};
-        if(!angular.isArray($scope.source.layers)) {
-            $scope.source.layers = [new_layer];
+        var new_layer = {'name': $scope.layer_manual};
+        if(!angular.isArray($scope.source.req.layer)) {
+            $scope.source.req.layer = [new_layer];
         } else {
-            $scope.source.layers.append(new_layer);
+            $scope.source.req.layer.push(new_layer);
         }
         $scope.layer_manual = undefined;
     };
