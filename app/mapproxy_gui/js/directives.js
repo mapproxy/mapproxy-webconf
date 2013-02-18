@@ -342,6 +342,24 @@ directive('askDialog', function($parse) {
             element.bind('click', scope.openDialog);
         }
     };
+}).
+
+directive('labeledControlGroup', function() {
+    return {
+        restrict: 'A',
+        replace: true,
+        transclude: true,
+        template: '<div class="control-group">' +
+                      '<label class="control-label" for="{{name}}">{{text}}:</label>' +
+                      '<div class="controls" ng-transclude>' +
+                  '</div></div>',
+        scope: 'element',
+        link: function(scope, element, attrs) {
+            scope.name = attrs.nameFor;
+            scope.text = attrs.text;
+        }
+    };
+
 });
 
 /* Controller for directives */
