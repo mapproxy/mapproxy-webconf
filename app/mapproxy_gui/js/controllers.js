@@ -38,7 +38,12 @@ function MapproxySourceListCtrl($scope, MapproxySources) {
 function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
 
     $scope.openDialog = function(callback, new_data) {
-        if(!angular.isUndefined($scope.source.req.url) && $scope.source.req.layer) {
+        if(angular.isUndefined($scope.source.req) ||
+           angular.isUndefined($scope.source.req.url) ||
+           angular.isUndefined($scope.source.req.layer) ||
+           $scope.source.req.layer.length == 0) {
+            callback(true);
+        } else  {
             $('#confirm_url_change_dialog').dialog({
                 resizeable: false,
                 width: 400,
@@ -57,8 +62,6 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
                     }
                 }
             });
-        } else {
-            callback(true);
         }
     };
     $scope.addSource = function(event) {
@@ -67,7 +70,7 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
         $scope.resetForm();
     };
     $scope.resetForm = function(event) {
-        if(event) {
+        if(!angular.isUndefined(event)) {
             event.preventDefault();
         }
         $scope.source = {};
