@@ -15,16 +15,17 @@ service('WMSSources', function($rootScope, $http) {
             });
         },
         layerTitle: function(url, layer_name) {
+            var title = false
             angular.forEach(wms_list, function(wms) {
                 if(wms.url == url) {
                     angular.forEach(wms.layers, function(layer) {
                         if(layer.name == layer_name) {
-                            return layer.title;
+                            title = layer.title;
                         }
                     });
                 }
             });
-            return false;
+            return title;
         },
         wms_list: function() {
             return wms_list;
