@@ -89,6 +89,8 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
     $scope.layerTitle = function(layer) {
         return WMSSources.layerTitle($scope.source.req.url, layer);
     }
+
+    //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {};
     $scope.source = {};
 
