@@ -75,19 +75,18 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
     };
     $scope.addLayerManual = function(event) {
         event.preventDefault();
-        var new_layer = {'name': $scope.layer_manual};
+        var new_layer = $scope.custom.layer_manual;
         if(!angular.isArray($scope.source.req.layer)) {
             $scope.source.req.layer = [new_layer];
         } else {
             $scope.source.req.layer.push(new_layer);
         }
-        $scope.layer_manual = undefined;
+        $scope.custom.layer_manual = undefined;
     };
     $scope.layerTitle = function(layer) {
         return WMSSources.layerTitle($scope.source.req.url, layer);
     }
-
-
+    $scope.custom = {};
     $scope.source = {};
 
     $scope.$on('edit_source_event', function() {
