@@ -1,4 +1,5 @@
 var INTEGER_REGEXP = /^\-?\d*$/;
+var FLOAT_REGEXP = /^\-?\d*((\.|\,)\d+)?$/;
 app.directive('integer', function() {
     return {
         require: 'ngModel',
@@ -18,7 +19,6 @@ app.directive('integer', function() {
     };
 });
 
-var FLOAT_REGEXP = /^\-?\d+((\.|\,)\d+)?$/;
 app.directive('float', function() {
     return {
         require: 'ngModel',
