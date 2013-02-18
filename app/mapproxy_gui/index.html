@@ -78,10 +78,11 @@
                                 allow-array="true"
                                 ng-model="source.req.layer"
                                 name="source_layers"
+                                use-key-for-value="name"
                                 class="insertable_multi">
                                 <div sortable ng-model="source.req.layer" >
                                     <div ng-repeat="layer in source.req.layer">
-                                        {{layer.name}} <span ng-show="layer.title">({{layer.title}})</span>
+                                        {{layer}} <span ng-show="layerTitle(layer)">({{layerTitle(layer)}})</span>
                                         <button class="btn btn-mini btn-danger right" ng-click="remove(layer)">X</button>
                                     </div>
                                 </div>

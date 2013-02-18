@@ -80,6 +80,9 @@ function MapproxySourceFormCtrl($scope, MapproxySources) {
             $scope.source.layers.append(new_layer);
         }
         $scope.layer_manual = undefined;
+    };
+    $scope.layerTitle = function(layer) {
+        return WMSSources.layerTitle($scope.source.req.url, layer);
     }
 
 
