@@ -18,8 +18,8 @@ class TestServerAPI(helper.TempDirTest):
         helper.TempDirTest.teardown(self)
         self._app.uninstall('yamlstore')
 
-    def test_wms_list_empty(self):
-        resp = self.app.get('/conf/base/wms')
+    def test_wms_capabilities_list_empty(self):
+        resp = self.app.get('/conf/base/wms_capabilities')
         assert resp.status == '200 OK'
         assert resp.content_type == 'application/json'
         assert resp.json == {}
@@ -32,9 +32,9 @@ class TestServerAPI(helper.TempDirTest):
             'layers': [
             ]
         }
-        resp = self.app.post_json('/conf/base/wms', doc)
+        resp = self.app.post_json('/conf/base/wms_capabilities', doc)
         assert resp.status == '201 Created'
-        resp = self.app.get('/conf/base/wms')
+        resp = self.app.get('/conf/base/wms_capabilities')
         assert resp.status == '200 OK'
         assert resp.content_type == 'application/json'
         assert resp.json == {'servers': [doc]}

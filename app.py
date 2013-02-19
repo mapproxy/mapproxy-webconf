@@ -29,15 +29,16 @@ def layers_list(project, storage):
     return {'layers': storage.get('layers', project, [])}
 
 
-@app.route('/conf/<project>/wms')
-def wms_list(project, storage):
-    return storage.get('wms_sources', project)
 
-@app.route('/conf/<project>/wms', method="POST")
+@app.route('/conf/<project>/wms_capabilities')
+def wms_list(project, storage):
+    return storage.get('wms_capabilities', project)
+
+@app.route('/conf/<project>/wms_capabilities', method="POST")
 def wms_post(project, storage):
-    sources = storage.get('wms_sources', project)
+    sources = storage.get('wms_capabilities', project)
     sources.setdefault('servers', []).append(request.json)
-    storage.put('wms_sources', project, sources)
+    storage.put('wms_capabilities', project, sources)
     response.status = 201
 
 def init_app(storage_dir):
