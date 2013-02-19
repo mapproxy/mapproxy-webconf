@@ -8,7 +8,7 @@ directive('integer', function() {
         require: 'ngModel',
         link: function(scope, elm, attrs, ctrl) {
             ctrl.$parsers.unshift(function(viewValue) {
-                if (INTEGER_REGEXP.test(viewValue)) {
+                if (!viewValue || INTEGER_REGEXP.test(viewValue)) {
                     // it is valid
                     ctrl.$setValidity('integer', true);
                     return viewValue;
@@ -27,7 +27,10 @@ directive('float', function() {
         require: 'ngModel',
         link: function(scope, elm, attrs, ctrl) {
             ctrl.$parsers.unshift(function(viewValue) {
-                if (FLOAT_REGEXP.test(viewValue)) {
+                if (!viewValue) {
+                    ctrl.$setValidity('float', true);
+                    return viewValue;
+                } else if (FLOAT_REGEXP.test(viewValue)) {
                     ctrl.$setValidity('float', true);
                     //allow . and ,
                     return parseFloat(viewValue.replace(',', '.'));
@@ -40,19 +43,30 @@ directive('float', function() {
     };
 }).
 
-directive('biggerthan', function() {
+directive('biggerThan', function() {
     return {
         require: 'ngModel',
         link: function(scope, elm, attrs, ctrl) {
-            ctrl.$parsers.unshift(function(viewValue) {
-                var biggerthan = parseFloat(attrs.biggerthan)
-                if(parseFloat(viewValue) > biggerthan) {
-                    ctrl.$setValidity('biggerthan', true);
-                    return viewValue;
+            scope.watchElement = attrs.biggerThan;
+
+            scope.$watch(scope.watchElement, function(newVal, oldVal) {
+                scope.toCompare = newVal;
+                scope.compare();
+            });
+
+            scope.compare = function() {
+                if (!scope.viewValue || !scope.toCompare || parseFloat(scope.viewValue) > parseFloat(scope.toCompare)) {
+                    ctrl.$setValidity('biggerThan', true);
+                    return scope.viewValue;
                 } else {
-                    ctrl.$setValidity('biggerthan', false);
+                    ctrl.$setValidity('biggerThan', false);
                     return undefined;
                 }
+            };
+
+            ctrl.$parsers.unshift(function(viewValue) {
+                scope.viewValue = viewValue;
+                scope.compare();
             });
         }
     };
