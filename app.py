@@ -1,3 +1,4 @@
+import os
 import bottle
 from bottle import request, response
 import storage
@@ -36,13 +37,11 @@ def wms_list(project, storage):
 
 @app.route('/conf/<project>/wms_capabilities', method="POST")
 def wms_post(project, storage):
-    sources = storage.get('wms_capabilities', project)
-    sources.setdefault('servers', []).append(request.json)
-    storage.put('wms_capabilities', project, sources)
+    storage.add('wms_capabilities', project, request.json)
     response.status = 201
 
 def init_app(storage_dir):
-    app.install(storage.YAMLStorePlugin(storage_dir))
+    app.install(storage.SQLiteStorePlugin(os.path.join(storage_dir, 'mapproxy.sqlite')))
     return app
 
 if __name__ == '__main__':

@@ -16,7 +16,7 @@ class TestServerAPI(helper.TempDirTest):
 
     def teardown(self):
         helper.TempDirTest.teardown(self)
-        self._app.uninstall('yamlstore')
+        self._app.uninstall('sqlitestore')
 
     def test_wms_capabilities_list_empty(self):
         resp = self.app.get('/conf/base/wms_capabilities')
@@ -37,7 +37,7 @@ class TestServerAPI(helper.TempDirTest):
         resp = self.app.get('/conf/base/wms_capabilities')
         assert resp.status == '200 OK'
         assert resp.content_type == 'application/json'
-        assert resp.json == {'servers': [doc]}
+        assert resp.json == {'1': doc}
 
 
 class TestServerAPIExistingConf(helper.TempDirTest):
