@@ -14,21 +14,26 @@ def write_mapproxy_yaml(mapproxy_conf, filename):
 def fill_storage_with_mapproxy_conf(storage, project, mapproxy_conf):
     for section_name in ['services', 'layers', 'sources', 'grids', 'globals', 'caches']:
         section = mapproxy_conf.get(section_name, {})
-        storage.put(section_name, project, section)
+        if isinstance(section, list):
+            for item in section:
+                storage.add(section_name, project, item)
+        else:
+            for name, item in section.iteritems():
+                storage.add(section_name, project, item, name=name)
 
 
 def mapproxy_conf_from_storage(storage, project):
     mapproxy_conf = {}
 
-    mapproxy_conf['services'] = storage.get('services', project)
+    mapproxy_conf['services'] = storage.get_all('services', project)
 
     used_sources = set()
     used_caches = set()
 
-    sources = storage.get('sources', project)
-    caches = storage.get('caches', project)
-    layers = storage.get('layers', project, [])
-    grids = storage.get('grids', project)
+    sources = storage.get_all('sources', project)
+    caches = storage.get_all('caches', project)
+    layers = storage.get_all('layers', project, [])
+    grids = storage.get_all('grids', project)
 
     used_caches, used_sources = used_caches_and_sources(layers, caches, sources)
 

@@ -127,7 +127,7 @@ class SQLiteStore(object):
             )
         """)
 
-    def get(self, section, project, default=DEFAULT_VALUE):
+    def get_all(self, section, project, default=DEFAULT_VALUE):
         if default is DEFAULT_VALUE:
             default = {}
 
@@ -138,7 +138,8 @@ class SQLiteStore(object):
             append_data = False
 
         cur = self.db.cursor()
-        cur.execute("SELECT id, name, data FROM store WHERE section = ? AND project = ?", (section, project))
+        cur.execute("SELECT id, name, data FROM store WHERE section = ? AND project = ?",
+            (section, project))
         for row in cur.fetchall():
             print map(type, row)
             if append_data:
@@ -147,17 +148,25 @@ class SQLiteStore(object):
                 result[row[1] or row[0]] = json.loads(row[2])
         return result
 
-    def add(self, section, project, data):
+    def get(self, id, section, project):
+        cur = self.db.cursor()
+        cur.execute("SELECT data FROM store WHERE id = ? AND section = ? AND project = ?",
+            (id, section, project))
+        row = cur.fetchone()
+        if row:
+            return json.loads(row[0])
+
+    def add(self, section, project, data, name=None):
         data = json.dumps(data)
 
         cur = self.db.cursor()
-        cur.execute("INSERT INTO store (section, project, data) VALUES (?, ?, ?)",
-            (section, project, data))
+        cur.execute("INSERT INTO store (name, section, project, data) VALUES (?, ?, ?, ?)",
+            (name, section, project, data))
         return cur.lastrowid
 
-    def update(self, id, section, project, data):
+    def update(self, id, section, project, data, name=None):
         data = json.dumps(data)
 
         cur = self.db.cursor()
-        cur.execute("UPDATE store SET data = ? WHERE id = ? AND SECTION = ? AND project = ?",
-            (data, id, section, project))
+        cur.execute("UPDATE store SET data = ?, name = ? WHERE id = ? AND SECTION = ? AND project = ?",
+            (data, name, id, section, project))

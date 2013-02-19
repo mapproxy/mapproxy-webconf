@@ -43,7 +43,7 @@ class TestServerAPI(helper.TempDirTest):
 class TestServerAPIExistingConf(helper.TempDirTest):
     def setup(self):
         helper.TempDirTest.setup(self)
-        self.storage_plugin = storage.YAMLStorePlugin(self.tmp_dir)
+        self.storage_plugin = storage.SQLiteStorePlugin(os.path.join(self.tmp_dir, 'mapproxy.yaml'))
         mapproxy_conf = config.load_mapproxy_yaml(os.path.join(os.path.dirname(__file__), 'test.yaml'))
         config.fill_storage_with_mapproxy_conf(self.storage_plugin.storage, 'base', mapproxy_conf)
         self._app = app
@@ -52,7 +52,7 @@ class TestServerAPIExistingConf(helper.TempDirTest):
 
     def teardown(self):
         helper.TempDirTest.teardown(self)
-        self._app.uninstall('yamlstore')
+        self._app.uninstall('sqlitestore')
 
     def test_grids(self):
         resp = self.app.get('/conf/base/grids')

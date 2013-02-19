@@ -1,6 +1,6 @@
 from os import path as p
 from mapproxy_webconf import config
-from mapproxy_webconf.storage import YAMLStore
+from mapproxy_webconf.storage import SQLiteStore
 from mapproxy_webconf.test import helper
 
 def test_find_layer_sources():
@@ -78,7 +78,7 @@ def test_used_caches_and_sources():
 class TestRoundTrip(helper.TempDirTest):
     def test_roundtrip(self):
         # read yaml into storage
-        storage = YAMLStore(p.join(self.tmp_dir, 'storage1'))
+        storage = SQLiteStore(p.join(self.tmp_dir, 'storage1.sqlite'))
         mapproxy_conf = config.load_mapproxy_yaml(p.join(p.dirname(__file__), 'test.yaml'))
         config.fill_storage_with_mapproxy_conf(storage, 'base', mapproxy_conf)
 
@@ -88,7 +88,7 @@ class TestRoundTrip(helper.TempDirTest):
         config.write_mapproxy_yaml(tmp_mapproxy_conf, tmp_out_file)
 
         # read in config, writeout again
-        storage = YAMLStore(p.join(self.tmp_dir, 'storage2'))
+        storage = SQLiteStore(p.join(self.tmp_dir, 'storage2.sqlite'))
         mapproxy_conf = config.load_mapproxy_yaml(tmp_out_file)
         config.fill_storage_with_mapproxy_conf(storage, 'base', mapproxy_conf)
         new_mapproxy_conf = config.mapproxy_conf_from_storage(storage, 'base')
