@@ -26,6 +26,7 @@
 
     </head>
     <body>
+        <div ng-controller="MapproxySourceNoticeCtrl"></div>
         <div tabs>
             <div pane title="Source">
                 <div class="row-fluid">
@@ -131,7 +132,7 @@
                                     </div>
                             <!-- max_scale -->
                                     <div labeled-control-group name-for="source_form.max_scale" text="Max. Scale">
-                                        <input float type="number" ng-model="source.max_scale" name="source_form.max_scale">
+                                        <input float type="number" ng-model="source.max_scale" name="source_form.max_scale" bigger-than="source.min_scale">
                                     </div>
                             <!-- min_res -->
                                     <div labeled-control-group name-for="source_form.min_res" text="Min. Resolution">
