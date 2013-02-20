@@ -13,6 +13,7 @@ def write_mapproxy_yaml(mapproxy_conf, filename):
     utils.save_atomic(filename, content=content)
 
 def fill_storage_with_mapproxy_conf(storage, project, mapproxy_conf):
+    # TODO convert named references (grids/caches/sources) to ids
     for section_name in ['services', 'layers', 'sources', 'grids', 'globals', 'caches']:
         section = mapproxy_conf.get(section_name, {})
         if isinstance(section, list):
@@ -27,12 +28,19 @@ def fill_storage_with_mapproxy_conf(storage, project, mapproxy_conf):
 
 def id_dict_to_named_dict(input):
     output = {}
-    print input
     for _, item in input.iteritems():
         print _, item
         name = item.pop('name')
         output[name] = item
     return output
+
+def create_id_name_map(*dicts):
+    id_map = {}
+    for d in dicts:
+        for key, value in d.iteritems():
+            id_map[key] = value.get('name')
+
+    return id_map
 
 def mapproxy_conf_from_storage(storage, project):
     mapproxy_conf = {}
@@ -42,22 +50,36 @@ def mapproxy_conf_from_storage(storage, project):
     used_sources = set()
     used_caches = set()
 
-    sources = id_dict_to_named_dict(storage.get_all('sources', project))
-    caches = id_dict_to_named_dict(storage.get_all('caches', project))
+    sources = storage.get_all('sources', project)
+    caches = storage.get_all('caches', project)
     layers = storage.get_all('layers', project, [])
-    grids = id_dict_to_named_dict(storage.get_all('grids', project))
+    grids = storage.get_all('grids', project)
 
     used_caches, used_sources = used_caches_and_sources(layers, caches, sources)
 
     used_grids = find_cache_grids(caches).union(find_source_grids(sources))
 
-    mapproxy_conf['layers'] = layers
-    mapproxy_conf['caches'] = dict((k, caches[k]) for k in used_caches)
-    mapproxy_conf['sources'] = dict((k, sources[k]) for k in used_sources)
-    mapproxy_conf['grids'] = dict((k, grids[k]) for k in used_grids)
+    id_map = create_id_name_map(sources, caches, grids)
+
+    mapproxy_conf['layers'] = [replace_ids_layer(l, id_map) for l in layers]
+    mapproxy_conf['caches'] = id_dict_to_named_dict(dict((k, replace_ids_cache(caches[k], id_map)) for k in used_caches))
+    mapproxy_conf['sources'] = id_dict_to_named_dict(dict((k, sources[k]) for k in used_sources))
+    mapproxy_conf['grids'] = id_dict_to_named_dict(dict((k, grids[k]) for k in used_grids))
 
     return mapproxy_conf
 
+
+def replace_ids_cache(cache, id_map):
+    if 'grids' in cache:
+        cache['grids'] = [id_map[i] for i in cache['grids']]
+    if 'sources' in cache:
+        cache['sources'] = [id_map[i] for i in cache['sources']]
+    return cache
+
+def replace_ids_layer(layer, id_map):
+    if 'sources' in layer:
+        layer['sources'] = [id_map[i] for i in layer['sources']]
+    return layer
 
 def used_caches_and_sources(layers, caches, sources):
     """
