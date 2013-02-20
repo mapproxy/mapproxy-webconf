@@ -5,74 +5,74 @@ from mapproxy_webconf.test import helper
 
 def test_find_layer_sources():
     sources = config.find_layer_sources([
-        {'name': 'foo', 'sources': ['a'],},
+        {'name': 'foo', 'sources': [1],},
         {'name': 'bar', 'layers': [
-            {'name': 'bar.1', 'sources': ['b'],},
-            {'name': 'bar.2', 'sources': ['c'],},
+            {'name': 'bar.1', 'sources': [2],},
+            {'name': 'bar.2', 'sources': [3],},
         ]},
     ])
 
-    assert sources == set(['a', 'b', 'c'])
+    assert sources == set([1, 2, 3])
 
 def test_find_cache_sources():
     sources = config.find_cache_sources({
-        'cache1': {'sources': ['a', 'b']},
+        'cache1': {'sources': [1, 2]},
         'cache2': {},
-        'cache3': {'sources': ['c']},
+        'cache3': {'sources': [3]},
     })
 
-    assert sources == set(['a', 'b', 'c'])
+    assert sources == set([1, 2, 3])
 
 def test_find_cache_grids():
     grids = config.find_cache_grids({
-        'cache1': {'grids': ['a', 'b'], 'sources': ['a', 'b']},
-        'cache2': {'grids': ['c']},
-        'cache3': {'sources': ['c']},
+        'cache1': {'grids': [1, 2], 'sources': [1, 2]},
+        'cache2': {'grids': [3]},
+        'cache3': {'sources': [3]},
     })
 
-    assert grids == set(['a', 'b', 'c'])
+    assert grids == set([1, 2, 3])
 
 
 def test_find_source_grids():
     grids = config.find_source_grids({
-        'source1': {'grid': 'a', 'type': 'tile'},
-        'source2': {'grid': 'c', 'type': 'tile'},
+        'source1': {'grid': 1, 'type': 'tile'},
+        'source2': {'grid': 3, 'type': 'tile'},
         'source3': {},
     })
 
-    assert grids == set(['a', 'c'])
+    assert grids == set([1, 3])
 
 
 def test_used_caches_and_sources():
     layers = [
-        {'sources': ['a', 'b']},
-        {'sources': ['c', 'd']},
+        {'sources': [1, 2]},
+        {'sources': [3, 4]},
         {'layers': [
-            {'sources': ['e', 'f']},
-            {'sources': ['g']},
+            {'sources': [5, 6]},
+            {'sources': [7]},
         ]},
     ]
     caches = {
-        'a': {'sources': ['h', 'i']},
-        'b': {},
-        'c': {},
-        'd': {},
-        'e': {},
-        'f': {'sources': ['b', 'j']},
-        'z': {},
+        1: {'sources': [8, 9]},
+        2: {},
+        3: {},
+        4: {},
+        5: {},
+        6: {'sources': [2, 10]},
+        12: {},
     }
     sources = {
-        'c': {},
-        'd': {},
-        'g': {},
-        'j': {},
-        'x': {},
-        'y': {},
+        3: {},
+        4: {},
+        7: {},
+        10: {},
+        11: {},
+        12: {},
     }
     used_caches, used_sources = config.used_caches_and_sources(layers, caches, sources)
 
-    assert used_caches == set('abcdef')
-    assert used_sources == set('gj')
+    assert used_caches == set([1, 2, 3, 4, 5, 6])
+    assert used_sources == set([7, 10])
 
 
 class TestRoundTrip(helper.TempDirTest):

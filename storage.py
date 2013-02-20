@@ -156,17 +156,17 @@ class SQLiteStore(object):
         if row:
             return json.loads(row[0])
 
-    def add(self, section, project, data, name=None):
+    def add(self, section, project, data):
         data = json.dumps(data)
 
         cur = self.db.cursor()
-        cur.execute("INSERT INTO store (name, section, project, data) VALUES (?, ?, ?, ?)",
-            (name, section, project, data))
+        cur.execute("INSERT INTO store (section, project, data) VALUES (?, ?, ?)",
+            (section, project, data))
         return cur.lastrowid
 
-    def update(self, id, section, project, data, name=None):
+    def update(self, id, section, project, data):
         data = json.dumps(data)
 
         cur = self.db.cursor()
-        cur.execute("UPDATE store SET data = ?, name = ? WHERE id = ? AND SECTION = ? AND project = ?",
-            (data, name, id, section, project))
+        cur.execute("UPDATE store SET data = ? WHERE id = ? AND SECTION = ? AND project = ?",
+            (data, id, section, project))

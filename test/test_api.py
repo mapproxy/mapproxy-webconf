@@ -5,6 +5,7 @@ from mapproxy_webconf.app import init_app, app
 from mapproxy_webconf import bottle
 from mapproxy_webconf import storage, config
 from mapproxy_webconf.test import helper
+from mapproxy_webconf.config import id_dict_to_named_dict
 
 bottle.debug(True)
 
@@ -56,4 +57,5 @@ class TestServerAPIExistingConf(helper.TempDirTest):
 
     def test_grids(self):
         resp = self.app.get('/conf/base/grids')
-        assert 'global_geodetic_sqrt2' in resp.json['grids']
+        data = id_dict_to_named_dict(resp.json)
+        assert 'global_geodetic_sqrt2' in data

@@ -8,7 +8,8 @@ def load_mapproxy_yaml(filename):
     return mapproxy_conf
 
 def write_mapproxy_yaml(mapproxy_conf, filename):
-    content = yaml.dump(mapproxy_conf, default_flow_style=False)
+    content = yaml.safe_dump(mapproxy_conf, default_flow_style=False)
+    print content
     utils.save_atomic(filename, content=content)
 
 def fill_storage_with_mapproxy_conf(storage, project, mapproxy_conf):
@@ -19,21 +20,32 @@ def fill_storage_with_mapproxy_conf(storage, project, mapproxy_conf):
                 storage.add(section_name, project, item)
         else:
             for name, item in section.iteritems():
-                storage.add(section_name, project, item, name=name)
+                if item is None:
+                    continue
+                item['name'] = name
+                storage.add(section_name, project, item)
 
+def id_dict_to_named_dict(input):
+    output = {}
+    print input
+    for _, item in input.iteritems():
+        print _, item
+        name = item.pop('name')
+        output[name] = item
+    return output
 
 def mapproxy_conf_from_storage(storage, project):
     mapproxy_conf = {}
 
-    mapproxy_conf['services'] = storage.get_all('services', project)
+    mapproxy_conf['services'] = id_dict_to_named_dict(storage.get_all('services', project))
 
     used_sources = set()
     used_caches = set()
 
-    sources = storage.get_all('sources', project)
-    caches = storage.get_all('caches', project)
+    sources = id_dict_to_named_dict(storage.get_all('sources', project))
+    caches = id_dict_to_named_dict(storage.get_all('caches', project))
     layers = storage.get_all('layers', project, [])
-    grids = storage.get_all('grids', project)
+    grids = id_dict_to_named_dict(storage.get_all('grids', project))
 
     used_caches, used_sources = used_caches_and_sources(layers, caches, sources)
 
