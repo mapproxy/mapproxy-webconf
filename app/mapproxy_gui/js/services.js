@@ -52,11 +52,15 @@ service('MapproxySources', function($rootScope) {
             }
             return result;
         },
-        setEditSource: function(source) {
-            edit_source = source;
+        setEditSource: function(source, copy) {
+            if(copy) {
+                edit_source = angular.copy(source);
+            } else {
+                edit_source = source;
+            }
             $rootScope.$broadcast('edit_source_event');
         },
-        getEditSource: function(source) {
+        getEditSource: function() {
             if(edit_source) {
                 return edit_source;
             }
