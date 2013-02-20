@@ -20,7 +20,7 @@ function TreeCtrl($scope, WMSSources) {
 function MapproxySourceListCtrl($scope, MapproxySources) {
 
     $scope.editSource = function(source) {
-        MapproxySources.setEditSource(source);
+        MapproxySources.setEditSource(source, true);
     };
     $scope.removeSource = function(source) {
         $scope.mapproxy_sources.splice($scope.mapproxy_sources.indexOf(source), 1);
@@ -75,6 +75,7 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
         }
         $scope.source = {};
         $scope.source_form.$setPristine();
+        MapproxySources.setEditSource($scope.source, false)
     };
     $scope.addLayerManual = function(event) {
         event.preventDefault();
@@ -88,14 +89,16 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
     };
     $scope.layerTitle = function(layer) {
         return WMSSources.layerTitle($scope.source.req.url, layer);
-    }
+    };
 
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {};
     $scope.source = {};
 
+    MapproxySources.setEditSource($scope.source, false)
+
     $scope.$on('edit_source_event', function() {
-        $scope.source = angular.copy(MapproxySources.getEditSource());
+        $scope.source = MapproxySources.getEditSource();
     });
 }
 
