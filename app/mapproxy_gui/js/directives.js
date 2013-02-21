@@ -332,15 +332,32 @@ directive('labeledControlGroup', function() {
         transclude: true,
         template: '<div class="control-group">' +
                       '<label class="control-label" for="{{name}}">{{text}}:</label>' +
-                      '<div class="controls" ng-transclude>' +
-                  '</div></div>',
+                      '<div class="controls">' +
+                          '<span ng-transclude></span>' +
+                          '<span ng-show="showWarning()" class="ui-icon ui-icon-alert warning_icon"></span>' +
+                      '</div>' +
+                  '</div>',
         scope: 'element',
         link: function(scope, element, attrs) {
+            scope.showWarning = function() {
+                if(scope.warning) {
+                    element.addClass('warning');
+                    return true;
+                } else {
+                    element.removeClass('warning');
+                    return false;
+                }
+            };
+
             scope.name = attrs.nameFor;
             scope.text = attrs.text;
+            if(angular.isDefined(attrs.$attr.warning)) {
+                attrs.$observe('warning', function(val) {
+                    scope.warning = val == 'true';
+                });
+            }
         }
     };
-
 });
 
 /* Controller for directives */

@@ -65,4 +65,8 @@ div.ng-invalid,
 label.ng-invalid {
     border-color: #FA787E;
 }
+
+.warning_icon {
+    display: inline-block;
+}
 }
