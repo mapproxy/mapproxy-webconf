@@ -334,7 +334,7 @@ directive('labeledControlGroup', function() {
                       '<label class="control-label" for="{{name}}">{{text}}:</label>' +
                       '<div class="controls">' +
                           '<span ng-transclude></span>' +
-                          '<span ng-show="showWarning()" data-title="{{warningMsg()}}" data-placement="right" class="icon-warning-sign tooltip_element warning_icon"></span>' +
+                          '<span ng-show="showWarning()" id="tooltip_{{$id}}" class="icon-warning-sign warning_icon"></span>' +
                       '</div>' +
                   '</div>',
         scope: 'element',
@@ -342,6 +342,10 @@ directive('labeledControlGroup', function() {
             scope.showWarning = function() {
                 if(scope.warning) {
                     element.addClass('warning');
+                    $('#tooltip_'+ scope.$id).tooltip({
+                        placement: 'right',
+                        title: scope.warningMsg
+                    });
                     return true;
                 } else {
                     element.removeClass('warning');
@@ -350,7 +354,7 @@ directive('labeledControlGroup', function() {
             };
             scope.warningMsg = function() {
                 return attrs.warningMsg;
-            }
+            };
 
             scope.name = attrs.nameFor;
             scope.text = attrs.text;
