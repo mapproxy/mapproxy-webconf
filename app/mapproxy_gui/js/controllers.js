@@ -36,7 +36,6 @@ function MapproxySourceListCtrl($scope, MapproxySources) {
 }
 
 function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
-
     $scope.openDialog = function(callback, new_data) {
         if(angular.isUndefined($scope.source.req) ||
            angular.isUndefined($scope.source.req.url) ||
@@ -180,12 +179,12 @@ function MapproxySourceNoticeCtrl($scope, MapproxySources) {
 
     var check_image_settings = function() {
         //ensure all variables to check for are defined!
-        if(angular.isDefined($scope.source.req) &&
-           angular.isDefined($scope.source.supported_formats) &&
-           $scope.source.req.transparent == true) {
+        if(angular.isDefined($scope.watch_source.req) &&
+           angular.isDefined($scope.watch_source.supported_formats) &&
+           $scope.watch_source.req.transparent == true) {
             var found = false;
             var non_transparent_formats = ['JPEG', 'GIF'];
-            angular.forEach($scope.source.supported_formats, function(format) {
+            angular.forEach($scope.watch_source.supported_formats, function(format) {
                 if (!found) {
                     found = -1 != non_transparent_formats.indexOf(format);
                 }
@@ -196,11 +195,11 @@ function MapproxySourceNoticeCtrl($scope, MapproxySources) {
         }
     };
 
-    $scope.$watch('source', function(newVal, oldVal, scope) {
+    $scope.$watch('watch_source', function(newVal, oldVal, scope) {
         check_image_settings();
     }, true);
 
     $scope.$on('edit_source_event', function() {
-        $scope.source = MapproxySources.getEditSource();
+        $scope.watch_source = MapproxySources.getEditSource();
     });
 }
