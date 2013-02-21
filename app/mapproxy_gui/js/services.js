@@ -35,34 +35,34 @@ service('WMSSources', function($rootScope, $http) {
 
 service('MapproxySources', function($rootScope) {
     var sources = {};
-    var edit_source;
+    var current;
     return {
-        addSource: function(name, value) {
+        add: function(name, value) {
             sources[name] = value;
             //trigger event in rootScope, so all scope notive about
-            $rootScope.$broadcast('mapproxy_sources_change');
+            $rootScope.$broadcast('mapproxy_sources.list');
         },
-        getSourceByName: function(name) {
+        byName: function(name) {
             return sources[name];
         },
-        getSourceList: function() {
+        list: function() {
             var result = [];
             for(var key in sources) {
                 result.push(sources[key]);
             }
             return result;
         },
-        setEditSource: function(source, copy) {
+        setCurrent: function(source, copy) {
             if(copy) {
-                edit_source = angular.copy(source);
+                current = angular.copy(source);
             } else {
-                edit_source = source;
+                current = source;
             }
-            $rootScope.$broadcast('edit_source_event');
+            $rootScope.$broadcast('mapproxy_sources.current');
         },
-        getEditSource: function() {
-            if(edit_source) {
-                return edit_source;
+        getCurrent: function() {
+            if(current) {
+                return current;
             }
         }
     };
@@ -70,30 +70,34 @@ service('MapproxySources', function($rootScope) {
 
 service('MapproxyCaches', function($rootScope) {
     var caches = {};
-    var edit_cache;
+    var current;
     return {
-        addCache: function(name, value) {
+        add: function(name, value) {
             caches[name] = value;
             //trigger event in rootScope, so all scope notive about
-            $rootScope.$broadcast('mapproxy_caches_change');
+            $rootScope.$broadcast('mapproxy_caches.list');
         },
-        getCacheByName: function(name) {
+        byName: function(name) {
             return caches[name];
         },
-        getCacheList: function() {
+        list: function() {
             var result = [];
             for(var key in caches) {
                 result.push(caches[key]);
             }
             return result;
         },
-        setEditCache: function(cache) {
-            edit_cache = cache;
-            $rootScope.$broadcast('edit_cache_event');
+        setCurrent: function(cache, copy) {
+            if(copy) {
+                current = angular.copy(cache);
+            } else {
+                current = cache;
+            }
+            $rootScope.$broadcast('mapproxy_caches.current');
         },
-        getEditCache: function(cache) {
-            if(edit_cache) {
-                return edit_cache;
+        getCurrent: function(cache) {
+            if(current) {
+                return current;
             }
         }
     };
@@ -101,30 +105,34 @@ service('MapproxyCaches', function($rootScope) {
 
 service('MapproxyLayers', function($rootScope) {
     var layers = {};
-    var edit_layer;
+    var current;
     return {
-        addLayer: function(name, value) {
+        add: function(name, value) {
             layers[name] = value;
             //trigger event in rootScope, so all scope notive about
-            $rootScope.$broadcast('mapproxy_layers_change');
+            $rootScope.$broadcast('mapproxy_layers.list');
         },
-        getLayerByName: function(name) {
+        byName: function(name) {
             return layers[name];
         },
-        getLayerList: function() {
+        list: function() {
             var result = [];
             for(var key in layers) {
                 result.push(layers[key]);
             }
             return result;
         },
-        setEditLayer: function(layer) {
-            edit_layer = layer;
-            $rootScope.$broadcast('edit_layer_event');
+        setCurrent: function(layer, copy) {
+            if(copy) {
+                current = angular.copy(layer);
+            } else {
+                current = layer;
+            }
+            $rootScope.$broadcast('mapproxy_layers.current');
         },
-        getEditLayer: function(layer) {
-            if(edit_layer) {
-                return edit_layer;
+        getCurrent: function(layer) {
+            if(current) {
+                return current;
             }
         }
     };

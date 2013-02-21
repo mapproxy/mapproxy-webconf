@@ -20,17 +20,17 @@ function TreeCtrl($scope, WMSSources) {
 function MapproxySourceListCtrl($scope, MapproxySources) {
 
     $scope.editSource = function(source) {
-        MapproxySources.setEditSource(source, true);
+        MapproxySources.setCurrent(source, true);
     };
     $scope.removeSource = function(source) {
         $scope.mapproxy_sources.splice($scope.mapproxy_sources.indexOf(source), 1);
         $scope.$apply();
     };
 
-    $scope.mapproxy_sources = MapproxySources.getSourceList();
+    $scope.mapproxy_sources = MapproxySources.list();
 
-    $scope.$on('mapproxy_sources_change', function() {
-        $scope.mapproxy_sources = MapproxySources.getSourceList();
+    $scope.$on('mapproxy_sources.list', function() {
+        $scope.mapproxy_sources = MapproxySources.list();
     });
 
 }
@@ -65,7 +65,7 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
     };
     $scope.addSource = function(event) {
         event.preventDefault();
-        MapproxySources.addSource(angular.copy($scope.source.name), angular.copy($scope.source));
+        MapproxySources.add(angular.copy($scope.source.name), angular.copy($scope.source));
         $scope.resetForm();
     };
     $scope.resetForm = function(event) {
@@ -74,7 +74,7 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
         }
         $scope.source = {};
         $scope.source_form.$setPristine();
-        MapproxySources.setEditSource($scope.source, false)
+        MapproxySources.setCurrent($scope.source, false)
     };
     $scope.addLayerManual = function(event) {
         event.preventDefault();
@@ -94,45 +94,47 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
     $scope.custom = {};
     $scope.source = {};
 
-    MapproxySources.setEditSource($scope.source, false)
+    MapproxySources.setCurrent($scope.source, false)
 
-    $scope.$on('edit_source_event', function() {
-        $scope.source = MapproxySources.getEditSource();
+    $scope.$on('mapproxy_sources.current', function() {
+        $scope.source = MapproxySources.getCurrent();
     });
 }
 
 function MapproxyCacheListCtrl($scope, MapproxyCaches) {
 
     $scope.editCache = function(cache) {
-        MapproxyCaches.setEditCache(cache);
+        MapproxyCaches.setCurrent(cache, true);
     };
     $scope.removeCache = function(cache) {
         $scope.mapproxy_caches.splice($scope.mapproxy_caches.indexOf(cache), 1);
         $scope.$apply();
     };
 
-    $scope.mapproxy_caches = MapproxyCaches.getCacheList();
+    $scope.mapproxy_caches = MapproxyCaches.list();
 
-    $scope.$on('mapproxy_caches_change', function() {
-        $scope.mapproxy_caches = MapproxyCaches.getCacheList();
+    $scope.$on('mapproxy_caches.list', function() {
+        $scope.mapproxy_caches = MapproxyCaches.list();
     });
 }
 
 function MapproxyCacheFormCtrl($scope, MapproxyCaches) {
 
     $scope.addCache = function() {
-        MapproxyCaches.addCache(angular.copy($scope.cache.name), angular.copy($scope.cache));
+        MapproxyCaches.add(angular.copy($scope.cache.name), angular.copy($scope.cache));
         $scope.resetForm();
     };
     $scope.resetForm = function() {
         $scope.cache = {};
         $scope.cache_form.$setPristine();
+        MapproxyCaches.setCurrent($scope.cache, false);
     };
 
     $scope.cache = {};
+    MapproxyCaches.setCurrent($scope.cache, false);
 
-    $scope.$on('edit_cache_event', function() {
-        $scope.cache = MapproxyCaches.getEditCache();
+    $scope.$on('mapproxy_caches.current', function() {
+        $scope.cache = MapproxyCaches.getCurrent();
     });
 
 }
@@ -140,35 +142,37 @@ function MapproxyCacheFormCtrl($scope, MapproxyCaches) {
 function MapproxyLayerListCtrl($scope, MapproxyLayers) {
 
     $scope.editLayer = function(layer) {
-        MapproxyLayers.setEditLayer(layer);
+        MapproxyLayers.setCurrent(layer, true);
     };
     $scope.removeLayer = function(layer) {
         $scope.mapproxy_layers.splice($scope.mapproxy_layers.indexOf(layer), 1);
         $scope.$apply();
     };
 
-    $scope.mapproxy_layers = MapproxyLayers.getLayerList();
+    $scope.mapproxy_layers = MapproxyLayers.list();
 
-    $scope.$on('mapproxy_layers_change', function() {
-        $scope.mapproxy_layers = MapproxyLayers.getLayerList();
+    $scope.$on('mapproxy_layers.list', function() {
+        $scope.mapproxy_layers = MapproxyLayers.list();
     });
 }
 
 function MapproxyLayerFormCtrl($scope, MapproxyLayers) {
 
     $scope.addLayer = function() {
-        MapproxyLayers.addLayer(angular.copy($scope.layer.name), angular.copy($scope.layer));
+        MapproxyLayers.add(angular.copy($scope.layer.name), angular.copy($scope.layer));
         $scope.resetForm();
     };
     $scope.resetForm = function() {
         $scope.layer = {};
         $scope.layer_form.$setPristine();
+        MapproxyLayers.setCurrent($scope.layer, false);
     };
 
     $scope.layer = {};
+    MapproxyLayers.setCurrent($scope.layer, false);
 
-    $scope.$on('edit_layer_event', function() {
-        $scope.layer = MapproxyLayers.getEditLayer();
+    $scope.$on('mapproxy_layers.current', function() {
+        $scope.layer = MapproxyLayers.getCurrent();
     });
 
 }
@@ -211,7 +215,7 @@ function MapproxySourceNoticeCtrl($scope, MapproxySources) {
         checkConcurrentRequests();
     }, true);
 
-    $scope.$on('edit_source_event', function() {
-        $scope.watch_source = MapproxySources.getEditSource();
+    $scope.$on('mapproxy_sources.current', function() {
+        $scope.watch_source = MapproxySources.getCurrent();
     });
 }
