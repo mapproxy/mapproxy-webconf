@@ -81,6 +81,28 @@ def replace_ids_layer(layer, id_map):
         layer['sources'] = [id_map[i] for i in layer['sources']]
     return layer
 
+def layer_tree(layers):
+    root = []
+    # add (sub)layers to parents
+    for layer in layers.itervalues():
+        parent = layer.pop('_parent')
+        if parent is None:
+            root.append(layer)
+        else:
+            layers[parent].setdefault('layers', []).append(layer)
+        print root, layer
+
+    # order layers by rank
+    for layer in layers.itervalues():
+        if 'layers' in layer:
+            layer['layers'].sort(key=lambda x: x['_rank'])
+
+    # remove _ranks
+    for layer in layers.itervalues():
+        layer.pop('_rank')
+
+    return root
+
 def used_caches_and_sources(layers, caches, sources):
     """
     Find used cache and source names in layers and caches configuration.

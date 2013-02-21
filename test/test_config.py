@@ -2,6 +2,7 @@ from os import path as p
 from mapproxy_webconf import config
 from mapproxy_webconf.storage import SQLiteStore
 from mapproxy_webconf.test import helper
+from mapproxy_webconf.test.helper import ANY
 
 import pytest
 
@@ -76,6 +77,25 @@ def test_used_caches_and_sources():
     assert used_caches == set([1, 2, 3, 4, 5, 6])
     assert used_sources == set([7, 10])
 
+
+def test_layer_tree():
+    layers = {
+        1: {'name': '1', '_rank': 0, '_parent': None},
+        2: {'name': '2', '_rank': 1, '_parent': None},
+        3: {'name': '1.1', '_rank': 0, '_parent': 1},
+        4: {'name': '1.2', '_rank': 1, '_parent': 1},
+        5: {'name': '1.3', '_rank': 2, '_parent': 1},
+        6: {'name': '1.2.1', '_rank': 0, '_parent': 4},
+    }
+
+    tree = config.layer_tree(layers)
+
+    assert tree == [{'name': '1', 'layers': ANY}, {'name': '2'}]
+    assert tree[0]['layers'] == [
+        {'name': '1.1'},
+        {'name': '1.2', 'layers': [{'name': '1.2.1'}]},
+        {'name': '1.3'},
+    ]
 
 class TestMapProxyWrite(helper.TempDirTest):
     def test_write_mapproxy_conf(self):

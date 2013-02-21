@@ -114,20 +114,26 @@ class SQLiteStore(object):
     def __init__(self, filename):
         self.filename = filename
         self.db = sqlite3.connect(filename)
+        self.db.row_factory = sqlite3.Row
         self._init_db()
 
     def _init_db(self):
         self.db.execute("""
+            PRAGMA foreign_keys = ON;
+        """)
+        self.db.execute("""
             CREATE TABLE store (
                 id INTEGER PRIMARY KEY,
-                name TEXT,
                 section TEXT NOT NULL,
                 project TEXT,
-                data TEXT NOT NULL
+                data TEXT NOT NULL,
+                rank INTEGER,
+                parent INTEGER,
+                FOREIGN KEY(parent) REFERENCES store(id)
             )
         """)
 
-    def get_all(self, section, project, default=DEFAULT_VALUE):
+    def get_all(self, section, project, default=DEFAULT_VALUE, with_rank=False):
         if default is DEFAULT_VALUE:
             default = {}
 
@@ -138,35 +144,55 @@ class SQLiteStore(object):
             append_data = False
 
         cur = self.db.cursor()
-        cur.execute("SELECT id, name, data FROM store WHERE section = ? AND project = ?",
+        cur.execute("SELECT id, data, parent, rank FROM store WHERE section = ? AND project = ?",
             (section, project))
         for row in cur.fetchall():
-            print map(type, row)
+            data = json.loads(row['data'])
+            if with_rank:
+                data['_parent'] = row['parent']
+                data['_rank'] = row['rank']
+
             if append_data:
-                result.append(json.loads(row[2]))
+                result.append(data)
             else:
-                result[row[1] or row[0]] = json.loads(row[2])
+                result[row['id']] = data
         return result
 
     def get(self, id, section, project):
         cur = self.db.cursor()
-        cur.execute("SELECT data FROM store WHERE id = ? AND section = ? AND project = ?",
+        cur.execute("SELECT data, parent, rank FROM store WHERE id = ? AND section = ? AND project = ?",
             (id, section, project))
         row = cur.fetchone()
         if row:
-            return json.loads(row[0])
+            data = json.loads(row[0])
+            if row[1] is not None:
+                data['_parent'] = row[1]
+            if row[2] is not None:
+                data['_rank'] = row[2]
+            return data
 
     def add(self, section, project, data):
-        data = json.dumps(data)
+        rank = data.pop('_rank', None)
+        parent = data.pop('_parent', None)
 
+        data = json.dumps(data)
         cur = self.db.cursor()
-        cur.execute("INSERT INTO store (section, project, data) VALUES (?, ?, ?)",
-            (section, project, data))
+        cur.execute("INSERT INTO store (section, project, data, parent, rank) VALUES (?, ?, ?, ?, ?)",
+            (section, project, data, parent, rank))
         return cur.lastrowid
 
     def update(self, id, section, project, data):
-        data = json.dumps(data)
+        rank = data.pop('_rank', None)
+        parent = data.pop('_parent', None)
 
+        data = json.dumps(data)
         cur = self.db.cursor()
-        cur.execute("UPDATE store SET data = ? WHERE id = ? AND SECTION = ? AND project = ?",
-            (data, id, section, project))
+        cur.execute("UPDATE store SET data = ?, parent = ?, rank = ? WHERE id = ? AND SECTION = ? AND project = ?",
+            (data, parent, rank, id, section, project))
+
+    def delete(self, id, section, project):
+        cur = self.db.cursor()
+        cur.execute("DELETE FROM store WHERE id = ? AND SECTION = ? AND project = ?",
+            (id, section, project))
+
+        return cur.rowcount == 1
