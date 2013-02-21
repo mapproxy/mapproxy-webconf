@@ -50,7 +50,7 @@
                     <div class="span4 well">
                         <h3>Edit Source</h3>
                         <div ng-controller="MapproxySourceNoticeCtrl">
-                            <form class="form-horizontal" name="source_form" ng-model="source" ng-controller="MapproxySourceFormCtrl" novalidate>
+                            <form class="form-horizontal" name="source_form" ng-controller="MapproxySourceFormCtrl" novalidate>
                                 <div toggle-group mode="multiShow">
                                     <div
                                         style="display:none;"
@@ -102,7 +102,7 @@
                                         </div>
                                     <!-- transparent -->
                                         <!--<label for="source_form.req_transparent">Transparent:</label>-->
-                                        <div labeled-control-group name-for="source_form.req_transparent" text="Transparent" warning="{{invalid_image_settings}}">
+                                        <div labeled-control-group name-for="source_form.req_transparent" text="Transparent" warning="{{invalid_image_settings}}" warning-msg="Selectet image format(s) not support transparency">
                                             <input type="checkbox" ng-model="source.req.transparent" name="source_form.req_transparent">
                                         </div>
                                     </div>

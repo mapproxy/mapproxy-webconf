@@ -334,7 +334,7 @@ directive('labeledControlGroup', function() {
                       '<label class="control-label" for="{{name}}">{{text}}:</label>' +
                       '<div class="controls">' +
                           '<span ng-transclude></span>' +
-                          '<span ng-show="showWarning()" class="ui-icon ui-icon-alert warning_icon"></span>' +
+                          '<span ng-show="showWarning()" class="ui-icon ui-icon-alert warning_icon" title="{{warning_msg}}"></span>' +
                       '</div>' +
                   '</div>',
         scope: 'element',
@@ -352,6 +352,7 @@ directive('labeledControlGroup', function() {
             scope.name = attrs.nameFor;
             scope.text = attrs.text;
             if(angular.isDefined(attrs.$attr.warning)) {
+                scope.warning_msg = attrs.warningMsg;
                 attrs.$observe('warning', function(val) {
                     scope.warning = val == 'true';
                 });
