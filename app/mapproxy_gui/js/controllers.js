@@ -176,8 +176,8 @@ function MapproxyLayerFormCtrl($scope, MapproxyLayers) {
 function MapproxySourceNoticeCtrl($scope, MapproxySources) {
     //define all watch results
     $scope.invalid_image_settings = false;
-
-    var check_image_settings = function() {
+    $scope.high_number_of_concurrent_requests = false;
+    var checkImageSettings = function() {
         //ensure all variables to check for are defined!
         if(angular.isDefined($scope.watch_source.req) &&
            angular.isDefined($scope.watch_source.supported_formats) &&
@@ -195,8 +195,20 @@ function MapproxySourceNoticeCtrl($scope, MapproxySources) {
         }
     };
 
+    var checkConcurrentRequests = function() {
+        if(angular.isDefined($scope.watch_source.concurrent_requests) &&
+           $scope.watch_source.concurrent_requests > 4) {
+            $scope.high_number_of_concurrent_requests = true;
+        } else {
+            $scope.high_number_of_concurrent_requests = false;
+        }
+    }
+
+
+
     $scope.$watch('watch_source', function(newVal, oldVal, scope) {
-        check_image_settings();
+        checkImageSettings();
+        checkConcurrentRequests();
     }, true);
 
     $scope.$on('edit_source_event', function() {

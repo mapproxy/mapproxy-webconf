@@ -102,7 +102,7 @@
                                         </div>
                                     <!-- transparent -->
                                         <!--<label for="source_form.req_transparent">Transparent:</label>-->
-                                        <div labeled-control-group name-for="source_form.req_transparent" text="Transparent" warning="{{invalid_image_settings}}" warning-msg="Selectet image format(s) not support transparency">
+                                        <div labeled-control-group name-for="source_form.req_transparent" text="Transparent" warning="{{invalid_image_settings}}" warning-msg="Selectet image format(s) not support transparency.">
                                             <input type="checkbox" ng-model="source.req.transparent" name="source_form.req_transparent">
                                         </div>
                                     </div>
@@ -110,7 +110,7 @@
                                     <div ng-show="false">
                                 <!-- supported_formats -->
                                         <!-- XXXkai: replace by received list of supported formats -->
-                                        <div labeled-control-group name-for="source_form.supported_formats" text="Supported formats" warning="{{invalid_image_settings}}">
+                                        <div labeled-control-group name-for="source_form.supported_formats" text="Supported formats" warning="{{invalid_image_settings}}" warning-msg="Selectet image format(s) not support transparency.">
                                             <select name="source_form.supported_formats" multiple="multiple" ng-model="source.supported_formats">
                                                 <option value="PNG">PNG</option>
                                                 <option value="JPEG">JPEG</option>
@@ -143,7 +143,7 @@
                                             <input float type="number" ng-model="source.max_res" name="source_form.max_res">
                                         </div>
                                 <!-- concurent_requests -->
-                                        <div labeled-control-group name-for="source_form.concurrent_requests" text="Concurrent requests">
+                                        <div labeled-control-group name-for="source_form.concurrent_requests" text="Concurrent requests" warning="{{high_number_of_concurrent_requests}}" warning-msg="{{source.concurrent_requests}} concurrent requests can decrease performance.">
                                             <input type="number" integer min=0 type="text" ng-model="source.concurrent_requests" name="source_form.concurrent_requests">
                                         </div>
                                     </div>
