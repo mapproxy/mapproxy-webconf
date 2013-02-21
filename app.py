@@ -6,81 +6,73 @@ import config
 
 app = bottle.Bottle()
 
-## sources
+class RESTBase(object):
+    section = None
 
-@app.route('/conf/<project>/sources', method='GET')
-def sources(project, storage):
-    return storage.get_all('sources', project)
+    @classmethod
+    def list(cls, project, storage):
+        return storage.get_all(cls.section, project)
 
-@app.route('/conf/<project>/sources', method='POST')
-def source_add(project, storage):
-    data = request.json
-    id = storage.add('sources', project, data)
-    response.status = 201
-    data['_id'] = id
-    return data
+    @classmethod
+    def add(cls, project, storage):
+        try:
+            data = request.json
+        except ValueError:
+            response.status = 400
+            return {'error': 'invalid JSON data'}
 
-@app.route('/conf/<project>/sources/<id:int>', method='GET')
-def source_get(project, id, storage):
-    data = request.json
-    data = storage.get(id, 'sources',project)
-    if not data:
-        response.status = 404
-    else:
+        if not data:
+            response.status = 400
+            return {'error': 'missing JSON data'}
+
+        id = storage.add(cls.section, project, data)
+        response.status = 201
+        data['_id'] = id
         return data
 
-@app.route('/conf/<project>/sources/<id:int>', method='PUT')
-def source_update(project, id, storage):
-    data = request.json
-    storage.update(id, 'sources', project, data)
-    response.status = 200
-    return data
+    @classmethod
+    def get(cls, project, id, storage):
+        data = storage.get(id, cls.section,project)
+        if not data:
+            response.status = 404
+        else:
+            return data
 
-@app.route('/conf/<project>/sources/<id:int>', method='DELETE')
-def source_delete(project, id, storage):
-    if storage.delete( id, 'sources', project):
-        response.status = 204
-    else:
-        response.status = 404
-
-
-## caches
-
-@app.route('/conf/<project>/caches', method='GET')
-def caches(project, storage):
-    return storage.get_all('caches', project)
-
-@app.route('/conf/<project>/caches', method='POST')
-def cache_add(project, storage):
-    data = request.json
-    id = storage.add('caches', project, data)
-    response.status = 201
-    data['_id'] = id
-    return data
-
-@app.route('/conf/<project>/caches/<id:int>', method='GET')
-def cache_get(project, id, storage):
-    data = request.json
-    data = storage.get(id, 'caches',project)
-    if not data:
-        response.status = 404
-    else:
+    @classmethod
+    def update(cls, project, id, storage):
+        data = request.json
+        storage.update(id, cls.section, project, data)
+        response.status = 200
         return data
 
-@app.route('/conf/<project>/caches/<id:int>', method='PUT')
-def cache_update(project, id, storage):
-    data = request.json
-    storage.update(id, 'caches', project, data)
-    response.status = 200
-    return data
+    @classmethod
+    def delete(cls, project, id, storage):
+        if storage.delete(id, cls.section, project):
+            response.status = 204
+        else:
+            response.status = 404
 
-@app.route('/conf/<project>/caches/<id:int>', method='DELETE')
-def cache_delete(project, id, storage):
-    if storage.delete( id, 'caches', project):
-        response.status = 204
-    else:
-        response.status = 404
+    @classmethod
+    def setup_routing(cls, app):
+        app.route('/conf/<project>/%s' % cls.section, 'GET', cls.list)
+        app.route('/conf/<project>/%s' % cls.section, 'POST', cls.add)
+        app.route('/conf/<project>/%s/<id:int>' % cls.section, 'GET', cls.get)
+        app.route('/conf/<project>/%s/<id:int>' % cls.section, 'PUT', cls.update)
+        app.route('/conf/<project>/%s/<id:int>' % cls.section, 'DELETE', cls.delete)
 
+
+class SourcesAPI(RESTBase):
+    section = 'sources'
+
+class CachesAPI(RESTBase):
+    section = 'caches'
+
+class GridsAPI(RESTBase):
+    section = 'grids'
+
+SourcesAPI.setup_routing(app)
+CachesAPI.setup_routing(app)
+GridsAPI.setup_routing(app)
 
 ## other
 

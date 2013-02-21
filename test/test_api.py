@@ -93,6 +93,12 @@ class TestCachesAPI(ServerAPITest):
     def test_delete_missing(self):
         self.app.delete('/conf/base/caches/1', status=404)
 
+    def test_add_bad_data(self):
+        self.app.post('/conf/base/caches', '{foo: badjson}', headers=[('Content-type', 'application/json')], status=400)
+
+    def test_add_non_json(self):
+        self.app.post('/conf/base/caches', 'foo', status=400)
+
     def test_add_get_delete(self):
         resp = self.app.post_json('/conf/base/caches', {'name': '1'})
         assert resp.status_code == 201
@@ -109,6 +115,32 @@ class TestCachesAPI(ServerAPITest):
         assert resp.json == {'name': 'foo'}
         resp = self.app.get('/conf/base/caches/%d' % id)
         assert resp.json == {'name': 'foo'}
+
+
+class TestGridsAPI(ServerAPITest):
+    def test_get_missing(self):
+        self.app.get('/conf/base/grids/1', status=404)
+
+    def test_delete_missing(self):
+        self.app.delete('/conf/base/grids/1', status=404)
+
+    def test_add_get_delete(self):
+        resp = self.app.post_json('/conf/base/grids', {'name': '1'})
+        assert resp.status_code == 201
+        id = resp.json['_id']
+        resp = self.app.get('/conf/base/grids/%d' % id)
+        assert resp.json == {'name': '1'}
+        self.app.delete('/conf/base/grids/%d' % id)
+
+    def test_add_update_get(self):
+        resp = self.app.post_json('/conf/base/grids', {'name': '1'})
+        assert resp.status_code == 201
+        id = resp.json['_id']
+        resp = self.app.put_json('/conf/base/grids/%d' % id, {'name': 'foo'})
+        assert resp.json == {'name': 'foo'}
+        resp = self.app.get('/conf/base/grids/%d' % id)
+        assert resp.json == {'name': 'foo'}
+
 
 
 class TestServerAPIExistingConf(helper.TempDirTest):
