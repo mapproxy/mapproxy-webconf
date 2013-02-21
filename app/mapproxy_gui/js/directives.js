@@ -334,7 +334,7 @@ directive('labeledControlGroup', function() {
                       '<label class="control-label" for="{{name}}">{{text}}:</label>' +
                       '<div class="controls">' +
                           '<span ng-transclude></span>' +
-                          '<span ng-show="showWarning()" class="ui-icon ui-icon-alert warning_icon" title="{{warningMsg()}}"></span>' +
+                          '<span ng-show="showWarning()" data-title="{{warningMsg()}}" data-placement="right" class="ui-icon ui-icon-alert tooltip_element warning_icon"></span>' +
                       '</div>' +
                   '</div>',
         scope: 'element',

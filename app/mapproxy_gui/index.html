@@ -10,11 +10,13 @@
             <script type="text/javascript" src="js/ie8_fixtures.js"></script>
         <![endif]-->
 
+        <!-- libs -->
         <script type="text/javascript" src="js/lib/angular.js"></script>
-
-        <!-- jquery and jqueryUI -->
         <script type="text/javascript" src="js/lib/jquery-1.9.0.js"></script>
         <script type="text/javascript" src="js/lib/jquery-ui-1.10.0.custom.js"></script>
+        <script type="text/javascript" src="js/lib/bootstrap.js"></script>
+
+        <!-- site libs -->
         <script type="text/javascript" src="js/validators.js"></script>
         <script type="text/javascript" src="js/services.js"></script>
         <script type="text/javascript" src="js/directives.js"></script>
@@ -22,6 +24,9 @@
         <script type="text/javascript">
             /* add directives and services*/
             var app = angular.module('mapproxy_gui', ['mapproxy_gui.directives', 'mapproxy_gui.services', 'mapproxy_gui.validators']);
+            $(document).ready(function() {
+                $('.tooltip_element').tooltip();
+            });
         </script>
 
     </head>
@@ -29,7 +34,6 @@
         <div tabs>
             <div pane header="Source">
                 <div class="row-fluid">
-
                     <div class="span3 well" ng-controller="MapproxySourceListCtrl">
                         <h3>Mapproxy Sources</h3>
                         <ul>
