@@ -1,4 +1,4 @@
-angular.module('mapproxy_gui.services', []).
+angular.module('mapproxy_gui.services', ['mapproxy_gui.resources']).
 
 service('WMSSources', function($rootScope, $http) {
     var wms_list = undefined;
