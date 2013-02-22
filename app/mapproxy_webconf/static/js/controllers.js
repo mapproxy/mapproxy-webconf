@@ -7,14 +7,14 @@ function TreeCtrl($scope, WMSSources) {
         return layer;
     };
     $scope.loadData = function(url) {
-        WMSSources.loadData('data/get_capabilities.json');
+        WMSSources.loadData('/conf/base/wms_capabilities');
     };
 
     $scope.$on('wms_list_refreshed', function() {
-        $scope.wms_list = WMSSources.wms_list();
+        $scope.wms_list = WMSSources.wmsList();
     });
 
-    WMSSources.loadData('data/get_capabilities.json');
+    WMSSources.loadData('/conf/base/wms_capabilities');
 }
 
 function MapproxySourceListCtrl($scope, MapproxySources) {

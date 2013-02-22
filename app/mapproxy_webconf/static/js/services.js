@@ -2,34 +2,87 @@ angular.module('mapproxy_gui.services', ['mapproxy_gui.resources']).
 
 service('WMSSources', function($rootScope, $http) {
     var wms_list = undefined;
-    return {
-        loadData: function(url) {
+
+    var initData = function(url) {
+        $http.post(url, {
+            "title": "Omniscale OpenStreetMap WMS",
+            "url": "http://x.osm.omniscale.net/proxy/service?",
+            "layers": [{
+                "name": "osm",
+                "title": "OpenStreetMap (complete map)"
+            }, {
+                "name": "osm_roads",
+                "title": "OpenStreetMap (streets only)"
+            }, {
+                "title": "GruppenTest",
+                "layers": [{
+                    "name": "osm",
+                    "title": "OpenStreetMap (complete map)"
+                }, {
+                    "name": "osm_roads",
+                    "title": "OpenStreetMap (streets only)"
+                }]
+            }
+        ]}).success(function() {
+            $http.post(url, {
+                "title": "Other WMS",
+                "url": "http://wms.example.org/service?",
+                "layers": [{
+                        "name": "ex1",
+                        "title": "Example Layer1"
+                    }, {
+                        "name": "grp1",
+                        "title": "Example Group",
+                        "layers": [{
+                            "name": "gl1",
+                            "title": "GroupLayer 1"
+                        }]
+                    }, {
+                        "name": "gl2",
+                        "title": "GroupLayer 2"
+                }
+            ]}).success(function() {
+                loadData(url);
+            });
+
+        });
+    };
+
+    var loadData = function(url) {
             //XXX kai: replace with url
             $http.get(url).success(function(data) {
-                if(wms_list) {
+                if(angular.equals(data, {})) {
+                    initData(url);
+                } else if(wms_list) {
                     wms_list = wms_list.concat(data);
+                    $rootScope.$broadcast('wms_list_refreshed');
                 } else {
                     wms_list = data;
+                    $rootScope.$broadcast('wms_list_refreshed');
                 }
-                $rootScope.$broadcast('wms_list_refreshed');
+
             });
-        },
-        layerTitle: function(url, layer_name) {
-            var title = false
-            angular.forEach(wms_list, function(wms) {
-                if(wms.url == url) {
-                    angular.forEach(wms.layers, function(layer) {
-                        if(layer.name == layer_name) {
-                            title = layer.title;
-                        }
-                    });
-                }
-            });
-            return title;
-        },
-        wms_list: function() {
-            return wms_list;
-        }
+        };
+    var layerTitle = function(url, layer_name) {
+        var title = false
+        angular.forEach(wms_list, function(wms) {
+            if(wms.url == url) {
+                angular.forEach(wms.layers, function(layer) {
+                    if(layer.name == layer_name) {
+                        title = layer.title;
+                    }
+                });
+            }
+        });
+        return title;
+    };
+    var wmsList = function() {
+        return wms_list;
+    }
+    return {
+        loadData: loadData,
+        layerTitle: layerTitle,
+        wmsList: wmsList
     };
 }).
 
