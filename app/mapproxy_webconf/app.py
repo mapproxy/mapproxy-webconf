@@ -3,7 +3,7 @@ import os
 from . import bottle
 from . import config
 from . import storage
-from .bottle import request, response
+from .bottle import request, response, static_file
 from .utils import requires_json
 
 app = bottle.Bottle()
@@ -87,6 +87,14 @@ def wms_list(project, storage):
 def wms_post(project, storage):
     storage.add('wms_capabilities', project, request.json)
     response.status = 201
+
+@app.route('/')
+def index():
+    return static_file('index.html', root=os.path.join(os.path.dirname(__file__), 'static'))
+
+@app.route('/static/<filepath:path>')
+def static(filepath):
+    return static_file(filepath, root=os.path.join(os.path.dirname(__file__), 'static'))
 
 def init_app(storage_dir):
     app.install(storage.SQLiteStorePlugin(os.path.join(storage_dir, 'mapproxy.sqlite')))
