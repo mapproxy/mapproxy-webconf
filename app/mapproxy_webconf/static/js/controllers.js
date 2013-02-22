@@ -7,14 +7,14 @@ function TreeCtrl($scope, WMSSources) {
         return layer;
     };
     $scope.loadData = function(url) {
-        WMSSources.loadData('data/get_capabilities.json');
+        WMSSources.loadData('/conf/base/wms_capabilities');
     };
 
     $scope.$on('wms_list_refreshed', function() {
-        $scope.wms_list = WMSSources.wms_list();
+        $scope.wms_list = WMSSources.wmsList();
     });
 
-    WMSSources.loadData('data/get_capabilities.json');
+    WMSSources.loadData('/conf/base/wms_capabilities');
 }
 
 function MapproxySourceListCtrl($scope, MapproxySources) {
@@ -23,16 +23,12 @@ function MapproxySourceListCtrl($scope, MapproxySources) {
         MapproxySources.setCurrent(source, true);
     };
     $scope.removeSource = function(source) {
-        $scope.mapproxy_sources.splice($scope.mapproxy_sources.indexOf(source), 1);
-        $scope.$apply();
+        MapproxySources.remove(source);
     };
 
-    $scope.mapproxy_sources = MapproxySources.list();
-
-    $scope.$on('mapproxy_sources.list', function() {
+    $scope.$on('mapproxy_sources.load_complete', function() {
         $scope.mapproxy_sources = MapproxySources.list();
     });
-
 }
 
 function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
@@ -65,7 +61,7 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
     };
     $scope.addSource = function(event) {
         event.preventDefault();
-        MapproxySources.add(angular.copy($scope.source.name), angular.copy($scope.source));
+        MapproxySources.add($scope.source);
         $scope.resetForm();
     };
     $scope.resetForm = function(event) {
