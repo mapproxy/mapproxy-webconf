@@ -122,7 +122,7 @@ class SQLiteStore(object):
             PRAGMA foreign_keys = ON;
         """)
         self.db.execute("""
-            CREATE TABLE store (
+            CREATE TABLE IF NOT EXISTS store (
                 id INTEGER PRIMARY KEY,
                 section TEXT NOT NULL,
                 project TEXT,
