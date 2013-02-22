@@ -86,38 +86,64 @@ service('WMSSources', function($rootScope, $http) {
     };
 }).
 
-service('MapproxySources', function($rootScope) {
-    var sources = {};
+service('MapproxySources', function($rootScope, MapproxySourceResource) {
+    var _sources = {};
     var current;
-    return {
-        add: function(name, value) {
-            sources[name] = value;
-            //trigger event in rootScope, so all scope notive about
-            $rootScope.$broadcast('mapproxy_sources.list');
-        },
-        byName: function(name) {
-            return sources[name];
-        },
-        list: function() {
-            var result = [];
-            for(var key in sources) {
-                result.push(sources[key]);
-            }
-            return result;
-        },
-        setCurrent: function(source, copy) {
-            if(copy) {
-                current = angular.copy(source);
-            } else {
-                current = source;
-            }
-            $rootScope.$broadcast('mapproxy_sources.current');
-        },
-        getCurrent: function() {
-            if(current) {
-                return current;
-            }
+
+    var load = function() {
+        MapproxySourceResource.query(function(result) {
+            angular.forEach(result, function(item) {
+                _sources[item._id] = item;
+            })
+            $rootScope.$broadcast('mapproxy_sources.load_complete');
+        });
+    };
+    var add = function(source) {
+        if(angular.isUndefined(source._id)) {
+            var source = new MapproxySourceResource(source);
+            source.$save(function(result) {
+                _sources[result._id] = result;
+                $rootScope.$broadcast('mapproxy_sources.source_added');
+            });
+        } else {
+            source.$update({id: source._id}, function(result) {
+                _sources[result._id] = result;
+                $rootScope.$broadcast('mapproxy_sources.source_updated');
+            });
         }
+    };
+    var remove = function(source) {
+        source.$delete({id: source._id}, function(result) {
+            delete(_sources[result._id]);
+        });
+    }
+    var list = function() {
+        return _sources;
+    };
+    var setCurrent = function(source, copy) {
+        if(copy) {
+            current = angular.copy(source);
+        } else {
+            current = source;
+        }
+        $rootScope.$broadcast('mapproxy_sources.current');
+    };
+    var getCurrent= function() {
+        if(current) {
+            return current;
+        }
+    };
+
+    //initial load data from server
+    load();
+
+    return {
+        refresh: load,
+        add: add,
+        remove: remove,
+        list: list,
+        setCurrent: setCurrent,
+        getCurrent: getCurrent
     };
 }).
 
