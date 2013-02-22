@@ -179,6 +179,7 @@ class SQLiteStore(object):
         cur = self.db.cursor()
         cur.execute("INSERT INTO store (section, project, data, parent, rank) VALUES (?, ?, ?, ?, ?)",
             (section, project, data, parent, rank))
+        self.db.commit()
         return cur.lastrowid
 
     def update(self, id, section, project, data):
@@ -189,10 +190,11 @@ class SQLiteStore(object):
         cur = self.db.cursor()
         cur.execute("UPDATE store SET data = ?, parent = ?, rank = ? WHERE id = ? AND SECTION = ? AND project = ?",
             (data, parent, rank, id, section, project))
+        self.db.commit()
 
     def delete(self, id, section, project):
         cur = self.db.cursor()
         cur.execute("DELETE FROM store WHERE id = ? AND SECTION = ? AND project = ?",
             (id, section, project))
-
+        self.db.commit()
         return cur.rowcount == 1
