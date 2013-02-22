@@ -56,10 +56,6 @@ RESTBase('grids').setup_routing(app)
 
 ## other
 
-@app.route('/conf/<project>/grids')
-def grids_list(project, storage):
-    return storage.get_all('grids', project)
-
 @app.route('/conf/<project>/globals')
 def globals_list(project, storage):
     return storage.get_all('globals', project)
