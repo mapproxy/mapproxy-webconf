@@ -148,6 +148,7 @@ class SQLiteStore(object):
             (section, project))
         for row in cur.fetchall():
             data = json.loads(row['data'])
+            data['_id'] = row['id']
             if with_rank:
                 data['_parent'] = row['parent']
                 data['_rank'] = row['rank']
