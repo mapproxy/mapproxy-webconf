@@ -34,7 +34,7 @@ service('WMSSources', function($rootScope, $http) {
 }).
 
 service('MapproxySources', function($rootScope) {
-    var sources = {};
+    var sources = {'asd': {'name': 'asd'}};
     var current;
     return {
         add: function(name, value) {
@@ -104,10 +104,27 @@ service('MapproxyCaches', function($rootScope) {
 }).
 
 service('MapproxyLayers', function($rootScope) {
-    var layers = {};
+    var layers = {
+        'a': {
+            "sources": [
+              "asd"
+            ],
+            "name": "a",
+            "title": "a"
+          },
+        'b':
+    {
+    "sources": [
+      "asd"
+    ],
+    "name": "b",
+    "title": "b"
+  }
+};
     var current;
     return {
         add: function(name, value) {
+            console.log(name, value)
             layers[name] = value;
             //trigger event in rootScope, so all scope notive about
             $rootScope.$broadcast('mapproxy_layers.list');

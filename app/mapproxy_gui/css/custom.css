@@ -69,4 +69,12 @@ label.ng-invalid {
 .warning_icon {
     display: inline-block;
 }
+/*
+.ng-scope {
+    border: 1px dashed green;
 }
+
+.ng-isolate-scope {
+    border: 1px dashed red;
+}
+*/

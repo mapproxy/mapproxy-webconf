@@ -102,7 +102,6 @@
                                             <button class="btn btn-small" ng-click="addLayerManual($event)">Add</button>
                                         </div>
                                     <!-- transparent -->
-                                        <!--<label for="source_form.req_transparent">Transparent:</label>-->
                                         <div labeled-control-group name-for="source_form.req_transparent" text="Transparent" warning="{{invalid_image_settings}}" warning-msg="Selectet image format(s) not support transparency.">
                                             <input type="checkbox" ng-model="source.req.transparent" name="source_form.req_transparent">
                                         </div>
@@ -251,9 +250,11 @@
                     <div class="span4 well" ng-controller="MapproxyCacheFormCtrl">
                         <h3>Edit Cache</h3>
                         <form name="cache_form" ng-model="cache" class="form-horizontal">
+                        <!-- name -->
                             <div labeled-control-group name-for="cache_form.cache_name" text="Name">
                                 <input required type="text" required ng-model="cache.name" name="cache_form.cache_name"/>
                             </div>
+                        <!-- sources -->
                             <!-- change-callback MUST provide parameters callback and new_data -->
                             <div labeled-control-group name-for="cache_form.sources" text="Sources">
                                 <div
@@ -263,15 +264,60 @@
                                     allow-array="true"
                                     ng-model="cache.sources"
                                     name="cache_form.sources"
+                                    use-key-for-value="name"
                                     class="insertable_multi uneditable-input">
                                     <div sortable ng-model="cache.sources" >
                                         <div ng-repeat="source in cache.sources" class="item">
-                                            {{source.name}}
+                                            {{source}}
                                             <button class="btn btn-mini btn-danger right" ng-click="remove(source)">X</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        <!-- meta size -->
+                            <!-- x -->
+                            <div labeled-control-group name-for="cache_form.meta_size_x" text="Meta size X" name="cache_form.meta_size">
+                                <input type="number" integer min=0 ng-model="cache.meta_size.x" name="cache_form.meta_size_x" />
+                            </div>
+                            <!-- y -->
+                            <div labeled-control-group name-for="cache_form.meta_size_y" text="Meta size Y">
+                                <input type="number" integer min=0 ng-model="cache.meta_size.y" name="cache_form.meta_size_y" />
+                            </div>
+                        <!-- meta_buffer -->
+                            <div labeled-control-group name-for="cache_form.meta_buffer" text="Meta buffer">
+                                <input type="number" integer min=0 ng-model="cache.meta_buffer" name="cache_form.meta_buffer" />
+                            </div>
+                        <!-- concurrent_tile_creators -->
+                            <div labeled-control-group name-for="cache_form.concurrent_tile_creators" text="Meta buffer">
+                                <input type="number" integer min=1 ng-model="cache.concurrent_tile_creators" name="cache_form.concurrent_tile_creators" />
+                            </div>
+                        <!-- cache_dir XXXkai: need path validator -->
+                            <div labeled-control-group name-for="cache_form.cache_dir" text="Cache dir">
+                                <input type="text" ng-model="cache.cache_dir" name="cache_form.cache_dir" />
+                            </div>
+                        <!-- minimize_meta_req -->
+                            <div labeled-control-group name-for="cache_form.minimize_meta_req" text="Minimize meta requests">
+                                <input type="checkbox" ng-model="cache.minimize_meta_req" name="cache_form.minimize_meta_req" />
+                            </div>
+                        <!-- link_single_color_images -->
+                            <div labeled-control-group name-for="cache_form.link_single_color_images" text="Link single color images">
+                                <input type="checkbox" ng-model="cache.link_single_color_images" name="cache_form.link_single_color_images" />
+                            </div>
+                        <!-- disable_storage -->
+                            <div labeled-control-group name-for="cache_form.disable_storage" text="Link single color images">
+                                <input type="checkbox" ng-model="cache.disable_storage" name="cache_form.disable_storage" />
+                            </div>
+                        <!-- grids XXXkai: replace by received list of supported srs combined with user defined grids-->
+                            <div labeled-control-group name-for="cache_form.grids" text="Grids">
+                                <select ng-model="cache.grids" name="cache_form.grids" multiple="multiple"/>
+                                    <option value="EPSG:3857">EPSG:3857</option>
+                                    <option value="EPSG:4326">EPSG:4326</option>
+                                    <option value="EPSG:900913">EPSG:900913</option>
+                                </select>
+                            </div>
+
+
+                        <pre ng-bind="cache|json"></pre>
                         </form>
                         <button class="btn btn-small" ng-click="addCache()" ng-disabled="!cache_form.$valid">Save</button>
                         <button class="btn btn-small" ng-click="resetForm()">Reset</button>
@@ -297,26 +343,63 @@
 
                     <div class="span3 well" ng-controller="MapproxyLayerListCtrl">
                         <h3>Mapproxy Layer</h3>
-                        <ul sortable ng-model="mapproxy_layers">
+                        <!--<ul sortable ng-model="mapproxy_layers">
                             <li class="mapproxy_layer label" ng-repeat="layer in mapproxy_layers">
-                                <span ng-click="editLayer(layer)">{{layer.name}}</span>
-                                <button
+                                <div class="mapproxy_layer" ng-click="editLayer(layer)" draggeble item-data="{{layer}}">{{layer.name}}
+                                <span draggable item-data="{{layer}}" class="mapproxy_layer" ng-click="editLayer(layer)">{{layer.name}}</span>-->
+                                <!-- create template....see tree -->
+                                <!--<button
                                     class="btn btn-mini btn-danger right"
                                     ask-dialog
                                     dialog-title="Confirm!"
                                     dialog-text="Shold i do it?"
                                     callback="removeLayer(layer)">X</button>
                             </li>
-                        </ul>
+                        </ul>-->
+
+                        <script type="text/ng-template"  id="mapproxy_layer_renderer.html">
+                            <div ng-repeat="layer in parent_layer.layers">
+                                <div draggable item-data="{{layer}}" ng-model="parent_layer.layers" move class="mapproxy_layer">
+                                    {{layer.name}} ({{layer.title}})
+                                </div>
+                                <div
+                                    droppable
+                                    ng-model="layer.layers"
+                                    ng-include="'mapproxy_layer_renderer.html'"
+                                    allow-array="true"
+                                    ng-repeat="parent_layer in layer.layers"
+                                    >
+                                </div>
+                            </div>
+                        </script>
+                        <div ng-repeat="parent_layer in mapproxy_layers">
+                            <div draggable item-data="{{parent_layer}}" ng-model="mapproxy_layers" move class="mapproxy_layer">
+                                {{parent_layer.name}} ({{parent_layer.title}})
+                            </div>
+                            <div
+                                droppable
+                                ng-model="parent_layer.layers"
+                                ng-include="'mapproxy_layer_renderer.html'"
+                                allow-array="true"
+                                style="min-height: 30px;background-color: red;"
+                                >
+                            </div>
+                        </div>
+                        <pre ng-bind="mapproxy_layers|json"></pre>
                     </div>
 
                     <div class="span4 well" ng-controller="MapproxyLayerFormCtrl">
                         <h3>Edit Layer</h3>
                         <form name="layer_form" ng-model="layer" class="form-horizontal">
+                        <!-- name -->
                             <div labeled-control-group name-for="layer_form.layer_name" text="Name">
                                 <input required type="text" required ng-model="layer.name" name="layer_form.layer_name"/><br>
                             </div>
-                            <!-- change-callback MUST provide parameters callback and new_data -->
+                        <!-- title -->
+                            <div labeled-control-group name-for="layer_form.layer_title" text="Title">
+                                <input required type="text" required ng-model="layer.title" name="layer_form.layer_title"/><br>
+                            </div>
+                        <!-- sources -->
                             <div labeled-control-group name-for="layer_form.sources" text="Sources">
                                 <div
                                     droppable
@@ -325,15 +408,33 @@
                                     allow-array="true"
                                     ng-model="layer.sources"
                                     name="layer_sources"
+                                    use-key-for-value="name"
                                     class="insertable_multi uneditable-input">
                                     <div sortable ng-model="layer.sources" >
                                         <div ng-repeat="source in layer.sources" class="item">
-                                            {{source.name}}
+                                            {{source}}
                                             <button class="btn btn-mini btn-danger right" ng-click="remove(source)">X</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        <!-- min_scale -->
+                            <div labeled-control-group name-for="layer_form.min_scale" text="Min. Scale">
+                                <input float type="number" ng-model="layer.min_scale" name="layer_form.min_scale">
+                            </div>
+                        <!-- max_scale -->
+                            <div labeled-control-group name-for="layer_form.max_scale" text="Max. Scale">
+                                <input float type="number" ng-model="layer.max_scale" name="layer_form.max_scale" bigger-than="layer.min_scale">
+                            </div>
+                        <!-- min_res -->
+                            <div labeled-control-group name-for="layer_form.min_res" text="Min. Resolution">
+                                <input float type="number" ng-model="layer.min_res" name="layer_form.min_res">
+                            </div>
+                        <!-- max_res -->
+                            <div labeled-control-group name-for="layer_form.max_res" text="Max. Resolution">
+                                <input float type="number" ng-model="layer.max_res" name="layer_form.max_res">
+                            </div>
+                            <pre ng-bind="layer|json"></pre>
                         </form>
                         <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!layer_form.$valid">Save</button>
                         <button class="btn btn-small" ng-click="resetForm()">Reset</button>
