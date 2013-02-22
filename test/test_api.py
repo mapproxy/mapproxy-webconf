@@ -99,6 +99,18 @@ class TestCachesAPI(ServerAPITest):
     def test_add_non_json(self):
         self.app.post('/conf/base/caches', 'foo', status=400)
 
+    def test_update_non_json(self):
+        resp = self.app.post_json('/conf/base/caches', {'name': '1'})
+        assert resp.status_code == 201
+        id = resp.json['_id']
+        self.app.put('/conf/base/caches/%d' % id, 'foo', status=400)
+
+    def test_update_bad_data(self):
+        resp = self.app.post_json('/conf/base/caches', {'name': '1'})
+        assert resp.status_code == 201
+        id = resp.json['_id']
+        self.app.put('/conf/base/caches/%d' % id, '{foo: badjson}', headers=[('Content-type', 'application/json')], status=400)
+
     def test_add_get_delete(self):
         resp = self.app.post_json('/conf/base/caches', {'name': '1'})
         assert resp.status_code == 201

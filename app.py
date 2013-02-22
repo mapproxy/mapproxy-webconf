@@ -1,81 +1,60 @@
 import os
-import bottle
-from bottle import request, response
-import storage
-import config
+
+from . import bottle
+from . import config
+from . import storage
+from .bottle import request, response
+from .utils import requires_json
 
 app = bottle.Bottle()
 
 class RESTBase(object):
-    section = None
+    def __init__(self, section):
+        self.section = section
 
-    @classmethod
-    def list(cls, project, storage):
-        return storage.get_all(cls.section, project)
+    def list(self, project, storage):
+        return storage.get_all(self.section, project)
 
-    @classmethod
-    def add(cls, project, storage):
-        try:
-            data = request.json
-        except ValueError:
-            response.status = 400
-            return {'error': 'invalid JSON data'}
-
-        if not data:
-            response.status = 400
-            return {'error': 'missing JSON data'}
-
-        id = storage.add(cls.section, project, data)
+    @requires_json
+    def add(self, project, storage):
+        data = request.json
+        id = storage.add(self.section, project, data)
         response.status = 201
         data['_id'] = id
         return data
 
-    @classmethod
-    def get(cls, project, id, storage):
-        data = storage.get(id, cls.section,project)
+    def get(self, project, id, storage):
+        data = storage.get(id, self.section,project)
         if not data:
             response.status = 404
         else:
             return data
 
-    @classmethod
-    def update(cls, project, id, storage):
+    @requires_json
+    def update(self, project, id, storage):
         data = request.json
-        storage.update(id, cls.section, project, data)
+        storage.update(id, self.section, project, data)
         response.status = 200
         return data
 
-    @classmethod
-    def delete(cls, project, id, storage):
-        if storage.delete(id, cls.section, project):
+    def delete(self, project, id, storage):
+        if storage.delete(id, self.section, project):
             response.status = 204
         else:
             response.status = 404
 
-    @classmethod
-    def setup_routing(cls, app):
-        app.route('/conf/<project>/%s' % cls.section, 'GET', cls.list)
-        app.route('/conf/<project>/%s' % cls.section, 'POST', cls.add)
-        app.route('/conf/<project>/%s/<id:int>' % cls.section, 'GET', cls.get)
-        app.route('/conf/<project>/%s/<id:int>' % cls.section, 'PUT', cls.update)
-        app.route('/conf/<project>/%s/<id:int>' % cls.section, 'DELETE', cls.delete)
+    def setup_routing(self, app):
+        app.route('/conf/<project>/%s' % self.section, 'GET', self.list)
+        app.route('/conf/<project>/%s' % self.section, 'POST', self.add)
+        app.route('/conf/<project>/%s/<id:int>' % self.section, 'GET', self.get)
+        app.route('/conf/<project>/%s/<id:int>' % self.section, 'PUT', self.update)
+        app.route('/conf/<project>/%s/<id:int>' % self.section, 'DELETE', self.delete)
 
-
-class SourcesAPI(RESTBase):
-    section = 'sources'
-
-class CachesAPI(RESTBase):
-    section = 'caches'
-
-class GridsAPI(RESTBase):
-    section = 'grids'
-
-SourcesAPI.setup_routing(app)
-CachesAPI.setup_routing(app)
-GridsAPI.setup_routing(app)
+RESTBase('sources').setup_routing(app)
+RESTBase('caches').setup_routing(app)
+RESTBase('grids').setup_routing(app)
 
 ## other
-
 
 @app.route('/conf/<project>/grids')
 def grids_list(project, storage):

@@ -1,6 +1,21 @@
 import os
 import errno
 
+from .bottle import response, request
+from .decorator import decorator
+
+@decorator
+def requires_json(func, *args, **kw):
+    try:
+        data = request.json
+    except ValueError:
+        response.status = 400
+        return {'error': 'invalid JSON data'}
+    if not data:
+        response.status = 400
+        return {'error': 'missing JSON data'}
+    return func(*args, **kw)
+
 def save_atomic(filename, content, makedirs=True):
     """
     Save `content` to `filename` atomicaly. This prevents others from
