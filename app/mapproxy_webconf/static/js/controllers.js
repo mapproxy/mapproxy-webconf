@@ -149,7 +149,6 @@ function MapproxyLayerListCtrl($scope, MapproxyLayers) {
 
     $scope.$on('mapproxy_layers.list', function() {
         $scope.mapproxy_layers = MapproxyLayers.list();
-        console.log($scope.mapproxy_layers)
     });
 }
 

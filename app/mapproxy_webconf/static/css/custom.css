@@ -27,6 +27,19 @@ input {
     white-space: normal;
 }
 
+.mapproxy_layer {
+    margin-top: 0.4em;
+    margin-bottom: 0.4em;
+}
+
+.mapproxy_layer_dropzone {
+    min-height: 30px;
+    min-width: 30px;
+    background-color: red;
+    border: 2px dashed yellow;
+    display: inline-block;
+}
+
 .layer, .grp_layer {
     margin-left: 2em;
     padding-top: 0em;
@@ -72,9 +85,11 @@ label.ng-invalid {
 /*
 .ng-scope {
     border: 1px dashed green;
+    margin: 2px;
 }
 
 .ng-isolate-scope {
     border: 1px dashed red;
+    margin: 2px;
 }
 */
