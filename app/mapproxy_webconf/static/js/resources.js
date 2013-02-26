@@ -6,6 +6,12 @@ factory('MapproxySourceResource', function($resource) {
     });
 }).
 
+factory('MapproxyLayerResource', function($resource) {
+    return $resource('/conf/base/layers/:id', {}, {
+        update: {method: 'PUT'}
+    });
+}).
+
 factory('GetCapabilitiesResource', function($resource) {
     return $resource('/conf/base/wms_capabilities/:id', {}, {
         update: {method: 'PUT'}
