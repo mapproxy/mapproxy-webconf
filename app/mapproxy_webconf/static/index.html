@@ -346,35 +346,37 @@
                         <h3>Mapproxy Layer</h3>
 
                         <script type="text/ng-template"  id="mapproxy_layer_renderer.html">
-                            <div ng-repeat="layer in layer.layers">  <!-- new scope -->
-                                <div draggable item-data="{{layer}}" ng-model="$parent.$parent.layer.layers" class="mapproxy_layer"> <!-- new scope -->
-                                    <!-- need to access layer.layers from 2 lines above so i have to go 2 scopes up ($parent.$parent) -->
-                                    {{layer.name}} ({{layer.title}})
-                                    <div class="mapproxy_layer_dropzone" droppable ng-model="layer.layers" allow-array="true"></div>
-                                </div>
-                                <div sortable ng-model="layer.layers">
+                            <ul sortable ng-model="layer.layers">
+                                <li ng-repeat="layer in layer.layers">  <!-- new scope -->
+                                    <div draggable item-data="{{layer}}" ng-model="$parent.$parent.layer.layers" class="mapproxy_layer"> <!-- new scope -->
+                                        <!-- need to access layer.layers from 2 lines above so i have to go 2 scopes up ($parent.$parent) -->
+                                        {{layer.name}} ({{layer.title}})
+                                        <div class="mapproxy_layer_dropzone" droppable ng-model="layer.layers" allow-array="true"></div>
+                                    </div>
                                     <div
                                         ng-include="'mapproxy_layer_renderer.html'"
                                         style="margin-left: 0.5em"
                                         >
                                     </div>
-                                </div>
-                            </div>
+                                </li>
+                            </ul>
                         </script>
-                        <div sortable ng-model="mapproxy_layers" style="margin-top: 0.3em; margin-bottom: 0.3em; border: 1px solid black;">
-                            <div ng-repeat="layer in mapproxy_layers">
-                                <div draggable item-data="{{layer}}" ng-model="mapproxy_layers" class="mapproxy_layer">
-                                    {{layer.name}} ({{layer.title}})
-                                    <div class="mapproxy_layer_dropzone" droppable ng-model="layer.layers" allow-array="true"></div>
-                                </div>
-                                <div
-                                    ng-include="'mapproxy_layer_renderer.html'"
-                                    style="margin-left: 0.5em"
-                                    sortable
-                                    ng-model="layer.layers"
-                                    >
-                                </div>
-                            </div>
+                        <div style="margin-top: 0.3em; margin-bottom: 0.3em; border: 1px solid black;">
+                            <ul sortable ng-model="mapproxy_layers">
+                                <li ng-repeat="layer in mapproxy_layers">
+                                    <div draggable item-data="{{layer}}" ng-model="mapproxy_layers" class="mapproxy_layer">
+                                        {{layer.name}} ({{layer.title}})
+                                        <div class="mapproxy_layer_dropzone" droppable ng-model="layer.layers" allow-array="true"></div>
+                                    </div>
+                                    <div
+                                        ng-include="'mapproxy_layer_renderer.html'"
+                                        style="margin-left: 0.5em"
+                                        sortable
+                                        ng-model="layer.layers"
+                                        >
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                        <div class="mapproxy_layer_dropzone" droppable ng-model="mapproxy_layers" allow-array="true"></div>
                         <pre ng-bind="mapproxy_layers|json"></pre>
