@@ -1,73 +1,33 @@
 angular.module('mapproxy_gui.services', ['mapproxy_gui.resources']).
 
-service('WMSSources', function($rootScope, $http) {
-    var wms_list = undefined;
+service('WMSSources', function($rootScope, GetCapabilitiesResource) {
+    var wms_list = {};
 
-    var initData = function(url) {
-        $http.post(url, {
-            "title": "Omniscale OpenStreetMap WMS",
-            "url": "http://x.osm.omniscale.net/proxy/service?",
-            "layers": [{
-                "name": "osm",
-                "title": "OpenStreetMap (complete map)"
-            }, {
-                "name": "osm_roads",
-                "title": "OpenStreetMap (streets only)"
-            }, {
-                "title": "GruppenTest",
-                "layers": [{
-                    "name": "osm",
-                    "title": "OpenStreetMap (complete map)"
-                }, {
-                    "name": "osm_roads",
-                    "title": "OpenStreetMap (streets only)"
-                }]
+    var init = function() {
+        GetCapabilitiesResource.query(function(result) {
+            if(result) {
+                angular.forEach(result, function(item) {
+                    wms_list[item._id] = item;
+                })
+                $rootScope.$broadcast('wms_list_refreshed');
             }
-        ]}).success(function() {
-            $http.post(url, {
-                "title": "Other WMS",
-                "url": "http://wms.example.org/service?",
-                "layers": [{
-                        "name": "ex1",
-                        "title": "Example Layer1"
-                    }, {
-                        "name": "grp1",
-                        "title": "Example Group",
-                        "layers": [{
-                            "name": "gl1",
-                            "title": "GroupLayer 1"
-                        }]
-                    }, {
-                        "name": "gl2",
-                        "title": "GroupLayer 2"
-                }
-            ]}).success(function() {
-                loadData(url);
-            });
+        })
+    }
 
+    var addCapabilities = function(url) {
+        var cap = new GetCapabilitiesResource({url: url});
+        cap.$save(function(result) {
+            console.log(result)
+            wms_list[result._id] = result;
+            $rootScope.$broadcast('wms_list_refreshed');
         });
     };
 
-    var loadData = function(url) {
-            //XXX kai: replace with url
-            $http.get(url).success(function(data) {
-                if(angular.equals(data, {})) {
-                    initData(url);
-                } else if(wms_list) {
-                    wms_list = wms_list.concat(data);
-                    $rootScope.$broadcast('wms_list_refreshed');
-                } else {
-                    wms_list = data;
-                    $rootScope.$broadcast('wms_list_refreshed');
-                }
-
-            });
-        };
     var layerTitle = function(url, layer_name) {
         var title = false
         angular.forEach(wms_list, function(wms) {
             if(wms.url == url) {
-                angular.forEach(wms.layers, function(layer) {
+                angular.forEach(wms.layer.layers, function(layer) {
                     if(layer.name == layer_name) {
                         title = layer.title;
                     }
@@ -79,8 +39,11 @@ service('WMSSources', function($rootScope, $http) {
     var wmsList = function() {
         return wms_list;
     }
+
+    init();
+
     return {
-        loadData: loadData,
+        addCapabilities: addCapabilities,
         layerTitle: layerTitle,
         wmsList: wmsList
     };

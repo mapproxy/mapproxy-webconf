@@ -214,7 +214,7 @@
                                 <div ng-show="$first">
                                     <p>URL: {{wms.url}}</p>
                                     <div
-                                        ng-repeat="layer in wms.layers"
+                                        ng-repeat="layer in wms.layer.layers"
                                         ng-include="'wms_layer_renderer.html'"
                                         draggable item-data="{{itemData(layer)}}"
                                         class="wms_layer layer label label-info"></div>
@@ -222,8 +222,8 @@
                             </div>
                         </div>
                         <hr>
-                        <label for="input_wms">Capabilities:</label><input name="input_wms" ng-model="capabilities">
-                        <button class="btn btn-small" ng-click="loadData(capabilities)">GetCapabilities</button><!-- add new wms -->
+                        <label for="input_wms">Capabilities:</label><input name="input_wms" ng-model="capabilities_url">
+                        <button class="btn btn-small" ng-click="addCapabilities(capabilities_url)">GetCapabilities</button><!-- add new wms -->
                     </div>
 
                 </div>
@@ -346,8 +346,9 @@
                         <h3>Mapproxy Layer</h3>
 
                         <script type="text/ng-template"  id="mapproxy_layer_renderer.html">
-                            <div ng-repeat="layer in layer.layers">
-                                <div draggable item-data="{{layer}}" ng-model="$parent.$parent.layer.layers" class="mapproxy_layer">
+                            <div ng-repeat="layer in layer.layers">  <!-- new scope -->
+                                <div draggable item-data="{{layer}}" ng-model="$parent.$parent.layer.layers" class="mapproxy_layer"> <!-- new scope -->
+                                    <!-- need to access layer.layers from 2 lines above so i have to go 2 scopes up ($parent.$parent) -->
                                     {{layer.name}} ({{layer.title}})
                                     <div class="mapproxy_layer_dropzone" droppable ng-model="layer.layers" allow-array="true"></div>
                                 </div>
@@ -361,17 +362,17 @@
                             </div>
                         </script>
                         <div sortable ng-model="mapproxy_layers" style="margin-top: 0.3em; margin-bottom: 0.3em; border: 1px solid black;">
-                            <div ng-repeat="layer in mapproxy_layers" sortable>
-                                <div draggable item-data="{{layer}}" ng-model="mapproxy_layers" class="mapproxy_layer"> <!-- remove from parent layers -->
+                            <div ng-repeat="layer in mapproxy_layers">
+                                <div draggable item-data="{{layer}}" ng-model="mapproxy_layers" class="mapproxy_layer">
                                     {{layer.name}} ({{layer.title}})
-                                    <div class="mapproxy_layer_dropzone" droppable ng-model="layer.layers" allow-array="true"></div> <!-- insert into this.layers -->
+                                    <div class="mapproxy_layer_dropzone" droppable ng-model="layer.layers" allow-array="true"></div>
                                 </div>
-                                <div sortable ng-model="layer.layers">
-                                    <div
-                                        ng-include="'mapproxy_layer_renderer.html'"
-                                        style="margin-left: 0.5em"
-                                        > <!-- repeat this.layers -->
-                                    </div>
+                                <div
+                                    ng-include="'mapproxy_layer_renderer.html'"
+                                    style="margin-left: 0.5em"
+                                    sortable
+                                    ng-model="layer.layers"
+                                    >
                                 </div>
                             </div>
                         </div>

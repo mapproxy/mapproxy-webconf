@@ -6,15 +6,13 @@ function TreeCtrl($scope, WMSSources) {
         }
         return layer;
     };
-    $scope.loadData = function(url) {
-        WMSSources.loadData('/conf/base/wms_capabilities');
+    $scope.addCapabilities = function(url) {
+        WMSSources.addCapabilities(url);
     };
 
     $scope.$on('wms_list_refreshed', function() {
         $scope.wms_list = WMSSources.wmsList();
     });
-
-    WMSSources.loadData('/conf/base/wms_capabilities');
 }
 
 function MapproxySourceListCtrl($scope, MapproxySources) {
