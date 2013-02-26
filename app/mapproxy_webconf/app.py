@@ -5,6 +5,7 @@ from . import config
 from . import storage
 from .bottle import request, response, static_file
 from .utils import requires_json
+from .capabilities import parse_capabilities_url
 
 app = bottle.Bottle()
 
@@ -78,15 +79,38 @@ def layers_add(project, storage):
     data['_id'] = id
     return data
 
+class RESTWMSCapabilities(RESTBase):
+    def __init__(self):
+        RESTBase.__init__(self, 'wms_capabilities')
 
-@app.route('/conf/<project>/wms_capabilities')
-def wms_list(project, storage):
-    return storage.get_all('wms_capabilities', project)
+    @requires_json
+    def add(self, project, storage):
+        url = request.json.get('url')
+        print url
+        if not url:
+            response.status = 400
+            return {'error': 'missing URL'}
 
-@app.route('/conf/<project>/wms_capabilities', method="POST")
-def wms_post(project, storage):
-    storage.add('wms_capabilities', project, request.json)
-    response.status = 201
+        cap = parse_capabilities_url(url)
+        id = storage.add(self.section, project, cap)
+        cap['_id'] = id
+        response.status = 201
+        return cap
+
+    @requires_json
+    def update(self, project, id, storage):
+        url = request.json.get('url')
+        print url
+        if not url:
+            response.status = 400
+            return {'error': 'missing URL'}
+
+        cap = parse_capabilities_url(url)
+        storage.update(id, self.section, project, cap)
+        response.status = 200
+        return cap
+
+RESTWMSCapabilities().setup_routing(app)
 
 @app.route('/')
 def index():
