@@ -145,15 +145,49 @@ service('MapproxyCaches', function($rootScope) {
     };
 }).
 
-service('MapproxyLayers', function($rootScope) {
-    var layers = [];
+service('MapproxyLayers', function($rootScope, MapproxyLayerResource) {
+    var layers = {};
     var current;
+
+    var load = function() {
+        //if resource not returns array, we have to use normal get
+        MapproxyLayerResource.get(function(result) {
+            angular.forEach(result['tree'], function(item) {
+                layers[item._id] = item;
+            });
+            $rootScope.$broadcast('mapproxy_layers.load_complete')
+        });
+    };
+    var add = function(layer) {
+        if(angular.isUndefined(layer._id)) {
+            var layer = new MapproxyLayerResource(layer);
+            layer.$save(function(result) {
+                layers[result._id] = result;
+                $rootScope.$broadcast('mapproxy_layers.added');
+            });
+        } else {
+            layer.$update({id: layer._id}, function(result) {
+                layers[result._id] = result;
+                $rootScope.$broadcast('mapproxy_layers.updated');
+            });
+        }
+    };
+    var remove = function(layer) {
+        layer.$delete({id: layer._id}, function(result) {
+            delete(layers[result._id]);
+        });
+    };
+
+    $rootScope.$watch('layers', function(newVal, oldVal, scope) {
+        console.log(newVal, oldVal, scope);
+    });
+
+    load();
+
     return {
-        add: function(name, value) {
-            layers.push(value);
-            //trigger event in rootScope, so all scope notive about
-            $rootScope.$broadcast('mapproxy_layers.list');
-        },
+        refresh: load,
+
+        add: add,
         list: function() {
             return layers;
         },
