@@ -77,29 +77,34 @@ directive('draggable', function() {
         // A = attribute, E = Element, C = Class and M = HTML Comment
         restrict:'A',
         require: '?ngModel',
+        scope: 'element',
         //The link function is responsible for registering DOM listeners as well as updating the DOM.
         link: function(scope, element, attrs, ngModelCtrl) {
-            scope = scope.$new(false)
 
             if(angular.isDefined(ngModelCtrl)) {
-                ngModelCtrl.$formatters.push(function() {
-                    scope.source_list = ngModelCtrl.$modelValue;
-                    console.log(scope.source_list)
-                });
+                scope.remove = function() {
+                    var item = angular.fromJson(attrs.itemData);
+                    var source_list = ngModelCtrl.$modelValue ? ngModelCtrl.$modelValue : [];
+                    var found = false;
+                    angular.forEach(source_list, function(source_item) {
+                        if(!found) {
+                            if(angular.equals(source_item, item)) {
+                                source_list.splice(source_list.indexOf(source_item), 1);
+                                found = true;
+                            }
+                        }
+                    })
+                    if(source_list.length == 0) {
+                        ngModelCtrl.$setViewValue(undefined);
+                    }
+                };
             }
 
-            if(angular.isDefined(attrs.$attr.move)) {
-                $(element).draggable({
-                    cursor: 'move',
-                    revert: false
-                });
-            } else {
-                $(element).draggable({
-                    helper: 'clone',
-                    cursor: 'move',
-                    revert: false
-                });
-            }
+            $(element).draggable({
+                helper: 'clone',
+                cursor: 'move',
+                revert: false
+            });
         }
     };
 }).
@@ -167,12 +172,9 @@ directive('droppable', function($parse) {
                 } else {
                     scope.items = scope.to_insert[0];
                 }
-                console.log(scope.j_ui)
                 var insert_scope = angular.element(scope.j_ui).scope();
-                console.log(insert_scope)
-                if(angular.isDefined(insert_scope.source_list)) {
-                    angular.forEach(scope.to_insert, function(element) {
-                });
+                if(angular.isFunction(insert_scope.remove)) {
+                    insert_scope.remove();
                 }
                 delete(scope.j_ui);
                 scope.$apply(function() {
