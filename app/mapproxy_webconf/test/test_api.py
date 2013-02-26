@@ -7,6 +7,8 @@ from mapproxy_webconf import storage, config
 from mapproxy_webconf.test import helper
 from mapproxy_webconf.config import id_dict_to_named_dict
 
+from mapproxy.test.http import MockServ
+
 bottle.debug(True)
 
 class ServerAPITest(helper.TempDirTest):
@@ -74,7 +76,9 @@ class TestSourcesAPI(ServerAPITest):
         id = resp.json['_id']
         resp = self.app.get('/conf/base/sources/%d' % id)
         assert resp.json == {'name': '1'}
-        self.app.delete('/conf/base/sources/%d' % id)
+        resp = self.app.delete('/conf/base/sources/%d' % id)
+        assert resp.status_code == 204
+        resp = self.app.get('/conf/base/sources/%d' % id, status=404)
 
     def test_add_update_get(self):
         resp = self.app.post_json('/conf/base/sources', {'name': '1'})
@@ -117,7 +121,9 @@ class TestCachesAPI(ServerAPITest):
         id = resp.json['_id']
         resp = self.app.get('/conf/base/caches/%d' % id)
         assert resp.json == {'name': '1'}
-        self.app.delete('/conf/base/caches/%d' % id)
+        resp = self.app.delete('/conf/base/caches/%d' % id)
+        assert resp.status_code == 204
+        resp = self.app.get('/conf/base/caches/%d' % id, status=404)
 
     def test_add_update_get(self):
         resp = self.app.post_json('/conf/base/caches', {'name': '1'})
@@ -142,7 +148,9 @@ class TestGridsAPI(ServerAPITest):
         id = resp.json['_id']
         resp = self.app.get('/conf/base/grids/%d' % id)
         assert resp.json == {'name': '1'}
-        self.app.delete('/conf/base/grids/%d' % id)
+        resp = self.app.delete('/conf/base/grids/%d' % id)
+        assert resp.status_code == 204
+        resp = self.app.get('/conf/base/grids/%d' % id, status=404)
 
     def test_add_update_get(self):
         resp = self.app.post_json('/conf/base/grids', {'name': '1'})
@@ -152,6 +160,43 @@ class TestGridsAPI(ServerAPITest):
         assert resp.json == {'name': 'foo'}
         resp = self.app.get('/conf/base/grids/%d' % id)
         assert resp.json == {'name': 'foo'}
+
+
+class TestWMSCapabilitiesAPI(ServerAPITest):
+    def test_post_url(self):
+        mock_serv = MockServ()
+        mock_serv.expects('/foo/service?REQUEST=GetCapabilities&SERVICE=WMS&VERSION=1.1.1')
+        cap_file = os.path.join(os.path.dirname(__file__), 'fixtures', 'wms_nasa_cap.xml')
+        mock_serv.returns(body_file=cap_file)
+
+        with mock_serv:
+            resp = self.app.post_json('/conf/base/wms_capabilities', {'url': mock_serv.base_url + '/foo/service'})
+
+        id = resp.json['_id']
+
+        expected = {
+            '_id': id,
+            'abstract': helper.ANY,
+            'title': 'JPL Global Imagery Service',
+            'url': 'http://wms.jpl.nasa.gov/wms.cgi?',
+            'layer': helper.ANY,
+        }
+        assert resp.json == expected
+
+        resp = self.app.get('/conf/base/wms_capabilities/%d' % resp.json['_id'])
+        expected.pop('_id') # remove if we decide to pass _id in get request
+        assert resp.json == expected
+
+        resp = self.app.get('/conf/base/wms_capabilities')
+        assert resp.json == {str(id): expected}
+
+        mock_serv.reset()
+        with mock_serv:
+            resp = self.app.put_json('/conf/base/wms_capabilities/1', {'url': mock_serv.base_url + '/foo/service'})
+
+        resp = self.app.delete('/conf/base/wms_capabilities/1')
+        assert resp.status_code == 204
+        resp = self.app.get('/conf/base/wms_capabilities/%d' % id, status=404)
 
 
 
