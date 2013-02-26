@@ -163,6 +163,12 @@ function MapproxyLayerFormCtrl($scope, MapproxyLayers) {
         $scope.layer_form.$setPristine();
         MapproxyLayers.setCurrent($scope.layer, false);
     };
+    $scope.layerTitle = function(name) {
+        var layer = MapproxyLayers.byName(name);
+        if(angular.isDefined(layer)) {
+            return layer.title;
+        }
+    }
 
     $scope.layer = {};
     MapproxyLayers.setCurrent($scope.layer, false);

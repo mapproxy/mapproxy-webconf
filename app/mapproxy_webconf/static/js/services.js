@@ -183,23 +183,16 @@ service('MapproxyCaches', function($rootScope) {
 }).
 
 service('MapproxyLayers', function($rootScope) {
-    var layers = {};
+    var layers = [];
     var current;
     return {
         add: function(name, value) {
-            layers[name] = value;
+            layers.push(value);
             //trigger event in rootScope, so all scope notive about
             $rootScope.$broadcast('mapproxy_layers.list');
         },
-        byName: function(name) {
-            return layers[name];
-        },
         list: function() {
-            var result = [];
-            for(var key in layers) {
-                result.push(layers[key]);
-            }
-            return result;
+            return layers;
         },
         setCurrent: function(layer, copy) {
             if(copy) {

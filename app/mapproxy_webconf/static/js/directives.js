@@ -76,8 +76,30 @@ directive('draggable', function() {
     return {
         // A = attribute, E = Element, C = Class and M = HTML Comment
         restrict:'A',
+        require: '?ngModel',
+        scope: 'element',
         //The link function is responsible for registering DOM listeners as well as updating the DOM.
-        link: function(scope, element, attrs) {
+        link: function(scope, element, attrs, ngModelCtrl) {
+
+            if(angular.isDefined(ngModelCtrl)) {
+                scope.remove = function() {
+                    var item = angular.fromJson(attrs.itemData);
+                    var source_list = ngModelCtrl.$modelValue ? ngModelCtrl.$modelValue : [];
+                    var found = false;
+                    angular.forEach(source_list, function(source_item) {
+                        if(!found) {
+                            if(angular.equals(source_item, item)) {
+                                source_list.splice(source_list.indexOf(source_item), 1);
+                                found = true;
+                            }
+                        }
+                    })
+                    if(source_list.length == 0) {
+                        ngModelCtrl.$setViewValue(undefined);
+                    }
+                };
+            }
+
             $(element).draggable({
                 helper: 'clone',
                 cursor: 'move',
@@ -150,6 +172,10 @@ directive('droppable', function($parse) {
                 } else {
                     scope.items = scope.to_insert[0];
                 }
+                var insert_scope = angular.element(scope.j_ui).scope();
+                if(angular.isFunction(insert_scope.remove)) {
+                    insert_scope.remove();
+                }
                 delete(scope.j_ui);
                 scope.$apply(function() {
                     ngModelCtrl.$setViewValue(scope.items);
@@ -181,6 +207,7 @@ directive('droppable', function($parse) {
                 }
             };
             scope.dropHandler = function(event,ui) {
+
                 //get current items from model
                 scope.items = ngModelCtrl.$modelValue;
                 scope.inserted = false;
@@ -197,38 +224,51 @@ directive('droppable', function($parse) {
                 }
                 //get data (string) of dopped element and convert it to an object
                 scope.new_item = angular.fromJson(scope.j_ui.attr('item-data'));
+
                 scope.to_insert = [];
+
                 //check for data
                 if(!angular.isUndefined(scope.new_item)) {
+
                     //check for existing items
                     if(angular.isArray(scope.new_item)) {
+
                         angular.forEach(scope.new_item, scope.checkExist);
                     } else {
+
                         scope.checkExist(scope.new_item);
                     }
                     //look if something to insert
                     if(scope.to_insert.length > 0) {
+
                         //run callback if present
                         if(angular.isFunction(scope.change)) {
+
                             scope.change(scope.$parent, {callback: scope.changeCallback, new_data: scope.new_item});
                         } else {
+
                             scope.insertItems();
                         }
                     } else {
+
                         scope.j_ui.draggable('option', 'revert', true);
                     }
                 }
             };
 
             if(angular.isUndefined(attrs.accepts)) {
+
                 scope.accepts = [];
             } else {
+
                 scope.accepts = attrs.accepts.split(',');
             }
+
             scope.use_key = attrs.useKeyForValue;
 
             //look for callback function
             if(!angular.isUndefined(attrs.changeCallback)) {
+
                 scope.change = $parse(attrs.changeCallback);
             }
 
