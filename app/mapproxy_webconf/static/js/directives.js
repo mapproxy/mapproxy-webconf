@@ -256,21 +256,13 @@ directive('droppable', function($parse) {
                 }
             };
 
-            if(angular.isUndefined(attrs.accepts)) {
-
-                scope.accepts = [];
-            } else {
-
-                scope.accepts = attrs.accepts.split(',');
-            }
+            scope.accepts = angular.isUndefined(attrs.accepts) ? [] : attrs.accepts.split(',');
+            scope.rejects = angular.isUndefined(attrs.rejects) ? [] : attrs.rejects.split(',');
 
             scope.use_key = attrs.useKeyForValue;
 
             //look for callback function
-            if(!angular.isUndefined(attrs.changeCallback)) {
-
-                scope.change = $parse(attrs.changeCallback);
-            }
+            scope.change = angular.isUndefined(attrs.changeCallback) ? undefined : $parse(attrs.changeCallback);
 
             $(element).droppable({
                 drop: scope.dropHandler
