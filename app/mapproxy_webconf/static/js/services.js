@@ -111,50 +111,76 @@ service('MapproxySources', function($rootScope, MapproxySourceResource) {
     };
 }).
 
-service('MapproxyCaches', function($rootScope) {
-    var caches = {};
+service('MapproxyCaches', function($rootScope, MapproxyCacheResource) {
+    var _caches = {};
     var current;
-    return {
-        add: function(name, value) {
-            caches[name] = value;
-            //trigger event in rootScope, so all scope notive about
-            $rootScope.$broadcast('mapproxy_caches.list');
-        },
-        byName: function(name) {
-            return caches[name];
-        },
-        list: function() {
-            var result = [];
-            for(var key in caches) {
-                result.push(caches[key]);
-            }
-            return result;
-        },
-        setCurrent: function(cache, copy) {
-            if(copy) {
-                current = angular.copy(cache);
-            } else {
-                current = cache;
-            }
-            $rootScope.$broadcast('mapproxy_caches.current');
-        },
-        getCurrent: function(cache) {
-            if(current) {
-                return current;
-            }
+
+    var load = function() {
+        MapproxyCacheResource.query(function(result) {
+            angular.forEach(result, function(item) {
+                _caches[item._id] = item;
+            });
+            $rootScope.$broadcast('mapproxy_caches.load_complete');
+        });
+    };
+    var add = function(cache) {
+        if(angular.isUndefined(cache._id)) {
+            var cache = new MapproxyCacheResource(cache);
+            cache.$save(function(result) {
+                _caches[result._id] = result;
+                $rootScope.$broadcast('mapproxy_caches.added');
+            });
+        } else {
+            cache.$update({id: cache._id}, function(result) {
+                _caches[result._id] = result;
+                $rootScope.$broadcast('mapproxy_caches.updated');
+            });
         }
+    };
+    var remove = function(cache) {
+        cache.$delete({id: cache._id}, function(result) {
+            delete(_caches[result._id]);
+            $rootScope.$broadcast('mapproxy_caches.deleted');
+        })
+    };
+    var list = function() {
+        return dict2list(_caches);
+    };
+    var setCurrent = function(cache, copy) {
+        if(copy) {
+            current = angular.copy(cache);
+        } else {
+            current = cache;
+        }
+        $rootScope.$broadcast('mapproxy_caches.current');
+    };
+    var getCurrent = function(cache) {
+        if(current) {
+            return current;
+        }
+    };
+
+    load()
+
+    return {
+        refresh: load,
+        add: add,
+        remove: remove,
+        list: list,
+        setCurrent: setCurrent,
+        getCurrent: getCurrent
     };
 }).
 
 service('MapproxyLayers', function($rootScope, MapproxyLayerResource) {
-    var layers = {};
+    var _layers = {};
     var current;
 
     var load = function() {
         //can't use query. resource returns no array.
         MapproxyLayerResource.get(function(result) {
             angular.forEach(result['tree'], function(item) {
-                layers[item._id] = item;
+                _layers[item._id] = item;
             });
             $rootScope.$broadcast('mapproxy_layers.load_complete')
         });
@@ -163,19 +189,19 @@ service('MapproxyLayers', function($rootScope, MapproxyLayerResource) {
         if(angular.isUndefined(layer._id)) {
             var layer = new MapproxyLayerResource(layer);
             layer.$save(function(result) {
-                layers[result._id] = result;
+                _layers[result._id] = result;
                 $rootScope.$broadcast('mapproxy_layers.added');
             });
         } else {
             layer.$update({id: layer._id}, function(result) {
-                layers[result._id] = result;
+                _layers[result._id] = result;
                 $rootScope.$broadcast('mapproxy_layers.updated');
             });
         }
     };
     var remove = function(layer) {
         layer.$delete({id: layer._id}, function(result) {
-            delete(layers[result._id]);
+            delete(_layers[result._id]);
         });
     };
 
