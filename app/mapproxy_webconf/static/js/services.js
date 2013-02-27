@@ -9,7 +9,7 @@ service('WMSSources', function($rootScope, GetCapabilitiesResource) {
                 angular.forEach(result, function(item) {
                     wms_list[item._id] = item;
                 })
-                $rootScope.$broadcast('wms_list_refreshed');
+                $rootScope.$broadcast('wms_sources.load_complete');
             }
         })
     }
@@ -19,7 +19,7 @@ service('WMSSources', function($rootScope, GetCapabilitiesResource) {
         cap.$save(function(result) {
             console.log(result)
             wms_list[result._id] = result;
-            $rootScope.$broadcast('wms_list_refreshed');
+            $rootScope.$broadcast('wms_sources.add');
         });
     };
 
@@ -67,18 +67,19 @@ service('MapproxySources', function($rootScope, MapproxySourceResource) {
             var source = new MapproxySourceResource(source);
             source.$save(function(result) {
                 _sources[result._id] = result;
-                $rootScope.$broadcast('mapproxy_sources.source_added');
+                $rootScope.$broadcast('mapproxy_sources.added');
             });
         } else {
             source.$update({id: source._id}, function(result) {
                 _sources[result._id] = result;
-                $rootScope.$broadcast('mapproxy_sources.source_updated');
+                $rootScope.$broadcast('mapproxy_sources.updated');
             });
         }
     };
     var remove = function(source) {
         source.$delete({id: source._id}, function(result) {
             delete(_sources[result._id]);
+            $rootScope.$broadcast('mapproxy_sources.deleted');
         });
     };
     var list = function() {
@@ -224,6 +225,11 @@ service('MapproxyLayers', function($rootScope, MapproxyLayerResource) {
         }
     };
 
+    var updateTree = function() {
+        //to implement
+        angular.noop();
+    }
+
     load();
 
     return {
@@ -231,6 +237,7 @@ service('MapproxyLayers', function($rootScope, MapproxyLayerResource) {
         add: add,
         list: list,
         setCurrent: setCurrent,
-        getCurrent: getCurrent
+        getCurrent: getCurrent,
+        updateTree: updateTree
     };
 });

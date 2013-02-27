@@ -10,12 +10,16 @@ function TreeCtrl($scope, WMSSources) {
         WMSSources.addCapabilities(url);
     };
 
-    $scope.$on('wms_list_refreshed', function() {
+    $scope.$on('wms_sources.load_complete', function() {
         $scope.wms_list = WMSSources.wmsList();
     });
 }
 
 function MapproxySourceListCtrl($scope, MapproxySources) {
+
+    var refreshList = function() {
+        $scope.mapproxy_sources = MapproxySources.list();
+    }
 
     $scope.editSource = function(source) {
         MapproxySources.setCurrent(source, true);
@@ -24,9 +28,10 @@ function MapproxySourceListCtrl($scope, MapproxySources) {
         MapproxySources.remove(source);
     };
 
-    $scope.$on('mapproxy_sources.load_complete', function() {
-        $scope.mapproxy_sources = MapproxySources.list();
-    });
+    $scope.$on('mapproxy_sources.load_complete', refreshList);
+    $scope.$on('mapproxy_sources.added', refreshList);
+    $scope.$on('mapproxy_sources.updated', refreshList);
+    $scope.$on('mapproxy_sources.deleted', refreshList);
 }
 
 function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
@@ -141,6 +146,10 @@ function MapproxyCacheFormCtrl($scope, MapproxyCaches) {
 
 function MapproxyLayerListCtrl($scope, MapproxyLayers) {
 
+    var refreshList = function() {
+        $scope.mapproxy_layers = MapproxyLayers.list();
+    }
+
     $scope.editLayer = function(layer) {
         MapproxyLayers.setCurrent(layer, true);
     };
@@ -149,9 +158,10 @@ function MapproxyLayerListCtrl($scope, MapproxyLayers) {
         $scope.$apply();
     };
 
-    $scope.$on('mapproxy_layers.load_complete', function() {
-        $scope.mapproxy_layers = MapproxyLayers.list();
-    });
+    $scope.$on('mapproxy_layers.load_complete', refreshList);
+    $scope.$on('mapproxy_layers.added', refreshList);
+    $scope.$on('mapproxy_layers.updated', refreshList);
+    $scope.$on('mapproxy_layers.deleted', refreshList);
 }
 
 function MapproxyLayerFormCtrl($scope, MapproxyLayers) {
