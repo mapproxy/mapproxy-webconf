@@ -97,28 +97,34 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
 
 function MapproxyCacheListCtrl($scope, MapproxyCaches) {
 
+    var refreshList = function() {
+        $scope.mapproxy_caches = MapproxyCaches.list();
+    }
+
     $scope.editCache = function(cache) {
         MapproxyCaches.setCurrent(cache, true);
     };
     $scope.removeCache = function(cache) {
-        $scope.mapproxy_caches.splice($scope.mapproxy_caches.indexOf(cache), 1);
-        $scope.$apply();
+        MapproxyCaches.remove(cache);
     };
 
-    $scope.mapproxy_caches = MapproxyCaches.list();
-
-    $scope.$on('mapproxy_caches.list', function() {
-        $scope.mapproxy_caches = MapproxyCaches.list();
-    });
+    $scope.$on('mapproxy_caches.load_complete', refreshList);
+    $scope.$on('mapproxy_caches.added', refreshList);
+    $scope.$on('mapproxy_caches.updated', refreshList);
+    $scope.$on('mapproxy_caches.deleted', refreshList);
 }
 
 function MapproxyCacheFormCtrl($scope, MapproxyCaches) {
 
-    $scope.addCache = function() {
-        MapproxyCaches.add(angular.copy($scope.cache.name), angular.copy($scope.cache));
+    $scope.addCache = function(event) {
+        event.preventDefault();
+        MapproxyCaches.add($scope.cache);
         $scope.resetForm();
     };
-    $scope.resetForm = function() {
+    $scope.resetForm = function(event) {
+        if(!angular.isUndefined(event)) {
+            event.preventDefault();
+        }
         $scope.cache = {};
         $scope.cache_form.$setPristine();
         MapproxyCaches.setCurrent($scope.cache, false);

@@ -6,6 +6,12 @@ factory('MapproxySourceResource', function($resource) {
     });
 }).
 
+factory('MapproxyCacheResource', function($resource) {
+    return $resource('/conf/base/caches/:id', {}, {
+        update: {method: 'PUT'}
+    });
+}).
+
 factory('MapproxyLayerResource', function($resource) {
     return $resource('/conf/base/layers/:id', {}, {
         update: {method: 'PUT'}

@@ -321,8 +321,8 @@
 
                         <pre ng-bind="cache|json"></pre>
                         </form>
-                        <button class="btn btn-small" ng-click="addCache()" ng-disabled="!cache_form.$valid">Save</button>
-                        <button class="btn btn-small" ng-click="resetForm()">Reset</button>
+                        <button class="btn btn-small" ng-click="addCache($event)" ng-disabled="!cache_form.$valid">Save</button>
+                        <button class="btn btn-small" ng-click="resetForm($event)">Reset</button>
                     </div>
 
                     <div class="span3 well" ng-controller="MapproxySourceListCtrl">
