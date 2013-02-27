@@ -64,6 +64,7 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
     };
     $scope.addSource = function(event) {
         event.preventDefault();
+        $scope.source = clearData($scope.source)
         MapproxySources.add($scope.source);
         $scope.resetForm();
     };
@@ -123,6 +124,7 @@ function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches) {
 
     $scope.addCache = function(event) {
         event.preventDefault();
+        $scope.cache = clearData($scope.cache);
         MapproxyCaches.add($scope.cache);
         $scope.resetForm();
     };
@@ -173,6 +175,7 @@ function MapproxyLayerListCtrl($scope, MapproxyLayers) {
 function MapproxyLayerFormCtrl($scope, MapproxySources, MapproxyCaches, MapproxyLayers) {
 
     $scope.addLayer = function() {
+        $scope.layer = clearData($scope.layer)
         MapproxyLayers.add(angular.copy($scope.layer));
         $scope.resetForm();
     };
