@@ -133,7 +133,7 @@ class SQLiteStore(object):
             )
         """)
 
-    def get_all(self, section, project, default=DEFAULT_VALUE, with_rank=False):
+    def get_all(self, section, project, default=DEFAULT_VALUE, with_rank=False, with_id=True):
         if default is DEFAULT_VALUE:
             default = {}
 
@@ -148,7 +148,8 @@ class SQLiteStore(object):
             (section, project))
         for row in cur.fetchall():
             data = json.loads(row['data'])
-            data['_id'] = row['id']
+            if with_id:
+                data['_id'] = row['id']
             if with_rank:
                 data['_parent'] = row['parent']
                 data['_rank'] = row['rank']
@@ -188,6 +189,8 @@ class SQLiteStore(object):
         parent = data.pop('_parent', None)
 
         data = json.dumps(data)
+        if '_id' in data:
+            del(data['_id'])
         cur = self.db.cursor()
         cur.execute("UPDATE store SET data = ?, parent = ?, rank = ? WHERE id = ? AND SECTION = ? AND project = ?",
             (data, parent, rank, id, section, project))

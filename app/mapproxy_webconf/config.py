@@ -50,10 +50,10 @@ def mapproxy_conf_from_storage(storage, project):
     used_sources = set()
     used_caches = set()
 
-    sources = storage.get_all('sources', project)
-    caches = storage.get_all('caches', project)
-    layers = storage.get_all('layers', project, [])
-    grids = storage.get_all('grids', project)
+    sources = storage.get_all('sources', project, with_id=False)
+    caches = storage.get_all('caches', project, with_id=False)
+    layers = storage.get_all('layers', project, [], with_id=False)
+    grids = storage.get_all('grids', project, with_id=False)
 
     used_caches, used_sources = used_caches_and_sources(layers, caches, sources)
 
