@@ -350,13 +350,13 @@
                                 <li ng-repeat="layer in layer.layers">  <!-- new scope -->
                                     <div draggable item-data="{{layer}}" ng-model="$parent.$parent.layer.layers" class="mapproxy_layer"> <!-- new scope -->
                                         <!-- need to access layer.layers from 2 lines above so i have to go 2 scopes up ($parent.$parent) -->
-                                        {{layer.name}} ({{layer.title}})
+                                        <div class="label" ng-click="editLayer(layer)">{{layer.name}} ({{layer.title}})</div>
                                         <div class="mapproxy_layer_dropzone" droppable ng-model="layer.layers" allow-array="true"></div>
-                                    </div>
-                                    <div
-                                        ng-include="'mapproxy_layer_renderer.html'"
-                                        style="margin-left: 0.5em"
-                                        >
+                                        <div
+                                            ng-include="'mapproxy_layer_renderer.html'"
+                                            style="margin-left: 0.5em"
+                                            >
+                                        </div>
                                     </div>
                                 </li>
                             </ul>
@@ -365,15 +365,16 @@
                             <ul sortable ng-model="mapproxy_layers">
                                 <li ng-repeat="layer in mapproxy_layers">
                                     <div draggable item-data="{{layer}}" ng-model="mapproxy_layers" class="mapproxy_layer">
-                                        {{layer.name}} ({{layer.title}})
-                                        <div class="mapproxy_layer_dropzone" droppable ng-model="layer.layers" allow-array="true"></div>
-                                    </div>
-                                    <div
-                                        ng-include="'mapproxy_layer_renderer.html'"
-                                        style="margin-left: 0.5em"
-                                        sortable
-                                        ng-model="layer.layers"
-                                        >
+                                        <div class="label" ng-click="editLayer(layer)">{{layer.name}} ({{layer.title}})</div>
+                                        <div class="mapproxy_layer_dropzone" droppable ng-model="layer.layers" allow-array="true" parent-id="{{layer._id}}" parent-save="true"></div>
+
+                                        <div
+                                            ng-include="'mapproxy_layer_renderer.html'"
+                                            style="margin-left: 0.5em"
+                                            sortable
+                                            ng-model="layer.layers"
+                                            >
+                                        </div>
                                     </div>
                                 </li>
                             </ul>
