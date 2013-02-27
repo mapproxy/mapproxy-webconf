@@ -430,6 +430,7 @@
                             <div labeled-control-group name-for="layer_form.max_res" text="Max. Resolution">
                                 <input float type="number" ng-model="layer.max_res" name="layer_form.max_res">
                             </div>
+                            <pre ng-bind="layer|json"></pre>
                         </form>
                         <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!layer_form.$valid">Save</button>
                         <button class="btn btn-small" ng-click="resetForm()">Reset</button>
@@ -459,6 +460,12 @@
                         </ul>
                     </div>
 
+                </div>
+            </div>
+            <div pane header="Mapproxy.yaml">
+                <div  ng-controller="MapproxyConfigCtrl">
+                    <button class="btn btn-small" ng-click="getConfig()">get config</button>
+                    <pre ng-bind="mapproxy_yaml|json"></pre>
                 </div>
             </div>
         </div>
