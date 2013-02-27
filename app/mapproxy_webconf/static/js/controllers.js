@@ -143,9 +143,7 @@ function MapproxyLayerListCtrl($scope, MapproxyLayers) {
         $scope.$apply();
     };
 
-    $scope.mapproxy_layers = MapproxyLayers.list();
-
-    $scope.$on('mapproxy_layers.list', function() {
+    $scope.$on('mapproxy_layers.load_complete', function() {
         $scope.mapproxy_layers = MapproxyLayers.list();
     });
 }
@@ -153,7 +151,7 @@ function MapproxyLayerListCtrl($scope, MapproxyLayers) {
 function MapproxyLayerFormCtrl($scope, MapproxyLayers) {
 
     $scope.addLayer = function() {
-        MapproxyLayers.add(angular.copy($scope.layer.name), angular.copy($scope.layer));
+        MapproxyLayers.add(angular.copy($scope.layer));
         $scope.resetForm();
     };
     $scope.resetForm = function() {
