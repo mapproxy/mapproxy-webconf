@@ -85,6 +85,9 @@ service('MapproxySources', function($rootScope, MapproxySourceResource) {
     var list = function() {
         return dict2list(_sources);
     };
+    var nameById = function(_id) {
+        return angular.isDefined(_sources[_id]) ? _sources[_id].name : false;
+    };
     var setCurrent = function(source, copy) {
         if(copy) {
             current = angular.copy(source);
@@ -107,6 +110,7 @@ service('MapproxySources', function($rootScope, MapproxySourceResource) {
         add: add,
         remove: remove,
         list: list,
+        nameById: nameById,
         setCurrent: setCurrent,
         getCurrent: getCurrent
     };
@@ -147,6 +151,9 @@ service('MapproxyCaches', function($rootScope, MapproxyCacheResource) {
     var list = function() {
         return dict2list(_caches);
     };
+    var nameById = function(_id) {
+        return angular.isDefined(_caches[_id]) ? _caches[_id].name : false;
+    }
     var setCurrent = function(cache, copy) {
         if(copy) {
             current = angular.copy(cache);
@@ -168,6 +175,7 @@ service('MapproxyCaches', function($rootScope, MapproxyCacheResource) {
         add: add,
         remove: remove,
         list: list,
+        nameById: nameById,
         setCurrent: setCurrent,
         getCurrent: getCurrent
     };
