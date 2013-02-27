@@ -138,7 +138,7 @@ function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches) {
         return MapproxySources.nameById(_id);
     };
 
-    $scope.cache = {};
+    $scope.cache = {'meta_size': [null, null]};
     MapproxyCaches.setCurrent($scope.cache, false);
 
     $scope.$on('mapproxy_caches.current', function() {
