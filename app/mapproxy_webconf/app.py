@@ -120,6 +120,10 @@ def index():
 def static(filepath):
     return static_file(filepath, root=os.path.join(os.path.dirname(__file__), 'static'))
 
+@app.route('/conf/<project>/yaml', 'GET')
+def write_config(project, storage):
+    return config.mapproxy_conf_from_storage(storage, project)
+
 def init_app(storage_dir):
     app.install(storage.SQLiteStorePlugin(os.path.join(storage_dir, 'mapproxy.sqlite')))
     return app
