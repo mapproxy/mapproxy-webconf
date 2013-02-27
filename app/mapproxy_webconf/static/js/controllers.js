@@ -157,6 +157,9 @@ function MapproxyLayerListCtrl($scope, MapproxyLayers) {
         $scope.mapproxy_layers.splice($scope.mapproxy_layers.indexOf(layer), 1);
         $scope.$apply();
     };
+    $scope.updateLayerTree = function() {
+        MapproxyLayers.updateTree();
+    }
 
     $scope.$on('mapproxy_layers.load_complete', refreshList);
     $scope.$on('mapproxy_layers.added', refreshList);
