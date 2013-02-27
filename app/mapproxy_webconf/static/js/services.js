@@ -17,7 +17,6 @@ service('WMSSources', function($rootScope, GetCapabilitiesResource) {
     var addCapabilities = function(url) {
         var cap = new GetCapabilitiesResource({url: url});
         cap.$save(function(result) {
-            console.log(result)
             wms_list[result._id] = result;
             $rootScope.$broadcast('wms_sources.add');
         });
@@ -195,8 +194,8 @@ service('MapproxyLayers', function($rootScope, MapproxyLayerResource) {
         });
     };
     var add = function(layer) {
+        var layer = new MapproxyLayerResource(layer);
         if(angular.isUndefined(layer._id)) {
-            var layer = new MapproxyLayerResource(layer);
             layer.$save(function(result) {
                 _layers[result._id] = result;
                 $rootScope.$broadcast('mapproxy_layers.added');
