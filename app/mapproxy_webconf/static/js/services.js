@@ -3,7 +3,7 @@ angular.module('mapproxy_gui.services', ['mapproxy_gui.resources']).
 service('WMSSources', function($rootScope, GetCapabilitiesResource) {
     var wms_list = {};
 
-    var init = function() {
+    var load = function() {
         GetCapabilitiesResource.query(function(result) {
             if(result) {
                 angular.forEach(result, function(item) {
@@ -40,9 +40,10 @@ service('WMSSources', function($rootScope, GetCapabilitiesResource) {
         return wms_list;
     }
 
-    init();
+    load();
 
     return {
+        refresh: load,
         addCapabilities: addCapabilities,
         layerTitle: layerTitle,
         wmsList: wmsList
@@ -79,7 +80,7 @@ service('MapproxySources', function($rootScope, MapproxySourceResource) {
         source.$delete({id: source._id}, function(result) {
             delete(_sources[result._id]);
         });
-    }
+    };
     var list = function() {
         return _sources;
     };
@@ -150,7 +151,7 @@ service('MapproxyLayers', function($rootScope, MapproxyLayerResource) {
     var current;
 
     var load = function() {
-        //if resource not returns array, we have to use normal get
+        //can't use query. resource returns no array.
         MapproxyLayerResource.get(function(result) {
             angular.forEach(result['tree'], function(item) {
                 layers[item._id] = item;
@@ -178,31 +179,36 @@ service('MapproxyLayers', function($rootScope, MapproxyLayerResource) {
         });
     };
 
-    $rootScope.$watch('layers', function(newVal, oldVal, scope) {
-        console.log(newVal, oldVal, scope);
-    });
+    var list = function() {
+        var result = [];
+        for(var key in layers) {
+            result.push(layers[key]);
+        }
+        return result;
+    };
+
+    var setCurrent = function(layer, copy) {
+        if(copy) {
+            current = angular.copy(layer);
+        } else {
+            current = layer;
+        }
+        $rootScope.$broadcast('mapproxy_layers.current');
+    };
+
+    var getCurrent = function(layer) {
+        if(current) {
+            return current;
+        }
+    };
 
     load();
 
     return {
         refresh: load,
-
         add: add,
-        list: function() {
-            return layers;
-        },
-        setCurrent: function(layer, copy) {
-            if(copy) {
-                current = angular.copy(layer);
-            } else {
-                current = layer;
-            }
-            $rootScope.$broadcast('mapproxy_layers.current');
-        },
-        getCurrent: function(layer) {
-            if(current) {
-                return current;
-            }
-        }
+        list: list,
+        setCurrent: setCurrent,
+        getCurrent: getCurrent
     };
 });
