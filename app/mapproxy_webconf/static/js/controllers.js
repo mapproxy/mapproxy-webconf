@@ -132,7 +132,7 @@ function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches) {
         if(!angular.isUndefined(event)) {
             event.preventDefault();
         }
-        $scope.cache = {};
+        $scope.cache = {'meta_size': [null, null]};
         $scope.cache_form.$setPristine();
         MapproxyCaches.setCurrent($scope.cache, false);
     };
@@ -145,6 +145,9 @@ function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches) {
 
     $scope.$on('mapproxy_caches.current', function() {
         $scope.cache = MapproxyCaches.getCurrent();
+        if(angular.isUndefined($scope.cache.meta_size)) {
+            $scope.cache.meta_size = [null, null];
+        }
     });
 
 }
