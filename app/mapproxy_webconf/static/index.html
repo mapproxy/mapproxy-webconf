@@ -67,7 +67,7 @@
                                     <div ng-show="true">
                                 <!-- name -->
                                         <div labeled-control-group name-for="source_form.name" text="Name">
-                                            <input type="text" required ng-model="source.name" name="source_form.name"/>
+                                            <input class="input-xlarge" type="text" required ng-model="source.name" name="source_form.name"/>
                                         </div>
                                 <!-- req -->
                                     <!-- url -->
@@ -75,9 +75,9 @@
                                             <!-- change-callback MUST provide parameters callback and new_data -->
                                             <!-- if an input field should be droppable, it must be wraped in an other element.
                                                  otherwise input field value will not be updated when something is dropped in.-->
-                                            <div droppable change-callback="openDialog(callback, new_data)" class="droppable_input_wrapper"
+                                            <div droppable change-callback="openDialog(callback, new_data)" class="droppable_input_wrapper input-xlarge"
                                                 accepts="wms_source" use-key-for-value="url" ng-model="source.req.url">
-                                                <input type="url" value="{{source.wms_source}}" name="source_form.req_url"
+                                                <input class="input-xlarge" type="url" value="{{source.wms_source}}" name="source_form.req_url"
                                                     required ng-model="source.req.url" />
                                             </div>
                                         </div>
@@ -91,7 +91,7 @@
                                                 ng-model="source.req.layer"
                                                 name="source_form.req_layers"
                                                 use-key-for-value="name"
-                                                class="insertable_multi uneditable-input">
+                                                class="input-xlarge insertable_multi uneditable-input">
                                                 <div sortable ng-model="source.req.layer" >
                                                     <div ng-repeat="layer in source.req.layer" class="item">
                                                         {{layer}} <span ng-show="layerTitle(layer)">({{layerTitle(layer)}})</span>
@@ -101,7 +101,7 @@
                                             </div>
                                         </div>
                                         <div labeled-control-group name-for="add_layer_manual" text="Manual add layer">
-                                            <input type="text" id="add_layer_manual" name="add_layer_manual" ng-model="custom.layer_manual">
+                                            <input type="text" id="add_layer_manual" name="add_layer_manual" ng-model="custom.layer_manual" class="input-xlarge">
                                             <button class="btn btn-small" ng-click="addLayerManual($event)">Add</button>
                                         </div>
                                     <!-- transparent -->
