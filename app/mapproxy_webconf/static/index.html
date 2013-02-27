@@ -267,11 +267,11 @@
                                     allow-array="true"
                                     ng-model="cache.sources"
                                     name="cache_form.sources"
-                                    use-key-for-value="name"
+                                    use-key-for-value="_id"
                                     class="insertable_multi uneditable-input">
                                     <div sortable ng-model="cache.sources" >
                                         <div ng-repeat="source in cache.sources" class="item">
-                                            {{source}}
+                                            <span ng-bind="showName(source)"></span>
                                             <button class="btn btn-mini btn-danger right" ng-click="remove(source)">X</button>
                                         </div>
                                     </div>
@@ -404,11 +404,11 @@
                                     allow-array="true"
                                     ng-model="layer.sources"
                                     name="layer_sources"
-                                    use-key-for-value="name"
+                                    use-key-for-value="_id"
                                     class="insertable_multi uneditable-input">
                                     <div sortable ng-model="layer.sources" >
                                         <div ng-repeat="source in layer.sources" class="item">
-                                            {{source}}
+                                            <span ng-bind="showName(source)"></span>
                                             <button class="btn btn-mini btn-danger right" ng-click="remove(source)">X</button>
                                         </div>
                                     </div>
