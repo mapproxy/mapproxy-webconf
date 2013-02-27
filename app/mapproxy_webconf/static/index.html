@@ -18,6 +18,7 @@
         <script type="text/javascript" src="/static/js/lib/bootstrap.js"></script>
 
         <!-- site libs -->
+        <script type="text/javascript" src="/static/js/helper.js"></script>
         <script type="text/javascript" src="/static/js/validators.js"></script>
         <script type="text/javascript" src="/static/js/resources.js"></script>
         <script type="text/javascript" src="/static/js/services.js"></script>
@@ -380,7 +381,7 @@
                             </ul>
                         </div>
                        <div class="mapproxy_layer_dropzone" droppable ng-model="mapproxy_layers" allow-array="true"></div>
-                        <pre ng-bind="mapproxy_layers|json"></pre>
+                       <button class="btn btn-small" ng-click="updateLayerTree">Update layer tree</button>
                     </div>
 
                     <div class="span4 well" ng-controller="MapproxyLayerFormCtrl">
@@ -429,7 +430,6 @@
                             <div labeled-control-group name-for="layer_form.max_res" text="Max. Resolution">
                                 <input float type="number" ng-model="layer.max_res" name="layer_form.max_res">
                             </div>
-                            <pre ng-bind="layer|json"></pre>
                         </form>
                         <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!layer_form.$valid">Save</button>
                         <button class="btn btn-small" ng-click="resetForm()">Reset</button>

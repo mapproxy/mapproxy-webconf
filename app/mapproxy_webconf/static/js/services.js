@@ -82,7 +82,7 @@ service('MapproxySources', function($rootScope, MapproxySourceResource) {
         });
     };
     var list = function() {
-        return _sources;
+        return dict2list(_sources);
     };
     var setCurrent = function(source, copy) {
         if(copy) {
@@ -180,11 +180,7 @@ service('MapproxyLayers', function($rootScope, MapproxyLayerResource) {
     };
 
     var list = function() {
-        var result = [];
-        for(var key in layers) {
-            result.push(layers[key]);
-        }
-        return result;
+        return dict2list(_layers)
     };
 
     var setCurrent = function(layer, copy) {
