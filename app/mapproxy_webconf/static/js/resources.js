@@ -18,6 +18,12 @@ factory('MapproxyLayerResource', function($resource) {
     });
 }).
 
+factory('MapproxyGridResource', function($resource) {
+    return $resource('/conf/base/grids/:id', {}, {
+        update: {method: 'PUT'}
+    });
+}).
+
 factory('GetCapabilitiesResource', function($resource) {
     return $resource('/conf/base/wms_capabilities/:id', {}, {
         update: {method: 'PUT'}

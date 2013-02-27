@@ -120,7 +120,11 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches) {
     $scope.$on('mapproxy_caches.deleted', refreshList);
 }
 
-function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches) {
+function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches, MapproxyGrids) {
+
+    var refreshGrids = function() {
+        $scope.available_grids = MapproxyGrids.list();
+    };
 
     $scope.addCache = function(event) {
         event.preventDefault();
@@ -150,6 +154,57 @@ function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches) {
         }
     });
 
+    $scope.$on('mapproxy_grids.load_complete', refreshGrids);
+    $scope.$on('mapproxy_grids.added', refreshGrids);
+    $scope.$on('mapproxy_grids.updated', refreshGrids);
+    $scope.$on('mapproxy_grids.deleted', refreshGrids);
+
+}
+
+function MapproxyGridListCtrl($scope, MapproxyGrids) {
+
+    var refreshList = function() {
+        $scope.mapproxy_grids = MapproxyGrids.list();
+    };
+
+    $scope.editGrid = function(grid) {
+        MapproxyGrids.setCurrent(grid, true);
+    };
+    $scope.removeGrid = function(grid) {
+        MapproxyCaches.remove(grid);
+    };
+
+    $scope.$on('mapproxy_grids.load_complete', refreshList);
+    $scope.$on('mapproxy_grids.added', refreshList);
+    $scope.$on('mapproxy_grids.updated', refreshList);
+    $scope.$on('mapproxy_grids.deleted', refreshList);
+}
+
+function MapproxyGridFormCtrl($scope, MapproxyGrids) {
+
+    $scope.addGrid = function(event) {
+        event.preventDefault();
+        MapproxyGrids.add(clearData($scope.grid));
+        $scope.resetForm();
+    };
+    $scope.resetForm = function(event) {
+        if(angular.isDefined(event)) {
+            event.preventDefault();
+        }
+        $scope.grid = {'bbox': [null, null, null, null]};
+        $scope.grid_form.$setPristine();
+        MapproxyGrids.setCurrent($scope.grid, false);
+    };
+
+    $scope.grid = {'bbox': [null, null, null, null]};
+    MapproxyGrids.setCurrent($scope.grid, false);
+
+    $scope.$on('mapproxy_grids.current', function() {
+        $scope.grid = MapproxyGrids.getCurrent();
+        if(angular.isUndefined($scope.grid.bbox)) {
+            $scope.grid.bbox = [null, null, null, null];
+        }
+    });
 }
 
 function MapproxyLayerListCtrl($scope, MapproxyLayers) {

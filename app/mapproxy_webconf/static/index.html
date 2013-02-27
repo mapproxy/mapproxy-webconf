@@ -255,7 +255,7 @@
                         <form name="cache_form" ng-model="cache" class="form-horizontal">
                         <!-- name -->
                             <div labeled-control-group name-for="cache_form.cache_name" text="Name">
-                                <input required type="text" required ng-model="cache.name" name="cache_form.cache_name"/>
+                                <input required type="text" ng-model="cache.name" name="cache_form.cache_name"/>
                             </div>
                         <!-- sources -->
                             <!-- change-callback MUST provide parameters callback and new_data -->
@@ -312,15 +312,9 @@
                             </div>
                         <!-- grids XXXkai: replace by received list of supported srs combined with user defined grids-->
                             <div labeled-control-group name-for="cache_form.grids" text="Grids">
-                                <select ng-model="cache.grids" name="cache_form.grids" multiple="multiple"/>
-                                    <option value="EPSG:3857">EPSG:3857</option>
-                                    <option value="EPSG:4326">EPSG:4326</option>
-                                    <option value="EPSG:900913">EPSG:900913</option>
+                                <select ng-model="cache.grids" name="cache_form.grids" multiple="multiple" ng-options="value._id as value.name for value in available_grids"/>
                                 </select>
                             </div>
-
-
-                        <pre ng-bind="cache|json"></pre>
                         </form>
                         <button class="btn btn-small" ng-click="addCache($event)" ng-disabled="!cache_form.$valid">Save</button>
                         <button class="btn btn-small" ng-click="resetForm($event)">Reset</button>
@@ -339,6 +333,61 @@
                         </ul>
                     </div>
 
+                </div>
+            </div>
+            <div pane header="Grid">
+                <div class="row-fluid">
+                    <div class="span3 well" ng-controller="MapproxyGridListCtrl">
+                        <h3>Mapproxy Grids</h3>
+                        <ul>
+                            <li class="mapproxy_grid label"
+                                ng-repeat="grid in mapproxy_grids | orderBy:'name'"
+                                >
+                                <span ng-click="editGrid(grid)">{{grid.name}}</span>
+                                <button
+                                    class="btn btn-mini btn-danger right"
+                                    ask-dialog
+                                    dialog-title="Confirm!"
+                                    dialog-text="Should I do it?"
+                                    callback="removeGrid(grid)">X</button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="span4 well">
+                        <h3>Edit Grid</h3>
+                        <form class="form-horizontal" name="grid_form" ng-controller="MapproxyGridFormCtrl" novalidate>
+                        <!-- name -->
+                            <div labeled-control-group name-for="grid_form.name" text="Name">
+                                <input required type="text" ng-model="grid.name" name="grid_form.name" />
+                            </div>
+                        <!-- SRS -->
+                            <div labeled-control-group name-for="grid_form.srs" text="SRS">
+                                 <select ng-model="grid.srs" name="grid_form.srs" />
+                                    <option value="EPSG:3857">EPSG:3857</option>
+                                    <option value="EPSG:4326">EPSG:4326</option>
+                                    <option value="EPSG:900913">EPSG:900913</option>
+                                </select>
+                            </div>
+                        <!-- BBox -->
+                            <div labeled-control-group name-for="grid_form.bbox" text="BBox">
+                                <input type="number" ng-model="grid.bbox[0]" class="input-mini" name="grid_form.bbox_0" />
+                                <input type="number" ng-model="grid.bbox[1]" class="input-mini" name="grid_form.bbox_1" />
+                                <input type="number" ng-model="grid.bbox[2]" class="input-mini" name="grid_form.bbox_2" />
+                                <input type="number" ng-model="grid.bbox[3]" class="input-mini" name="grid_form.bbox_3" />
+                            </div>
+                        <!-- BBox SRS -->
+                            <div labeled-control-group name-for="grid_form.bbox_srs" text="BBox SRS">
+                                 <select ng-model="grid.bbox_srs" name="grid_form.bbox_srs" />
+                                    <option value="EPSG:3857">EPSG:3857</option>
+                                    <option value="EPSG:4326">EPSG:4326</option>
+                                    <option value="EPSG:900913">EPSG:900913</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="!grid_form.$valid">Save</button>
+                            <button class="btn btn-small" ng-click="resetForm($event)">Reset</button>
+                        </form>
+                    </div>
                 </div>
             </div>
             <div pane header="Layer">
@@ -430,7 +479,6 @@
                             <div labeled-control-group name-for="layer_form.max_res" text="Max. Resolution">
                                 <input float type="number" ng-model="layer.max_res" name="layer_form.max_res">
                             </div>
-                            <pre ng-bind="layer|json"></pre>
                         </form>
                         <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!layer_form.$valid">Save</button>
                         <button class="btn btn-small" ng-click="resetForm()">Reset</button>
