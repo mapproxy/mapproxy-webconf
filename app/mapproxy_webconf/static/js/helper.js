@@ -7,22 +7,25 @@ var dict2list = function(dict) {
 };
 
 var clearData = function(dict) {
-    angular.forEach(dict, function(value, key) {
-        if(value == undefined || value == 0 || value == [] || value == {}) {
+    angular.forEach(angular.copy(dict), function(value, key) {
+        if(typeof(value) == 'boolean') {
+            angular.noop();
+        } else if(value == undefined || value == 0 || value == [] || value == {} || value == null) {
             delete(dict[key]);
-        } else if(angular.isObject(value)) {
-            dict[key] = clearData(value);
         } else if(angular.isArray(value)) {
-            angular.forEach(value, function(val) {
-                if(angular.isUndefined(val)) {
+            angular.forEach(angular.copy(value), function(val) {
+                if(val == undefined || val == 0 || val == [] || val == {} || val == null) {
                     value.splice(value.indexOf(val), 1);
                 }
-                if(value == []) {
-                    delete(dict[key]);
-                } else {
-                    dict[key] = value;
-                }
             });
+            if(value.length == 0) {
+                delete(dict[key]);
+            } else {
+                dict[key] = value;
+            }
+
+        } else if(angular.isObject(value)) {
+            dict[key] = clearData(value);
         }
     });
     return dict;
