@@ -133,7 +133,7 @@ class SQLiteStore(object):
             )
         """)
 
-    def get_all(self, section, project, default=DEFAULT_VALUE, with_rank=False, with_id=True):
+    def get_all(self, section, project, default=DEFAULT_VALUE, with_rank=False, with_id=False):
         if default is DEFAULT_VALUE:
             default = {}
 

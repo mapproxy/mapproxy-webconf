@@ -14,7 +14,7 @@ class RESTBase(object):
         self.section = section
 
     def list(self, project, storage):
-        return storage.get_all(self.section, project)
+        return storage.get_all(self.section, project, with_id=True)
 
     @requires_json
     def add(self, project, storage):
@@ -59,15 +59,15 @@ RESTBase('grids').setup_routing(app)
 
 @app.route('/conf/<project>/globals')
 def globals_list(project, storage):
-    return storage.get_all('globals', project)
+    return storage.get_all('globals', project, with_id=True)
 
 @app.route('/conf/<project>/services')
 def services_list(project, storage):
-    return storage.get_all('services', project)
+    return storage.get_all('services', project, with_id=True)
 
 @app.route('/conf/<project>/layers')
 def layers_list(project, storage):
-    layers = storage.get_all('layers', project, with_rank=True)
+    layers = storage.get_all('layers', project, with_rank=True, with_id=True)
     tree = config.layer_tree(layers)
     return {'tree': tree}
 
