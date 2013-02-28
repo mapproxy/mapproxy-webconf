@@ -68,6 +68,11 @@ def mapproxy_conf_from_storage(storage, project):
     mapproxy_conf['sources'] = id_dict_to_named_dict(dict((k, sources[k]) for k in used_sources))
     mapproxy_conf['grids'] = id_dict_to_named_dict(dict((k, grids[k]) for k in used_grids))
 
+    if 'sources' in mapproxy_conf:
+        for source in mapproxy_conf['sources'].values():
+            if 'req' in source and 'layers' in source['req']:
+                source['req']['layers'] = ','.join(source['req']['layers'])
+
     return mapproxy_conf
 
 
