@@ -38,3 +38,9 @@ class TestSQLiteStorage(TempDirTest):
             }
         )
 
+    def test_get_with_id(self):
+        new_id = self.storage.add(section='sources', project='base', data={'foo': 'bar'})
+        assert self.storage.get_all(section='sources', project='base', with_id=True) == {new_id: {'_id': new_id, 'foo': 'bar'}}
+
+        self.storage.update(id=new_id, section='sources', project='base', data={'foo': 'baz'})
+        assert self.storage.get_all(section='sources', project='base', with_id=True) == {new_id: {'_id': new_id, 'foo': 'baz'}}
