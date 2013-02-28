@@ -11,6 +11,7 @@ def write_mapproxy_yaml(mapproxy_conf, filename):
     content = yaml.safe_dump(mapproxy_conf, default_flow_style=False)
     print content
     utils.save_atomic(filename, content=content)
+    return content
 
 def fill_storage_with_mapproxy_conf(storage, project, mapproxy_conf):
     # TODO convert named references (grids/caches/sources) to ids
