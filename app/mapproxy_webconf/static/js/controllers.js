@@ -72,7 +72,7 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
         if(!angular.isUndefined(event)) {
             event.preventDefault();
         }
-        $scope.source = {};
+        $scope.source = {'type': 'wms'};
         $scope.source_form.$setPristine();
         MapproxySources.setCurrent($scope.source, false)
     };
@@ -92,7 +92,7 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
 
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {};
-    $scope.source = {};
+    $scope.source = {'type': 'wms'};
 
     MapproxySources.setCurrent($scope.source, false)
 
