@@ -1,10 +1,9 @@
 angular.module('mapproxy_gui.services', ['mapproxy_gui.resources']).
 
-service('WMSSources', function($rootScope, GetCapabilitiesResource) {
+service('WMSSources', function($rootScope, MapproxyResource) {
     var wms_list = {};
-
     var load = function() {
-        GetCapabilitiesResource.query(function(result) {
+        MapproxyResource.query({action: 'wms_capabilities'}, function(result) {
             if(result) {
                 angular.forEach(result, function(item) {
                     wms_list[item._id] = item;
@@ -15,8 +14,8 @@ service('WMSSources', function($rootScope, GetCapabilitiesResource) {
     }
 
     var addCapabilities = function(url) {
-        var cap = new GetCapabilitiesResource({url: url});
-        cap.$save(function(result) {
+        var cap = new MapproxyResource({url: url});
+        cap.$save({action: 'wms_capabilities'}, function(result) {
             wms_list[result._id] = result;
             $rootScope.$broadcast('wms_sources.add');
         });
@@ -49,12 +48,12 @@ service('WMSSources', function($rootScope, GetCapabilitiesResource) {
     };
 }).
 
-service('MapproxySources', function($rootScope, MapproxySourceResource) {
+service('MapproxySources', function($rootScope, MapproxyResource) {
     var _sources = {};
     var current;
 
     var load = function() {
-        MapproxySourceResource.query(function(result) {
+        MapproxyResource.query({action: 'sources'}, function(result) {
             angular.forEach(result, function(item) {
                 _sources[item._id] = item;
             })
@@ -63,20 +62,20 @@ service('MapproxySources', function($rootScope, MapproxySourceResource) {
     };
     var add = function(source) {
         if(angular.isUndefined(source._id)) {
-            var source = new MapproxySourceResource(source);
-            source.$save(function(result) {
+            var source = new MapproxyResource(source);
+            source.$save({action: 'sources'}, function(result) {
                 _sources[result._id] = result;
                 $rootScope.$broadcast('mapproxy_sources.added');
             });
         } else {
-            source.$update({id: source._id}, function(result) {
+            source.$update({action: 'sources', id: source._id}, function(result) {
                 _sources[result._id] = result;
                 $rootScope.$broadcast('mapproxy_sources.updated');
             });
         }
     };
     var remove = function(source) {
-        source.$delete({id: source._id}, function(result) {
+        source.$delete({action: 'sources', id: source._id}, function(result) {
             delete(_sources[result._id]);
             $rootScope.$broadcast('mapproxy_sources.deleted');
         });
@@ -115,12 +114,12 @@ service('MapproxySources', function($rootScope, MapproxySourceResource) {
     };
 }).
 
-service('MapproxyCaches', function($rootScope, MapproxyCacheResource) {
+service('MapproxyCaches', function($rootScope, MapproxyResource) {
     var _caches = {};
     var current;
 
     var load = function() {
-        MapproxyCacheResource.query(function(result) {
+        MapproxyResource.query({action: 'caches'}, function(result) {
             angular.forEach(result, function(item) {
                 _caches[item._id] = item;
             });
@@ -129,20 +128,20 @@ service('MapproxyCaches', function($rootScope, MapproxyCacheResource) {
     };
     var add = function(cache) {
         if(angular.isUndefined(cache._id)) {
-            var cache = new MapproxyCacheResource(cache);
-            cache.$save(function(result) {
+            var cache = new MapproxyResource(cache);
+            cache.$save({action: 'caches'}, function(result) {
                 _caches[result._id] = result;
                 $rootScope.$broadcast('mapproxy_caches.added');
             });
         } else {
-            cache.$update({id: cache._id}, function(result) {
+            cache.$update({action: 'action', id: cache._id}, function(result) {
                 _caches[result._id] = result;
                 $rootScope.$broadcast('mapproxy_caches.updated');
             });
         }
     };
     var remove = function(cache) {
-        cache.$delete({id: cache._id}, function(result) {
+        cache.$delete({action: 'action', id: cache._id}, function(result) {
             delete(_caches[result._id]);
             $rootScope.$broadcast('mapproxy_caches.deleted');
         })
@@ -180,12 +179,12 @@ service('MapproxyCaches', function($rootScope, MapproxyCacheResource) {
     };
 }).
 
-service('MapproxyGrids', function($rootScope, MapproxyGridResource) {
+service('MapproxyGrids', function($rootScope, MapproxyResource) {
     var _grids = {};
     var current;
 
     var load = function() {
-        MapproxyGridResource.query(function(result) {
+        MapproxyResource.query({action: 'grids'}, function(result) {
             angular.forEach(result, function(item) {
                 _grids[item._id] = item;
             });
@@ -193,21 +192,21 @@ service('MapproxyGrids', function($rootScope, MapproxyGridResource) {
         });
     };
     var add = function(grid) {
-        var grid = new MapproxyGridResource(grid);
+        var grid = new MapproxyResource(grid);
         if(angular.isUndefined(grid._id)) {
-            grid.$save(function(result) {
+            grid.$save({action: 'grids'}, function(result) {
                 _grids[result._id] = result;
                 $rootScope.$broadcast('mapproxy_grids.added');
             });
         } else {
-            grid.$update({id: grid._id}, function(result) {
+            grid.$update({action: 'grids', id: grid._id}, function(result) {
                 _grids[result._id] = result;
                 $rootScope.$broadcast('mapproxy_grids.updated');
             });
         }
     };
     var remove = function(grid) {
-        grid.$delete({id: grid._id}, function(result) {
+        grid.$delete({action: 'grids', id: grid._id}, function(result) {
             delete(_grids[result._id]);
             $rootScope.$broadcast('mapproxy_grids.deleted');
         });
@@ -241,13 +240,13 @@ service('MapproxyGrids', function($rootScope, MapproxyGridResource) {
     };
 }).
 
-service('MapproxyLayers', function($rootScope, MapproxyLayerResource) {
+service('MapproxyLayers', function($rootScope, MapproxyResource) {
     var _layers = {};
     var current;
 
     var load = function() {
         //can't use query. resource returns no array.
-        MapproxyLayerResource.get(function(result) {
+        MapproxyResource.get({action: 'layers'}, function(result) {
             angular.forEach(result['tree'], function(item) {
                 _layers[item._id] = item;
             });
@@ -255,21 +254,21 @@ service('MapproxyLayers', function($rootScope, MapproxyLayerResource) {
         });
     };
     var add = function(layer) {
-        var layer = new MapproxyLayerResource(layer);
+        var layer = new MapproxyResource(layer);
         if(angular.isUndefined(layer._id)) {
-            layer.$save(function(result) {
+            layer.$save({action: 'layers'}, function(result) {
                 _layers[result._id] = result;
                 $rootScope.$broadcast('mapproxy_layers.added');
             });
         } else {
-            layer.$update({id: layer._id}, function(result) {
+            layer.$update({action: 'layers', id: layer._id}, function(result) {
                 _layers[result._id] = result;
                 $rootScope.$broadcast('mapproxy_layers.updated');
             });
         }
     };
     var remove = function(layer) {
-        layer.$delete({id: layer._id}, function(result) {
+        layer.$delete({action: 'layers', id: layer._id}, function(result) {
             delete(_layers[result._id]);
             $rootScope.$broadcast('mapproxy_layers.deleted');
         });
