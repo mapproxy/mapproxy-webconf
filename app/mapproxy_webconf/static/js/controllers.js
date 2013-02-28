@@ -38,8 +38,8 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
     $scope.openDialog = function(callback, new_data) {
         if(angular.isUndefined($scope.source.req) ||
            angular.isUndefined($scope.source.req.url) ||
-           angular.isUndefined($scope.source.req.layer) ||
-           $scope.source.req.layer.length == 0) {
+           angular.isUndefined($scope.source.req.layers) ||
+           $scope.source.req.layers.length == 0) {
             callback(true);
         } else  {
             $('#confirm_url_change_dialog').dialog({
@@ -50,7 +50,7 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
                 buttons: {
                     "Change url": function() {
                         $(this).dialog("close");
-                        $scope.source.req.layer = undefined;
+                        $scope.source.req.layers = undefined;
                         $scope.$apply();
                         callback(true);
                     },
@@ -79,10 +79,10 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
     $scope.addLayerManual = function(event) {
         event.preventDefault();
         var new_layer = $scope.custom.layer_manual;
-        if(!angular.isArray($scope.source.req.layer)) {
-            $scope.source.req.layer = [new_layer];
+        if(!angular.isArray($scope.source.req.layers)) {
+            $scope.source.req.layers = [new_layer];
         } else {
-            $scope.source.req.layer.push(new_layer);
+            $scope.source.req.layers.push(new_layer);
         }
         $scope.custom.layer_manual = undefined;
     };
