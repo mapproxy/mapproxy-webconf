@@ -61,6 +61,7 @@ def mapproxy_conf_from_storage(storage, project):
 
     id_map = create_id_name_map(sources, caches, grids)
 
+    mapproxy_conf['services'] = {'demo': None, 'wms': {'srs': ['EPSG:4326', 'EPSG:3857'], 'md': {'title': 'TestWMS'}}}
     mapproxy_conf['layers'] = [replace_ids_layer(l, id_map) for l in layers]
     mapproxy_conf['caches'] = id_dict_to_named_dict(dict((k, replace_ids_cache(caches[k], id_map)) for k in used_caches))
     mapproxy_conf['sources'] = id_dict_to_named_dict(dict((k, sources[k]) for k in used_sources))
