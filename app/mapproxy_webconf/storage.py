@@ -178,6 +178,8 @@ class SQLiteStore(object):
         parent = data.pop('_parent', None)
 
         data = json.dumps(data)
+        if '_id' in data:
+            del(data['_id'])
         cur = self.db.cursor()
         cur.execute("INSERT INTO store (section, project, data, parent, rank) VALUES (?, ?, ?, ?, ?)",
             (section, project, data, parent, rank))
