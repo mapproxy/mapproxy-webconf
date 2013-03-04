@@ -1,5 +1,8 @@
 function TreeCtrl($scope, WMSSources) {
 
+    var refreshTree = function() {
+        $scope.wms_list = WMSSources.list();
+    };
     $scope.itemData = function(layer) {
         if(!layer.name) {
             return layer.layers;
@@ -7,12 +10,11 @@ function TreeCtrl($scope, WMSSources) {
         return layer;
     };
     $scope.addCapabilities = function(url) {
-        WMSSources.addCapabilities(url);
+        WMSSources.add({url: url});
     };
 
-    $scope.$on('wms_sources.load_complete', function() {
-        $scope.wms_list = WMSSources.wmsList();
-    });
+    $scope.$on('wms_capabilities.load_complete', refreshTree);
+    $scope.$on('wms_capabilities.added', refreshTree);
 }
 
 function MapproxySourceListCtrl($scope, MapproxySources) {
@@ -28,10 +30,10 @@ function MapproxySourceListCtrl($scope, MapproxySources) {
         MapproxySources.remove(source);
     };
 
-    $scope.$on('mapproxy_sources.load_complete', refreshList);
-    $scope.$on('mapproxy_sources.added', refreshList);
-    $scope.$on('mapproxy_sources.updated', refreshList);
-    $scope.$on('mapproxy_sources.deleted', refreshList);
+    $scope.$on('sources.load_complete', refreshList);
+    $scope.$on('sources.added', refreshList);
+    $scope.$on('sources.updated', refreshList);
+    $scope.$on('sources.deleted', refreshList);
 }
 
 function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
@@ -96,7 +98,7 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
 
     MapproxySources.setCurrent($scope.source, false)
 
-    $scope.$on('mapproxy_sources.current', function() {
+    $scope.$on('sources.current', function() {
         $scope.source = MapproxySources.getCurrent();
     });
 }
@@ -114,10 +116,10 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches) {
         MapproxyCaches.remove(cache);
     };
 
-    $scope.$on('mapproxy_caches.load_complete', refreshList);
-    $scope.$on('mapproxy_caches.added', refreshList);
-    $scope.$on('mapproxy_caches.updated', refreshList);
-    $scope.$on('mapproxy_caches.deleted', refreshList);
+    $scope.$on('caches.load_complete', refreshList);
+    $scope.$on('caches.added', refreshList);
+    $scope.$on('caches.updated', refreshList);
+    $scope.$on('caches.deleted', refreshList);
 }
 
 function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches, MapproxyGrids) {
@@ -147,17 +149,17 @@ function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
     $scope.cache = {'meta_size': [null, null]};
     MapproxyCaches.setCurrent($scope.cache, false);
 
-    $scope.$on('mapproxy_caches.current', function() {
+    $scope.$on('caches.current', function() {
         $scope.cache = MapproxyCaches.getCurrent();
         if(angular.isUndefined($scope.cache.meta_size)) {
             $scope.cache.meta_size = [null, null];
         }
     });
 
-    $scope.$on('mapproxy_grids.load_complete', refreshGrids);
-    $scope.$on('mapproxy_grids.added', refreshGrids);
-    $scope.$on('mapproxy_grids.updated', refreshGrids);
-    $scope.$on('mapproxy_grids.deleted', refreshGrids);
+    $scope.$on('grids.load_complete', refreshGrids);
+    $scope.$on('grids.added', refreshGrids);
+    $scope.$on('grids.updated', refreshGrids);
+    $scope.$on('grids.deleted', refreshGrids);
 
 }
 
@@ -174,10 +176,10 @@ function MapproxyGridListCtrl($scope, MapproxyGrids) {
         MapproxyCaches.remove(grid);
     };
 
-    $scope.$on('mapproxy_grids.load_complete', refreshList);
-    $scope.$on('mapproxy_grids.added', refreshList);
-    $scope.$on('mapproxy_grids.updated', refreshList);
-    $scope.$on('mapproxy_grids.deleted', refreshList);
+    $scope.$on('grids.load_complete', refreshList);
+    $scope.$on('grids.added', refreshList);
+    $scope.$on('grids.updated', refreshList);
+    $scope.$on('grids.deleted', refreshList);
 }
 
 function MapproxyGridFormCtrl($scope, MapproxyGrids) {
@@ -199,7 +201,7 @@ function MapproxyGridFormCtrl($scope, MapproxyGrids) {
     $scope.grid = {'bbox': [null, null, null, null]};
     MapproxyGrids.setCurrent($scope.grid, false);
 
-    $scope.$on('mapproxy_grids.current', function() {
+    $scope.$on('grids.current', function() {
         $scope.grid = MapproxyGrids.getCurrent();
         if(angular.isUndefined($scope.grid.bbox)) {
             $scope.grid.bbox = [null, null, null, null];
@@ -224,10 +226,10 @@ function MapproxyLayerListCtrl($scope, MapproxyLayers) {
         MapproxyLayers.updateTree();
     }
 
-    $scope.$on('mapproxy_layers.load_complete', refreshList);
-    $scope.$on('mapproxy_layers.added', refreshList);
-    $scope.$on('mapproxy_layers.updated', refreshList);
-    $scope.$on('mapproxy_layers.deleted', refreshList);
+    $scope.$on('layers.load_complete', refreshList);
+    $scope.$on('layers.added', refreshList);
+    $scope.$on('layers.updated', refreshList);
+    $scope.$on('layers.deleted', refreshList);
 }
 
 function MapproxyLayerFormCtrl($scope, MapproxySources, MapproxyCaches, MapproxyLayers) {
@@ -256,10 +258,9 @@ function MapproxyLayerFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
     $scope.layer = {};
     MapproxyLayers.setCurrent($scope.layer, false);
 
-    $scope.$on('mapproxy_layers.current', function() {
+    $scope.$on('layers.current', function() {
         $scope.layer = MapproxyLayers.getCurrent();
     });
-
 }
 
 function MapproxySourceNoticeCtrl($scope, MapproxySources) {
@@ -293,14 +294,12 @@ function MapproxySourceNoticeCtrl($scope, MapproxySources) {
         }
     }
 
-
-
     $scope.$watch('watch_source', function(newVal, oldVal, scope) {
         checkImageSettings();
         checkConcurrentRequests();
     }, true);
 
-    $scope.$on('mapproxy_sources.current', function() {
+    $scope.$on('sources.current', function() {
         $scope.watch_source = MapproxySources.getCurrent();
     });
 }
