@@ -1,29 +1,121 @@
-angular.module('mapproxy_gui.services', ['mapproxy_gui.resources']).
-
-service('WMSSources', function($rootScope, MapproxyResource) {
-    var wms_list = {};
-    var load = function() {
-        MapproxyResource.query({action: 'wms_capabilities'}, function(result) {
+var MapproxyBaseService = function(_section) {
+    var _this = this;
+    this._items = {};
+    this._item;
+    this._section = _section;
+    this._rootScope;
+    this._resource;
+    this.load = function() {
+        _this._resource.query({action: _this._section}, function(result) {
             if(result) {
                 angular.forEach(result, function(item) {
-                    wms_list[item._id] = item;
+                    _this._items[item._id] = item;
                 })
-                $rootScope.$broadcast('wms_sources.load_complete');
+                if(angular.isDefined(_this._rootScope))
+                    _this._rootScope.$broadcast(_this._section + '.load_complete');
             }
-        })
-    }
-
-    var addCapabilities = function(url) {
-        var cap = new MapproxyResource({url: url});
-        cap.$save({action: 'wms_capabilities'}, function(result) {
-            wms_list[result._id] = result;
-            $rootScope.$broadcast('wms_sources.add');
         });
     };
+    this.add = function(item) {
+        if(angular.isUndefined(item._id)) {
+            var item = new _this._resource(item);
+            item.$save({action: _this._section}, function(result) {
+                _this._items[result._id] = result;
+                if(angular.isDefined(_this._rootScope))
+                    _this._rootScope.$broadcast(_this._section + '.added');
+            });
+        } else {
+            item.$update({action: _this._section, id: item._id}, function(result) {
+                _this._items[result._id] = result;
+                if(angular.isDefined(_this._rootScope))
+                    _this._rootScope.$broadcast(_this._section + '.updated');
+            });
+        }
+    };
+    this.remove = function(item) {
+        item.$delete({action: _this._section, id: item._id}, function(result) {
+            delete(_this._items[result._id]);
+            if(angular.isDefined(_this._rootScope))
+                _this._rootScope.$broadcast(_this._section + '.deleted');
+        });
+    };
+    this.list = function() {
+        return dict2list(_this._items);
+    };
+    this.nameById = function(_id) {
+        return angular.isDefined(_this._items[_id]) ? _this._items[_id].name : false;
+    };
+    this.setCurrent = function(item, copy) {
+        if(copy) {
+            _this._item = angular.copy(item);
+        } else {
+            _this._item = item;
+        }
+        if(angular.isDefined(_this._rootScope))
+            _this._rootScope.$broadcast(_this._section + '.current');
+    };
+    this.getCurrent = function() {
+        if(_this._item) {
+            return _this._item;
+        }
+    };
+    this.return_func = function($rootScope, MapproxyResource) {
+        _this._rootScope = $rootScope;
+        _this._resource = MapproxyResource;
+        _this.load();
+        return {
+            refresh: _this.load,
+            add: _this.add,
+            remove: _this.remove,
+            list: _this.list,
+            nameById: _this.nameById,
+            setCurrent: _this.setCurrent,
+            getCurrent: _this.getCurrent
+        }
+    };
+};
 
-    var layerTitle = function(url, layer_name) {
-        var title = false
-        angular.forEach(wms_list, function(wms) {
+var MapproxyLayerService = function(_section) {
+    MapproxyBaseService.call(this, _section);
+    var _this = this;
+    this.load = function() {
+        //can't use query. resource returns no array.
+        _this._resource.get({action: _this._section}, function(result) {
+            angular.forEach(result['tree'], function(item) {
+                _this._items[item._id] = item;
+            });
+            if(angular.isDefined(_this._rootScope))
+                _this._rootScope.$broadcast(_this._section + '.load_complete');
+        });
+    };
+    this.updateTree = function() {
+        // not implemented
+        angular.noop();
+    };
+    this.return_func = function($rootScope, MapproxyResource) {
+        _this._rootScope = $rootScope;
+        _this._resource = MapproxyResource;
+        _this.load();
+        return {
+            refresh: _this.load,
+            add: _this.add,
+            remove: _this.remove,
+            list: _this.list,
+            nameById: _this.nameById,
+            setCurrent: _this.setCurrent,
+            getCurrent: _this.getCurrent,
+            updateTree: _this.updateTree
+        }
+    };
+};
+
+WMSSourceService = function(_section) {
+    MapproxyBaseService.call(this, _section);
+    var _this = this;
+
+    this.layerTitle = function(url, layer_name) {
+        var title = false;
+        angular.forEach(_this._items, function(wms) {
             if(wms.url == url) {
                 angular.forEach(wms.layer.layers, function(layer) {
                     if(layer.name == layer_name) {
@@ -34,278 +126,33 @@ service('WMSSources', function($rootScope, MapproxyResource) {
         });
         return title;
     };
-    var wmsList = function() {
-        return wms_list;
-    }
+    this.return_func = function($rootScope, MapproxyResource) {
+        _this._rootScope = $rootScope;
+        _this._resource = MapproxyResource;
+        _this.load();
+        return {
+            refresh: _this.load,
+            add: _this.add,
+            remove: _this.remove,
+            list: _this.list,
+            nameById: _this.nameById,
+            setCurrent: _this.setCurrent,
+            getCurrent: _this.getCurrent,
+            layerTitle: _this.layerTitle
+        };
+    };
+};
 
-    load();
+var wmsService = new WMSSourceService('wms_capabilities');
+var sourceService = new MapproxyBaseService('sources');
+var cacheService = new MapproxyBaseService('caches');
+var gridService = new MapproxyBaseService('grids');
+var layerService = new MapproxyLayerService('layers');
 
-    return {
-        refresh: load,
-        addCapabilities: addCapabilities,
-        layerTitle: layerTitle,
-        wmsList: wmsList
-    };
-}).
+angular.module('mapproxy_gui.services', ['mapproxy_gui.resources']).
 
-service('MapproxySources', function($rootScope, MapproxyResource) {
-    var _sources = {};
-    var current;
-
-    var load = function() {
-        MapproxyResource.query({action: 'sources'}, function(result) {
-            angular.forEach(result, function(item) {
-                _sources[item._id] = item;
-            })
-            $rootScope.$broadcast('mapproxy_sources.load_complete');
-        });
-    };
-    var add = function(source) {
-        if(angular.isUndefined(source._id)) {
-            var source = new MapproxyResource(source);
-            source.$save({action: 'sources'}, function(result) {
-                _sources[result._id] = result;
-                $rootScope.$broadcast('mapproxy_sources.added');
-            });
-        } else {
-            source.$update({action: 'sources', id: source._id}, function(result) {
-                _sources[result._id] = result;
-                $rootScope.$broadcast('mapproxy_sources.updated');
-            });
-        }
-    };
-    var remove = function(source) {
-        source.$delete({action: 'sources', id: source._id}, function(result) {
-            delete(_sources[result._id]);
-            $rootScope.$broadcast('mapproxy_sources.deleted');
-        });
-    };
-    var list = function() {
-        return dict2list(_sources);
-    };
-    var nameById = function(_id) {
-        return angular.isDefined(_sources[_id]) ? _sources[_id].name : false;
-    };
-    var setCurrent = function(source, copy) {
-        if(copy) {
-            current = angular.copy(source);
-        } else {
-            current = source;
-        }
-        $rootScope.$broadcast('mapproxy_sources.current');
-    };
-    var getCurrent= function() {
-        if(current) {
-            return current;
-        }
-    };
-
-    //initial load data from server
-    load();
-
-    return {
-        refresh: load,
-        add: add,
-        remove: remove,
-        list: list,
-        nameById: nameById,
-        setCurrent: setCurrent,
-        getCurrent: getCurrent
-    };
-}).
-
-service('MapproxyCaches', function($rootScope, MapproxyResource) {
-    var _caches = {};
-    var current;
-
-    var load = function() {
-        MapproxyResource.query({action: 'caches'}, function(result) {
-            angular.forEach(result, function(item) {
-                _caches[item._id] = item;
-            });
-            $rootScope.$broadcast('mapproxy_caches.load_complete');
-        });
-    };
-    var add = function(cache) {
-        if(angular.isUndefined(cache._id)) {
-            var cache = new MapproxyResource(cache);
-            cache.$save({action: 'caches'}, function(result) {
-                _caches[result._id] = result;
-                $rootScope.$broadcast('mapproxy_caches.added');
-            });
-        } else {
-            cache.$update({action: 'action', id: cache._id}, function(result) {
-                _caches[result._id] = result;
-                $rootScope.$broadcast('mapproxy_caches.updated');
-            });
-        }
-    };
-    var remove = function(cache) {
-        cache.$delete({action: 'action', id: cache._id}, function(result) {
-            delete(_caches[result._id]);
-            $rootScope.$broadcast('mapproxy_caches.deleted');
-        })
-    };
-    var list = function() {
-        return dict2list(_caches);
-    };
-    var nameById = function(_id) {
-        return angular.isDefined(_caches[_id]) ? _caches[_id].name : false;
-    }
-    var setCurrent = function(cache, copy) {
-        if(copy) {
-            current = angular.copy(cache);
-        } else {
-            current = cache;
-        }
-        $rootScope.$broadcast('mapproxy_caches.current');
-    };
-    var getCurrent = function(cache) {
-        if(current) {
-            return current;
-        }
-    };
-
-    load()
-
-    return {
-        refresh: load,
-        add: add,
-        remove: remove,
-        list: list,
-        nameById: nameById,
-        setCurrent: setCurrent,
-        getCurrent: getCurrent
-    };
-}).
-
-service('MapproxyGrids', function($rootScope, MapproxyResource) {
-    var _grids = {};
-    var current;
-
-    var load = function() {
-        MapproxyResource.query({action: 'grids'}, function(result) {
-            angular.forEach(result, function(item) {
-                _grids[item._id] = item;
-            });
-            $rootScope.$broadcast('mapproxy_grids.load_complete');
-        });
-    };
-    var add = function(grid) {
-        var grid = new MapproxyResource(grid);
-        if(angular.isUndefined(grid._id)) {
-            grid.$save({action: 'grids'}, function(result) {
-                _grids[result._id] = result;
-                $rootScope.$broadcast('mapproxy_grids.added');
-            });
-        } else {
-            grid.$update({action: 'grids', id: grid._id}, function(result) {
-                _grids[result._id] = result;
-                $rootScope.$broadcast('mapproxy_grids.updated');
-            });
-        }
-    };
-    var remove = function(grid) {
-        grid.$delete({action: 'grids', id: grid._id}, function(result) {
-            delete(_grids[result._id]);
-            $rootScope.$broadcast('mapproxy_grids.deleted');
-        });
-    };
-    var list = function() {
-        return dict2list(_grids);
-    };
-    var setCurrent = function(grid, copy) {
-        if(copy) {
-            current = angular.copy(grid);
-        } else {
-            current = grid;
-        }
-        $rootScope.$broadcast('mapproxy_grids.current');
-    };
-
-    var getCurrent = function(grid) {
-        if(current) {
-            return current;
-        }
-    };
-
-    load();
-
-    return {
-        refresh: load,
-        add: add,
-        list: list,
-        setCurrent: setCurrent,
-        getCurrent: getCurrent
-    };
-}).
-
-service('MapproxyLayers', function($rootScope, MapproxyResource) {
-    var _layers = {};
-    var current;
-
-    var load = function() {
-        //can't use query. resource returns no array.
-        MapproxyResource.get({action: 'layers'}, function(result) {
-            angular.forEach(result['tree'], function(item) {
-                _layers[item._id] = item;
-            });
-            $rootScope.$broadcast('mapproxy_layers.load_complete');
-        });
-    };
-    var add = function(layer) {
-        var layer = new MapproxyResource(layer);
-        if(angular.isUndefined(layer._id)) {
-            layer.$save({action: 'layers'}, function(result) {
-                _layers[result._id] = result;
-                $rootScope.$broadcast('mapproxy_layers.added');
-            });
-        } else {
-            layer.$update({action: 'layers', id: layer._id}, function(result) {
-                _layers[result._id] = result;
-                $rootScope.$broadcast('mapproxy_layers.updated');
-            });
-        }
-    };
-    var remove = function(layer) {
-        layer.$delete({action: 'layers', id: layer._id}, function(result) {
-            delete(_layers[result._id]);
-            $rootScope.$broadcast('mapproxy_layers.deleted');
-        });
-    };
-
-    var list = function() {
-        return dict2list(_layers);
-    };
-
-    var setCurrent = function(layer, copy) {
-        if(copy) {
-            current = angular.copy(layer);
-        } else {
-            current = layer;
-        }
-        $rootScope.$broadcast('mapproxy_layers.current');
-    };
-
-    var getCurrent = function(layer) {
-        if(current) {
-            return current;
-        }
-    };
-
-    var updateTree = function() {
-        //to implement
-        angular.noop();
-    }
-
-    load();
-
-    return {
-        refresh: load,
-        add: add,
-        list: list,
-        setCurrent: setCurrent,
-        getCurrent: getCurrent,
-        updateTree: updateTree
-    };
-});
+service('WMSSources', wmsService.return_func).
+service('MapproxySources', sourceService.return_func).
+service('MapproxyCaches', cacheService.return_func).
+service('MapproxyGrids', gridService.return_func).
+service('MapproxyLayers', layerService.return_func);
