@@ -392,16 +392,18 @@
             </div>
             <div pane header="Layer">
                 <div class="row-fluid">
+
+<!-- Mapproxy Layers -->
                     <div class="span3 well" ng-controller="MapproxyLayerListCtrl">
                         <h3>Mapproxy Layer</h3>
 
                         <script type="text/ng-template"  id="mapproxy_layer_renderer.html">
-                            <ul sortable ng-model="layer.layers">
-                                <li ng-repeat="layer in layer.layers">  <!-- new scope -->
-                                    <div draggable item-data="{{layer}}" ng-model="$parent.$parent.layer.layers" class="mapproxy_layer"> <!-- new scope -->
-                                        <!-- need to access layer.layers from 2 lines above so i have to go 2 scopes up ($parent.$parent) -->
+                            <ul sortable ng-model="layer._layers">
+                                <li ng-repeat="layer in layer._layers | orderBy:'_rank'">  <!-- new scope -->
+                                    <div draggable item-data="{{layer}}" ng-model="$parent.$parent.layer._layers" class="mapproxy_layer"> <!-- new scope -->
+                                        <!-- need to access layer._layers from 2 lines above so i have to go 2 scopes up ($parent.$parent) -->
                                         <div class="label" ng-click="editLayer(layer)">{{layer.name}} ({{layer.title}})</div>
-                                        <div class="mapproxy_layer_dropzone" droppable ng-model="layer.layers" allow-array="true"></div>
+                                        <div class="mapproxy_layer_dropzone" droppable ng-model="layer._layers" allow-array="true"></div>
                                         <div
                                             ng-include="'mapproxy_layer_renderer.html'"
                                             style="margin-left: 0.5em"
@@ -413,16 +415,16 @@
                         </script>
                         <div style="margin-top: 0.3em; margin-bottom: 0.3em; border: 1px solid black;">
                             <ul sortable ng-model="mapproxy_layers">
-                                <li ng-repeat="layer in mapproxy_layers">
+                                <li ng-repeat="layer in mapproxy_layers | orderBy:'_rank'">
                                     <div draggable item-data="{{layer}}" ng-model="mapproxy_layers" class="mapproxy_layer">
                                         <div class="label" ng-click="editLayer(layer)">{{layer.name}} ({{layer.title}})</div>
-                                        <div class="mapproxy_layer_dropzone" droppable ng-model="layer.layers" allow-array="true" parent-id="{{layer._id}}" parent-save="true"></div>
+                                        <div class="mapproxy_layer_dropzone" droppable ng-model="layer._layers" allow-array="true" parent-id="{{layer._id}}" parent-save="true"></div>
 
                                         <div
                                             ng-include="'mapproxy_layer_renderer.html'"
                                             style="margin-left: 0.5em"
                                             sortable
-                                            ng-model="layer.layers"
+                                            ng-model="layer._layers"
                                             >
                                         </div>
                                     </div>
@@ -430,9 +432,9 @@
                             </ul>
                         </div>
                        <div class="mapproxy_layer_dropzone" droppable ng-model="mapproxy_layers" allow-array="true"></div>
-                       <button class="btn btn-small" ng-click="updateLayerTree">Update layer tree</button>
+                       <button class="btn btn-small" ng-click="updateLayerTree()">Update layer tree</button>
                     </div>
-
+<!-- Layers Form -->
                     <div class="span4 well" ng-controller="MapproxyLayerFormCtrl">
                         <h3>Edit Layer</h3>
                         <form name="layer_form" ng-model="layer" class="form-horizontal">

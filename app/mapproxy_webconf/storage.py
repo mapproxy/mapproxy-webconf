@@ -176,10 +176,10 @@ class SQLiteStore(object):
     def add(self, section, project, data):
         rank = data.pop('_rank', None)
         parent = data.pop('_parent', None)
+        data.pop('_id', None)
 
         data = json.dumps(data)
-        if '_id' in data:
-            del(data['_id'])
+
         cur = self.db.cursor()
         cur.execute("INSERT INTO store (section, project, data, parent, rank) VALUES (?, ?, ?, ?, ?)",
             (section, project, data, parent, rank))
@@ -189,10 +189,11 @@ class SQLiteStore(object):
     def update(self, id, section, project, data):
         rank = data.pop('_rank', None)
         parent = data.pop('_parent', None)
+        data.pop('_id', None)
+        data.pop('_layers', None)
 
         data = json.dumps(data)
-        if '_id' in data:
-            del(data['_id'])
+
         cur = self.db.cursor()
         cur.execute("UPDATE store SET data = ?, parent = ?, rank = ? WHERE id = ? AND SECTION = ? AND project = ?",
             (data, parent, rank, id, section, project))

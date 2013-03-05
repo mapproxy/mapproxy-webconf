@@ -67,9 +67,7 @@ def services_list(project, storage):
 
 @app.route('/conf/<project>/layers')
 def layers_list(project, storage):
-    layers = storage.get_all('layers', project, with_rank=True, with_id=True)
-    tree = config.layer_tree(layers)
-    return {'tree': tree}
+    return storage.get_all('layers', project, with_rank=True, with_id=True)
 
 @app.route('/conf/<project>/layers', method='POST')
 def layers_add(project, storage):

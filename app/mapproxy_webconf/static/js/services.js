@@ -80,21 +80,40 @@ var MapproxyBaseService = function(_section) {
 var MapproxyLayerService = function(_section) {
     MapproxyBaseService.call(this, _section);
     var _this = this;
-    this.load = function() {
-        //can't use query. resource returns no array.
-        _this._resource.get({action: _this._section}, function(result) {
-            angular.forEach(result['tree'], function(item) {
-                _this._items[item._id] = item;
+
+    this.treeStructure = [];
             });
             if(angular.isDefined(_this._rootScope))
                 _this._rootScope.$broadcast(_this._section + '.load_complete');
+
+    this.tree = function(parent_id) {
+        //XXXkai prevent new added and moved layers to add twice
+        //atm new added and moved layers will be added to root again,
+        //cause they have no parent yet
+        var items = _this._items
+        angular.forEach(items, function(item) {
+            if(item._parent == null) {
+                if($.inArray(item, _this.treeStructure) == -1) {
+                    _this.treeStructure.push(item);
+                }
+            } else {
+                if(angular.isArray(items[item._parent]._layers)) {
+                    if($.inArray(item, items[item._parent]) == -1) {
+                        items[item._parent]._layers.push(item)
+                    }
+                } else {
+                    items[item._parent]._layers = [item]
+                }
+            }
         });
+        return _this.treeStructure;
     };
     this.updateTree = function() {
         // not implemented
         angular.noop();
     };
 
+    this.return_dict['tree'] = _this.tree;
     this.return_dict['updateTree'] = _this.updateTree;
 };
 

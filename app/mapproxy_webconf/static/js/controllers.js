@@ -211,8 +211,8 @@ function MapproxyGridFormCtrl($scope, MapproxyGrids) {
 
 function MapproxyLayerListCtrl($scope, MapproxyLayers) {
 
-    var refreshList = function() {
-        $scope.mapproxy_layers = MapproxyLayers.list();
+    var refreshTree = function() {
+        $scope.mapproxy_layers = MapproxyLayers.tree();
     }
 
     $scope.editLayer = function(layer) {
@@ -226,10 +226,10 @@ function MapproxyLayerListCtrl($scope, MapproxyLayers) {
         MapproxyLayers.updateTree();
     }
 
-    $scope.$on('layers.load_complete', refreshList);
-    $scope.$on('layers.added', refreshList);
-    $scope.$on('layers.updated', refreshList);
-    $scope.$on('layers.deleted', refreshList);
+    $scope.$on('layers.load_complete', refreshTree);
+    $scope.$on('layers.added', refreshTree);
+    $scope.$on('layers.updated', MapproxyLayers.refresh);
+    $scope.$on('layers.deleted', refreshTree);
 }
 
 function MapproxyLayerFormCtrl($scope, MapproxySources, MapproxyCaches, MapproxyLayers) {
