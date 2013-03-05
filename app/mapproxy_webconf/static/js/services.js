@@ -17,8 +17,8 @@ var MapproxyBaseService = function(_section) {
         });
     };
     this.add = function(item) {
+        var item = new _this._resource(item);
         if(angular.isUndefined(item._id)) {
-            var item = new _this._resource(item);
             item.$save({action: _this._section}, function(result) {
                 _this._items[result._id] = result;
                 if(angular.isDefined(_this._rootScope))
