@@ -60,7 +60,8 @@ class TestLayersAPI(ServerAPITest):
         assert resp.json == {'name': '3', '_id': helper.ANY}
 
         resp = self.app.get('/conf/base/layers')
-        assert resp.json == {'tree': [{'_id': 1, 'name': '1', 'layers': [{'_id': 3, 'name': '3'}, {'_id': 2, 'name': '2'}]}]}
+        assert resp.json == {'1': {'_parent': None, '_rank': None, '_id': 1, 'name': '1'}, '3': {'_parent': 1, '_rank': 5, '_id': 3, 'name': '3'}, '2': {'_parent': 1, '_rank': 10, '_id': 2, 'name': '2'}}
+
 
 
 class TestSourcesAPI(ServerAPITest):
