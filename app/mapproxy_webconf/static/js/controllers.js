@@ -143,7 +143,7 @@ function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
         MapproxyCaches.setCurrent($scope.cache, false);
     };
     $scope.showName = function(_id) {
-        return MapproxySources.nameById(_id);
+        return MapproxySources.byId(_id).name;
     };
 
     $scope.cache = {'meta_size': [null, null]};
@@ -251,7 +251,7 @@ function MapproxyLayerFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
         }
     };
     $scope.showName = function(_id) {
-        return MapproxySources.nameById(_id) ? MapproxySources.nameById(_id) : MapproxyCaches.nameById(_id);
+        return MapproxySources.byId(_id) ? MapproxySources.byId(_id).name : MapproxyCaches.byId(_id).name;
     };
 
 

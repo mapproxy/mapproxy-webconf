@@ -42,8 +42,9 @@ var MapproxyBaseService = function(_section) {
     this.list = function() {
         return dict2list(_this._items);
     };
-    this.nameById = function(_id) {
-        return angular.isDefined(_this._items[_id]) ? _this._items[_id].name : false;
+    this.byId = function(_id) {
+        console.log(_this._items, _id)
+        return angular.isDefined(_this._items[_id]) ? _this._items[_id] : false;
     };
     this.setCurrent = function(item, copy) {
         if(copy) {
@@ -71,7 +72,7 @@ var MapproxyBaseService = function(_section) {
         add: _this.add,
         remove: _this.remove,
         list: _this.list,
-        nameById: _this.nameById,
+        byId: _this.byId,
         setCurrent: _this.setCurrent,
         getCurrent: _this.getCurrent
     }
