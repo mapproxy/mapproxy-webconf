@@ -213,8 +213,11 @@ function MapproxyLayerListCtrl($scope, MapproxyLayers) {
 
     var refreshTree = function() {
         $scope.mapproxy_layers = MapproxyLayers.tree();
-    }
-
+    };
+    var added = function() {
+        $scope.mapproxy_layers.push(MapproxyLayers.lastAdded());
+        console.log($scope.mapproxy_layers)
+    };
     $scope.editLayer = function(layer) {
         MapproxyLayers.setCurrent(layer, true);
     };
@@ -227,7 +230,7 @@ function MapproxyLayerListCtrl($scope, MapproxyLayers) {
     };
 
     $scope.$on('layers.load_complete', refreshTree);
-    $scope.$on('layers.added', refreshTree);
+    $scope.$on('layers.added', added);
     $scope.$on('layers.updated', MapproxyLayers.refresh);
     $scope.$on('layers.deleted', refreshTree);
 }
