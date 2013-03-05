@@ -223,8 +223,8 @@ function MapproxyLayerListCtrl($scope, MapproxyLayers) {
         $scope.$apply();
     };
     $scope.updateLayerTree = function() {
-        MapproxyLayers.updateTree();
-    }
+        MapproxyLayers.updateStructure($scope.mapproxy_layers);
+    };
 
     $scope.$on('layers.load_complete', refreshTree);
     $scope.$on('layers.added', refreshTree);

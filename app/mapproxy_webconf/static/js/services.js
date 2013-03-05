@@ -83,9 +83,20 @@ var MapproxyLayerService = function(_section) {
     var _this = this;
 
     this.treeStructure = [];
+
+    this.prepareLayer = function(layer, idx, parent_id) {
+        if(angular.isDefined(layer._layers)) {
+            angular.forEach(layer._layers, function(child_layer, _idx) {
+                _this.prepareLayer(child_layer, _idx, layer._id);
             });
-            if(angular.isDefined(_this._rootScope))
-                _this._rootScope.$broadcast(_this._section + '.load_complete');
+        }
+        var to_update = new _this._resource(layer);
+        to_update._parent = parent_id;
+        to_update._rank = idx;
+        to_update.$update({action: _this._section, id: to_update._id}, function(result) {
+            console.log(result);
+        });
+    }
 
     this.tree = function(parent_id) {
         //XXXkai prevent new added and moved layers to add twice
@@ -109,13 +120,15 @@ var MapproxyLayerService = function(_section) {
         });
         return _this.treeStructure;
     };
-    this.updateTree = function() {
-        // not implemented
-        angular.noop();
+
+    this.updateStructure = function(tree) {
+        angular.forEach(tree, function(layer, idx) {
+            _this.prepareLayer(layer, idx);
+        });
     };
 
     this.return_dict['tree'] = _this.tree;
-    this.return_dict['updateTree'] = _this.updateTree;
+    this.return_dict['updateStructure'] = _this.updateStructure;
 };
 
 WMSSourceService = function(_section) {

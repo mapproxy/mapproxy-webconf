@@ -77,6 +77,14 @@ def layers_add(project, storage):
     data['_id'] = id
     return data
 
+@app.route('/conf/<project>/layers/<id:int>', method='PUT')
+@requires_json
+def update(project, id, storage):
+    data = request.json
+    storage.update(id, 'layers', project, data)
+    response.status = 200
+    return data
+
 class RESTWMSCapabilities(RESTBase):
     def __init__(self):
         RESTBase.__init__(self, 'wms_capabilities')
