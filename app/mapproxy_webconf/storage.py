@@ -199,6 +199,13 @@ class SQLiteStore(object):
             (data, parent, rank, id, section, project))
         self.db.commit()
 
+    def updates(self, section, project, data):
+        #ensure all needed values are present or None
+        data = [{'id': d['_id'], 'rank': d['_rank'] if '_rank' in d else None, 'parent': d['_parent'] if '_parent' in d else None} for d in data if '_id' in d]
+        cur = self.db.cursor()
+        cur.executemany("UPDATE store SET parent = :parent, rank = :rank WHERE id = :id", data)
+        self.db.commit()
+
     def delete(self, id, section, project):
         cur = self.db.cursor()
         cur.execute("DELETE FROM store WHERE id = ? AND SECTION = ? AND project = ?",

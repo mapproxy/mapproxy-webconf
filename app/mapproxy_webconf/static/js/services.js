@@ -84,18 +84,13 @@ var MapproxyLayerService = function(_section) {
 
     this.treeStructure = [];
 
-    this.prepareLayer = function(layer, idx, parent_id) {
+    this.prepareLayer = function(store, layer, idx, parent_id) {
         if(angular.isDefined(layer._layers)) {
             angular.forEach(layer._layers, function(child_layer, _idx) {
-                _this.prepareLayer(child_layer, _idx, layer._id);
+                _this.prepareLayer(store, child_layer, _idx, layer._id);
             });
         }
-        var to_update = new _this._resource(layer);
-        to_update._parent = parent_id;
-        to_update._rank = idx;
-        to_update.$update({action: _this._section, id: to_update._id}, function(result) {
-            console.log(result);
-        });
+        store.push({_id: layer._id, _rank: idx, _parent: parent_id})
     }
 
     this.tree = function(parent_id) {
@@ -122,9 +117,12 @@ var MapproxyLayerService = function(_section) {
     };
 
     this.updateStructure = function(tree) {
+        var to_update = [];
         angular.forEach(tree, function(layer, idx) {
-            _this.prepareLayer(layer, idx);
+            _this.prepareLayer(to_update, layer, idx);
         });
+        to_update = new _this._resource({'tree': to_update});
+        to_update.$update({action: _this._section});
     };
 
     this.return_dict['tree'] = _this.tree;

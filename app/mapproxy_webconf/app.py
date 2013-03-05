@@ -77,13 +77,12 @@ def layers_add(project, storage):
     data['_id'] = id
     return data
 
-@app.route('/conf/<project>/layers/<id:int>', method='PUT')
+@app.route('/conf/<project>/layers', method='PUT')
 @requires_json
-def update(project, id, storage):
+def update(project, storage):
     data = request.json
-    storage.update(id, 'layers', project, data)
+    storage.updates('layers', project, data['tree'])
     response.status = 200
-    return data
 
 class RESTWMSCapabilities(RESTBase):
     def __init__(self):
@@ -92,7 +91,6 @@ class RESTWMSCapabilities(RESTBase):
     @requires_json
     def add(self, project, storage):
         url = request.json.get('url')
-        print url
         if not url:
             response.status = 400
             return {'error': 'missing URL'}
@@ -106,7 +104,6 @@ class RESTWMSCapabilities(RESTBase):
     @requires_json
     def update(self, project, id, storage):
         url = request.json.get('url')
-        print url
         if not url:
             response.status = 400
             return {'error': 'missing URL'}
