@@ -24,7 +24,7 @@ describe('toggleElement hideOther', function() {
             expect(toggle_elements.eq(0).text()).toBe('Elem1');
             expect(toggle_elements.eq(1).text()).toBe('Elem2');
             expect(toggle_elements.eq(2).text()).toBe('Elem3');
-            console.log(toggle_elements.eq(0))
+
             expect(toggle_elements.eq(0).css('display')).toNotBe('none');
             expect(toggle_elements.eq(1).css('display')).toBe('none');
             expect(toggle_elements.eq(2).css('display')).toBe('none');
