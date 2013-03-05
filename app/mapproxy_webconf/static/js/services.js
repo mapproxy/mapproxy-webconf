@@ -2,6 +2,7 @@ var MapproxyBaseService = function(_section) {
     var _this = this;
     this._items = {};
     this._item;
+    this._lastAdded;
     this._section = _section;
     this._rootScope;
     this._resource;
@@ -21,8 +22,10 @@ var MapproxyBaseService = function(_section) {
         if(angular.isUndefined(item._id)) {
             item.$save({action: _this._section}, function(result) {
                 _this._items[result._id] = result;
-                if(angular.isDefined(_this._rootScope))
+                if(angular.isDefined(_this._rootScope)) {
+                    _this._lastAdded = result;
                     _this._rootScope.$broadcast(_this._section + '.added');
+                }
             });
         } else {
             item.$update({action: _this._section, id: item._id}, function(result) {
@@ -60,6 +63,9 @@ var MapproxyBaseService = function(_section) {
             return _this._item;
         }
     };
+    this.lastAdded = function() {
+        return _this._lastAdded;
+    }
     this.return_func = function($rootScope, MapproxyResource) {
         _this._rootScope = $rootScope;
         _this._resource = MapproxyResource;
@@ -74,7 +80,8 @@ var MapproxyBaseService = function(_section) {
         list: _this.list,
         byId: _this.byId,
         setCurrent: _this.setCurrent,
-        getCurrent: _this.getCurrent
+        getCurrent: _this.getCurrent,
+        lastAdded: _this.lastAdded
     }
 };
 
