@@ -49,21 +49,20 @@ var MapproxyBaseService = function(_section) {
         console.log(_this._items, _id)
         return angular.isDefined(_this._items[_id]) ? _this._items[_id] : false;
     };
-    this.setCurrent = function(item, copy) {
-        if(copy) {
-            _this._item = angular.copy(item);
+    this.current = function(item, copy) {
+        if(item) {
+            if(copy) {
+                _this._item = angular.copy(item);
+            } else {
+                _this._item = item;
+            }
+            if(angular.isDefined(_this._rootScope))
+                _this._rootScope.$broadcast(_this._section + '.current');
         } else {
-            _this._item = item;
-        }
-        if(angular.isDefined(_this._rootScope))
-            _this._rootScope.$broadcast(_this._section + '.current');
-    };
-    this.getCurrent = function() {
-        if(_this._item) {
             return _this._item;
         }
     };
-    this.lastAdded = function() {
+    this.last = function() {
         return _this._lastAdded;
     }
     this.return_func = function($rootScope, MapproxyResource) {
@@ -79,9 +78,8 @@ var MapproxyBaseService = function(_section) {
         remove: _this.remove,
         list: _this.list,
         byId: _this.byId,
-        setCurrent: _this.setCurrent,
-        getCurrent: _this.getCurrent,
-        lastAdded: _this.lastAdded
+        current: _this.current,
+        last: _this.last
     }
 };
 
@@ -98,12 +96,9 @@ var MapproxyLayerService = function(_section) {
             });
         }
         store.push({_id: layer._id, _rank: idx, _parent: parent_id})
-    }
+    };
 
     this.tree = function(parent_id) {
-        //XXXkai prevent new added and moved layers to add twice
-        //atm new added and moved layers will be added to root again,
-        //cause they have no parent yet
         var items = _this._items
         angular.forEach(items, function(item) {
             if(item._parent == null) {
