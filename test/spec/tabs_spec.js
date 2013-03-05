@@ -11,10 +11,10 @@ describe('tabs', function() {
         elm = angular.element(
             '<div>' +
                 '<div tabs>' +
-                    '<div pane title="First Tab">' +
+                    '<div pane header="First Tab">' +
                         'first content is {{first}}' +
                     '</div>' +
-                    '<div pane title="Second Tab">' +
+                    '<div pane header="Second Tab">' +
                         'second content is {{second}}' +
                     '</div>' +
                 '</div>' +
