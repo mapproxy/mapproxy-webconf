@@ -82,6 +82,33 @@ describe('droppable', function() {
         });
     });
 
+    describe('use-key-for-value', function() {
+        var elm_scope;
+
+        beforeEach(inject(function($rootScope, $compile) {
+            elm = angular.element('<div droppable ng-model="drop_data" use-key-for-value="foobar"></div>');
+
+            scope = $rootScope;
+            $compile(elm)(scope);
+            scope.$digest();
+
+            //get child scope
+            elm_scope = elm.scope().$$childTail;
+        }));
+
+        it('should have useKeyForValue foobar', function() {
+            expect(elm.attr('use-key-for-value')).toBe('foobar');
+        });
+
+        it('should add value for key foobar', function() {
+            expect(elm_scope.drop_data).toBe(undefined);
+
+            elm_scope.dropHandler(null, ui2);
+
+            expect(elm_scope.drop_data).toBe(23);
+        })
+    });
+
     describe('accepts', function() {
         var elm_scope;
 
@@ -99,7 +126,7 @@ describe('droppable', function() {
 
         it('should have accepts drop_me', function() {
             expect(elm.attr('accepts')).toBe('drop_me');
-        })
+        });
 
         it('should only accept draggables with class drop_me', function() {
             expect(elm_scope.drop_data).toBe(undefined);
