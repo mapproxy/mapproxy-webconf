@@ -180,7 +180,7 @@ describe('droppable', function() {
                 callback(true);
             };
             scope.callback_false = function(callback, new_data) {
-                callback(true);
+                callback(false);
             };
 
             elm_true = angular.element('<div droppable ng-model="drop_true_data" change-callback="callback_true(callback, new_data)"></div>');
