@@ -131,6 +131,7 @@ directive('droppable', function($parse) {
     return {
         restrict: 'A',
         require: 'ngModel',
+        scope: 'element',
         link: function(scope, element, attrs, ngModelCtrl) {
             //create a new not isolated scope
             scope = scope.$new(false)
@@ -243,7 +244,6 @@ directive('droppable', function($parse) {
 
                         //run callback if present
                         if(angular.isFunction(scope.change)) {
-
                             scope.change(scope.$parent, {callback: scope.changeCallback, new_data: scope.new_item});
                         } else {
 
