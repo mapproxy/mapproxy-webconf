@@ -46,39 +46,39 @@ describe('droppable', function() {
             $compile(elm)(scope);
             scope.$digest();
 
-            //get child scope (tail and head are equal in this case)
-            elm_scope = elm.scope().$$childHead;
+            //get child scope
+            elm_scope = elm.scope().$$childTail;
         }));
 
         it('should have a model variable containing dropped element item-data after drop an element', function() {
-            expect(scope.drop_data).toBe(undefined);
+            expect(elm_scope.drop_data).toBe(undefined);
 
             elm_scope.dropHandler(null, ui1);
 
-            expect(scope.drop_data).toEqual({"foo": 2});
+            expect(elm_scope.drop_data).toEqual({"foo": 2});
         });
 
         it('should replace model-data with dropped data', function() {
-            expect(scope.drop_data).toBe(undefined);
+            expect(elm_scope.drop_data).toBe(undefined);
 
             //drop first element
             elm_scope.dropHandler(null, ui1);
-            expect(scope.drop_data).toEqual({"foo": 2});
+            expect(elm_scope.drop_data).toEqual({"foo": 2});
 
             //drop secound element
             elm_scope.dropHandler(null, ui2);
-            expect(scope.drop_data).toEqual({"foobar": 23});
+            expect(elm_scope.drop_data).toEqual({"foobar": 23});
         });
 
         it('should remove model-data', function() {
-            expect(scope.drop_data).toBe(undefined);
+            expect(elm_scope.drop_data).toBe(undefined);
 
             elm_scope.dropHandler(null, ui1);
-            expect(scope.drop_data).toEqual({"foo": 2});
+            expect(elm_scope.drop_data).toEqual({"foo": 2});
 
-            elm_scope.remove(scope.drop_data);
+            elm_scope.remove(elm_scope.drop_data);
 
-            expect(scope.drop_data).toBe(undefined);
+            expect(elm_scope.drop_data).toBe(undefined);
         });
     });
 
@@ -92,8 +92,8 @@ describe('droppable', function() {
             $compile(elm)(scope);
             scope.$digest();
 
-            //get child scope (tail and head are equal in this case)
-            elm_scope = elm.scope().$$childHead;
+            //get child scope
+            elm_scope = elm.scope().$$childTail;
 
         }));
 
@@ -102,19 +102,19 @@ describe('droppable', function() {
         })
 
         it('should only accept draggables with class drop_me', function() {
-            expect(scope.drop_data).toBe(undefined);
+            expect(elm_scope.drop_data).toBe(undefined);
 
             elm_scope.dropHandler(null, ui2);
             //elements without class should not be added
-            expect(scope.drop_data).toBe(undefined);
+            expect(elm_scope.drop_data).toBe(undefined);
 
             elm_scope.dropHandler(null, ui3);
             //elements with not accepted class should not be added
-            expect(scope.drop_data).toBe(undefined);
+            expect(elm_scope.drop_data).toBe(undefined);
 
             elm_scope.dropHandler(null, ui1);
             //elements with accepted class should be added
-            expect(scope.drop_data).toEqual({"foo": 2});
+            expect(elm_scope.drop_data).toEqual({"foo": 2});
 
         });
     });
@@ -129,8 +129,8 @@ describe('droppable', function() {
             $compile(elm)(scope);
             scope.$digest();
 
-            //get child scope (tail and head are equal in this case)
-            elm_scope = elm.scope().$$childHead;
+            //get child scope
+            elm_scope = elm.scope().$$childTail;
         }));
 
         it('should have allowArray', function() {
@@ -138,36 +138,36 @@ describe('droppable', function() {
         });
 
         it('should append droped data to model data', function() {
-            expect(scope.drop_data).toBe(undefined);
+            expect(elm_scope.drop_data).toBe(undefined);
 
             elm_scope.dropHandler(null, ui1);
-            expect(scope.drop_data).toEqual([{"foo": 2}]);
+            expect(elm_scope.drop_data).toEqual([{"foo": 2}]);
 
 
             elm_scope.dropHandler(null, ui2);
-            expect(scope.drop_data).toEqual([{"foo": 2}, {"foobar": 23}]);
+            expect(elm_scope.drop_data).toEqual([{"foo": 2}, {"foobar": 23}]);
 
             elm_scope.dropHandler(null, ui3);
-            expect(scope.drop_data).toEqual([{"foo": 2}, {"foobar": 23}, {"bar": 14}]);
+            expect(elm_scope.drop_data).toEqual([{"foo": 2}, {"foobar": 23}, {"bar": 14}]);
 
         });
 
         it('should remove the secound list element', function() {
-            expect(scope.drop_data).toBe(undefined);
+            expect(elm_scope.drop_data).toBe(undefined);
 
             elm_scope.dropHandler(null, ui1);
-            expect(scope.drop_data).toEqual([{"foo": 2}]);
+            expect(elm_scope.drop_data).toEqual([{"foo": 2}]);
 
 
             elm_scope.dropHandler(null, ui2);
-            expect(scope.drop_data).toEqual([{"foo": 2}, {"foobar": 23}]);
+            expect(elm_scope.drop_data).toEqual([{"foo": 2}, {"foobar": 23}]);
 
             elm_scope.dropHandler(null, ui3);
-            expect(scope.drop_data).toEqual([{"foo": 2}, {"foobar": 23}, {"bar": 14}]);
+            expect(elm_scope.drop_data).toEqual([{"foo": 2}, {"foobar": 23}, {"bar": 14}]);
 
-            elm_scope.remove(scope.drop_data[1])
+            elm_scope.remove(elm_scope.drop_data[1])
 
-            expect(scope.drop_data).toEqual([{"foo": 2}, {"bar": 14}]);
+            expect(elm_scope.drop_data).toEqual([{"foo": 2}, {"bar": 14}]);
         })
     });
 
@@ -191,18 +191,18 @@ describe('droppable', function() {
             $compile(elm_false)(scope);
             scope.$digest();
 
-            elm_true_scope = elm_true.scope().$$childHead;
-            elm_false_scope = elm_false.scope().$$childHead;
+            elm_true_scope = elm_true.scope().$$childTail;
+            elm_false_scope = elm_false.scope().$$childTail;
         }));
 
         it('should do insert', function() {
             elm_true_scope.dropHandler(null, ui1);
-            expect(scope.drop_true_data).toEqual({"foo": 2});
+            expect(elm_true_scope.drop_true_data).toEqual({"foo": 2});
         });
 
         it('should not insert', function() {
             elm_false_scope.dropHandler(null, ui1);
-            expect(scope.drop_false_data).toBe(undefined);
+            expect(elm_false_scope.drop_false_data).toBe(undefined);
         });
     });
 });
