@@ -123,8 +123,15 @@ directive('draggable', function() {
  *
  * allow-array: boolean
  * - true to allow insert arrays
+ *
  * accepts: string - comma seppareted string for list
  * - classname(s) of elements allowed to insert
+ *
+ * use-key-for-value
+ * - don't add whole object to model but add specific key of
+ *   inserted object
+ * - e.g.: {'foo': 1, 'bar': 2} with use-key-for-value="bar"
+ *   will add 2 to model
  */
  //TODO: allow setting accepts
 directive('droppable', function($parse) {
