@@ -406,6 +406,12 @@
                                         <!-- need to access layer._layers from 2 lines above so i have to go 2 scopes up ($parent.$parent) -->
                                         <div class="label" ng-click="editLayer(layer)">{{layer.name}} ({{layer.title}})</div>
                                         <div class="mapproxy_layer_dropzone" droppable ng-model="layer._layers" allow-array="true"></div>
+                                        <button
+                                            class="btn btn-mini btn-danger right"
+                                            ask-dialog
+                                            dialog-title="Confirm!"
+                                            dialog-text="Shold i do it?"
+                                            callback="removeLayer(layer)">X</button>
                                         <div
                                             ng-include="'mapproxy_layer_renderer.html'"
                                             style="margin-left: 0.5em"
@@ -421,7 +427,12 @@
                                     <div draggable item-data="{{layer}}" ng-model="mapproxy_layers" class="mapproxy_layer">
                                         <div class="label" ng-click="editLayer(layer)">{{layer.name}} ({{layer.title}})</div>
                                         <div class="mapproxy_layer_dropzone" droppable ng-model="layer._layers" allow-array="true" parent-id="{{layer._id}}" parent-save="true"></div>
-
+                                        <button
+                                            class="btn btn-mini btn-danger right"
+                                            ask-dialog
+                                            dialog-title="Confirm!"
+                                            dialog-text="Shold i do it?"
+                                            callback="removeLayer(layer)">X</button>
                                         <div
                                             ng-include="'mapproxy_layer_renderer.html'"
                                             style="margin-left: 0.5em"

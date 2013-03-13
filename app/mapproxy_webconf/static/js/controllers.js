@@ -216,14 +216,12 @@ function MapproxyLayerListCtrl($scope, MapproxyLayers) {
     };
     var added = function() {
         $scope.mapproxy_layers.push(MapproxyLayers.last());
-        console.log($scope.mapproxy_layers)
     };
     $scope.editLayer = function(layer) {
         MapproxyLayers.current(layer, true);
     };
     $scope.removeLayer = function(layer) {
-        $scope.mapproxy_layers.splice($scope.mapproxy_layers.indexOf(layer), 1);
-        $scope.$apply();
+        MapproxyLayers.remove(layer);
     };
     $scope.updateLayerTree = function() {
         MapproxyLayers.updateStructure($scope.mapproxy_layers);

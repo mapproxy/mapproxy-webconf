@@ -129,7 +129,7 @@ class SQLiteStore(object):
                 data TEXT NOT NULL,
                 rank INTEGER,
                 parent INTEGER,
-                FOREIGN KEY(parent) REFERENCES store(id)
+                FOREIGN KEY(parent) REFERENCES store(id) ON DELETE CASCADE
             )
         """)
 

@@ -35,7 +35,8 @@ var MapproxyBaseService = function(_section) {
             });
         }
     };
-    this.remove = function(item) {
+    this.remove = function(_item) {
+        var item = new _this._resource(_item)
         item.$delete({action: _this._section, id: item._id}, function(result) {
             delete(_this._items[result._id]);
             if(angular.isDefined(_this._rootScope))
@@ -46,15 +47,14 @@ var MapproxyBaseService = function(_section) {
         return dict2list(_this._items);
     };
     this.byId = function(_id) {
-        console.log(_this._items, _id)
         return angular.isDefined(_this._items[_id]) ? _this._items[_id] : false;
     };
-    this.current = function(item, copy) {
-        if(item) {
+    this.current = function(_item, copy) {
+        if(_item) {
             if(copy) {
-                _this._item = angular.copy(item);
+                _this._item = angular.copy(_item);
             } else {
-                _this._item = item;
+                _this._item = _item;
             }
             if(angular.isDefined(_this._rootScope))
                 _this._rootScope.$broadcast(_this._section + '.current');
