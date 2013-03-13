@@ -1,4 +1,5 @@
 import os
+from copy import deepcopy
 
 from . import bottle
 from . import config
@@ -34,7 +35,8 @@ class RESTBase(object):
     @requires_json
     def update(self, project, id, storage):
         data = request.json
-        storage.update(id, self.section, project, data)
+        # used deepcopy cause storage.update modifies data
+        storage.update(id, self.section, project, deepcopy(data))
         response.status = 200
         return data
 
