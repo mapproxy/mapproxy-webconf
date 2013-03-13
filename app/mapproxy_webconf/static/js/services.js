@@ -87,8 +87,6 @@ var MapproxyLayerService = function(_section) {
     MapproxyBaseService.call(this, _section);
     var _this = this;
 
-    this.treeStructure = [];
-
     this.prepareLayer = function(store, layer, idx, parent_id) {
         if(angular.isDefined(layer._layers)) {
             angular.forEach(layer._layers, function(child_layer, _idx) {
@@ -99,11 +97,13 @@ var MapproxyLayerService = function(_section) {
     };
 
     this.tree = function(parent_id) {
-        var items = _this._items
+        var treeStructure = [];
+        var items = angular.copy(_this._items);
         angular.forEach(items, function(item) {
             if(item._parent == null) {
-                if($.inArray(item, _this.treeStructure) == -1) {
-                    _this.treeStructure.push(item);
+                if($.inArray(item, treeStructure) == -1) {
+                    console.log(item)
+                    treeStructure.push(item);
                 }
             } else {
                 if(angular.isArray(items[item._parent]._layers)) {
@@ -115,7 +115,7 @@ var MapproxyLayerService = function(_section) {
                 }
             }
         });
-        return _this.treeStructure;
+        return treeStructure;
     };
 
     this.updateStructure = function(tree) {
