@@ -208,6 +208,7 @@
                                 draggable
                                 item-data="{{itemData(layer)}}"
                                 class="wms_layer grp_layer label"></div>
+                                <!-- wms_layer is required for dropping into droppable -->
                         </script>
                         <div toggle-group mode='hideOther'>
                             <div ng-repeat="wms in wms_list" class="wms label label-success" >
@@ -219,6 +220,7 @@
                                         ng-include="'wms_layer_renderer.html'"
                                         draggable item-data="{{itemData(layer)}}"
                                         class="wms_layer layer label label-info"></div>
+                                        <!-- wms_layer is required for dropping into droppable -->
                                 </div>
                             </div>
                         </div>
