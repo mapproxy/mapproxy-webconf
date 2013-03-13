@@ -51,39 +51,6 @@ class RESTBase(object):
         app.route('/conf/<project>/%s/<id:int>' % self.section, 'PUT', self.update)
         app.route('/conf/<project>/%s/<id:int>' % self.section, 'DELETE', self.delete)
 
-RESTBase('sources').setup_routing(app)
-RESTBase('caches').setup_routing(app)
-RESTBase('grids').setup_routing(app)
-
-## other
-
-@app.route('/conf/<project>/globals')
-def globals_list(project, storage):
-    return storage.get_all('globals', project, with_id=True)
-
-@app.route('/conf/<project>/services')
-def services_list(project, storage):
-    return storage.get_all('services', project, with_id=True)
-
-@app.route('/conf/<project>/layers')
-def layers_list(project, storage):
-    return storage.get_all('layers', project, with_rank=True, with_id=True)
-
-@app.route('/conf/<project>/layers', method='POST')
-def layers_add(project, storage):
-    data = request.json
-    id = storage.add('layers', project, data)
-    response.status = 201
-    data['_id'] = id
-    return data
-
-@app.route('/conf/<project>/layers', method='PUT')
-@requires_json
-def update(project, storage):
-    data = request.json
-    storage.updates('layers', project, data['tree'])
-    response.status = 200
-
 class RESTWMSCapabilities(RESTBase):
     def __init__(self):
         RESTBase.__init__(self, 'wms_capabilities')
@@ -113,7 +80,40 @@ class RESTWMSCapabilities(RESTBase):
         response.status = 200
         return cap
 
+class RESTLayers(RESTBase):
+    def __init__(self):
+        RESTBase.__init__(self, 'layers')
+
+    def list(self, project, storage):
+        return storage.get_all(self.section, project, with_rank=True, with_id=True)
+
+    @requires_json
+    def update_tree(self, project, storage):
+        data = request.json
+        storage.updates(self.section, project, data['tree'])
+        response.status = 200
+
+    def setup_routing(self, app):
+        super(RESTLayers, self).setup_routing(app)
+        app.route('/conf/<project>/%s' % self.section, 'PUT', self.update_tree)
+
+RESTBase('sources').setup_routing(app)
+RESTBase('caches').setup_routing(app)
+RESTBase('grids').setup_routing(app)
 RESTWMSCapabilities().setup_routing(app)
+RESTLayers().setup_routing(app)
+
+## other
+
+@app.route('/conf/<project>/globals')
+def globals_list(project, storage):
+    return storage.get_all('globals', project, with_id=True)
+
+@app.route('/conf/<project>/services')
+def services_list(project, storage):
+    return storage.get_all('services', project, with_id=True)
+
+
 
 @app.route('/')
 def index():
