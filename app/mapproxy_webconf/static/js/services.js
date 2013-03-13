@@ -7,6 +7,7 @@ var MapproxyBaseService = function(_section) {
     this._rootScope;
     this._resource;
     this.load = function() {
+        _this._items = {};
         _this._resource.query({action: _this._section}, function(result) {
             if(result) {
                 angular.forEach(result, function(item) {
