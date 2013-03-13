@@ -45,7 +45,11 @@ var MapproxyBaseService = function(_section) {
         });
     };
     this.list = function() {
-        return dict2list(_this._items);
+        var result = [];
+        for(var key in _this._items) {
+            result.push(_this._items[key]);
+        }
+        return result;
     };
     this.byId = function(_id) {
         return angular.isDefined(_this._items[_id]) ? _this._items[_id] : false;
