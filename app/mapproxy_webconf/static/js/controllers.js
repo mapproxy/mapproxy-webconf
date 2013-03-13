@@ -229,7 +229,7 @@ function MapproxyLayerListCtrl($scope, MapproxyLayers) {
 
     $scope.$on('layers.load_complete', refreshTree);
     $scope.$on('layers.added', added);
-    $scope.$on('layers.updated', MapproxyLayers.refresh);
+    $scope.$on('layers.updated', refreshTree);
     $scope.$on('layers.deleted', refreshTree);
 }
 
