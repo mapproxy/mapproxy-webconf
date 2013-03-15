@@ -2983,7 +2983,7 @@ class SimpleTemplate(BaseTemplate):
         template = self.source or open(self.filename, 'rb').read()
 
         def yield_tokens(line):
-            for i, part in enumerate(re.split(r'\{\{(.*?)\}\}', line)):
+            for i, part in enumerate(re.split(r'\$\{(.*?)\}', line)):
                 if i % 2:
                     if part.startswith('!'): yield 'RAW', part[1:]
                     else: yield 'CMD', part
