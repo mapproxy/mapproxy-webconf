@@ -1,0 +1,57 @@
+%def leftblock():
+  <div ng-controller="MapproxyGridListCtrl">
+    <h3>Mapproxy Grids</h3>
+    <ul>
+      <li class="mapproxy_grid label"
+           ng-repeat="grid in mapproxy_grids | orderBy:'name'"
+      >
+        <span ng-click="editGrid(grid)">{{grid.name}}</span>
+        <button
+          class="btn btn-mini btn-danger right"
+          ask-dialog
+          dialog-title="Confirm!"
+          dialog-text="Should I do it?"
+          callback="removeGrid(grid)">X</button>
+      </li>
+    </ul>
+  </div>
+%end
+
+%def middleblock():
+<div>
+  <h3>Edit Grid</h3>
+  <form class="form-horizontal" name="grid_form" ng-controller="MapproxyGridFormCtrl" novalidate>
+  <!-- name -->
+      <div labeled-control-group name-for="grid_form.name" text="Name">
+          <input required type="text" ng-model="grid.name" name="grid_form.name" />
+      </div>
+  <!-- SRS -->
+      <div labeled-control-group name-for="grid_form.srs" text="SRS">
+           <select ng-model="grid.srs" name="grid_form.srs" />
+              <option value="EPSG:3857">EPSG:3857</option>
+              <option value="EPSG:4326">EPSG:4326</option>
+              <option value="EPSG:900913">EPSG:900913</option>
+          </select>
+      </div>
+  <!-- BBox -->
+      <div labeled-control-group name-for="grid_form.bbox" text="BBox">
+          <input type="number" ng-model="grid.bbox[0]" class="input-mini" name="grid_form.bbox_0" />
+          <input type="number" ng-model="grid.bbox[1]" class="input-mini" name="grid_form.bbox_1" />
+          <input type="number" ng-model="grid.bbox[2]" class="input-mini" name="grid_form.bbox_2" />
+          <input type="number" ng-model="grid.bbox[3]" class="input-mini" name="grid_form.bbox_3" />
+      </div>
+  <!-- BBox SRS -->
+      <div labeled-control-group name-for="grid_form.bbox_srs" text="BBox SRS">
+           <select ng-model="grid.bbox_srs" name="grid_form.bbox_srs" />
+              <option value="EPSG:3857">EPSG:3857</option>
+              <option value="EPSG:4326">EPSG:4326</option>
+              <option value="EPSG:900913">EPSG:900913</option>
+          </select>
+      </div>
+      <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="!grid_form.$valid">Save</button>
+      <button class="btn btn-small" ng-click="resetForm($event)">Reset</button>
+  </form>
+</div>
+%end
+
+%rebase base_config leftblock=leftblock, middleblock=middleblock,  project=get('project'), active='grids'

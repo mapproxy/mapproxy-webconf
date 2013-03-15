@@ -1,0 +1,44 @@
+%def site_navbar():
+  <div class="container-fluid">
+    <h3>Configuration</h3>
+    <ul class="nav nav-tabs">
+      %navigation("sources", "Sources")
+      %navigation("globals", "Globals")
+      %navigation("grids", "Grids")
+      %navigation("caches", "Caches" )
+      %navigation("layers", "Layers" )
+      %navigation("services", "Services" )
+    </ul>
+  </div>
+% end
+
+%def content():
+  % if defined('leftblock'):
+  <div class="span4">
+    %leftblock()
+  </div>
+  % end
+  % if defined('middleblock'):
+  <div class="span4">
+    %middleblock()
+  </div>
+  % end
+  % if defined('rightblock'):
+  <div class="span4">
+    %rightblock()
+  </div>
+  % end
+%end
+
+
+%def navigation(id, title):
+  <li
+    %if defined('active') and id == active:
+      class="active"
+    %end
+    id="${id}">
+      <a href="${ get_url(id, project=project)}">${title}</a>
+  </li>
+%end
+
+%rebase base content=content, site_navbar=site_navbar

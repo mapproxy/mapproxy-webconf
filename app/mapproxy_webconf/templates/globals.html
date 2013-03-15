@@ -1,0 +1,13 @@
+%def leftblock():
+  Left block content.
+%end
+
+%def middleblock():
+  Middle block content.
+%end
+
+%def rightblock():
+  Right block content.
+%end
+
+%rebase base_config leftblock=leftblock, rightblock=rightblock, middleblock=middleblock, project=get('project'), active='globals'

@@ -1,0 +1,66 @@
+<!doctype html>
+<html xmlns:ng="http://angularjs.org" ng-app="mapproxy_gui">
+  <head>
+    <title>Mapproxy GUI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="${ get_url('static', filepath='css/bootstrap.css') }">
+    <link rel="stylesheet" href="${ get_url('static', filepath='css/jquery-ui-1.10.0.custom.min.css') }">
+    <link rel="stylesheet" href="${ get_url('static', filepath='css/custom.css') }">
+    % if defined('css'):
+      %css()
+    % end
+
+    <!--[if lte IE 8]>
+      <script type="text/javascript" src="${ get_url('static', filepath='js/ie8_fixtures.js')}"></script>
+    <![endif]-->
+
+    <!-- libs -->
+    <script type="text/javascript" src="${ get_url('static', filepath='js/lib/angular.js') }"></script>
+    <script type="text/javascript" src="${ get_url('static', filepath='js/lib/angular-resource.js') }"></script>
+    <script type="text/javascript" src="${ get_url('static', filepath='js/lib/jquery-1.9.1.min.js') }"></script>
+    <script type="text/javascript" src="${ get_url('static', filepath='js/lib/jquery-ui-1.10.0.custom.js') }"</script>
+    <script type="text/javascript" src="${ get_url('static', filepath='js/lib/bootstrap.js') }"></script>
+
+    <!-- site libs -->
+    <script type="text/javascript" src="${ get_url('static', filepath='js/helper.js') }"></script>
+    <script type="text/javascript" src="${ get_url('static', filepath='js/validators.js') }"></script>
+    <script type="text/javascript" src="${ get_url('static', filepath='js/resources.js') }"></script>
+    <script type="text/javascript" src="${ get_url('static', filepath='js/services.js') }"></script>
+    <script type="text/javascript" src="${ get_url('static', filepath='js/directives.js') }"></script>
+    <script type="text/javascript" src="${ get_url('static', filepath='js/controllers.js') }"></script>
+    <script type="text/javascript">
+     /* add directives and services*/
+        var app = angular.module('mapproxy_gui', ['mapproxy_gui.directives', 'mapproxy_gui.services', 'mapproxy_gui.validators']);
+    </script>
+  </head>
+<body>
+  <div class="container-fluid">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="brand" href="/">MapProxy</a>
+          <ul class="nav">
+            <li><a href="${ get_url('index') }">Project</a></li>
+            <li><a href="${ get_url('configuration', project='base') }">Configuration</a></li>
+            <li><a href="${ get_url('index') }">Seeding</a></li>
+            <li><a href="${ get_url('index') }">Demo</a></li>
+          </ul>
+        </div>
+      </div>
+    </div><!-- /.navbar -->
+    % if defined('site_navbar'):
+      %site_navbar()
+    % end
+
+    <div class="row-fluid">
+    % if defined('content'):
+      %content()
+    % end
+    </div>
+    <hr>
+    <footer class="footer right">
+      &copy; 2013 - Omniscale GmbH & Co. KG
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,108 @@
+%def leftblock():
+<div ng-controller="MapproxyCacheListCtrl">
+      <h3>Mapproxy Cache</h3>
+      <ul>
+          <li
+              class="mapproxy_cache label"
+              ng-repeat="cache in mapproxy_caches | orderBy:'name'"
+              ng-click="editCache(cache)">
+              {{cache.name}}
+              <button
+                  class="btn btn-mini btn-danger right"
+                  ask-dialog
+                  dialog-title="Confirm!"
+                  dialog-text="Shold i do it?"
+                  callback="removeCache(cache)">X</button>
+          </li>
+      </ul>
+  </div>
+%end
+
+%def middleblock():
+<div ng-controller="MapproxyCacheFormCtrl">
+    <h3>Edit Cache</h3>
+    <form name="cache_form" ng-model="cache" class="form-horizontal">
+    <!-- name -->
+        <div labeled-control-group name-for="cache_form.cache_name" text="Name">
+            <input required type="text" ng-model="cache.name" name="cache_form.cache_name"/>
+        </div>
+    <!-- sources -->
+        <!-- change-callback MUST provide parameters callback and new_data -->
+        <div labeled-control-group name-for="cache_form.sources" text="Sources">
+            <div
+                droppable
+                required
+                accepts="mapproxy_source"
+                allow-array="true"
+                ng-model="cache.sources"
+                name="cache_form.sources"
+                use-key-for-value="_id"
+                class="insertable_multi uneditable-input">
+                <div sortable ng-model="cache.sources" >
+                    <div ng-repeat="source in cache.sources" class="item">
+                        <span ng-bind="showName(source)"></span>
+                        <button class="btn btn-mini btn-danger right" ng-click="remove(source)">X</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- meta size -->
+        <!-- x -->
+        <div labeled-control-group name-for="cache_form.meta_size_x" text="Meta size X" name="cache_form.meta_size">
+            <input type="number" integer min=0 ng-model="cache.meta_size[0]" name="cache_form.meta_size_x" />
+        </div>
+        <!-- y -->
+        <div labeled-control-group name-for="cache_form.meta_size_y" text="Meta size Y">
+            <input type="number" integer min=0 ng-model="cache.meta_size[1]" name="cache_form.meta_size_y" />
+        </div>
+    <!-- meta_buffer -->
+        <div labeled-control-group name-for="cache_form.meta_buffer" text="Meta buffer">
+            <input type="number" integer min=0 ng-model="cache.meta_buffer" name="cache_form.meta_buffer" />
+        </div>
+    <!-- concurrent_tile_creators -->
+        <div labeled-control-group name-for="cache_form.concurrent_tile_creators" text="Meta buffer">
+            <input type="number" integer min=1 ng-model="cache.concurrent_tile_creators" name="cache_form.concurrent_tile_creators" />
+        </div>
+    <!-- cache_dir XXXkai: need path validator -->
+        <div labeled-control-group name-for="cache_form.cache_dir" text="Cache dir">
+            <input type="text" ng-model="cache.cache_dir" name="cache_form.cache_dir" />
+        </div>
+    <!-- minimize_meta_req -->
+        <div labeled-control-group name-for="cache_form.minimize_meta_req" text="Minimize meta requests">
+            <input type="checkbox" ng-model="cache.minimize_meta_req" name="cache_form.minimize_meta_req" />
+        </div>
+    <!-- link_single_color_images -->
+        <div labeled-control-group name-for="cache_form.link_single_color_images" text="Link single color images">
+            <input type="checkbox" ng-model="cache.link_single_color_images" name="cache_form.link_single_color_images" />
+        </div>
+    <!-- disable_storage -->
+        <div labeled-control-group name-for="cache_form.disable_storage" text="Link single color images">
+            <input type="checkbox" ng-model="cache.disable_storage" name="cache_form.disable_storage" />
+        </div>
+    <!-- grids XXXkai: replace by received list of supported srs combined with user defined grids-->
+        <div labeled-control-group name-for="cache_form.grids" text="Grids">
+            <select ng-model="cache.grids" name="cache_form.grids" multiple="multiple" ng-options="value._id as value.name for value in available_grids"/>
+            </select>
+        </div>
+    </form>
+    <button class="btn btn-small" ng-click="addCache($event)" ng-disabled="!cache_form.$valid">Save</button>
+    <button class="btn btn-small" ng-click="resetForm($event)">Reset</button>
+</div>
+%end
+
+%def rightblock():
+<div ng-controller="MapproxySourceListCtrl">
+    <h3>Mapproxy Sources</h3>
+    <ul>
+        <li
+            draggable
+            class="mapproxy_source label"
+            ng-repeat="source in mapproxy_sources | orderBy:'name'"
+            item-data="{{source}}">
+            {{source.name}}
+        </li>
+    </ul>
+</div>
+%end
+
+%rebase base_config leftblock=leftblock, rightblock=rightblock, middleblock=middleblock,  project=get('project'), active='caches'

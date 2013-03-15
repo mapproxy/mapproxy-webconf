@@ -1,0 +1,132 @@
+%def leftblock():
+<div ng-controller="MapproxyLayerListCtrl">
+  <h3>Mapproxy Layer</h3>
+   <script type="text/ng-template"  id="mapproxy_layer_renderer.html">
+        <ul sortable ng-model="layer._layers">
+            <li ng-repeat="layer in layer._layers | orderBy:'_rank'">  <!-- new scope -->
+                <div draggable item-data="{{layer}}" ng-model="$parent.$parent.layer._layers" class="mapproxy_layer"> <!-- new scope -->
+                    <!-- need to access layer._layers from 2 lines above so i have to go 2 scopes up ($parent.$parent) -->
+                    <div class="label" ng-click="editLayer(layer)">{{layer.name}} ({{layer.title}})</div>
+                    <div class="mapproxy_layer_dropzone" droppable ng-model="layer._layers" allow-array="true"></div>
+                    <button
+                        class="btn btn-mini btn-danger right"
+                        ask-dialog
+                        dialog-title="Confirm!"
+                        dialog-text="Shold i do it?"
+                        callback="removeLayer(layer)">X</button>
+                    <div
+                        ng-include="'mapproxy_layer_renderer.html'"
+                        style="margin-left: 0.5em"
+                        >
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </script>
+    <div style="margin-top: 0.3em; margin-bottom: 0.3em; border: 1px solid black;">
+        <ul sortable ng-model="mapproxy_layers">
+            <li ng-repeat="layer in mapproxy_layers | orderBy:'_rank'">
+                <div draggable item-data="{{layer}}" ng-model="mapproxy_layers" class="mapproxy_layer">
+                    <div class="label" ng-click="editLayer(layer)">{{layer.name}} ({{layer.title}})</div>
+                    <div class="mapproxy_layer_dropzone" droppable ng-model="layer._layers" allow-array="true" parent-id="{{layer._id}}" parent-save="true"></div>
+                    <button
+                        class="btn btn-mini btn-danger right"
+                        ask-dialog
+                        dialog-title="Confirm!"
+                        dialog-text="Shold i do it?"
+                        callback="removeLayer(layer)">X</button>
+                    <div
+                        ng-include="'mapproxy_layer_renderer.html'"
+                        style="margin-left: 0.5em"
+                        sortable
+                        ng-model="layer._layers"
+                        >
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+   <div class="mapproxy_layer_dropzone" droppable ng-model="mapproxy_layers" allow-array="true"></div>
+   <button class="btn btn-small" ng-click="updateLayerTree()">Update layer tree</button>
+</div>
+%end
+
+%def middleblock():
+<div ng-controller="MapproxyLayerFormCtrl">
+    <h3>Edit Layer</h3>
+    <form name="layer_form" ng-model="layer" class="form-horizontal">
+    <!-- name -->
+        <div labeled-control-group name-for="layer_form.layer_name" text="Name">
+            <input required type="text" required ng-model="layer.name" name="layer_form.layer_name"/><br>
+        </div>
+    <!-- title -->
+        <div labeled-control-group name-for="layer_form.layer_title" text="Title">
+            <input required type="text" required ng-model="layer.title" name="layer_form.layer_title"/><br>
+        </div>
+    <!-- sources -->
+        <div labeled-control-group name-for="layer_form.sources" text="Sources">
+            <div
+                droppable
+                required
+                accepts="mapproxy_source,mapproxy_cache"
+                allow-array="true"
+                ng-model="layer.sources"
+                name="layer_sources"
+                use-key-for-value="_id"
+                class="insertable_multi uneditable-input">
+                <div sortable ng-model="layer.sources" >
+                    <div ng-repeat="source in layer.sources" class="item">
+                        <span ng-bind="showName(source)"></span>
+                        <button class="btn btn-mini btn-danger right" ng-click="remove(source)">X</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- min_scale -->
+        <div labeled-control-group name-for="layer_form.min_scale" text="Min. Scale">
+            <input float type="number" ng-model="layer.min_scale" name="layer_form.min_scale">
+        </div>
+    <!-- max_scale -->
+        <div labeled-control-group name-for="layer_form.max_scale" text="Max. Scale">
+            <input float type="number" ng-model="layer.max_scale" name="layer_form.max_scale" bigger-than="layer.min_scale">
+        </div>
+    <!-- min_res -->
+        <div labeled-control-group name-for="layer_form.min_res" text="Min. Resolution">
+            <input float type="number" ng-model="layer.min_res" name="layer_form.min_res">
+        </div>
+    <!-- max_res -->
+        <div labeled-control-group name-for="layer_form.max_res" text="Max. Resolution">
+            <input float type="number" ng-model="layer.max_res" name="layer_form.max_res">
+        </div>
+    </form>
+    <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!layer_form.$valid">Save</button>
+    <button class="btn btn-small" ng-click="resetForm()">Reset</button>
+</div>
+%end
+
+%def rightblock():
+  <div>
+      <h3>Mapproxy Sources</h3>
+      <ul ng-controller="MapproxySourceListCtrl">
+          <li
+              draggable
+              class="mapproxy_source label"
+              ng-repeat="source in mapproxy_sources | orderBy:'name'"
+              item-data="{{source}}">
+              {{source.name}}
+          </li>
+      </ul>
+      <hr>
+      <h3>Mapproxy Caches</h3>
+      <ul ng-controller="MapproxyCacheListCtrl">
+          <li
+              draggable
+              class="mapproxy_cache label"
+              ng-repeat="cache in mapproxy_caches | orderBy:'name'"
+              item-data="{{cache}}">
+              {{cache.name}}
+          </li>
+      </ul>
+    </div>
+%end
+%rebase base_config leftblock=leftblock, rightblock=rightblock, middleblock=middleblock,  project=get('project'),  active='layers'

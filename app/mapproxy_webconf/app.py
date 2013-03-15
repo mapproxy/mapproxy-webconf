@@ -117,13 +117,43 @@ def globals_list(project, storage):
 def services_list(project, storage):
     return storage.get_all('services', project, with_id=True)
 
-
-
-@app.route('/')
+@app.route('/', name='index')
 def index():
-    return static_file('index.html', root=os.path.join(os.path.dirname(__file__), 'static'))
+    return template('index')
 
-@app.route('/static/<filepath:path>')
+@app.route('/project/<project>/conf', name='configuration')
+def conf_index(project):
+    return template('project_index', project=project)
+
+@app.route('/project/<project>', name='project_index')
+def project_index(project):
+    return template('project_index', project=project)
+
+@app.route('/project/<project>/conf/sources', name='sources')
+def sources(project):
+    return template('sources', project=project)
+
+@app.route('/project/<project>/conf/grids', name='grids')
+def grids(project):
+    return template('grids', project=project)
+
+@app.route('/project/<project>/conf/caches', name='caches')
+def caches(project):
+    return template('caches', project=project)
+
+@app.route('/project/<project>/conf/layers', name='layers')
+def layers(project):
+    return template('layers', project=project)
+
+@app.route('/project/<project>/conf/globals', name='globals')
+def globals(project):
+    return template('globals', project=project)
+
+@app.route('/project/<project>/conf/services', name='services')
+def services(project):
+    return template('services', project=project)
+
+@app.route('/static/<filepath:path>', name='static')
 def static(filepath):
     return static_file(filepath, root=os.path.join(os.path.dirname(__file__), 'static'))
 
