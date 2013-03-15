@@ -4,11 +4,13 @@ from copy import deepcopy
 from . import bottle
 from . import config
 from . import storage
-from .bottle import request, response, static_file
+from .bottle import request, response, static_file, template, SimpleTemplate
 from .utils import requires_json
 from .capabilities import parse_capabilities_url
 
 app = bottle.Bottle()
+bottle.TEMPLATE_PATH = [os.path.join(os.path.dirname(__file__), 'templates')]
+SimpleTemplate.defaults["get_url"] = app.get_url
 
 class RESTBase(object):
     def __init__(self, section):
