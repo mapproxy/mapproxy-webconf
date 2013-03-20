@@ -273,7 +273,8 @@ function MapproxySourceNoticeCtrl($scope, MapproxySources) {
     //define all watch results
     $scope.invalid_image_settings = false;
     $scope.high_number_of_concurrent_requests = false;
-    var checkImageSettings = function() {
+
+    var checkImageSettings = function(newVal, oldVal, scope) {
         //ensure all variables to check for are defined!
         if(angular.isDefined($scope.watch_source.req) &&
            angular.isDefined($scope.watch_source.supported_formats) &&
@@ -291,7 +292,7 @@ function MapproxySourceNoticeCtrl($scope, MapproxySources) {
         }
     };
 
-    var checkConcurrentRequests = function() {
+    var checkConcurrentRequests = function(newVal, oldVal, scope) {
         if(angular.isDefined($scope.watch_source.concurrent_requests) &&
            $scope.watch_source.concurrent_requests > 4) {
             $scope.high_number_of_concurrent_requests = true;
@@ -300,10 +301,9 @@ function MapproxySourceNoticeCtrl($scope, MapproxySources) {
         }
     }
 
-    $scope.$watch('watch_source', function(newVal, oldVal, scope) {
-        checkImageSettings();
-        checkConcurrentRequests();
-    }, true);
+    $scope.$watch('watch_source.supported_formats', checkImageSettings)
+    $scope.$watch('watch_source.req.transparent', checkImageSettings)
+    $scope.$watch('watch_source.concurrent_requests', checkConcurrentRequests)
 
     $scope.$on('sources.current', function() {
         $scope.watch_source = MapproxySources.current();
