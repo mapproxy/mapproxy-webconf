@@ -193,13 +193,12 @@
         </div>
     </div>
     <hr>
-    <form class="form-horizontal" name="capabilities_form" novalidate ng-controller="CapabilitiesCtrl">
+    <form class="form-horizontal" name="capabilities_form" novalidate>
         <div labeled-control-group name-for="capabilities_url" text="Capabilities">
             <input type="url" required name="capabilities_url" ng-model="capabilities.url">
         </div>
         <div class="error-msg alert alert-error" ng-show="capabilities.error">{{capabilities.error}}</div>
-        <button class="btn btn-small" ng-click="addCapabilities(capabilities_form.input_wms)" ng-disabled="!capabilities_form.$valid">GetCapabilities</button><!-- add new wms -->
-
+        <button class="btn btn-small" ng-click="addCapabilities()" ng-disabled="!capabilities_form.$valid">GetCapabilities</button><!-- add new wms -->
     </form>
 </div>
   %end

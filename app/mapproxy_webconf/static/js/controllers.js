@@ -9,23 +9,20 @@ function TreeCtrl($scope, WMSSources) {
         }
         return layer;
     };
-
-    $scope.$on('wms_capabilities.load_complete', refreshTree);
-    $scope.$on('wms_capabilities.added', refreshTree);
-}
-
-function CapabilitiesCtrl($scope, WMSSources) {
     $scope.addCapabilities = function() {
         $scope.capabilities.error = false;
         WMSSources.add({url: $scope.capabilities.url});
     };
 
-    $scope.$on('wms_capabilities.error', function() {
-        $scope.capabilities.error = WMSSources.error();
-    });
+    $scope.$on('wms_capabilities.load_complete', refreshTree);
+    $scope.$on('wms_capabilities.added', refreshTree);
 
     $scope.capabilities = {};
     $scope.capabilities.error = false;
+
+    $scope.$on('wms_capabilities.error', function() {
+        $scope.capabilities.error = WMSSources.error();
+    });
 }
 
 function MapproxySourceListCtrl($scope, MapproxySources) {
