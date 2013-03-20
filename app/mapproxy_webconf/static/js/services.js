@@ -6,6 +6,7 @@ var MapproxyBaseService = function(_section) {
     this._section = _section;
     this._rootScope;
     this._resource;
+    this.error;
     this.load = function() {
         _this._items = {};
         _this._resource.query({action: _this._section}, function(result) {
@@ -21,12 +22,16 @@ var MapproxyBaseService = function(_section) {
     this.add = function(_item) {
         var item = new _this._resource(_item);
         if(angular.isUndefined(item._id)) {
-            item.$save({action: _this._section}, function(result) {
-                _this._items[result._id] = result;
-                if(angular.isDefined(_this._rootScope)) {
-                    _this._lastAdded = result;
-                    _this._rootScope.$broadcast(_this._section + '.added');
-                }
+            item.$save({action: _this._section},
+                function(result) {
+                    _this._items[result._id] = result;
+                    if(angular.isDefined(_this._rootScope)) {
+                        _this._lastAdded = result;
+                        _this._rootScope.$broadcast(_this._section + '.added');
+                    }
+                }, function(error) {
+                    _this._error_msg = error.data.error;
+                    _this._rootScope.$broadcast(_this._section + '.error')
             });
         } else {
             item.$update({action: _this._section, id: item._id}, function(result) {
@@ -69,6 +74,9 @@ var MapproxyBaseService = function(_section) {
     };
     this.last = function() {
         return _this._lastAdded;
+    };
+    this.error = function() {
+        return _this._error_msg;
     }
     this.return_func = function($rootScope, MapproxyResource) {
         _this._rootScope = $rootScope;
@@ -84,7 +92,8 @@ var MapproxyBaseService = function(_section) {
         list: _this.list,
         byId: _this.byId,
         current: _this.current,
-        last: _this.last
+        last: _this.last,
+        error: _this.error
     }
 };
 

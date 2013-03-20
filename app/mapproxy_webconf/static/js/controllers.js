@@ -16,10 +16,16 @@ function TreeCtrl($scope, WMSSources) {
 
 function CapabilitiesCtrl($scope, WMSSources) {
     $scope.addCapabilities = function() {
+        $scope.capabilities.error = false;
         WMSSources.add({url: $scope.capabilities.url});
     };
 
+    $scope.$on('wms_capabilities.error', function() {
+        $scope.capabilities.error = WMSSources.error();
+    });
+
     $scope.capabilities = {};
+    $scope.capabilities.error = false;
 }
 
 function MapproxySourceListCtrl($scope, MapproxySources) {
