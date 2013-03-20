@@ -116,7 +116,6 @@ var MapproxyLayerService = function(_section) {
         angular.forEach(items, function(item) {
             if(item._parent == null) {
                 if($.inArray(item, treeStructure) == -1) {
-                    console.log(item)
                     treeStructure.push(item);
                 }
             } else {

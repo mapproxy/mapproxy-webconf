@@ -85,9 +85,8 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
         if(!angular.isUndefined(event)) {
             event.preventDefault();
         }
-        $scope.source = {'type': 'wms'};
-        $scope.source_form.$setPristine();
-        MapproxySources.current($scope.source, false)
+        $scope.source = MapproxySources.current();
+        // $scope.source_form.$setPristine();
     };
     $scope.addLayerManual = function(event) {
         event.preventDefault();
@@ -149,9 +148,7 @@ function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
         if(!angular.isUndefined(event)) {
             event.preventDefault();
         }
-        $scope.cache = {'meta_size': [null, null]};
-        $scope.cache_form.$setPristine();
-        MapproxyCaches.current($scope.cache, false);
+        $scope.cache = MapproxyCaches.current();
     };
     $scope.showName = function(_id) {
         return MapproxySources.byId(_id).name;
@@ -204,9 +201,7 @@ function MapproxyGridFormCtrl($scope, MapproxyGrids) {
         if(angular.isDefined(event)) {
             event.preventDefault();
         }
-        $scope.grid = {'bbox': [null, null, null, null]};
-        $scope.grid_form.$setPristine();
-        MapproxyGrids.current($scope.grid, false);
+        $scope.grid = MapproxyGrids.current();
     };
 
     $scope.grid = {'bbox': [null, null, null, null]};
@@ -252,9 +247,7 @@ function MapproxyLayerFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
         $scope.resetForm();
     };
     $scope.resetForm = function() {
-        $scope.layer = {};
-        $scope.layer_form.$setPristine();
-        MapproxyLayers.current($scope.layer, false);
+        $scope.layer = MapproxyLayers.current();
     };
     $scope.layerTitle = function(name) {
         var layer = MapproxyLayers.byName(name);
