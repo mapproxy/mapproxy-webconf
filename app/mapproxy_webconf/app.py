@@ -1,5 +1,6 @@
 import os
 from copy import deepcopy
+from xml.etree.ElementTree import ParseError
 
 from . import bottle
 from . import config
@@ -65,8 +66,11 @@ class RESTWMSCapabilities(RESTBase):
         if not url:
             response.status = 400
             return {'error': 'missing URL'}
-
-        cap = parse_capabilities_url(url)
+        try:
+            cap = parse_capabilities_url(url)
+        except ParseError:
+            response.status = 400
+            return {'error': 'No capabilities document'}
         id = storage.add(self.section, project, cap)
         cap['_id'] = id
         response.status = 201
