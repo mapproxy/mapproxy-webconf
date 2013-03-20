@@ -193,8 +193,14 @@
         </div>
     </div>
     <hr>
-    <label for="input_wms">Capabilities:</label><input name="input_wms" ng-model="capabilities_url">
-    <button class="btn btn-small" ng-click="addCapabilities(capabilities_url)">GetCapabilities</button><!-- add new wms -->
+    <form class="form-horizontal" name="capabilities_form" novalidate ng-controller="CapabilitiesCtrl">
+        <div labeled-control-group name-for="capabilities_url" text="Capabilities">
+            <input type="url" required name="capabilities_url" ng-model="capabilities.url">
+        </div>
+        <pre ng-bind="capabilities.url|json"></pre>
+        <button class="btn btn-small" ng-click="addCapabilities(capabilities_form.input_wms)" ng-disabled="!capabilities_form.$valid">GetCapabilities</button><!-- add new wms -->
+
+    </form>
 </div>
   %end
 %rebase base_config leftblock=leftblock, rightblock=rightblock, middleblock=middleblock,  project=get('project'),  active='sources'

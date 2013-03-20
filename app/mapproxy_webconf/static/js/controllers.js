@@ -9,12 +9,17 @@ function TreeCtrl($scope, WMSSources) {
         }
         return layer;
     };
-    $scope.addCapabilities = function(url) {
-        WMSSources.add({url: url});
-    };
 
     $scope.$on('wms_capabilities.load_complete', refreshTree);
     $scope.$on('wms_capabilities.added', refreshTree);
+}
+
+function CapabilitiesCtrl($scope, WMSSources) {
+    $scope.addCapabilities = function() {
+        WMSSources.add({url: $scope.capabilities.url});
+    };
+
+    $scope.capabilities = {};
 }
 
 function MapproxySourceListCtrl($scope, MapproxySources) {
