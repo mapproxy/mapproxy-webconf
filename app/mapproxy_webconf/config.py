@@ -1,4 +1,5 @@
 import yaml
+import ConfigParser as _ConfigParser
 from mapproxy_webconf import utils
 
 def load_mapproxy_yaml(filename):
@@ -156,3 +157,61 @@ def find_cache_sources(caches_conf):
     for cache in caches_conf.itervalues():
         sources.update(cache.get('sources', []))
     return sources
+
+
+class ConfigParser(object):
+    """
+    Utility class for parsing ini-style configurations with
+    predefined default values..
+    """
+
+    """Default values, set by subclass"""
+    defaults = {}
+
+    def __init__(self, parser, fname):
+        self.parser = parser
+        self.fname = fname
+
+    @classmethod
+    def from_file(cls, fname):
+        parser = _ConfigParser.ConfigParser()
+        try:
+            with open(fname) as fp:
+                parser.readfp(fp)
+        except Exception, ex:
+            #XXXkai: logging?
+            print 'Unable to read configuration: %s', ex
+        return cls(parser, fname)
+
+    def has_option(self, section, name):
+        if self.parser.has_option(section, name):
+            return True
+        return name in self.defaults.get(section, {})
+
+    def get(self, section, name):
+        if self.parser.has_option(section, name):
+            return self.parser.get(section, name)
+        else:
+            return self.defaults[section][name]
+
+    def get_bool(self, section, name):
+        if self.parser.has_option(section, name):
+            return self.parser.getboolean(section, name)
+        else:
+            return self.defaults[section][name]
+
+    def get_int(self, section, name):
+        if self.parser.has_option(section, name):
+            return self.parser.getint(section, name)
+        else:
+            return self.defaults[section][name]
+
+    def set(self, section, name, value):
+        if not self.defaults.has_key(section):
+            raise _ConfigParser.NoSectionError(section)
+        if not self.parser.has_section(section):
+            self.parser.add_section(section)
+        self.parser.set(section, name, value)
+
+    def write(self):
+        self.parser.write(open(self.fname, 'w'))

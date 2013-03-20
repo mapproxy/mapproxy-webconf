@@ -11,6 +11,8 @@ from .bottle import request, response, static_file, template, SimpleTemplate
 from .utils import requires_json
 from .capabilities import parse_capabilities_url
 
+configuration = config.ConfigParser.from_file('./config.ini')
+
 app = bottle.Bottle()
 bottle.TEMPLATE_PATH = [os.path.join(os.path.dirname(__file__), 'templates')]
 SimpleTemplate.defaults["get_url"] = app.get_url
@@ -170,10 +172,10 @@ def static(filepath):
 @app.route('/conf/<project>/yaml', 'GET')
 def write_config(project, storage):
     mapproxy_conf = config.mapproxy_conf_from_storage(storage, project)
-    return config.write_mapproxy_yaml(mapproxy_conf, '/tmp/test.yaml')
+    return config.write_mapproxy_yaml(mapproxy_conf, os.path.join(configuration.get('app', 'output_path'), project + '.yaml'))
 
 def init_app(storage_dir):
-    app.install(storage.SQLiteStorePlugin(os.path.join(storage_dir, 'mapproxy.sqlite')))
+    app.install(storage.SQLiteStorePlugin(os.path.join(configuration.get('app', 'storage_path'), configuration.get('app', 'sqlite_db'))))
     return app
 
 if __name__ == '__main__':
