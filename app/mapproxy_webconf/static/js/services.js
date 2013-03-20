@@ -180,6 +180,7 @@ var sourceService = new MapproxyBaseService('sources');
 var cacheService = new MapproxyBaseService('caches');
 var gridService = new MapproxyBaseService('grids');
 var layerService = new MapproxyLayerService('layers');
+var globalsService = new MapproxyBaseService('globals');
 
 angular.module('mapproxy_gui.services', ['mapproxy_gui.resources']).
 
@@ -187,4 +188,5 @@ service('WMSSources', wmsService.return_func).
 service('MapproxySources', sourceService.return_func).
 service('MapproxyCaches', cacheService.return_func).
 service('MapproxyGrids', gridService.return_func).
-service('MapproxyLayers', layerService.return_func);
+service('MapproxyLayers', layerService.return_func).
+service('MapproxyGlobals', globalsService.return_func);

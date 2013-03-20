@@ -116,14 +116,11 @@ class RESTLayers(RESTBase):
 RESTBase('sources').setup_routing(app)
 RESTBase('caches').setup_routing(app)
 RESTBase('grids').setup_routing(app)
+RESTBase('globals').setup_routing(app)
 RESTWMSCapabilities().setup_routing(app)
 RESTLayers().setup_routing(app)
 
 ## other
-
-@app.route('/conf/<project>/globals')
-def globals_list(project, storage):
-    return storage.get_all('globals', project, with_id=True)
 
 @app.route('/conf/<project>/services')
 def services_list(project, storage):

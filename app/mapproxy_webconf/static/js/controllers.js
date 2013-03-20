@@ -269,6 +269,24 @@ function MapproxyLayerFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
     });
 }
 
+function MapproxyGlobalsFormCtrl($scope, MapproxyGlobals) {
+    var setGlobals = function() {
+        var globals = MapproxyGlobals.list();
+        if(globals.length > 0) {
+            $scope.globals = globals[0];
+        }
+    };
+
+    $scope.save = function(event) {
+        MapproxyGlobals.add($scope.globals);
+    };
+
+    $scope.globals = {'cache': {'meta_size': [null, null]}};
+
+    $scope.$on('globals.load_complete', setGlobals);
+    $scope.$on('globals.added', setGlobals);
+};
+
 function MapproxySourceNoticeCtrl($scope, MapproxySources) {
     //define all watch results
     $scope.invalid_image_settings = false;

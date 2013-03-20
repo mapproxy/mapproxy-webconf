@@ -3,7 +3,21 @@
 %end
 
 %def middleblock():
-  Middle block content.
+<div>
+    <h3>Globals</h3>
+    <div ng-controller="MapproxyGlobalsFormCtrl">
+        <form class="form-horizontal" name="globals_form" novalidate>
+            <div labeled-control-group name-for="globals_form.cache_meta_size" text="Meta size">
+                <input type="number" ng-model="globals.cache.meta_size[0]" class="input-mini" name="globals_form.cache_meta_size_0" />
+                <input type="number" ng-model="globals.cache.meta_size[1]" class="input-mini" name="globals_form.cache_meta_size_1" />
+            </div>
+            <div labeled-control-group name-for="globals_form.cache_meta_buffer" text="Meta buffer">
+                <input type="number" ng-model="globals.cache.meta_buffer" name="globals_form.cache_meta_buffer">
+            </div>
+            <button class="btn btn-small" ng-click="save($event)" ng-disabled="!globals_form.$valid">Save</button>
+        </form>
+    </div>
+</div>
 %end
 
 %def rightblock():
