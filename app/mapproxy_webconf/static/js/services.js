@@ -162,7 +162,17 @@ WMSSourceService = function(_section) {
         return title;
     };
 
+    this.refresh = function(_item) {
+        var item = new _this._resource(_item);
+        item.$update({action: _this._section, id: item.id}, function(result) {
+            _this._items[result._id] = result;
+            if(angular.isDefined(_this._rootScope))
+                _this._rootScope.$broadcast(_this._section + '.updated');
+        });
+    }
+
     this.return_dict['layerTitle'] = _this.layerTitle;
+    this.return_dict['refresh'] = _this.refresh;
 };
 
 var wmsService = new WMSSourceService('wms_capabilities');

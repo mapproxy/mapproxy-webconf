@@ -180,7 +180,10 @@
     </script>
     <div toggle-group mode='hideOther'>
         <div ng-repeat="wms in wms_list" class="wms label label-success" >
-            <h5 draggable item-data="{{wms}}" class="wms_source" toggle-element="next">{{wms.title}}</h5>
+            <div toggle-element="next">
+                <h5 style="display:inline-block" draggable item-data="{{wms}}" class="wms_source">{{wms.title}}</h5>
+                <button class="right btn btn-mini" ng-click="refreshCapabilities(wms._id, wms.url)">RefreshCapabilities</button>
+            </div>
             <div ng-show="$first">
                 <p>URL: {{wms.url}}</p>
                 <div

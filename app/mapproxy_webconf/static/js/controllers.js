@@ -13,9 +13,13 @@ function TreeCtrl($scope, WMSSources) {
         $scope.capabilities.error = false;
         WMSSources.add({url: $scope.capabilities.url});
     };
+    $scope.refreshCapabilities = function(_id, url) {
+        WMSSources.refresh({id: _id, url: url});
+    }
 
     $scope.$on('wms_capabilities.load_complete', refreshTree);
     $scope.$on('wms_capabilities.added', refreshTree);
+    $scope.$on('wms_capabilities.updated', refreshTree);
 
     $scope.capabilities = {};
     $scope.capabilities.error = false;

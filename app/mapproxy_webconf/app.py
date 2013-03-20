@@ -91,6 +91,7 @@ class RESTWMSCapabilities(RESTBase):
         cap = parse_capabilities_url(url)
         storage.update(id, self.section, project, cap)
         response.status = 200
+        cap['_id'] = id
         return cap
 
 class RESTLayers(RESTBase):
