@@ -46,39 +46,6 @@
                 </div>
             </div>
         </div>
-    <!-- meta size -->
-        <!-- x -->
-        <div labeled-control-group name-for="cache_form.meta_size_x" text="Meta size X" name="cache_form.meta_size">
-            <input type="number" integer min=0 ng-model="cache.meta_size[0]" name="cache_form.meta_size_x" />
-        </div>
-        <!-- y -->
-        <div labeled-control-group name-for="cache_form.meta_size_y" text="Meta size Y">
-            <input type="number" integer min=0 ng-model="cache.meta_size[1]" name="cache_form.meta_size_y" />
-        </div>
-    <!-- meta_buffer -->
-        <div labeled-control-group name-for="cache_form.meta_buffer" text="Meta buffer">
-            <input type="number" integer min=0 ng-model="cache.meta_buffer" name="cache_form.meta_buffer" />
-        </div>
-    <!-- concurrent_tile_creators -->
-        <div labeled-control-group name-for="cache_form.concurrent_tile_creators" text="Meta buffer">
-            <input type="number" integer min=1 ng-model="cache.concurrent_tile_creators" name="cache_form.concurrent_tile_creators" />
-        </div>
-    <!-- cache_dir XXXkai: need path validator -->
-        <div labeled-control-group name-for="cache_form.cache_dir" text="Cache dir">
-            <input type="text" ng-model="cache.cache_dir" name="cache_form.cache_dir" />
-        </div>
-    <!-- minimize_meta_req -->
-        <div labeled-control-group name-for="cache_form.minimize_meta_req" text="Minimize meta requests">
-            <input type="checkbox" ng-model="cache.minimize_meta_req" name="cache_form.minimize_meta_req" />
-        </div>
-    <!-- link_single_color_images -->
-        <div labeled-control-group name-for="cache_form.link_single_color_images" text="Link single color images">
-            <input type="checkbox" ng-model="cache.link_single_color_images" name="cache_form.link_single_color_images" />
-        </div>
-    <!-- disable_storage -->
-        <div labeled-control-group name-for="cache_form.disable_storage" text="Link single color images">
-            <input type="checkbox" ng-model="cache.disable_storage" name="cache_form.disable_storage" />
-        </div>
     <!-- grids XXXkai: replace by received list of supported srs combined with user defined grids-->
         <div labeled-control-group name-for="cache_form.grids" text="Grids">
             <select ng-model="cache.grids" name="cache_form.grids" multiple="multiple" ng-options="value._id as value.name for value in available_grids"/>

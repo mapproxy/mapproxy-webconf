@@ -82,22 +82,6 @@
                 </div>
             </div>
         </div>
-    <!-- min_scale -->
-        <div labeled-control-group name-for="layer_form.min_scale" text="Min. Scale">
-            <input float type="number" ng-model="layer.min_scale" name="layer_form.min_scale">
-        </div>
-    <!-- max_scale -->
-        <div labeled-control-group name-for="layer_form.max_scale" text="Max. Scale">
-            <input float type="number" ng-model="layer.max_scale" name="layer_form.max_scale" bigger-than="layer.min_scale">
-        </div>
-    <!-- min_res -->
-        <div labeled-control-group name-for="layer_form.min_res" text="Min. Resolution">
-            <input float type="number" ng-model="layer.min_res" name="layer_form.min_res">
-        </div>
-    <!-- max_res -->
-        <div labeled-control-group name-for="layer_form.max_res" text="Max. Resolution">
-            <input float type="number" ng-model="layer.max_res" name="layer_form.max_res">
-        </div>
     </form>
     <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!layer_form.$valid">Save</button>
     <button class="btn btn-small" ng-click="resetForm()">Reset</button>
