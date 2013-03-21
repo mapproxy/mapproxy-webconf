@@ -30,7 +30,7 @@ function TreeCtrl($scope, WMSSources) {
 }
 
 function MapproxySourceListCtrl($scope, MapproxySources) {
-    var DEFAULT_SOURCE = {"type": "wms"};
+    var DEFAULT_SOURCE = {"type": "wms", "req": {}};
     var refreshList = function() {
         $scope.mapproxy_sources = MapproxySources.list();
     }
@@ -52,7 +52,7 @@ function MapproxySourceListCtrl($scope, MapproxySources) {
 }
 
 function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
-    var DEFAULT_SOURCE = {"type": "wms"};
+    var DEFAULT_SOURCE = {"type": "wms", "req": {}};
     $scope.openDialog = function(callback, new_data) {
         if(angular.isUndefined($scope.source.req) ||
            angular.isUndefined($scope.source.req.url) ||
