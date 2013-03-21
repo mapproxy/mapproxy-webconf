@@ -339,6 +339,7 @@ directive('askDialog', function($parse) {
         link: function(scope, element, attrs) {
 
             scope.openDialog = function() {
+                scope.dialog.find('p').text(attrs.dialogText)
                 scope.dialog.dialog({
                     resizeable: false,
                     width: 400,
@@ -357,7 +358,7 @@ directive('askDialog', function($parse) {
             };
             scope.dialog_id = scope.$id;
             scope.callback = $parse(attrs.callback);
-            scope.dialog = $('<div style="display:none;" id="dialog_' + scope.dialog_id + '" title="'+ attrs.dialogTitle +'"><p>'+ attrs.dialogText +'</p></div>');
+            scope.dialog = $('<div style="display:none;" id="dialog_' + scope.dialog_id + '" title="'+ attrs.dialogTitle +'"><p></p></div>');
             element.after(scope.dialog);
 
             element.bind('click', scope.openDialog);

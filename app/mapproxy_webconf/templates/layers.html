@@ -12,7 +12,7 @@
                         class="btn btn-mini btn-danger right"
                         ask-dialog
                         dialog-title="Confirm!"
-                        dialog-text="Shold i do it?"
+                        dialog-text='Really remove layer "{{layer.name}}"?'
                         callback="removeLayer(layer)">X</button>
                     <div
                         ng-include="'mapproxy_layer_renderer.html'"
@@ -33,7 +33,7 @@
                         class="btn btn-mini btn-danger right"
                         ask-dialog
                         dialog-title="Confirm!"
-                        dialog-text="Shold i do it?"
+                        dialog-text='Really remove layer "{{layer.name}}"?'
                         callback="removeLayer(layer)">X</button>
                     <div
                         ng-include="'mapproxy_layer_renderer.html'"
