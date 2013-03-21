@@ -14,14 +14,15 @@
        </i>
       </li>
     </ul>
+    <button class="btn btn-small" ng-click="newGrid()">New grid</button>
   </div>
 %end
 
 %def middleblock():
 <div>
-  <h3>Edit Grid</h3>
   <form name="grid_form" ng-controller="MapproxyGridFormCtrl" novalidate>
-  <!-- name -->
+    <h3>{{formTitle}}</h3>
+    <!-- name -->
       <div labeled-control-group name-for="grid_form.name" text="Name">
           <input required type="text" ng-model="grid.name" name="grid_form.name" />
       </div>
@@ -56,6 +57,7 @@
           </select>
       </div>
       <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="!grid_form.$valid">Save</button>
+      <i id="grid_save_ok" class="icon-ok" ng-show="false"></i>
       <button class="btn btn-small" ng-click="resetForm($event)">Reset</button>
   </form>
 </div>

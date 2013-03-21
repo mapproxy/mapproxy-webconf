@@ -15,13 +15,14 @@
           </i>
       </li>
       </ul>
+      <button class="btn btn-small" ng-click="newCache()">New cache</button>
   </div>
 %end
 
 %def middleblock():
 <div ng-controller="MapproxyCacheFormCtrl">
-    <h3>Edit Cache</h3>
-    <form name="cache_form" ng-model="cache">
+  <form name="cache_form" ng-model="cache">
+    <h3>{{formTitle}}</h3>
     <!-- name -->
         <div labeled-control-group name-for="cache_form.cache_name" text="Name">
             <input required class="input-xlarge" type="text" ng-model="cache.name" name="cache_form.cache_name"/>
@@ -53,6 +54,7 @@
         </div>
     </form>
     <button class="btn btn-small" ng-click="addCache($event)" ng-disabled="!cache_form.$valid">Save</button>
+    <i id="cache_save_ok" class="icon-ok" ng-show="false"></i>
     <button class="btn btn-small" ng-click="resetForm($event)">Reset</button>
 </div>
 %end
