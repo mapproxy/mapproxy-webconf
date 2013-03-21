@@ -1,0 +1,9 @@
+%def middleblock():
+<div  ng-controller="MapproxyConfigCtrl">
+    <button class="btn btn-small" ng-click="getConfig()">get config</button>
+    <div>{{yaml_msg}}</div>
+    <pre ng-bind="mapproxy_yaml"></pre>
+</div>
+%end
+
+%rebase base_config middleblock=middleblock,  project=get('project'), active='grids'

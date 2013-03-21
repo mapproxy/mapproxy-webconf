@@ -383,6 +383,7 @@ function MapproxyConfigCtrl($scope, $http) {
     $scope.getConfig = function() {
         $http.get('/conf/base/yaml').success(function(result) {
             $scope.mapproxy_yaml = result;
+            $scope.yaml_msg = 'Mapproxy YAML written'
         });
     };
 }

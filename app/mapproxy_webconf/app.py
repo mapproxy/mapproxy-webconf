@@ -163,6 +163,10 @@ def globals(project):
 def services(project):
     return template('services', project=project)
 
+@app.route('/project/<project>/conf/yaml', name='yaml')
+def yaml(project):
+    return template('yaml', project=project)
+
 @app.route('/static/<filepath:path>', name='static')
 def static(filepath):
     return static_file(filepath, root=os.path.join(os.path.dirname(__file__), 'static'))
