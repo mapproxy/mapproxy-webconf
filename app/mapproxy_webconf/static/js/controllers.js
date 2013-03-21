@@ -278,6 +278,9 @@ function MapproxyGlobalsFormCtrl($scope, MapproxyGlobals) {
     };
 
     $scope.save = function(event) {
+        if(angular.isDefined(event)) {
+            event.preventDefault();
+        }
         MapproxyGlobals.add($scope.globals);
     };
 
@@ -285,6 +288,51 @@ function MapproxyGlobalsFormCtrl($scope, MapproxyGlobals) {
 
     $scope.$on('globals.load_complete', setGlobals);
     $scope.$on('globals.added', setGlobals);
+};
+
+function MapproxyServicesChooserCtrl($scope, DataShareService) {
+    $scope.show = function(service) {
+        DataShareService.data('service', service + '.html')
+    };
+    $scope.$on('dss.services', function() {
+        $scope.services = DataShareService.data('services');
+    });
+};
+
+function MapproxyServicesCtrl($scope, MapproxyServices, DataShareService) {
+    var setServices = function() {
+        var services = MapproxyServices.list();
+        if(services.length > 0) {
+            $scope.services = services[0];
+        }
+    };
+
+    var setTemplate = function() {
+        $scope.template = DataShareService.data('service');
+    }
+
+    $scope.save = function(event) {
+        if(angular.isDefined(event)) {
+            event.preventDefault();
+        }
+        MapproxyServices.add($scope.services);
+    };
+
+    $scope.services = {
+        'wms': {},
+        'wmts': {},
+        'tms': {},
+        'kml': {},
+        'demo': {}
+    };
+
+    DataShareService.data('services', $scope.services);
+
+    $scope.template = 'wms.html'
+
+    $scope.$on('services.load_complete', setServices);
+    $scope.$on('services.added', setServices);
+    $scope.$on('dss.service', setTemplate)
 };
 
 function MapproxySourceNoticeCtrl($scope, MapproxySources) {

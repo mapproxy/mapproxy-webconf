@@ -117,6 +117,7 @@ RESTBase('sources').setup_routing(app)
 RESTBase('caches').setup_routing(app)
 RESTBase('grids').setup_routing(app)
 RESTBase('globals').setup_routing(app)
+RESTBase('services').setup_routing(app)
 RESTWMSCapabilities().setup_routing(app)
 RESTLayers().setup_routing(app)
 

@@ -181,6 +181,7 @@ var cacheService = new MapproxyBaseService('caches');
 var gridService = new MapproxyBaseService('grids');
 var layerService = new MapproxyLayerService('layers');
 var globalsService = new MapproxyBaseService('globals');
+var servicesService = new MapproxyBaseService('services');
 
 angular.module('mapproxy_gui.services', ['mapproxy_gui.resources']).
 
@@ -189,4 +190,25 @@ service('MapproxySources', sourceService.return_func).
 service('MapproxyCaches', cacheService.return_func).
 service('MapproxyGrids', gridService.return_func).
 service('MapproxyLayers', layerService.return_func).
-service('MapproxyGlobals', globalsService.return_func);
+service('MapproxyGlobals', globalsService.return_func).
+service('MapproxyServices', servicesService.return_func).
+
+service('DataShareService', function($rootScope) {
+    var _this = this;
+    this._data = {};
+
+    return {
+        data: function(key, value) {
+            if(angular.isDefined(value)) {
+                _this._data[key] = value;
+                $rootScope.$broadcast('dss.' + key);
+            } else {
+                if(angular.isDefined(_this._data[key])) {
+                    return _this._data[key];
+                } else {
+                    return undefined;
+                }
+            }
+        }
+    }
+});
