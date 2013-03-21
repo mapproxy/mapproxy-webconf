@@ -46,8 +46,12 @@ def create_id_name_map(*dicts):
 
 def mapproxy_conf_from_storage(storage, project):
     mapproxy_conf = {}
-
-    mapproxy_conf['services'] = storage.get_all('services', project).values()[0]
+    mapproxy_conf['services'] = {}
+    for service, config in storage.get_all('services', project).values()[0].items():
+        print config
+        if 'active' in config and config['active']:
+            config.pop('active', None)
+            mapproxy_conf['services'][service] = config
     mapproxy_conf['globals'] = storage.get_all('globals', project).values()[0]
 
     used_sources = set()
