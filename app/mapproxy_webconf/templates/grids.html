@@ -1,17 +1,17 @@
 %def leftblock():
   <div ng-controller="MapproxyGridListCtrl">
     <h3>Grids</h3>
-    <ul>
-      <li class="mapproxy_grid label"
+     <ul class="vertical-list">
+      <li class="label"
            ng-repeat="grid in mapproxy_grids | orderBy:'name'"
-      >
-        <span ng-click="editGrid(grid)">{{grid.name}}</span>
-        <button
-          class="btn btn-mini btn-danger right"
-          ask-dialog
-          dialog-title="Confirm!"
-          dialog-text='Really remove grid "{{grid.name}}"?'
-          callback="removeGrid(grid)">X</button>
+           ng-click="editGrid(grid)">
+           {{grid.name}}
+       <i class="icon-remove"
+         ask-dialog
+         dialog-title="Confirm!"
+         dialog-text='Really remove grid "{{grid.name}}"?'
+        callback="removeGrid(grid)">
+       </i>
       </li>
     </ul>
   </div>
@@ -20,7 +20,7 @@
 %def middleblock():
 <div>
   <h3>Edit Grid</h3>
-  <form class="form-horizontal" name="grid_form" ng-controller="MapproxyGridFormCtrl" novalidate>
+  <form name="grid_form" ng-controller="MapproxyGridFormCtrl" novalidate>
   <!-- name -->
       <div labeled-control-group name-for="grid_form.name" text="Name">
           <input required type="text" ng-model="grid.name" name="grid_form.name" />

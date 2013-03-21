@@ -1,100 +1,127 @@
 body {
     padding-top: 60px;
     padding-bottom: 40px;
+    min-width: 1150px;
 }
 
-label {
-    min-width: 10em;
-    display: inline-block;
+/*overwrite boostrap */
+.input-xlarge {
+  width: 95%;
+  /*width: 300px;*/
 }
 
-input {
+.control-group {
+    margin: 0 ;
+}
+
+h3 {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 20px;
+  font-size: 21px;
+  line-height: 40px;
+  color: #333333;
+  border: 0;
+  font-weight: normal;
+}
+
+h6 {
+    margin-top: 0.5em;
+    margin: 0;
+}
+
+/* page options */
+.middleblock {
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.tab-menu {
+    margin-top: 1.7em;
+    margin-left: 1em;
+}
+
+.tab-menu-header {
     margin-right: 1em;
 }
 
-.right {
+
+
+/* list options */
+ul.vertical-list {
+    list-style: none;
+    margin: 0;
+}
+
+ul.vertical-list li {
+    width: 95%;
+    margin: 0.5em;
+    padding-top:0.6em;
+    padding-bottom:0.6em;
+    padding-left: 1em;
+    cursor: pointer;
+    white-space: normal;
+}
+
+
+ul.vertical-list li i.icon-remove {
     float: right;
+    cursor: pointer;
 }
 
-.label {
-    padding-top: 0.3em;
-    padding-bottom: 0.3em;
+ul.vertical-list li.mapproxy_source.label, ul.vertical-list li.mapproxy_cache.label  {
+    width: 300px;
 }
 
-.droppable_input_wrapper {
-    display: inline;
-}
-
-/* wms tree */
-.mapproxy_source, .mapproxy_cache, .mapproxy_layer, .wms, .layer, .grp_layer {
-    border: 1px solid black;
-    display: block;
-    white-space: normal;
-}
-
-.mapproxy_layer {
-    margin-top: 0.4em;
-    margin-bottom: 0.4em;
-}
-
-.mapproxy_layer_dropzone {
-    min-height: 30px;
-    min-width: 30px;
-    background-color: red;
-    border: 2px dashed yellow;
-    display: inline-block;
-}
-
-.layer, .grp_layer {
-    margin-left: 2em;
-    padding-top: 0em;
-    padding-bottom: 0.2em;
-}
-
-.insertable_multi .item {
-    white-space: normal;
-    display: block;
-    margin: 0.2em;
-}
-
-.layer_infos {
-    padding-bottom: 1em;
-}
-
-/*insertables*/
-.insertable_single {
-    min-width:10em;
-    min-height:2.5em;
-    background-color: gray;
-}
-
-.insertable_multi {
-    width:25em;
+.insertable-list {
     min-height:10em;
-    /*background-color: gray;*/
-    display: inline-block;
     cursor: default;
+    overflow: auto;
 }
 
-/* Form validation */
-/* Nested form */
-input.ng-invalid,
-div.ng-invalid,
-label.ng-invalid {
-    border-color: #FA787E;
+
+.insertable-list .label {
+    white-space: normal;
+    display: block;
+    padding: .5em;
+    margin-bottom: .2em;
+    text-shadow: none;
+    background-color: white;
+    color: black;
+    font-weight: normal;
+    border: 1px solid #999999;
 }
 
-.warning_icon {
-    display: inline-block;
-}
-/*
-.ng-scope {
-    border: 1px dashed green;
-    margin: 2px;
+.insertable-list .label .icon-remove {
+    float: right;
+    cursor: pointer;
 }
 
-.ng-isolate-scope {
-    border: 1px dashed red;
-    margin: 2px;
+.insertable-list .label:hover {
+    background-color: #999999;
+    color: white;
+    cursor: pointer;
 }
-*/
+
+.accordion {
+    white-space: normal;
+}
+
+.accordion .label {
+    cursor: pointer;
+    width: 100%;
+}
+
+.accordion-group {
+    border: 1px solid #CCCCCC;
+}
+
+.accordion-heading i.icon-refresh {
+    float: right;
+    cursor: pointer;
+    margin-top: -1.8em;
+    margin-right: 0.5em;
+}

@@ -8,12 +8,11 @@
                     <!-- need to access layer._layers from 2 lines above so i have to go 2 scopes up ($parent.$parent) -->
                     <div class="label" ng-click="editLayer(layer)">{{layer.name}} ({{layer.title}})</div>
                     <div class="mapproxy_layer_dropzone" droppable ng-model="layer._layers" allow-array="true"></div>
-                    <button
-                        class="btn btn-mini btn-danger right"
+                    <i class="icon-remove"
                         ask-dialog
                         dialog-title="Confirm!"
                         dialog-text='Really remove layer "{{layer.name}}"?'
-                        callback="removeLayer(layer)">X</button>
+                        callback="removeLayer(layer)"></i>
                     <div
                         ng-include="'mapproxy_layer_renderer.html'"
                         style="margin-left: 0.5em"
@@ -23,18 +22,17 @@
             </li>
         </ul>
     </script>
-    <div style="margin-top: 0.3em; margin-bottom: 0.3em; border: 1px solid black;">
+    <div>
         <ul sortable ng-model="mapproxy_layers">
             <li ng-repeat="layer in mapproxy_layers | orderBy:'_rank'">
                 <div draggable item-data="{{layer}}" ng-model="mapproxy_layers" class="mapproxy_layer">
                     <div class="label" ng-click="editLayer(layer)">{{layer.name}} ({{layer.title}})</div>
                     <div class="mapproxy_layer_dropzone" droppable ng-model="layer._layers" allow-array="true" parent-id="{{layer._id}}" parent-save="true"></div>
-                    <button
-                        class="btn btn-mini btn-danger right"
+                    <i class="icon-remove"
                         ask-dialog
                         dialog-title="Confirm!"
                         dialog-text='Really remove layer "{{layer.name}}"?'
-                        callback="removeLayer(layer)">X</button>
+                        callback="removeLayer(layer)"></i>
                     <div
                         ng-include="'mapproxy_layer_renderer.html'"
                         style="margin-left: 0.5em"
@@ -54,14 +52,14 @@
 %def middleblock():
 <div ng-controller="MapproxyLayerFormCtrl">
     <h3>Edit Layer</h3>
-    <form name="layer_form" ng-model="layer" class="form-horizontal">
+    <form name="layer_form" ng-model="layer">
     <!-- name -->
         <div labeled-control-group name-for="layer_form.layer_name" text="Name">
-            <input required type="text" required ng-model="layer.name" name="layer_form.layer_name"/><br>
+            <input required type="text" required ng-model="layer.name" class="input-xlarge" name="layer_form.layer_name"/>
         </div>
     <!-- title -->
         <div labeled-control-group name-for="layer_form.layer_title" text="Title">
-            <input required type="text" required ng-model="layer.title" name="layer_form.layer_title"/><br>
+            <input required type="text" required ng-model="layer.title" class="input-xlarge" name="layer_form.layer_title"/>
         </div>
     <!-- sources -->
         <div labeled-control-group name-for="layer_form.sources" text="Sources">
@@ -73,11 +71,11 @@
                 ng-model="layer.sources"
                 name="layer_sources"
                 use-key-for-value="_id"
-                class="insertable_multi uneditable-input">
+                class="input-xlarge insertable-list uneditable-input">
                 <div sortable ng-model="layer.sources" >
-                    <div ng-repeat="source in layer.sources" class="item">
+                    <div ng-repeat="source in layer.sources" class="label">
                         <span ng-bind="showName(source)"></span>
-                        <button class="btn btn-mini btn-danger right" ng-click="remove(source)">X</button>
+                         <i class="icon-remove" ng-click="remove(source)"></i>
                     </div>
                 </div>
             </div>
@@ -91,7 +89,7 @@
 %def rightblock():
   <div>
       <h3>Sources</h3>
-      <ul ng-controller="MapproxySourceListCtrl">
+      <ul class="vertical-list" ng-controller="MapproxySourceListCtrl">
           <li
               draggable
               class="mapproxy_source label"
@@ -102,7 +100,7 @@
       </ul>
       <hr>
       <h3>Caches</h3>
-      <ul ng-controller="MapproxyCacheListCtrl">
+      <ul class="vertical-list" ng-controller="MapproxyCacheListCtrl">
           <li
               draggable
               class="mapproxy_cache label"

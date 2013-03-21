@@ -1,17 +1,17 @@
 %def leftblock():
 <div ng-controller="MapproxySourceListCtrl">
   <h3>Sources</h3>
-  <ul>
-  	<li class="mapproxy_source label" ng-repeat="source in mapproxy_sources | orderBy:'name'" >
-	    <span ng-click="editSource(source)">{{source.name}}</span>
-	    <button
-	      class="btn btn-mini btn-danger right"
-	      ask-dialog
-	      dialog-title="Confirm!"
-	      dialog-text='Really remove source "{{source.name}}"?'
-	      callback="removeSource(source)">X
-	     </button>
-	  </li>
+  <ul class="vertical-list">
+    <li class="label" ng-repeat="source in mapproxy_sources | orderBy:'name'"
+    ng-click="editSource(source)">
+      {{source.name}}
+      <i class="icon-remove"
+        ask-dialog
+        dialog-title="Confirm!"
+        dialog-text='Really remove source "{{source.name}}"?'
+        callback="removeSource(source)">
+       </i>
+    </li>
   </ul>
 </div>
 %end
@@ -19,111 +19,113 @@
 %def middleblock():
 <div>
   <h3>Edit Source</h3>
- <div ng-controller="MapproxySourceNoticeCtrl">
-     <form class="form-horizontal" name="source_form" ng-controller="MapproxySourceFormCtrl" novalidate>
-         <div toggle-group mode="multiShow">
-             <div
-                 style="display:none;"
-                 id="confirm_url_change_dialog"
-                 title="confirm url change">
-                 <p>Replace service URL deletes all layers depends to it!</p>
-             </div>
-             <h5 toggle-element="next">Required Settings</h5>
+  <div ng-controller="MapproxySourceNoticeCtrl">
+    <form name="source_form" ng-controller="MapproxySourceFormCtrl" novalidate>
+      <fieldset>
+      <div toggle-group mode="multiShow">
+        <div
+          style="display:none;"
+          id="confirm_url_change_dialog"
+          title="confirm url change">
+            <p>Replace service URL deletes all layers depends to it!</p>
+        </div>
+        <div ng-show="true">
+          <div labeled-control-group name-for="source_form.name" text="Name">
+            <input class="input-xlarge" type="text" required ng-model="source.name" name="source_form.name"/>
+          </div>
 
-             <div ng-show="true">
-         <!-- name -->
-                 <div labeled-control-group name-for="source_form.name" text="Name">
-                     <input class="input-xlarge" type="text" required ng-model="source.name" name="source_form.name"/>
+          <div labeled-control-group name-for="source_form.req_url" text="URL">
+            <div droppable change-callback="openDialog(callback, new_data)"
+              class="droppable_input_wrapper input-xlarge"
+              accepts="wms_source" use-key-for-value="url" ng-model="source.req.url">
+                <input class="input-xlarge" type="url" value="{{source.wms_source}}"
+                  name="source_form.req_url" required ng-model="source.req.url" />
+            </div>
+          </div>
+
+          <div labeled-control-group name-for="source_form.req_layer" text="Layer">
+            <div droppable required accepts="wms_layer" allow-array="true"
+                ng-model="source.req.layers"
+                name="source_form.req_layers"
+                use-key-for-value="name"
+                class="input-xlarge insertable-list uneditable-input">
+
+              <div sortable ng-model="source.req.layers" >
+                <div ng-repeat="layer in source.req.layers" class="label">
+                  {{layer}}
+                  <span ng-show="layerTitle(layer)">({{layerTitle(layer)}})</span>
+                   <i class="icon-remove" ng-click="remove(layer)"></i>
                  </div>
-         <!-- req -->
-             <!-- url -->
-                 <div labeled-control-group name-for="source_form.req_url" text="URL">
-                     <!-- change-callback MUST provide parameters callback and new_data -->
-                     <!-- if an input field should be droppable, it must be wraped in an other element.
-                          otherwise input field value will not be updated when something is dropped in.-->
-                     <div droppable change-callback="openDialog(callback, new_data)" class="droppable_input_wrapper input-xlarge"
-                         accepts="wms_source" use-key-for-value="url" ng-model="source.req.url">
-                         <input class="input-xlarge" type="url" value="{{source.wms_source}}" name="source_form.req_url"
-                             required ng-model="source.req.url" />
-                     </div>
-                 </div>
-             <!-- layer -->
-                 <div labeled-control-group name-for="source_form.req_layer" text="Layer">
-                     <div
-                         droppable
-                         required
-                         accepts="wms_layer"
-                         allow-array="true"
-                         ng-model="source.req.layers"
-                         name="source_form.req_layers"
-                         use-key-for-value="name"
-                         class="input-xlarge insertable_multi uneditable-input">
-                         <div sortable ng-model="source.req.layers" >
-                             <div ng-repeat="layer in source.req.layers" class="item">
-                                 {{layer}} <span ng-show="layerTitle(layer)">({{layerTitle(layer)}})</span>
-                                 <button class="btn btn-mini btn-danger right" ng-click="remove(layer)">X</button>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-                 <div labeled-control-group name-for="add_layer_manual" text="Manual add layer">
-                     <input type="text" id="add_layer_manual" name="add_layer_manual" ng-model="custom.layer_manual" class="input-xlarge">
-                     <button class="btn btn-small" ng-click="addLayerManual($event)">Add</button>
-                 </div>
-             <!-- transparent -->
-                 <div labeled-control-group name-for="source_form.req_transparent" text="Transparent" warning="{{invalid_image_settings}}" warning-msg="Selectet image format(s) not support transparency.">
-                     <input type="checkbox" ng-model="source.req.transparent" name="source_form.req_transparent">
-                 </div>
-             </div>
-         </div>
-     <!-- buttons -->
-         <button class="btn btn-small" ng-click="addSource($event)" ng-disabled="!source_form.$valid">Save</button>
-         <button class="btn btn-small" ng-click="resetForm($event)">Reset</button>
-     </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-append" labeled-control-group name-for="add_layer_manual" text="Manual add layer">
+            <input type="text" id="add_layer_manual" name="add_layer_manual" ng-model="custom.layer_manual" class="input-xlarge">
+            <button class="btn" ng-click="addLayerManual($event)">Add</button>
+          </div>
+
+          <div labeled-control-group name-for="source_form.req_transparent" text="Transparent" warning="{{invalid_image_settings}}" warning-msg="Selectet image format(s) not support transparency.">
+            <input type="checkbox" ng-model="source.req.transparent" name="source_form.req_transparent">
+          </div>
+        </div>
+      </div>
+      <button class="btn" ng-click="addSource($event)" ng-disabled="!source_form.$valid">Save</button>
+      <button class="btn" ng-click="resetForm($event)">Reset</button>
+      </fieldset>
+    </form>
  </div>
-                    </div>
+</div>
 %end
 
 %def rightblock():
 <div ng-controller="TreeCtrl">
     <h3>Available WMS</h3>
-    <script type="text/ng-template"  id="wms_layer_renderer.html">
-        <div ng-click="show_infos(layer)" class="layer_infos">
-            <h6>{{layer.title}}</h6>
-            <span ng-show="layer.name">Name: {{layer.name}}</span>
+    <script type="text/ng-template"  id="wms_layer_renderer">
+        <div ng-click="show_infos(layer)" class="label">
+            {{layer.title}} – <span ng-show="layer.name">{{layer.name}}</span>
         </div>
         <div
             ng-repeat="layer in layer.layers"
-            ng-include="'wms_layer_renderer.html'"
+            ng-include="'wms_layer_renderer'"
             draggable
             item-data="{{itemData(layer)}}"
             class="wms_layer grp_layer label"></div>
             <!-- wms_layer is required for dropping into droppable -->
     </script>
-    <div toggle-group mode='hideOther'>
-        <div ng-repeat="wms in wms_list" class="wms label label-success" >
-            <div toggle-element="next">
-                <h5 style="display:inline-block" draggable item-data="{{wms}}" class="wms_source">{{wms.title}}</h5>
-                <button class="right btn btn-mini" ng-click="refreshCapabilities(wms._id, wms.url)">RefreshCapabilities</button>
-            </div>
-            <div ng-show="$first">
-                <p>URL: {{wms.url}}</p>
-                <div
+    <div toggle-group mode='hideOther' class="accordion">
+        <div ng-repeat="wms in wms_list" class="wms accordion-group">
+            <div class="accordion-heading" toggle-element="next">
+              <div class="accordion-toggle wms_source" draggable item-data="{{wms}}">
+                  {{wms.title}}</div>
+                <i class="icon-refresh"  ng-click="refreshCapabilities(wms._id, wms.url)"></i>
+              </div>
+            <div class="accordion-body" ng-show="$first">
+               <div class="accordion-inner">
+               <h6>Infos</h6>
+               <small class="accordion-infotext">URL: {{wms.url}}</small></li>
+
+               <h6>Layers</h6>
+               <div
                     ng-repeat="layer in wms.layer.layers"
-                    ng-include="'wms_layer_renderer.html'"
+                    ng-include="'wms_layer_renderer'"
                     draggable item-data="{{itemData(layer)}}"
-                    class="wms_layer layer label label-info"></div>
+                    class="wms_layer"></div>
                     <!-- wms_layer is required for dropping into droppable -->
+
+              </div>
             </div>
         </div>
     </div>
     <hr>
-    <form class="form-horizontal" name="capabilities_form" novalidate>
-        <div labeled-control-group name-for="capabilities_url" text="Capabilities">
+    <form name="capabilities_form" novalidate>
+        <div class="input-append" labeled-control-group name-for="capabilities_url" text="Load WMS">
             <input type="url" required name="capabilities_url" ng-model="capabilities.url">
+            <button class="btn" ng-click="addCapabilities()" ng-disabled="!capabilities_form.$valid">Load</button>
         </div>
+
+
         <div class="error-msg alert alert-error" ng-show="capabilities.error">{{capabilities.error}}</div>
-        <button class="btn btn-small" ng-click="addCapabilities()" ng-disabled="!capabilities_form.$valid">GetCapabilities</button><!-- add new wms -->
     </form>
 </div>
   %end
