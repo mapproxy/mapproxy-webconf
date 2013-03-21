@@ -48,6 +48,7 @@
     </div>
    <div class="mapproxy_layer_dropzone" droppable ng-model="mapproxy_layers" allow-array="true"></div>
    <button class="btn btn-small" ng-click="updateLayerTree()">Save</button>
+   <i id="layertree_save_ok" class="icon-ok" ng-show="false"></i>
    <button class="btn btn-small" ng-click="newLayer()">New layer</button>
 </div>
 %end
@@ -85,6 +86,7 @@
         </div>
     </form>
     <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!layer_form.$valid">Save</button>
+    <i id="layer_save_ok" class="icon-ok" ng-show="false"></i>
     <button class="btn btn-small" ng-click="resetForm()">Reset</button>
 </div>
 %end

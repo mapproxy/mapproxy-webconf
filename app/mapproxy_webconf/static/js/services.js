@@ -2,7 +2,7 @@ var MapproxyBaseService = function(_section) {
     var _this = this;
     this._items = {};
     this._item;
-    this._lastAdded;
+    this._last;
     this._section = _section;
     this._rootScope;
     this._resource;
@@ -26,7 +26,7 @@ var MapproxyBaseService = function(_section) {
                 function(result) {
                     _this._items[result._id] = result;
                     if(angular.isDefined(_this._rootScope)) {
-                        _this._lastAdded = result;
+                        _this._last = result;
                         _this._rootScope.$broadcast(_this._section + '.added');
                     }
                 }, function(error) {
@@ -69,7 +69,7 @@ var MapproxyBaseService = function(_section) {
         }
     };
     this.last = function() {
-        return _this._lastAdded;
+        return _this._last;
     };
     this.error = function() {
         return _this._error_msg;
@@ -133,7 +133,9 @@ var MapproxyLayerService = function(_section) {
             _this.prepareLayer(to_update, layer, idx);
         });
         to_update = new _this._resource({'tree': to_update});
-        to_update.$update({action: _this._section});
+        to_update.$update({action: _this._section}, function(result) {
+            _this._rootScope.$broadcast(_this._section + '.updatedStructure');
+        });
     };
 
     this.return_dict['tree'] = _this.tree;
@@ -162,6 +164,7 @@ WMSSourceService = function(_section) {
         var item = new _this._resource(_item);
         item.$update({action: _this._section, id: item.id}, function(result) {
             _this._items[result._id] = result;
+            _this._last = result;
             if(angular.isDefined(_this._rootScope))
                 _this._rootScope.$broadcast(_this._section + '.updated');
         });

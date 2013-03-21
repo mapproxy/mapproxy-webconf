@@ -18,12 +18,17 @@ function TreeCtrl($scope, WMSSources) {
     }
 
     $scope.$on('wms_capabilities.load_complete', refreshTree);
-    $scope.$on('wms_capabilities.added', refreshTree);
-    $scope.$on('wms_capabilities.updated', refreshTree);
-
+    $scope.$on('wms_capabilities.added', function() {
+        $('#capabilities_add_ok').show().fadeOut(3000);
+        refreshTree();
+    });
+    $scope.$on('wms_capabilities.updated', function() {
+        $scope.refresh_msg = WMSSources.last().title + ' refreshed';
+        refreshTree();
+        $('#capabilities_refresh_ok').show().fadeOut(3000);
+    });
     $scope.capabilities = {};
     $scope.capabilities.error = false;
-
     $scope.$on('wms_capabilities.error', function() {
         $scope.capabilities.error = WMSSources.error();
     });
@@ -121,10 +126,12 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
     $scope.$on('sources.added', function() {
         MapproxySources.current(DEFAULT_SOURCE)
         $scope.formTitle = 'New Source';
+        $('#source_save_ok').show().fadeOut(3000)
     });
     $scope.$on('sources.updated', function() {
         MapproxySources.current(DEFAULT_SOURCE)
         $scope.formTitle = 'New Source';
+        $('#source_save_ok').show().fadeOut(3000)
     });
 }
 
@@ -186,10 +193,12 @@ function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
     $scope.$on('caches.added', function() {
         MapproxyCaches.current(DEFAULT_CACHE);
         $scope.formTitle = 'New Cache';
+        $('#cache_save_ok').show().fadeOut(3000)
     });
     $scope.$on('caches.updated', function() {
         MapproxyCaches.current(DEFAULT_CACHE);
         $scope.formTitle = 'New Cache';
+        $('#cache_save_ok').show().fadeOut(3000)
     })
 
     $scope.$on('grids.load_complete', refreshGrids);
@@ -250,10 +259,12 @@ function MapproxyGridFormCtrl($scope, MapproxyGrids) {
     $scope.$on('grids.added', function() {
         MapproxyGrids.current(DEFAULT_GRID)
         $scope.formTitle = 'New Grid';
+        $('#grid_save_ok').show().fadeOut(3000)
     });
     $scope.$on('grids.updated', function() {
         MapproxyGrids.current(DEFAULT_GRID)
         $scope.formTitle = 'New Grid';
+        $('#grid_save_ok').show().fadeOut(3000)
     })
 }
 
@@ -282,6 +293,9 @@ function MapproxyLayerListCtrl($scope, MapproxyLayers) {
     $scope.$on('layers.added', added);
     $scope.$on('layers.updated', refreshTree);
     $scope.$on('layers.deleted', MapproxyLayers.refresh);
+    $scope.$on('layers.updatedStructure', function() {
+        $('#layertree_save_ok').show().fadeOut(3000);
+    })
 }
 
 function MapproxyLayerFormCtrl($scope, MapproxySources, MapproxyCaches, MapproxyLayers) {
@@ -316,10 +330,12 @@ function MapproxyLayerFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
     $scope.$on('layers.added', function() {
         MapproxyLayers.current(DEFAULT_LAYER)
         $scope.formTitle = 'New Layer';
+        $('#layer_save_ok').show().fadeOut(3000)
     });
     $scope.$on('layers.updated', function() {
         MapproxyLayers.current(DEFAULT_LAYER)
         $scope.formTitle = 'New Layer';
+        $('#layer_save_ok').show().fadeOut(3000)
     });
 
 }
