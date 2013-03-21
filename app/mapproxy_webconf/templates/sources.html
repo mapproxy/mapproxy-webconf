@@ -2,8 +2,8 @@
 <div ng-controller="MapproxySourceListCtrl">
   <h3>Sources</h3>
   <ul>
-  	<li class="mapproxy_source label" ng-repeat="source in mapproxy_sources | orderBy:'name'" >
-	    <span ng-click="editSource(source)">{{source.name}}</span>
+  	<li class="mapproxy_source label" ng-click="editSource(source)" ng-repeat="source in mapproxy_sources | orderBy:'name'" >
+	    {{source.name}}
 	    <button
 	      class="btn btn-mini btn-danger right"
 	      ask-dialog
@@ -105,7 +105,9 @@
         <div ng-repeat="wms in wms_list" class="wms label label-success" >
             <div toggle-element="next">
                 <h5 style="display:inline-block" draggable item-data="{{wms}}" class="wms_source">{{wms.title}}</h5>
-                <button class="right btn btn-mini" ng-click="refreshCapabilities(wms._id, wms.url)">RefreshCapabilities</button>
+                <div style="display:inline-block" class="right">
+                    <button class="btn btn-mini" ng-click="refreshCapabilities($event, wms._id, wms.url)">RefreshCapabilities</button>
+                </div>
             </div>
             <div ng-show="$first">
                 <p>URL: {{wms.url}}</p>

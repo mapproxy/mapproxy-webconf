@@ -13,7 +13,8 @@ function TreeCtrl($scope, WMSSources) {
         $scope.capabilities.error = false;
         WMSSources.add({url: $scope.capabilities.url});
     };
-    $scope.refreshCapabilities = function(_id, url) {
+    $scope.refreshCapabilities = function(event, _id, url) {
+        event.stopPropagation();
         WMSSources.refresh({id: _id, url: url});
     }
 

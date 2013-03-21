@@ -338,7 +338,8 @@ directive('askDialog', function($parse) {
         scope: 'element',
         link: function(scope, element, attrs) {
 
-            scope.openDialog = function() {
+            scope.openDialog = function(event) {
+                event.stopPropagation();
                 scope.dialog.find('p').text(attrs.dialogText)
                 scope.dialog.dialog({
                     resizeable: false,
