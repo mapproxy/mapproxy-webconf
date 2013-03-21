@@ -48,6 +48,13 @@
               <option value="EPSG:900913">EPSG:900913</option>
           </select>
       </div>
+  <!-- origin -->
+      <div labeled-control-group name-for="grid_form.origin" text="Origin">
+          <select ng-model="grid.origin" name="grid_form.origin">
+              <option value="sw">SW / LL</option>
+              <option value="nw">NW / UL</option>
+          </select>
+      </div>
       <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="!grid_form.$valid">Save</button>
       <button class="btn btn-small" ng-click="resetForm($event)">Reset</button>
   </form>
