@@ -53,4 +53,8 @@
     </div>
 %end
 
-%rebase base_config leftblock=leftblock, middleblock=middleblock,  project=get('project'),  active='services'
+%def rightblock():
+&nbsp;
+%end
+
+%rebase base_config leftblock=leftblock, middleblock=middleblock, rightblock=rightblock, project=get('project'),  active='services'
