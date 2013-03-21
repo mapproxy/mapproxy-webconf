@@ -30,16 +30,19 @@ function TreeCtrl($scope, WMSSources) {
 }
 
 function MapproxySourceListCtrl($scope, MapproxySources) {
-
+    var DEFAULT_SOURCE = {"type": "wms"};
     var refreshList = function() {
         $scope.mapproxy_sources = MapproxySources.list();
     }
 
     $scope.editSource = function(source) {
-        MapproxySources.current(source, true);
+        MapproxySources.current(source);
     };
     $scope.removeSource = function(source) {
         MapproxySources.remove(source);
+    };
+    $scope.newSource = function() {
+        MapproxySources.current(DEFAULT_SOURCE);
     };
 
     $scope.$on('sources.load_complete', refreshList);
@@ -49,6 +52,7 @@ function MapproxySourceListCtrl($scope, MapproxySources) {
 }
 
 function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
+    var DEFAULT_SOURCE = {"type": "wms"};
     $scope.openDialog = function(callback, new_data) {
         if(angular.isUndefined($scope.source.req) ||
            angular.isUndefined($scope.source.req.url) ||
@@ -105,27 +109,40 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
 
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {};
-    $scope.source = {'type': 'wms'};
+    $scope.source = angular.copy(DEFAULT_SOURCE);
+    $scope.formTitle = 'New Source';
 
-    MapproxySources.current($scope.source, false)
+    MapproxySources.current($scope.source)
 
     $scope.$on('sources.current', function() {
         $scope.source = MapproxySources.current();
+        $scope.formTitle = angular.equals($scope.source, DEFAULT_SOURCE) ? 'New Source' : 'Edit Source';
+    });
+    $scope.$on('sources.added', function() {
+        MapproxySources.current(DEFAULT_SOURCE)
+        $scope.formTitle = 'New Source';
+    });
+    $scope.$on('sources.updated', function() {
+        MapproxySources.current(DEFAULT_SOURCE)
+        $scope.formTitle = 'New Source';
     });
 }
 
 function MapproxyCacheListCtrl($scope, MapproxyCaches) {
-
+    var DEFAULT_CACHE = {'meta_size': [null, null]}
     var refreshList = function() {
         $scope.mapproxy_caches = MapproxyCaches.list();
     }
 
     $scope.editCache = function(cache) {
-        MapproxyCaches.current(cache, true);
+        MapproxyCaches.current(cache);
     };
     $scope.removeCache = function(cache) {
         MapproxyCaches.remove(cache);
     };
+    $scope.newCache = function() {
+        MapproxyCaches.current(DEFAULT_CACHE);
+    }
 
     $scope.$on('caches.load_complete', refreshList);
     $scope.$on('caches.added', refreshList);
@@ -134,7 +151,7 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches) {
 }
 
 function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches, MapproxyGrids) {
-
+    var DEFAULT_CACHE = {'meta_size': [null, null]}
     var refreshGrids = function() {
         $scope.available_grids = MapproxyGrids.list();
     };
@@ -155,15 +172,25 @@ function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
         return MapproxySources.byId(_id).name;
     };
 
-    $scope.cache = {'meta_size': [null, null]};
-    MapproxyCaches.current($scope.cache, false);
+    $scope.cache = angular.copy(DEFAULT_CACHE);
+    $scope.formTitle = 'New Cache';
+    MapproxyCaches.current($scope.cache);
 
     $scope.$on('caches.current', function() {
         $scope.cache = MapproxyCaches.current();
         if(angular.isUndefined($scope.cache.meta_size)) {
             $scope.cache.meta_size = [null, null];
         }
+        $scope.formTitle = angular.equals($scope.cache, DEFAULT_CACHE) ? 'New Cache' : 'Edit Cache';
     });
+    $scope.$on('caches.added', function() {
+        MapproxyCaches.current(DEFAULT_CACHE);
+        $scope.formTitle = 'New Cache';
+    });
+    $scope.$on('caches.updated', function() {
+        MapproxyCaches.current(DEFAULT_CACHE);
+        $scope.formTitle = 'New Cache';
+    })
 
     $scope.$on('grids.load_complete', refreshGrids);
     $scope.$on('grids.added', refreshGrids);
@@ -173,16 +200,19 @@ function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
 }
 
 function MapproxyGridListCtrl($scope, MapproxyGrids) {
-
+    var DEFAULT_GRID = {'bbox': [null, null, null, null]};
     var refreshList = function() {
         $scope.mapproxy_grids = MapproxyGrids.list();
     };
 
     $scope.editGrid = function(grid) {
-        MapproxyGrids.current(grid, true);
+        MapproxyGrids.current(grid);
     };
     $scope.removeGrid = function(grid) {
-        MapproxyCaches.remove(grid);
+        MapproxyGrids.remove(grid);
+    };
+    $scope.newGrid = function() {
+        MapproxyGrids.current(DEFAULT_GRID);
     };
 
     $scope.$on('grids.load_complete', refreshList);
@@ -192,7 +222,7 @@ function MapproxyGridListCtrl($scope, MapproxyGrids) {
 }
 
 function MapproxyGridFormCtrl($scope, MapproxyGrids) {
-
+    var DEFAULT_GRID = {'bbox': [null, null, null, null]};
     $scope.addGrid = function(event) {
         event.preventDefault();
         MapproxyGrids.add(clearData($scope.grid));
@@ -203,21 +233,32 @@ function MapproxyGridFormCtrl($scope, MapproxyGrids) {
             event.preventDefault();
         }
         $scope.grid = MapproxyGrids.current();
+
     };
 
-    $scope.grid = {'bbox': [null, null, null, null]};
-    MapproxyGrids.current($scope.grid, false);
+    $scope.grid = angular.copy(DEFAULT_GRID);
+    $scope.formTitle = 'New Grid'
+    MapproxyGrids.current($scope.grid);
 
     $scope.$on('grids.current', function() {
         $scope.grid = MapproxyGrids.current();
         if(angular.isUndefined($scope.grid.bbox)) {
             $scope.grid.bbox = [null, null, null, null];
         }
+        $scope.formTitle = angular.equals($scope.grid, DEFAULT_GRID) ? 'New Grid' : 'Edit Grid';
     });
+    $scope.$on('grids.added', function() {
+        MapproxyGrids.current(DEFAULT_GRID)
+        $scope.formTitle = 'New Grid';
+    });
+    $scope.$on('grids.updated', function() {
+        MapproxyGrids.current(DEFAULT_GRID)
+        $scope.formTitle = 'New Grid';
+    })
 }
 
 function MapproxyLayerListCtrl($scope, MapproxyLayers) {
-
+    var DEFAULT_LAYER = {};
     var refreshTree = function() {
         $scope.mapproxy_layers = MapproxyLayers.tree();
     };
@@ -225,7 +266,7 @@ function MapproxyLayerListCtrl($scope, MapproxyLayers) {
         $scope.mapproxy_layers.push(MapproxyLayers.last());
     };
     $scope.editLayer = function(layer) {
-        MapproxyLayers.current(layer, true);
+        MapproxyLayers.current(layer);
     };
     $scope.removeLayer = function(layer) {
         MapproxyLayers.remove(layer);
@@ -233,6 +274,9 @@ function MapproxyLayerListCtrl($scope, MapproxyLayers) {
     $scope.updateLayerTree = function() {
         MapproxyLayers.updateStructure($scope.mapproxy_layers);
     };
+    $scope.newLayer = function() {
+        MapproxyLayers.current(DEFAULT_LAYER)
+    }
 
     $scope.$on('layers.load_complete', refreshTree);
     $scope.$on('layers.added', added);
@@ -241,7 +285,7 @@ function MapproxyLayerListCtrl($scope, MapproxyLayers) {
 }
 
 function MapproxyLayerFormCtrl($scope, MapproxySources, MapproxyCaches, MapproxyLayers) {
-
+    var DEFAULT_LAYER = {};
     $scope.addLayer = function() {
         $scope.layer = clearData($scope.layer)
         MapproxyLayers.add(angular.copy($scope.layer));
@@ -261,12 +305,23 @@ function MapproxyLayerFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
     };
 
 
-    $scope.layer = {};
-    MapproxyLayers.current($scope.layer, false);
+    $scope.layer = angular.copy(DEFAULT_LAYER);
+    MapproxyLayers.current($scope.layer);
+    $scope.formTitle = 'New Layer';
 
     $scope.$on('layers.current', function() {
         $scope.layer = MapproxyLayers.current();
+        $scope.formTitle = angular.equals($scope.layer, DEFAULT_LAYER) ? 'New Layer' : 'Edit Layer';
     });
+    $scope.$on('layers.added', function() {
+        MapproxyLayers.current(DEFAULT_LAYER)
+        $scope.formTitle = 'New Layer';
+    });
+    $scope.$on('layers.updated', function() {
+        MapproxyLayers.current(DEFAULT_LAYER)
+        $scope.formTitle = 'New Layer';
+    });
+
 }
 
 function MapproxyGlobalsFormCtrl($scope, MapproxyGlobals) {

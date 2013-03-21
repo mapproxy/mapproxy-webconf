@@ -48,13 +48,14 @@
     </div>
    <div class="mapproxy_layer_dropzone" droppable ng-model="mapproxy_layers" allow-array="true"></div>
    <button class="btn btn-small" ng-click="updateLayerTree()">Save</button>
+   <button class="btn btn-small" ng-click="newLayer()">New layer</button>
 </div>
 %end
 
 %def middleblock():
 <div ng-controller="MapproxyLayerFormCtrl">
-    <h3>Edit Layer</h3>
     <form name="layer_form" ng-model="layer" class="form-horizontal">
+        <h3>{{formTitle}}</h3>
     <!-- name -->
         <div labeled-control-group name-for="layer_form.layer_name" text="Name">
             <input required type="text" required ng-model="layer.name" name="layer_form.layer_name"/><br>

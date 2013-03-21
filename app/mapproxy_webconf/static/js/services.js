@@ -59,17 +59,13 @@ var MapproxyBaseService = function(_section) {
     this.byId = function(_id) {
         return angular.isDefined(_this._items[_id]) ? _this._items[_id] : false;
     };
-    this.current = function(_item, copy) {
+    this.current = function(_item) {
         if(_item) {
-            if(copy) {
-                _this._item = angular.copy(_item);
-            } else {
-                _this._item = _item;
-            }
+            _this._item = angular.copy(_item);
             if(angular.isDefined(_this._rootScope))
                 _this._rootScope.$broadcast(_this._section + '.current');
         } else {
-            return _this._item;
+            return angular.copy(_this._item);
         }
     };
     this.last = function() {

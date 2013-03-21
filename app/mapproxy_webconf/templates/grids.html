@@ -14,13 +14,14 @@
           callback="removeGrid(grid)">X</button>
       </li>
     </ul>
+    <button class="btn btn-small" ng-click="newGrid()">New grid</button>
   </div>
 %end
 
 %def middleblock():
 <div>
-  <h3>Edit Grid</h3>
   <form class="form-horizontal" name="grid_form" ng-controller="MapproxyGridFormCtrl" novalidate>
+      <h3>{{formTitle}}</h3>
   <!-- name -->
       <div labeled-control-group name-for="grid_form.name" text="Name">
           <input required type="text" ng-model="grid.name" name="grid_form.name" />

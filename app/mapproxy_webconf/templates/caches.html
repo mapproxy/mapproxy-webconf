@@ -15,13 +15,14 @@
                   callback="removeCache(cache)">X</button>
           </li>
       </ul>
+      <button class="btn btn-small" ng-click="newCache()">New cache</button>
   </div>
 %end
 
 %def middleblock():
 <div ng-controller="MapproxyCacheFormCtrl">
-    <h3>Edit Cache</h3>
     <form name="cache_form" ng-model="cache" class="form-horizontal">
+        <h3>{{formTitle}}</h3>
     <!-- name -->
         <div labeled-control-group name-for="cache_form.cache_name" text="Name">
             <input required type="text" ng-model="cache.name" name="cache_form.cache_name"/>

@@ -13,14 +13,14 @@
 	     </button>
 	  </li>
   </ul>
+  <button class="btn btn-small" ng-click="newSource()">New source</button>
 </div>
 %end
 
 %def middleblock():
-<div>
-  <h3>Edit Source</h3>
- <div ng-controller="MapproxySourceNoticeCtrl">
+<div ng-controller="MapproxySourceNoticeCtrl">
      <form class="form-horizontal" name="source_form" ng-controller="MapproxySourceFormCtrl" novalidate>
+        <h3>{{formTitle}}</h3>
          <div toggle-group mode="multiShow">
              <div
                  style="display:none;"
@@ -80,8 +80,8 @@
          <button class="btn btn-small" ng-click="addSource($event)" ng-disabled="!source_form.$valid">Save</button>
          <button class="btn btn-small" ng-click="resetForm($event)">Reset</button>
      </form>
- </div>
-                    </div>
+</div>
+
 %end
 
 %def rightblock():
