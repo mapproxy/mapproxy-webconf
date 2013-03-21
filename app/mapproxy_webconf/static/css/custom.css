@@ -119,9 +119,13 @@ ul.vertical-list li.mapproxy_source.label, ul.vertical-list li.mapproxy_cache.la
     border: 1px solid #CCCCCC;
 }
 
-.accordion-heading i.icon-refresh {
+.accordion-heading i.icon-refresh, .accordion-heading i.icon-remove {
     float: right;
     cursor: pointer;
     margin-top: -1.8em;
     margin-right: 0.5em;
 }
+.accordion-heading i.icon-refresh {
+    margin-right: 2em;
+}
+
