@@ -1,6 +1,6 @@
 %def leftblock():
   <div ng-controller="MapproxyGridListCtrl">
-    <h3>Mapproxy Grids</h3>
+    <h3>Grids</h3>
     <ul>
       <li class="mapproxy_grid label"
            ng-repeat="grid in mapproxy_grids | orderBy:'name'"
@@ -61,4 +61,8 @@
 </div>
 %end
 
-%rebase base_config leftblock=leftblock, middleblock=middleblock,  project=get('project'), active='grids'
+%def rightblock():
+&nbsp;
+%end
+
+%rebase base_config leftblock=leftblock, middleblock=middleblock, rightblock=rightblock, project=get('project'), active='grids'

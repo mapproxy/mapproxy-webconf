@@ -1,6 +1,6 @@
 %def leftblock():
 <div ng-controller="MapproxyLayerListCtrl">
-  <h3>Mapproxy Layer</h3>
+  <h3>Layer</h3>
    <script type="text/ng-template"  id="mapproxy_layer_renderer.html">
         <ul sortable ng-model="layer._layers">
             <li ng-repeat="layer in layer._layers | orderBy:'_rank'">  <!-- new scope -->
@@ -90,7 +90,7 @@
 
 %def rightblock():
   <div>
-      <h3>Mapproxy Sources</h3>
+      <h3>Sources</h3>
       <ul ng-controller="MapproxySourceListCtrl">
           <li
               draggable
@@ -101,7 +101,7 @@
           </li>
       </ul>
       <hr>
-      <h3>Mapproxy Caches</h3>
+      <h3>Caches</h3>
       <ul ng-controller="MapproxyCacheListCtrl">
           <li
               draggable

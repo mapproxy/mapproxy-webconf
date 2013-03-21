@@ -1,6 +1,6 @@
 %def leftblock():
 <div ng-controller="MapproxySourceListCtrl">
-  <h3>Mapproxy Sources</h3>
+  <h3>Sources</h3>
   <ul>
   	<li class="mapproxy_source label" ng-repeat="source in mapproxy_sources | orderBy:'name'" >
 	    <span ng-click="editSource(source)">{{source.name}}</span>
