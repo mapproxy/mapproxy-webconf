@@ -37,8 +37,7 @@
     <!--%include angular_templates-->
   </head>
 <body>
-  <div class="container-fluid">
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-static-top">
       <div class="navbar-inner">
         <div class="container-fluid">
           <a class="brand" href="/">MapProxy</a>
@@ -51,6 +50,8 @@
         </div>
       </div>
     </div><!-- /.navbar -->
+      <div class="container-fluid">
+
     % if defined('site_navbar'):
       %site_navbar()
     % end
