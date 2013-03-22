@@ -10,6 +10,11 @@ body {
   /*width: 300px;*/
 }
 
+input[type="radio"], input[type="checkbox"] {
+    margin:0em;
+    margin-top: -0.2em;
+    margin-right: 0.3em;
+}
 .control-group {
     margin: 0 ;
 }
@@ -32,6 +37,7 @@ h6 {
 }
 
 /* page options */
+
 .middleblock {
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
