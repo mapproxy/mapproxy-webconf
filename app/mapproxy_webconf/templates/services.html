@@ -1,6 +1,11 @@
 %def leftblock():
     <div ng-controller="MapproxyServicesChooserCtrl">
-        <button ng-repeat="(service, data) in services" ng-click="show(service)">{{service}}</button>
+        <ul class="nav nav-tabs nav-stacked">
+            <li ng-repeat="(service, data) in services"
+                ng-click="show(service)">
+                <a href="#">{{service}}</a>
+            </li>
+        </ul>
     </div>
 %end
 
@@ -46,9 +51,9 @@
         </div>
     </script>
     <div ng-controller="MapproxyServicesCtrl">
-        <form class="form-horizontal" name="services_form">
+        <form name="services_form">
             <div ng-include src="template"></div>
-            <button class="btn btn-small" ng-click="save($event)" ng-disabled="!services_form.$valid">Save</button>
+            <button class="btn pull-right" ng-click="save($event)" ng-disabled="!services_form.$valid">Save</button>
         </form>
     </div>
 %end

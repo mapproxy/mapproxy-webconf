@@ -14,7 +14,7 @@
        </i>
       </li>
     </ul>
-    <button class="btn btn-small" ng-click="newGrid()">New grid</button>
+    <button class="btn btn-small pull-right" ng-click="newGrid()">New grid</button>
   </div>
 %end
 
@@ -57,8 +57,11 @@
           </select>
       </div>
       <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="!grid_form.$valid">Save</button>
-      <i id="grid_save_ok" class="icon-ok" ng-show="false"></i>
       <button class="btn btn-small" ng-click="resetForm($event)">Reset</button>
+      <span class="text-success" id="grid_save_ok" ng-show="false">
+        <i class="icon-ok"></i>
+        <strong>Saved successfully</strong>
+       </span>
   </form>
 </div>
 %end
