@@ -368,7 +368,19 @@ function MapproxyGlobalsFormCtrl($scope, MapproxyGlobals) {
 };
 
 function MapproxyServicesChooserCtrl($scope, DataShareService) {
+    $scope.getClasses = function(service) {
+        var classes = "";
+        if(service == $scope.selected) {
+            classes += 'selected';
+        }
+        if(angular.isDefined($scope.services[service].active) && $scope.services[service].active) {
+            classes += ' active';
+        }
+        return classes;
+    };
+
     $scope.show = function(service) {
+        $scope.selected = service
         DataShareService.data('service', service + '.html')
     };
     $scope.$on('dss.services', function() {
@@ -381,6 +393,7 @@ function MapproxyServicesCtrl($scope, MapproxyServices, DataShareService) {
         var services = MapproxyServices.list();
         if(services.length > 0) {
             $scope.services = services[0];
+            DataShareService.data('services', $scope.services)
         }
     };
 

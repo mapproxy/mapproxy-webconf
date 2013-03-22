@@ -1,6 +1,6 @@
 %def leftblock():
     <div ng-controller="MapproxyServicesChooserCtrl">
-        <button ng-repeat="(service, data) in services" ng-click="show(service)">{{service}}</button>
+        <button class="{{getClasses(service)}}" ng-repeat="(service, data) in services" ng-click="show(service)" ng-hide="service=='_id'">{{service}}</button>
     </div>
 %end
 
