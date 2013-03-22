@@ -17,8 +17,7 @@ function TreeCtrl($scope, WMSSources) {
         event.stopPropagation();
         WMSSources.refresh(wms);
     };
-    $scope.removeCapabilities = function(event, wms) {
-        event.stopPropagation();
+    $scope.removeCapabilities = function(wms) {
         WMSSources.remove(wms);
     };
 
