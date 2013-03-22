@@ -43,6 +43,7 @@ h6 {
     border-right: 1px solid #ccc;
     padding-left: 1em;
     padding-right: 1em;
+    min-height: 300px !important;
 }
 
 .tab-menu {
