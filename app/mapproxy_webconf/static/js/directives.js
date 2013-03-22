@@ -376,8 +376,35 @@ directive('labeled', function() {
         restrict: 'A',
         replace: true,
         transclude: true,
-        templateUrl: function(element, attrs) {
-            return attrs.labeled
+        // can't use templateURL, because $observe won't work with it
+        // wait for https://github.com/angular/angular.js/issues/1941
+        //
+        // templateUrl: function(element, attrs) {
+        //     return attrs.labeled
+        // },
+        template: function(element, attrs) {
+            switch(attrs.labeled) {
+                case 'checkbox_label':
+                    return '<div class="control-group">' +
+                             '<div class="controls">' +
+                                 '<label class="control-label" for="{{name}}">' +
+                                     '<span ng-transclude></span> {{text}}' +
+                                 '</label>' +
+                                 '<span ng-show="showWarning()" id="tooltip_{{$id}}" class="icon-warning-sign warning_icon"></span>' +
+                             '</div>' +
+                          '</div>';
+                    break;
+                case 'input_label':
+                default:
+                    return '<div class="control-group">' +
+                          '<div class="controls">' +
+                              '<label class="control-label" for="{{name}}">{{text}}:</label>' +
+                              '<span ng-transclude></span>'+
+                              '<span ng-show="showWarning()" id="tooltip_{{$id}}" class="icon-warning-sign warning_icon"></span>' +
+                          '</div>' +
+                      '</div>';
+                    break;
+            }
         },
         scope: 'element',
         link: function(scope, element, attrs) {
