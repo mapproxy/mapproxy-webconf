@@ -162,7 +162,7 @@ WMSSourceService = function(_section) {
 
     this.refresh = function(_item) {
         var item = new _this._resource(_item);
-        item.$update({action: _this._section, id: item.id}, function(result) {
+        item.$update({action: _this._section, id: item._id}, function(result) {
             _this._items[result._id] = result;
             _this._last = result;
             if(angular.isDefined(_this._rootScope))

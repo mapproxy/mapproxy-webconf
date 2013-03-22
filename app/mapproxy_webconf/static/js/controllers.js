@@ -13,12 +13,17 @@ function TreeCtrl($scope, WMSSources) {
         $scope.capabilities.error = false;
         WMSSources.add({url: $scope.capabilities.url});
     };
-    $scope.refreshCapabilities = function(event, _id, url) {
+    $scope.refreshCapabilities = function(event, wms) {
         event.stopPropagation();
-        WMSSources.refresh({id: _id, url: url});
-    }
+        WMSSources.refresh(wms);
+    };
+    $scope.removeCapabilities = function(event, wms) {
+        event.stopPropagation();
+        WMSSources.remove(wms);
+    };
 
     $scope.$on('wms_capabilities.load_complete', refreshTree);
+    $scope.$on('wms_capabilities.deleted', refreshTree);
     $scope.$on('wms_capabilities.added', function() {
         $('#capabilities_add_ok').show().fadeOut(3000);
         refreshTree();
@@ -28,11 +33,12 @@ function TreeCtrl($scope, WMSSources) {
         refreshTree();
         $('#capabilities_refresh_ok').show().fadeOut(3000);
     });
-    $scope.capabilities = {};
-    $scope.capabilities.error = false;
     $scope.$on('wms_capabilities.error', function() {
         $scope.capabilities.error = WMSSources.error();
     });
+    $scope.capabilities = {};
+    $scope.capabilities.error = false;
+
 }
 
 function MapproxySourceListCtrl($scope, MapproxySources) {
