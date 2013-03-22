@@ -2,7 +2,7 @@ import os
 from copy import deepcopy
 
 from xml.etree.ElementTree import ParseError
-from requests.exceptions import MissingSchema
+from requests.exceptions import MissingSchema, ConnectionError
 
 from . import bottle
 from . import config
@@ -75,7 +75,7 @@ class RESTWMSCapabilities(RESTBase):
         except ParseError:
             response.status = 400
             return {'error': 'no capabilities document found'}
-        except MissingSchema:
+        except (MissingSchema, ConnectionError):
             response.status = 400
             return {'error': 'invalid URL'}
 
