@@ -1,0 +1,20 @@
+<script type="text/ng-template" id="checkbox_label">
+    <div class="control-group">
+        <div class="controls">
+            <label class="control-label" for="{{name}}">
+                <span ng-transclude></span> {{text}}
+            </label>
+            <span ng-show="showWarning()" id="tooltip_{{$id}}" class="icon-warning-sign warning_icon"></span>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="input_label">
+    <div class="control-group">
+        <div class="controls">
+            <label class="control-label" for="{{name}}">{{text}}:</label>
+            <span ng-transclude></span>
+            <span ng-show="showWarning()" id="tooltip_{{$id}}" class="icon-warning-sign warning_icon"></span>
+        </div>
+    </div>
+</script>

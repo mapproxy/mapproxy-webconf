@@ -367,18 +367,18 @@ directive('askDialog', function($parse) {
     };
 }).
 
-directive('labeledControlGroup', function() {
+/*
+    labeled must point to existing template!
+    labeled="[template]"
+*/
+directive('labeled', function() {
     return {
         restrict: 'A',
         replace: true,
         transclude: true,
-        template: '<div class="control-group">' +
-                      '<label class="control-label" for="{{name}}">{{text}}:</label>' +
-                      '<div class="controls">' +
-                          '<span ng-transclude></span>' +
-                          '<span ng-show="showWarning()" id="tooltip_{{$id}}" class="icon-warning-sign warning_icon"></span>' +
-                      '</div>' +
-                  '</div>',
+        templateUrl: function(element, attrs) {
+            return attrs.labeled
+        },
         scope: 'element',
         link: function(scope, element, attrs) {
             scope.showWarning = function() {

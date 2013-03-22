@@ -24,12 +24,12 @@
   <form name="cache_form" ng-model="cache">
     <h3>{{formTitle}}</h3>
     <!-- name -->
-        <div labeled-control-group name-for="cache_form.cache_name" text="Name">
+        <div labeled="input_label" name-for="cache_form.cache_name" text="Name">
             <input required class="input-xlarge" type="text" ng-model="cache.name" name="cache_form.cache_name"/>
         </div>
     <!-- sources -->
         <!-- change-callback MUST provide parameters callback and new_data -->
-        <div labeled-control-group name-for="cache_form.sources" text="Sources">
+        <div labeled="input_label" name-for="cache_form.sources" text="Sources">
             <div
                 droppable
                 required
@@ -48,7 +48,7 @@
             </div>
         </div>
     <!-- grids XXXkai: replace by received list of supported srs combined with user defined grids-->
-        <div labeled-control-group name-for="cache_form.grids" text="Grids">
+        <div labeled="input_label" name-for="cache_form.grids" text="Grids">
             <select class="input-xlarge" ng-model="cache.grids" name="cache_form.grids" multiple="multiple" ng-options="value._id as value.name for value in available_grids"/>
             </select>
         </div>
