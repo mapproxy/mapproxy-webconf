@@ -56,15 +56,15 @@
   <form name="layer_form" ng-model="layer">
     <h3>{{formTitle}}</h3>
     <!-- name -->
-        <div labeled-control-group name-for="layer_form.layer_name" text="Name">
+        <div labeled="input_label" name-for="layer_form.layer_name" text="Name">
             <input required type="text" required ng-model="layer.name" class="input-xlarge" name="layer_form.layer_name"/>
         </div>
     <!-- title -->
-        <div labeled-control-group name-for="layer_form.layer_title" text="Title">
+        <div labeled="input_label" name-for="layer_form.layer_title" text="Title">
             <input required type="text" required ng-model="layer.title" class="input-xlarge" name="layer_form.layer_title"/>
         </div>
     <!-- sources -->
-        <div labeled-control-group name-for="layer_form.sources" text="Sources">
+        <div labeled="input_label" name-for="layer_form.sources" text="Sources">
             <div
                 droppable
                 required
