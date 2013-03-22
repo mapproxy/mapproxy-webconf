@@ -10,7 +10,6 @@ def load_mapproxy_yaml(filename):
 
 def write_mapproxy_yaml(mapproxy_conf, filename):
     content = yaml.safe_dump(mapproxy_conf, default_flow_style=False)
-    print content
     utils.save_atomic(filename, content=content)
     return content
 
@@ -31,7 +30,6 @@ def fill_storage_with_mapproxy_conf(storage, project, mapproxy_conf):
 def id_dict_to_named_dict(input):
     output = {}
     for _, item in input.iteritems():
-        print _, item
         name = item.pop('name')
         output[name] = item
     return output
@@ -48,7 +46,6 @@ def mapproxy_conf_from_storage(storage, project):
     mapproxy_conf = {}
     mapproxy_conf['services'] = {}
     for service, config in storage.get_all('services', project).values()[0].items():
-        print config
         if 'active' in config and config['active']:
             config.pop('active', None)
             mapproxy_conf['services'][service] = config
@@ -102,7 +99,6 @@ def layer_tree(layers):
             root.append(layer)
         else:
             layers[parent].setdefault('layers', []).append(layer)
-        print root, layer
 
     # order layers by rank
     for layer in layers.itervalues():
