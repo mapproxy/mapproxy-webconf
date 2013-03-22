@@ -136,3 +136,23 @@ ul.vertical-list li.mapproxy_source.label, ul.vertical-list li.mapproxy_cache.la
     margin-right: 2em;
 }
 
+.nav-pills.nav-stacked  > li.active > a:focus,
+.nav-pills.nav-stacked  > li.active > a:hover {
+    background-color: #eee;
+    color: black;
+}
+
+.nav-pills.nav-stacked > li > a {
+    background-color: white;
+    color: grey;
+}
+
+.nav-pills.nav-stacked > li.active > a {
+    background-color: white;
+    color: green;
+}
+
+.nav-pills.nav-stacked > li.selected > a {
+    background-color: #eee;
+    color: black;
+}

@@ -1,7 +1,7 @@
 %def leftblock():
     <h3>Services</h3>
     <div ng-controller="MapproxyServicesChooserCtrl">
-        <ul class="nav nav-tabs nav-stacked">
+        <ul class="nav nav-pills nav-stacked">
             <li class="{{getClasses(service)}}"
                 ng-repeat="(service, data) in services"
                 ng-click="show(service)"
