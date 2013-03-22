@@ -212,3 +212,9 @@ class SQLiteStore(object):
             (id, section, project))
         self.db.commit()
         return cur.rowcount == 1
+
+    def exists_in_data(self, section, project, search):
+        cur = self.db.cursor()
+        cur.execute("SELECT id FROM store WHERE section = ? AND project = ? AND data LIKE ?", (section, project, search))
+        row = cur.fetchone()
+        return row[0] if row else False
