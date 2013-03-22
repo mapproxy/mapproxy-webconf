@@ -14,20 +14,24 @@
 % end
 
 %def content():
-  % if defined('leftblock'):
-  <div class="span3 leftblock">
-    %leftblock()
-  </div>
-  % end
-  % if defined('middleblock'):
-  <div class="span5 middleblock">
-    %middleblock()
-  </div>
-  % end
-  % if defined('rightblock'):
-  <div class="span4 rightblock">
-    %rightblock()
-  </div>
+  % if not defined('base_content'):
+    % if defined('leftblock'):
+    <div class="span3 leftblock">
+      %leftblock()
+    </div>
+    % end
+    % if defined('middleblock'):
+    <div class="span5 middleblock">
+      %middleblock()
+    </div>
+    % end
+    % if defined('rightblock'):
+    <div class="span4 rightblock">
+      %rightblock()
+    </div>
+    % end
+  % else:
+    %base_content()
   % end
 %end
 

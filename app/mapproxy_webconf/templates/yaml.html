@@ -1,16 +1,10 @@
-%def leftblock():
-&nbsp;
-%end
-
-%def middleblock():
-<div  ng-controller="MapproxyConfigCtrl">
-    <div>{{yaml_msg}}</div>
-    <pre ng-bind="mapproxy_yaml"></pre>
+%def content():
+<div class="span8 offset1">
+	<div  ng-controller="MapproxyConfigCtrl">
+	    <div>{{yaml_msg}}</div>
+	    <pre ng-bind="mapproxy_yaml"></pre>
+	</div>
 </div>
 %end
 
-%def rightblock():
-&nbsp;
-%end
-
-%rebase base_config leftblock=leftblock, middleblock=middleblock, rightblock=rightblock, project=get('project'), active='yaml'
+%rebase base_config base_content=content, project=get('project'), active='yaml'
