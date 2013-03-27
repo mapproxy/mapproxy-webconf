@@ -25,7 +25,7 @@
     <h3>{{formTitle}}</h3>
     <!-- name -->
         <div labeled="input_label" name-for="cache_form.cache_name" text="Name">
-            <input required class="input-xlarge" type="text" ng-model="cache.name" name="cache_form.cache_name"/>
+            <input required class="input-xlarge" type="text" ng-model="cache.name" id="cache_form.cache_name"/>
         </div>
     <!-- sources -->
         <!-- change-callback MUST provide parameters callback and new_data -->
@@ -49,7 +49,7 @@
         </div>
     <!-- grids XXXkai: replace by received list of supported srs combined with user defined grids-->
         <div labeled="input_label" name-for="cache_form.grids" text="Grids">
-            <select class="input-xlarge" ng-model="cache.grids" name="cache_form.grids" multiple="multiple" ng-options="value._id as value.name for value in available_grids"/>
+            <select class="input-xlarge" ng-model="cache.grids" id="cache_form.grids" multiple="multiple" ng-options="value._id as value.name for value in available_grids"/>
             </select>
         </div>
     </form>

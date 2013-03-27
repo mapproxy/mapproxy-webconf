@@ -57,11 +57,11 @@
     <h3>{{formTitle}}</h3>
     <!-- name -->
         <div labeled="input_label" name-for="layer_form.layer_name" text="Name">
-            <input required type="text" required ng-model="layer.name" class="input-xlarge" name="layer_form.layer_name"/>
+            <input required type="text" required ng-model="layer.name" class="input-xlarge" id="layer_form.layer_name"/>
         </div>
     <!-- title -->
         <div labeled="input_label" name-for="layer_form.layer_title" text="Title">
-            <input required type="text" required ng-model="layer.title" class="input-xlarge" name="layer_form.layer_title"/>
+            <input required type="text" required ng-model="layer.title" class="input-xlarge" id="layer_form.layer_title"/>
         </div>
     <!-- sources -->
         <div labeled="input_label" name-for="layer_form.sources" text="Sources">
@@ -71,7 +71,7 @@
                 accepts="mapproxy_source,mapproxy_cache"
                 allow-array="true"
                 ng-model="layer.sources"
-                name="layer_sources"
+                id="layer_sources"
                 use-key-for-value="_id"
                 class="input-xlarge insertable-list uneditable-input">
                 <div sortable ng-model="layer.sources" >

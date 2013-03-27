@@ -32,14 +32,14 @@
         </div>
         <div ng-show="true">
           <div labeled="input_label" name-for="source_form.name" text="Name">
-            <input class="input-xlarge" type="text" required ng-model="source.name" name="source_form.name"/>
+            <input class="input-xlarge" type="text" required ng-model="source.name" id="source_form.name"/>
           </div>
           <div labeled="input_label" name-for="source_form.req_url" text="URL">
             <div droppable change-callback="openDialog(callback, new_data)"
               class="droppable_input_wrapper input-xlarge"
               accepts="wms_source" use-key-for-value="url" ng-model="source.req.url">
                 <input class="input-xlarge" type="url" value="{{source.wms_source}}"
-                  name="source_form.req_url" required ng-model="source.req.url" />
+                  id="source_form.req_url" required ng-model="source.req.url" />
             </div>
           </div>
 
@@ -66,7 +66,7 @@
           </div>
 
           <div labeled='checkbox_label' name-for="source_form.req_transparent" text="Transparent" warning="{{invalid_image_settings}}" warning-msg="Selectet image format(s) not support transparency.">
-            <input type="checkbox" ng-model="source.req.transparent" name="source_form.req_transparent">
+            <input type="checkbox" ng-model="source.req.transparent" id="source_form.req_transparent">
           </div>
         </div>
       </div>
@@ -125,8 +125,8 @@
     <div ng-show="false" id="capabilities_refresh_ok">{{refresh_msg}}</div>
     <hr>
     <form name="capabilities_form" novalidate>
-        <div class="input-append" labeled="input_label" text="Load WMS">
-            <input type="url" required name="capabilities_url" ng-model="capabilities.url">
+        <div class="input-append" labeled="input_label" name-for="addCapabilities"  text="Load WMS">
+            <input type="url" required name="capabilities_url" ng-model="capabilities.url" id="addCapabilities">
             <button class="btn" ng-click="addCapabilities()" ng-disabled="!capabilities_form.$valid">Add</button>
         </div>
         <i id="capabilities_add_ok" class="icon-ok" ng-show="false"></i>

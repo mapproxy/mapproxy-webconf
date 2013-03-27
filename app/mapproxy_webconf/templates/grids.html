@@ -24,26 +24,26 @@
     <h3>{{formTitle}}</h3>
     <!-- name -->
       <div labeled="input_label" name-for="grid_form.name" text="Name">
-          <input required type="text" ng-model="grid.name" name="grid_form.name" />
+          <input required type="text" ng-model="grid.name" id="grid_form.name" />
       </div>
   <!-- SRS -->
       <div labeled="input_label" name-for="grid_form.srs" text="SRS">
-           <select ng-model="grid.srs" name="grid_form.srs">
+           <select ng-model="grid.srs" id="grid_form.srs">
               <option value="EPSG:3857">EPSG:3857</option>
               <option value="EPSG:4326">EPSG:4326</option>
               <option value="EPSG:900913">EPSG:900913</option>
           </select>
       </div>
   <!-- BBox -->
-      <div labeled="input_label" name-for="grid_form.bbox" text="BBox">
-          <input type="number" ng-model="grid.bbox[0]" class="input-mini" name="grid_form.bbox_0" />
-          <input type="number" ng-model="grid.bbox[1]" class="input-mini" name="grid_form.bbox_1" />
-          <input type="number" ng-model="grid.bbox[2]" class="input-mini" name="grid_form.bbox_2" />
-          <input type="number" ng-model="grid.bbox[3]" class="input-mini" name="grid_form.bbox_3" />
+      <div labeled="input_label" name-for="grid_form.bbox_0" text="BBox">
+          <input type="number" ng-model="grid.bbox[0]" class="input-mini" id="grid_form.bbox_0" />
+          <input type="number" ng-model="grid.bbox[1]" class="input-mini" id="grid_form.bbox_1" />
+          <input type="number" ng-model="grid.bbox[2]" class="input-mini" id="grid_form.bbox_2" />
+          <input type="number" ng-model="grid.bbox[3]" class="input-mini" id="grid_form.bbox_3" />
       </div>
   <!-- BBox SRS -->
       <div labeled="input_label" name-for="grid_form.bbox_srs" text="BBox SRS">
-          <select ng-model="grid.bbox_srs" name="grid_form.bbox_srs">
+          <select ng-model="grid.bbox_srs" id="grid_form.bbox_srs">
               <option value="EPSG:3857">EPSG:3857</option>
               <option value="EPSG:4326">EPSG:4326</option>
               <option value="EPSG:900913">EPSG:900913</option>
@@ -51,7 +51,7 @@
       </div>
   <!-- origin -->
       <div labeled="input_label" name-for="grid_form.origin" text="Origin">
-          <select ng-model="grid.origin" name="grid_form.origin">
+          <select ng-model="grid.origin" id="grid_form.origin">
               <option value="sw">SW / LL</option>
               <option value="nw">NW / UL</option>
           </select>
