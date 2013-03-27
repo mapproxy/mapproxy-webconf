@@ -100,7 +100,7 @@
     <div toggle-group mode='hideOther' class="accordion">
         <div ng-repeat="wms in wms_list" class="wms accordion-group">
             <div class="accordion-heading" toggle-element="next">
-              <div class="accordion-toggle wms_source" draggable item-data="{{wms}}">
+              <div class="accordion-toggle">
                   {{wms.title}}</div>
                 <i class="icon-refresh"  ng-click="refreshCapabilities($event, wms)"></i>
                 <i class="icon-remove" ask-dialog dialog-title="Confirm!" dialog-text='Really remove source "{{wms.title}}"?' callback="removeCapabilities(wms)"></i>
@@ -108,7 +108,7 @@
             <div class="accordion-body" ng-show="$first">
                <div class="accordion-inner">
                <h6>Infos</h6>
-               <small class="accordion-infotext">URL: {{wms.url}}</small></li>
+               <small class="accordion-infotext wms_source" draggable item-data="{{wms}}">URL: {{wms.url}}</small></li>
 
                <h6>Layers</h6>
                <div
