@@ -5,7 +5,6 @@ body {
 /*overwrite boostrap */
 .input-xlarge {
   width: 95%;
-  /*width: 300px;*/
 }
 
 input[type="radio"], input[type="checkbox"] {
@@ -14,7 +13,7 @@ input[type="radio"], input[type="checkbox"] {
     margin-right: 0.3em;
 }
 .control-group {
-    margin: 0 ;
+    margin: 0;
 }
 
 h3 {
@@ -51,6 +50,7 @@ h6 {
 
 .tab-menu-header {
     margin-right: 1em;
+    color: #333333;
 }
 
 

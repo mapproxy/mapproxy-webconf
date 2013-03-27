@@ -1,0 +1,21 @@
+%def content():
+<div class="span5">
+<p>The MapProxy configuration is grouped into sections, each configures a different aspect of MapProxy. These are the following sections:</p>
+  <dl>
+  	<dt>Globals</dt>
+    <dd> Internals of MapProxy and default values that are used in the other configuration sections.</dd>
+    <dt>Sources</dt>
+    <dd>Define where MapProxy can retrieve new data.</dd>
+    <dt>Caches</dt>
+    <dd>Configure the internal caches.</dd>
+    <dt>Grids</dt>
+    <dd>Define the grids that MapProxy uses to aligns cached images.</dd>
+	<dt>Layers</dt>
+    <dd>Configure the layers that MapProxy offers. Each layer can consist of multiple sources and caches.</dd>
+	<dt>Serivces</dt>
+    <dd>The services MapProxy offers, e.g. WMS or TMS.</dd>
+  </dl>
+</div>
+%end
+
+%rebase base_config base_content=content, project=get('project')

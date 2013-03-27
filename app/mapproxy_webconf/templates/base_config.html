@@ -1,6 +1,10 @@
 %def site_navbar():
   <div class="container-fluid ">
-    <h2 class="pull-left tab-menu-header">Configuration</h2>
+    <a href="${ get_url('configuration', project='base') }">
+      <h2 class="pull-left tab-menu-header">
+        Configuration
+      </h2>
+    </a>
     <ul class="nav nav-tabs tab-menu">
       %navigation("sources", "Sources")
       %navigation("globals", "Globals")

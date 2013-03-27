@@ -50,21 +50,26 @@
         </div>
       </div>
     </div><!-- /.navbar -->
-      <div class="container-fluid">
+      <div class="row-fluid">
 
     % if defined('site_navbar'):
       %site_navbar()
     % end
 
-    <div class="row-fluid">
+    <div class="container-fluid">
     % if defined('content'):
       %content()
     % end
     </div>
+
+
     <hr>
-    <footer class="footer right">
-      &copy; 2013 - Omniscale GmbH & Co. KG
-    </footer>
-  </div>
+    <div class="container-fluid">
+      <footer class="footer right">
+        &copy; 2013 - Omniscale GmbH & Co. KG
+      </footer>
+    </div>
+   </div>
+
 </body>
 </html>
