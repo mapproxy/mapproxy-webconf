@@ -2,7 +2,8 @@ import os
 from copy import deepcopy
 
 from xml.etree.ElementTree import ParseError
-from requests.exceptions import MissingSchema, ConnectionError
+
+from mapproxy.client import http
 
 from . import bottle
 from . import config
@@ -75,8 +76,9 @@ class RESTWMSCapabilities(RESTBase):
         except ParseError:
             response.status = 400
             return {'error': 'no capabilities document found'}
-        except (MissingSchema, ConnectionError):
+        except (http.HTTPClientError, ):
             response.status = 400
+            # TODO
             return {'error': 'invalid URL'}
 
         search = """%%"url": "%s"%%""" % cap['url']

@@ -1,7 +1,8 @@
 from xml.etree import ElementTree as etree
 import urlparse
 import urllib
-import requests
+
+from mapproxy.client import http
 
 import logging
 log = logging.getLogger(__name__)
@@ -95,8 +96,14 @@ def parse_capabilities_url(url):
     url = wms_capabilities_url(url)
     log.info('fetching capabilities from: %s', url)
 
-    resp = requests.get(url, stream=True)
-    if resp.status_code == 200:
-        return parse_capabilities(resp.raw)
+    client = http.HTTPClient()
+    try:
+        resp = client.open(url)
+    except http.HTTPClientError, ex:
+        # TODO error handling
+        raise ex
+
+    if resp.code == 200:
+        return parse_capabilities(resp)
 
 
