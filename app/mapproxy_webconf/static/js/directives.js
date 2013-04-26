@@ -207,6 +207,13 @@ directive('droppable', function($parse) {
                     ngModelCtrl.$setViewValue(scope.items);
                 });
             };
+            scope.insertCallback = function(inserted, insert) {
+                if(!inserted && insert) {
+                    scope.insertItems();
+                } else if(!inserted && !insert) {
+                    scope.j_ui.draggable('option', 'revert', true);
+                }
+            };
             scope.changeCallback = function(change) {
                 if(change) {
                     scope.insertItems();
@@ -248,13 +255,18 @@ directive('droppable', function($parse) {
                     }
                     //look if something to insert
                     if(scope.to_insert.length > 0) {
-
-                        //run callback if present
-                        if(angular.isFunction(scope.change)) {
-                            scope.change(scope.$parent, {callback: scope.changeCallback, new_data: scope.new_item});
+                        //run insert callback if present
+                        if(angular.isFunction(scope.insert)) {
+                            scope.insert(scope.$parent, {callback: scope.insertCallback, new_data: scope.new_item});
                         } else {
 
-                            scope.insertItems();
+                            //run change callback if present
+                            if(angular.isFunction(scope.change)) {
+                                scope.change(scope.$parent, {callback: scope.changeCallback, new_data: scope.new_item});
+                            } else {
+
+                                scope.insertItems();
+                            }
                         }
                     } else {
 
@@ -262,14 +274,14 @@ directive('droppable', function($parse) {
                     }
                 }
             };
-
             scope.accepts = angular.isUndefined(attrs.accepts) ? [] : attrs.accepts.split(',');
             scope.rejects = angular.isUndefined(attrs.rejects) ? [] : attrs.rejects.split(',');
 
             scope.use_key = attrs.useKeyForValue;
 
-            //look for callback function
+            //look for callback functions
             scope.change = angular.isUndefined(attrs.changeCallback) ? undefined : $parse(attrs.changeCallback);
+            scope.insert = angular.isUndefined(attrs.insertCallback) ? undefined : $parse(attrs.insertCallback);
 
             $(element).droppable({
                 drop: scope.dropHandler
