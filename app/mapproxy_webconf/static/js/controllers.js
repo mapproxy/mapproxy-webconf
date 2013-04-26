@@ -3,10 +3,14 @@ function TreeCtrl($scope, WMSSources) {
     var refreshTree = function() {
         $scope.wms_list = WMSSources.list();
     };
-    $scope.itemData = function(layer) {
+    $scope.prepareLayer = function(layer, sourceURL) {
         if(!layer.name) {
+            $.each(layer.layers, function(idx, layer) {
+                layer.sourceURL = sourceURL;
+            });
             return layer.layers;
         }
+        layer.sourceURL = sourceURL;
         return layer;
     };
     $scope.addCapabilities = function() {
