@@ -207,10 +207,12 @@ directive('droppable', function($parse) {
                     ngModelCtrl.$setViewValue(scope.items);
                 });
             };
-            scope.insertCallback = function(inserted, insert) {
-                if(!inserted && insert) {
+            scope.insertCallback = function(insert) {
+                if(insert) {
+                    scope.items = ngModelCtrl.$modelValue;
+                    scope.checkExist(scope.new_item);
                     scope.insertItems();
-                } else if(!inserted && !insert) {
+                } else {
                     scope.j_ui.draggable('option', 'revert', true);
                 }
             };
@@ -244,33 +246,30 @@ directive('droppable', function($parse) {
 
                 //check for data
                 if(!angular.isUndefined(scope.new_item)) {
-
-                    //check for existing items
-                    if(angular.isArray(scope.new_item)) {
-
-                        angular.forEach(scope.new_item, scope.checkExist);
+                    //run insert callback if present
+                    if(angular.isFunction(scope.insert)) {
+                        scope.insert(scope.$parent, {callback: scope.insertCallback, new_data: scope.new_item});
                     } else {
+                        //check for existing items
+                        if(angular.isArray(scope.new_item)) {
 
-                        scope.checkExist(scope.new_item);
-                    }
-                    //look if something to insert
-                    if(scope.to_insert.length > 0) {
-                        //run insert callback if present
-                        if(angular.isFunction(scope.insert)) {
-                            scope.insert(scope.$parent, {callback: scope.insertCallback, new_data: scope.new_item});
+                            angular.forEach(scope.new_item, scope.checkExist);
                         } else {
 
+                            scope.checkExist(scope.new_item);
+                        }
+                        //look if something to insert
+                        if(scope.to_insert.length > 0) {
                             //run change callback if present
                             if(angular.isFunction(scope.change)) {
                                 scope.change(scope.$parent, {callback: scope.changeCallback, new_data: scope.new_item});
                             } else {
-
                                 scope.insertItems();
                             }
-                        }
-                    } else {
+                        } else {
 
-                        scope.j_ui.draggable('option', 'revert', true);
+                            scope.j_ui.draggable('option', 'revert', true);
+                        }
                     }
                 }
             };
