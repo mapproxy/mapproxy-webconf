@@ -48,7 +48,8 @@
                 ng-model="source.req.layers"
                 name="source_form.req_layers"
                 use-key-for-value="name"
-                class="input-xlarge insertable-list uneditable-input">
+                class="input-xlarge insertable-list uneditable-input"
+                insert-callback="checkURL(callback, new_data)">
 
               <div sortable ng-model="source.req.layers" >
                 <div ng-repeat="layer in source.req.layers" class="label">
