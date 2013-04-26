@@ -95,6 +95,52 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
             });
         }
     };
+    $scope.checkURL = function(callback, new_data) {
+        var addLayer = false;
+        var urlReplaceAsk = false;
+        if(angular.isUndefined($scope.source.req.url)) {
+            $scope.source.req.url = new_data.sourceURL;
+            addLayer = true;
+        } else {
+            if(angular.equals($scope.source.req.url, new_data.sourceURL)) {
+                addLayer = true;
+            } else {
+                urlReplaceAsk = true;
+            }
+        }
+        if(urlReplaceAsk) {
+            $('#confirm_url_change_dialog').dialog({
+                resizeable: false,
+                width: 400,
+                height: 200,
+                model: true,
+                buttons: {
+                    "Change url and insert layer": function() {
+                        $(this).dialog("close");
+                        $scope.source.req.url = new_data.sourceURL;
+                        $scope.source.req.layers = undefined;
+                        $scope.addLayer(new_data.name, callback);
+                    },
+                    "Keep url and reject layer": function() {
+                        $(this).dialog("close");
+                        callback(false, false);
+                    }
+                }
+            });
+        }
+        if(addLayer) {
+            $scope.addLayer(new_data.name, callback);
+        }
+    };
+    $scope.addLayer = function(layerName, callback) {
+        if(angular.isUndefined($scope.source.req.layers)) {
+            $scope.source.req.layers = [layerName];
+        } else {
+            $scope.source.req.layers.push(layerName);
+        }
+        $scope.$apply();
+        callback(true, false);
+    };
     $scope.addSource = function(event) {
         event.preventDefault();
         $scope.source = clearData($scope.source)
