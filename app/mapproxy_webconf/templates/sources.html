@@ -114,7 +114,7 @@
                <div
                     ng-repeat="layer in wms.layer.layers"
                     ng-include="'wms_layer_renderer'"
-                    draggable item-data="{{itemData(layer)}}"
+                    draggable item-data="{{prepareLayer(layer, wms.url)}}"
                     class="wms_layer"></div>
                     <!-- wms_layer is required for dropping into droppable -->
 
