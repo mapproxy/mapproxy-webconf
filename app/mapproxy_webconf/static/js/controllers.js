@@ -44,7 +44,7 @@ function TreeCtrl($scope, WMSSources) {
 
 }
 
-function MapproxySourceListCtrl($scope, MapproxySources) {
+function MapproxySourceListCtrl($scope, MapproxySources, WMSSources) {
     var DEFAULT_SOURCE = {"type": "wms", "req": {}};
     var refreshList = function() {
         $scope.mapproxy_sources = MapproxySources.list();
