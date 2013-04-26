@@ -119,27 +119,19 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
                         $(this).dialog("close");
                         $scope.source.req.url = new_data.sourceURL;
                         $scope.source.req.layers = undefined;
-                        $scope.addLayer(new_data.name, callback);
+                        $scope.$apply();
+                        callback(true);
                     },
                     "Keep url and reject layer": function() {
                         $(this).dialog("close");
-                        callback(false, false);
+                        callback(false);
                     }
                 }
             });
         }
         if(addLayer) {
-            $scope.addLayer(new_data.name, callback);
+            callback(true);
         }
-    };
-    $scope.addLayer = function(layerName, callback) {
-        if(angular.isUndefined($scope.source.req.layers)) {
-            $scope.source.req.layers = [layerName];
-        } else {
-            $scope.source.req.layers.push(layerName);
-        }
-        $scope.$apply();
-        callback(true, false);
     };
     $scope.addSource = function(event) {
         event.preventDefault();
