@@ -68,7 +68,7 @@ ul.vertical-list div:focus
   background-color: #eeeeee;
 }
 
-ul.vertical-list div.active {
+ul.vertical-list div.selected {
   background-color: #3A87AD;
   color: white;
 }

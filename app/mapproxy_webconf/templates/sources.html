@@ -3,7 +3,7 @@
   <h3>Sources</h3>
   <ul class="vertical-list">
     <hr>
-    <div class="" ng-repeat="source in mapproxy_sources | orderBy:'name'"
+    <div class="{{isSelected(source)}}" ng-repeat="source in mapproxy_sources | orderBy:'name'"
     ng-click="editSource(source)">
     <li>
       {{source.name}}

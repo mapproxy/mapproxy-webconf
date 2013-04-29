@@ -25,7 +25,7 @@
     <div>
         <ul sortable ng-model="mapproxy_layers" class="vertical-list">
           <hr>
-            <div ng-repeat="layer in mapproxy_layers | orderBy:'_rank'">
+            <div class="{{isSelected(layer)}}"  ng-repeat="layer in mapproxy_layers | orderBy:'_rank'">
               <li>
                 <div draggable item-data="{{layer}}" ng-model="mapproxy_layers" class="mapproxy_layer">
                     <div class="droppable_name" ng-click="editLayer(layer)">{{layer.title}} ({{layer.name}})

@@ -3,7 +3,8 @@
     <h3>Cache</h3>
     <ul class="vertical-list">
       <hr>
-      <div ng-repeat="cache in mapproxy_caches | orderBy:'name'" ng-click="editCache(cache)">
+      <div class="{{isSelected(cache)}}" ng-repeat="cache in mapproxy_caches | orderBy:'name'"
+      ng-click="editCache(cache)">
         <li>{{cache.name}}
           <i class="icon-remove"
              ask-dialog

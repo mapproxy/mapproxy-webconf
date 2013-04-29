@@ -62,7 +62,6 @@ var MapproxyBaseService = function(_section) {
     this.current = function(copy, _item) {
         if(_item) {
             _this._item = _item;
-
             if(angular.isDefined(_this._rootScope))
                 _this._rootScope.$broadcast(_this._section + '.current');
         } else {
