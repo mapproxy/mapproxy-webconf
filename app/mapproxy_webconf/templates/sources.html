@@ -91,7 +91,7 @@
 <div ng-controller="TreeCtrl">
     <h3>Available WMS</h3>
     <script type="text/ng-template"  id="wms_layer_renderer">
-        <div ng-click="show_infos(layer)" class="label">
+        <div ng-click="show_infos(layer)" class="label droppable_name">
             {{layer.title}} – <span ng-show="layer.name">{{layer.name}}</span>
         </div>
         <div
@@ -113,7 +113,9 @@
             <div class="accordion-body" ng-show="$first">
                <div class="accordion-inner">
                <h6>Infos</h6>
-               <small class="accordion_wms_source wms_source" draggable item-data="{{wms}}">URL: {{wms.url}}</small></li>
+               <div class="accordion_wms_source wms_source" draggable item-data="{{wms}}">
+                  <div class="droppable_name">URL: {{wms.url}}</div>
+               </div>
 
                <h6>Layers</h6>
                <div

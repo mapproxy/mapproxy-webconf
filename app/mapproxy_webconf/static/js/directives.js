@@ -102,7 +102,10 @@ directive('draggable', function() {
             }
 
             $(element).draggable({
-                helper: 'clone',
+                helper: function( event ) {
+                    var text = $(this).find('.droppable_name').text();
+                    return $( "<div class='draggable-active'>"+ text +"</div>" );
+                },
                 cursor: 'move',
                 revert: false
             });

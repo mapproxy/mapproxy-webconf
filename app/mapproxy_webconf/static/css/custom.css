@@ -104,9 +104,9 @@ ul.vertical-list div.active li i.icon-remove {
     opacity: 0.9;
 }
 
-ul.vertical-list div.mapproxy_source, ul.vertical-list div.mapproxy_cache  {
+/*ul.vertical-list div.mapproxy_source, ul.vertical-list div.mapproxy_cache  {
     width: 300px;
-}
+}*/
 
 .insertable-list {
     min-height:10em;
@@ -201,4 +201,12 @@ ul.vertical-list div.mapproxy_source, ul.vertical-list div.mapproxy_cache  {
 
 input.droppable-active, div.droppable-active {
     border: 1px solid #F89406;
+}
+
+
+.draggable-active {
+    width: 300px;
+    border: 1px solid #F89406;
+    padding: 0.5em;
+    background-color: #eee;
 }

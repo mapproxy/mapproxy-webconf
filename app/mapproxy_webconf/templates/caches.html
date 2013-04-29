@@ -68,8 +68,8 @@
     <ul class="vertical-list">
       <div draggable class="mapproxy_source" ng-repeat="source in mapproxy_sources | orderBy:'name'"
           item-data="{{source}}">
-        <li>
-          {{source.name}}
+        <li class="droppable_name">
+            {{source.name}}
         </li>
         <hr>
       </div>

@@ -28,7 +28,7 @@
             <div ng-repeat="layer in mapproxy_layers | orderBy:'_rank'">
               <li>
                 <div draggable item-data="{{layer}}" ng-model="mapproxy_layers" class="mapproxy_layer">
-                    <div ng-click="editLayer(layer)">{{layer.title}} ({{layer.name}})
+                    <div class="droppable_name" ng-click="editLayer(layer)">{{layer.title}} ({{layer.name}})
 <!--                  <div class="mapproxy_layer_dropzone" droppable ng-model="layer._layers" allow-array="true" parent-id="{{layer._id}}" parent-save="true"></div>
  -->                    <i class="icon-remove pull-right"
                         ask-dialog
@@ -111,7 +111,7 @@
               class="mapproxy_source"
               ng-repeat="source in mapproxy_sources | orderBy:'name'"
               item-data="{{source}}">
-              <li> {{source.name}}</li>
+              <li class="droppable_name"> {{source.name}}</li>
               <hr>
             </div>
       </ul>
@@ -123,7 +123,7 @@
               class="mapproxy_cache"
               ng-repeat="cache in mapproxy_caches | orderBy:'name'"
               item-data="{{cache}}">
-              <li>{{cache.name}}</li>
+              <li class="droppable_name">{{cache.name}}</li>
               <hr>
           </div>
       </ul>
