@@ -24,7 +24,12 @@ var MapproxyBaseService = function(_section, _dependencies) {
                 angular.forEach(_this._dependencies, function(dependency) {
                     item.dependencies[dependency._section] = []
                     angular.forEach(dependency._items, function(dependencyItem) {
-                        if($.inArray(item._id, dependencyItem[_this._section]) != -1) {
+                        var useSection = _this._section;
+                        //layers only have sources for cache- and source-items
+                        if(item._section == 'caches' && dependencyItem._section == 'layers') {
+                            useSection = 'sources';
+                        }
+                        if($.inArray(item._id, dependencyItem[useSection]) != -1) {
                             item.dependencies[dependency._section].push(dependencyItem);
                         }
                     });
