@@ -2,52 +2,57 @@
 <div ng-controller="MapproxyLayerListCtrl">
   <h3>Layer</h3>
    <script type="text/ng-template"  id="mapproxy_layer_renderer.html">
-        <ul sortable ng-model="layer._layers">
-            <li ng-repeat="layer in layer._layers | orderBy:'_rank'">  <!-- new scope -->
-                <div draggable item-data="{{layer}}" ng-model="$parent.$parent.layer._layers" class="mapproxy_layer"> <!-- new scope -->
-                    <!-- need to access layer._layers from 2 lines above so i have to go 2 scopes up ($parent.$parent) -->
-                    <div class="label" ng-click="editLayer(layer)">{{layer.title}} ({{layer.name}})</div>
-                    <div class="mapproxy_layer_dropzone" droppable ng-model="layer._layers" allow-array="true"></div>
-                    <i class="icon-remove"
-                        ask-dialog
-                        dialog-title="Confirm!"
-                        dialog-text='Really remove layer "{{layer.title}} ({{layer.name}})"?'
-                        callback="removeLayer(layer)"></i>
-                    <div
-                        ng-include="'mapproxy_layer_renderer.html'"
-                        style="margin-left: 0.5em"
-                        >
-                    </div>
-                </div>
-            </li>
-        </ul>
+    <ul sortable ng-model="layer._layers">
+      <li ng-repeat="layer in layer._layers | orderBy:'_rank'">  <!-- new scope -->
+      <!-- new scope -->
+      <!-- need to access layer._layers from 2 lines above so i have to go 2 scopes up ($parent.$parent) -->
+        <div ng-click="editLayer(layer)">{{layer.name}} ({{layer.title}})
+          <i class="icon-remove"
+            ask-dialog
+            dialog-title="Confirm!"
+            dialog-text='Really remove layer "{{layer.title}} ({{layer.name}})"?'
+            callback="removeLayer(layer)"></i>
+            <div
+              ng-include="'mapproxy_layer_renderer.html'"
+              style="margin-left: 0.5em"
+            >
+        </div>
+      </li>
+    </ul>
     </script>
     <div>
-        <ul sortable ng-model="mapproxy_layers">
-            <li ng-repeat="layer in mapproxy_layers | orderBy:'_rank'">
-                <div draggable item-data="{{layer}}" ng-model="mapproxy_layers" class="mapproxy_layer">
-                    <div class="label" ng-click="editLayer(layer)">{{layer.title}} ({{layer.name}})</div>
-                    <div class="mapproxy_layer_dropzone" droppable ng-model="layer._layers" allow-array="true" parent-id="{{layer._id}}" parent-save="true"></div>
-                    <i class="icon-remove"
-                        ask-dialog
-                        dialog-title="Confirm!"
-                        dialog-text='Really remove layer "{{layer.title}} ({{layer.name}})"?'
-                        callback="removeLayer(layer)"></i>
-                    <div
-                        ng-include="'mapproxy_layer_renderer.html'"
-                        style="margin-left: 0.5em"
-                        sortable
-                        ng-model="layer._layers"
-                        >
-                    </div>
-                </div>
-            </li>
-        </ul>
+      <ul sortable ng-model="mapproxy_layers" class="vertical-list">
+        <hr>
+        <div class="{{isSelected(layer)}}"
+          ng-repeat="layer in mapproxy_layers | orderBy:'_rank'"
+          ng-click="editLayer(layer)">
+          <li>
+            {{layer.title}} ({{layer.name}})
+            <i class="icon-remove pull-right"
+              ask-dialog
+              dialog-title="Confirm!"
+              dialog-text='Really remove layer "{{layer.title}} ({{layer.name}})"?'
+              callback="removeLayer(layer)"></i>
+<!--               <div
+                ng-include="'mapproxy_layer_renderer.html'"
+                style="margin-left: 0.5em"
+                sortable
+                ng-model="layer._layers"
+              >
+              </div> -->
+          </li>
+          <hr>
+        </div>
+      </ul>
     </div>
-   <div class="mapproxy_layer_dropzone" droppable ng-model="mapproxy_layers" allow-array="true"></div>
    <button class="btn btn-small" ng-click="updateLayerTree()">Save</button>
-   <i id="layertree_save_ok" class="icon-ok" ng-show="false"></i>
    <button class="btn btn-small" ng-click="newLayer()">New layer</button>
+
+   <div class="text-success" id="layertree_save_ok" ng-show="false">
+    <i class="icon-ok"></i>
+    <strong>Saved successfully</strong>
+   </div>
+
 </div>
 %end
 
@@ -57,11 +62,11 @@
     <h3>{{formTitle}}</h3>
     <!-- name -->
         <div labeled="input_label" name-for="layer_form.layer_name" text="Name">
-            <input required type="text" required ng-model="layer.name" class="input-xlarge" name="layer_form.layer_name"/>
+            <input required type="text" required ng-model="layer.name" class="input-xlarge" id="layer_form.layer_name"/>
         </div>
     <!-- title -->
         <div labeled="input_label" name-for="layer_form.layer_title" text="Title">
-            <input required type="text" required ng-model="layer.title" class="input-xlarge" name="layer_form.layer_title"/>
+            <input required type="text" required ng-model="layer.title" class="input-xlarge" id="layer_form.layer_title"/>
         </div>
     <!-- sources -->
         <div labeled="input_label" name-for="layer_form.sources" text="Sources">
@@ -72,7 +77,7 @@
                 accepts="mapproxy_source,mapproxy_cache"
                 allow-array="true"
                 ng-model="layer.sources"
-                name="layer_sources"
+                id="layer_sources"
                 use-key-for-value="_id"
                 class="input-xlarge insertable-list uneditable-input">
                 <div ng-repeat="source in layer.sources" class="label">
@@ -83,8 +88,12 @@
         </div>
     </form>
     <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!layer_form.$valid">Save</button>
-    <i id="layer_save_ok" class="icon-ok" ng-show="false"></i>
     <button class="btn btn-small" ng-click="resetForm()">Reset</button>
+    <span class="text-success" id="layer_save_ok" ng-show="false">
+      <i class="icon-ok"></i>
+      <strong>Saved successfully</strong>
+    </span>
+
 </div>
 %end
 
@@ -92,24 +101,26 @@
   <div>
       <h3>Sources</h3>
       <ul class="vertical-list" ng-controller="MapproxySourceListCtrl">
-          <li
+          <div
               draggable
-              class="mapproxy_source label"
+              class="mapproxy_source"
               ng-repeat="source in mapproxy_sources | orderBy:'name'"
               item-data="{{source}}">
-              {{source.name}}
-          </li>
+              <li class="droppable_name"> {{source.name}}</li>
+              <hr>
+            </div>
       </ul>
       <hr>
       <h3>Caches</h3>
       <ul class="vertical-list" ng-controller="MapproxyCacheListCtrl">
-          <li
+          <div
               draggable
-              class="mapproxy_cache label"
+              class="mapproxy_cache"
               ng-repeat="cache in mapproxy_caches | orderBy:'name'"
               item-data="{{cache}}">
-              {{cache.name}}
-          </li>
+              <li class="droppable_name">{{cache.name}}</li>
+              <hr>
+          </div>
       </ul>
     </div>
 %end

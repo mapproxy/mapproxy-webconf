@@ -2,25 +2,26 @@
 <div ng-controller="MapproxyCacheListCtrl">
     <h3>Cache</h3>
     <ul class="vertical-list">
-        <li
-          class="label"
-          ng-repeat="cache in mapproxy_caches | orderBy:'name'"
-          ng-click="editCache(cache)">
-          {{cache.name}}
+      <hr>
+      <div class="{{isSelected(cache)}}" ng-repeat="cache in mapproxy_caches | orderBy:'name'"
+      ng-click="editCache(cache)">
+        <li>{{cache.name}}
           <i ng-show="!hasDependencies(cache)" class="icon-remove"
-            ask-dialog
-            dialog-title="Confirm!"
-            dialog-text='Really remove cache "{{cache.name}}"?'
-            callback="removeCache(cache)">
+             ask-dialog
+             dialog-title="Confirm!"
+             dialog-text='Really remove cache "{{cache.name}}"?'
+             callback="removeCache(cache)">
           </i>
           <i ng-show="hasDependencies(cache)" class="icon-remove"
             confirm-dialog
             dialog-title="Confirm!"
             dialog-text='Can not remove cache "{{cache.name}}" because its depends on:<br>{{getDependencies(cache)}}'>
-           </i>
-      </li>
-      </ul>
-      <button class="btn btn-small pull-right" ng-click="newCache()">New cache</button>
+          </i>
+        </li>
+        <hr>
+      </div>
+    </ul>
+    <button class="btn btn-small pull-right" ng-click="newCache()">New cache</button>
   </div>
 %end
 
@@ -30,7 +31,7 @@
     <h3>{{formTitle}}</h3>
     <!-- name -->
         <div labeled="input_label" name-for="cache_form.cache_name" text="Name">
-            <input required class="input-xlarge" type="text" ng-model="cache.name" name="cache_form.cache_name"/>
+            <input required class="input-xlarge" type="text" ng-model="cache.name" id="cache_form.cache_name"/>
         </div>
     <!-- sources -->
         <!-- change-callback MUST provide parameters callback and new_data -->
@@ -53,7 +54,7 @@
         </div>
     <!-- grids XXXkai: replace by received list of supported srs combined with user defined grids-->
         <div labeled="input_label" name-for="cache_form.grids" text="Grids">
-            <select class="input-xlarge" ng-model="cache.grids" name="cache_form.grids" multiple="multiple" ng-options="value._id as value.name for value in available_grids"/>
+            <select class="input-xlarge" ng-model="cache.grids" id="cache_form.grids" multiple="multiple" ng-options="value._id as value.name for value in available_grids"/>
             </select>
         </div>
     </form>
@@ -70,13 +71,13 @@
 <div ng-controller="MapproxySourceListCtrl">
     <h3>Sources</h3>
     <ul class="vertical-list">
-        <li
-            draggable
-            class="mapproxy_source label"
-            ng-repeat="source in mapproxy_sources | orderBy:'name'"
-            item-data="{{source}}">
+      <div draggable class="mapproxy_source" ng-repeat="source in mapproxy_sources | orderBy:'name'"
+          item-data="{{source}}">
+        <li class="droppable_name">
             {{source.name}}
         </li>
+        <hr>
+      </div>
     </ul>
 </div>
 %end

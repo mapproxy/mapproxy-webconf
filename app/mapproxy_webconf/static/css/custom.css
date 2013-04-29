@@ -1,13 +1,10 @@
 body {
-    padding-top: 60px;
-    padding-bottom: 40px;
     min-width: 1150px;
 }
 
 /*overwrite boostrap */
 .input-xlarge {
   width: 95%;
-  /*width: 300px;*/
 }
 
 input[type="radio"], input[type="checkbox"] {
@@ -16,7 +13,7 @@ input[type="radio"], input[type="checkbox"] {
     margin-right: 0.3em;
 }
 .control-group {
-    margin: 0 ;
+    margin: 0;
 }
 
 h3 {
@@ -53,6 +50,7 @@ h6 {
 
 .tab-menu-header {
     margin-right: 1em;
+    color: #333333;
 }
 
 
@@ -63,32 +61,63 @@ ul.vertical-list {
     margin: 0;
 }
 
-ul.vertical-list li {
-    width: 95%;
-    margin: 0.5em;
-    padding-top:0.6em;
-    padding-bottom:0.6em;
-    padding-left: 1em;
-    cursor: pointer;
-    white-space: normal;
+ul.vertical-list div:hover,
+ul.vertical-list div:focus
+/*ul.vertical-list div:hover li i.icon-remove*/
+{
+  background-color: #eeeeee;
 }
 
+ul.vertical-list div.selected.active,
+ul.vertical-list div.selected {
+  background-color: #3A87AD;
+  color: white;
+}
+
+ul.vertical-list div.active {
+    color: green;
+}
+
+ul.vertical-list li {
+    margin-left: 0.5em;
+    cursor: pointer;
+    white-space: normal;
+    padding: 0.5em;
+}
+
+ul.vertical-list hr {
+    margin: 0;
+    border: 0px;
+    border-bottom: 1px solid #ccc;
+}
 
 ul.vertical-list li i.icon-remove {
     float: right;
     cursor: pointer;
+    opacity: 0.25;
+    margin-right: 4px;
+    margin-top: 4px;
+    height: 20px; // make clickable area bigger
 }
 
-ul.vertical-list li.mapproxy_source.label, ul.vertical-list li.mapproxy_cache.label  {
-    width: 300px;
+ul.vertical-list li i.icon-remove:hover {
+    opacity: 0.9;
 }
+
+ul.vertical-list div.selected li i.icon-remove {
+    background-image: url("../img/glyphicons-halflings-white.png");
+    opacity: 0.9;
+}
+
+/*ul.vertical-list div.mapproxy_source, ul.vertical-list div.mapproxy_cache  {
+    width: 300px;
+}*/
 
 .insertable-list {
     min-height:10em;
     cursor: default;
     overflow: auto;
 }
-
 
 .insertable-list .label {
     white-space: normal;
@@ -105,11 +134,15 @@ ul.vertical-list li.mapproxy_source.label, ul.vertical-list li.mapproxy_cache.la
 .insertable-list .label .icon-remove {
     float: right;
     cursor: pointer;
+    opacity: 0.25;
+}
+
+.insertable-list .label .icon-remove:hover {
+    opacity: 0.9;
 }
 
 .insertable-list .label:hover {
-    background-color: #999999;
-    color: white;
+    background-color: #eeeeee;
     cursor: pointer;
 }
 
@@ -122,17 +155,47 @@ ul.vertical-list li.mapproxy_source.label, ul.vertical-list li.mapproxy_cache.la
     width: 100%;
 }
 
+.accordion_wms_source {
+    cursor: pointer;
+}
+
 .accordion-group {
     border: 1px solid #CCCCCC;
 }
 
-.accordion-heading i.icon-refresh, .accordion-heading i.icon-remove {
+.accordion-heading i.icon-refresh,
+.accordion-heading i.icon-remove {
     float: right;
     cursor: pointer;
     margin-top: -1.8em;
     margin-right: 0.5em;
+    opacity: 0.25;
 }
+
 .accordion-heading i.icon-refresh {
     margin-right: 2em;
 }
 
+.accordion-heading i.icon-refresh:hover,
+.accordion-heading i.icon-remove:hover {
+    opacity: 0.9;
+}
+
+
+input.droppable-active, div.droppable-active {
+    border: 1px solid #F89406;
+}
+
+
+.draggable-active {
+    width: 300px;
+    border: 1px solid #F89406;
+    padding: 0.5em;
+    background-color: #eee;
+}
+
+.mapproxy_layer_dropzone {
+    height: 20px;
+    width: 20px;
+    border: 1px solid red;
+}

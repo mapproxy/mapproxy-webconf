@@ -48,15 +48,24 @@ function MapproxySourceListCtrl($scope, MapproxySources, WMSSources) {
     var DEFAULT_SOURCE = {"type": "wms", "req": {}};
     var refreshList = function() {
         $scope.mapproxy_sources = MapproxySources.list();
-    }
-
+    };
+    $scope.isSelected = function(source) {
+        var class_;
+        if($scope.selected == source) {
+            class_ = 'selected';
+        }
+        return class_;
+    };
     $scope.editSource = function(source) {
+        $scope.selected = source
         MapproxySources.current(true, source);
     };
     $scope.removeSource = function(source) {
+        $scope.selected = undefined;
         MapproxySources.remove(source);
     };
     $scope.newSource = function() {
+        $scope.selected = undefined;
         MapproxySources.current(true, DEFAULT_SOURCE);
     };
     $scope.hasDependencies = function(source) {
@@ -89,6 +98,7 @@ function MapproxySourceListCtrl($scope, MapproxySources, WMSSources) {
 
 function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
     var DEFAULT_SOURCE = {"type": "wms", "req": {}};
+
     $scope.openDialog = function(callback, new_data) {
         if(angular.isUndefined($scope.source.req) ||
            angular.isUndefined($scope.source.req.url) ||
@@ -199,14 +209,23 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches) {
     var refreshList = function() {
         $scope.mapproxy_caches = MapproxyCaches.list();
     }
-
+    $scope.isSelected = function(cache) {
+        var class_;
+        if($scope.selected == cache) {
+            class_ = 'selected';
+        }
+        return class_;
+    };
     $scope.editCache = function(cache) {
+        $scope.selected = cache;
         MapproxyCaches.current(true, cache);
     };
     $scope.removeCache = function(cache) {
+        $scope.selected = undefined;
         MapproxyCaches.remove(cache);
     };
     $scope.newCache = function() {
+        $scope.selected = undefined;
         MapproxyCaches.current(true, DEFAULT_CACHE);
     }
     $scope.hasDependencies = function(cache) {
@@ -282,14 +301,23 @@ function MapproxyGridListCtrl($scope, MapproxyGrids) {
     var refreshList = function() {
         $scope.mapproxy_grids = MapproxyGrids.list();
     };
-
+    $scope.isSelected = function(grid) {
+        var class_;
+        if($scope.selected == grid) {
+            class_ = 'selected';
+        }
+        return class_;
+    };
     $scope.editGrid = function(grid) {
+        $scope.selected = grid;
         MapproxyGrids.current(true, grid);
     };
     $scope.removeGrid = function(grid) {
+        $scope.selected = undefined;
         MapproxyGrids.remove(grid);
     };
     $scope.newGrid = function() {
+        $scope.selected = undefined;
         MapproxyGrids.current(true, DEFAULT_GRID);
     };
 
@@ -356,16 +384,27 @@ function MapproxyLayerListCtrl($scope, MapproxyLayers) {
     var added = function() {
         $scope.mapproxy_layers.push(MapproxyLayers.last());
     };
+    $scope.isSelected = function(layer) {
+        var class_;
+        if($scope.selected == layer) {
+            class_ = 'selected';
+        }
+        return class_;
+    };
     $scope.editLayer = function(layer) {
+        $scope.selected = layer;
         MapproxyLayers.current(true, layer);
     };
     $scope.removeLayer = function(layer) {
+        $scope.selected = undefined;
         MapproxyLayers.remove(layer);
     };
     $scope.updateLayerTree = function() {
+        $scope.selected = undefined;
         MapproxyLayers.updateStructure($scope.mapproxy_layers);
     };
     $scope.newLayer = function() {
+        $scope.selected = undefined;
         MapproxyLayers.current(true, DEFAULT_LAYER)
     };
 

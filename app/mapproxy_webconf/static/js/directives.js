@@ -68,7 +68,8 @@ directive('sortable', function() {
 
             var sortable_element = $(element).sortable({
                 start: scope.dragStart,
-                update: scope.dragEnd
+                update: scope.dragEnd,
+                axis: "y"
             });
         }
     };
@@ -104,7 +105,10 @@ directive('draggable', function() {
             }
 
             $(element).draggable({
-                helper: 'clone',
+                helper: function( event ) {
+                    var text = $(this).find('.droppable_name').text();
+                    return $( "<div class='draggable-active'>"+ text +"</div>" );
+                },
                 cursor: 'move',
                 revert: false
             });
@@ -290,7 +294,14 @@ directive('droppable', function($parse) {
             scope.change = angular.isUndefined(attrs.changeCallback) ? undefined : $parse(attrs.changeCallback);
             scope.insert = angular.isUndefined(attrs.insertCallback) ? undefined : $parse(attrs.insertCallback);
 
+            var acceptClasses = [];
+            angular.forEach(scope.accepts, function(acceptClass) {
+                acceptClasses.push('.'+acceptClass);
+            });
+
             $(element).droppable({
+                accept: acceptClasses.toString(),
+                activeClass: 'droppable-active',
                 drop: scope.dropHandler
             });
         }

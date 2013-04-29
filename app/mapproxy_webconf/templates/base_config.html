@@ -1,6 +1,10 @@
 %def site_navbar():
   <div class="container-fluid ">
-    <h2 class="pull-left tab-menu-header">Configuration</h2>
+    <a href="${ get_url('configuration', project='base') }">
+      <h2 class="pull-left tab-menu-header">
+        Configuration
+      </h2>
+    </a>
     <ul class="nav nav-tabs tab-menu">
       %navigation("sources", "Sources")
       %navigation("globals", "Globals")
@@ -14,20 +18,24 @@
 % end
 
 %def content():
-  % if defined('leftblock'):
-  <div class="span3 leftblock">
-    %leftblock()
-  </div>
-  % end
-  % if defined('middleblock'):
-  <div class="span5 middleblock">
-    %middleblock()
-  </div>
-  % end
-  % if defined('rightblock'):
-  <div class="span4 rightblock">
-    %rightblock()
-  </div>
+  % if not defined('base_content'):
+    % if defined('leftblock'):
+    <div class="span3 leftblock">
+      %leftblock()
+    </div>
+    % end
+    % if defined('middleblock'):
+    <div class="span5 middleblock">
+      %middleblock()
+    </div>
+    % end
+    % if defined('rightblock'):
+    <div class="span4 rightblock">
+      %rightblock()
+    </div>
+    % end
+  % else:
+    %base_content()
   % end
 %end
 

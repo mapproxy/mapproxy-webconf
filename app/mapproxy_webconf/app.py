@@ -141,7 +141,7 @@ def index():
 
 @app.route('/project/<project>/conf', name='configuration')
 def conf_index(project):
-    return template('project_index', project=project)
+    return template('config_index', project=project)
 
 @app.route('/project/<project>', name='project_index')
 def project_index(project):
