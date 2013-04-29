@@ -382,6 +382,37 @@ directive('askDialog', function($parse) {
     };
 }).
 
+directive('confirmDialog', function($parse) {
+    return {
+        restrict: 'A',
+        scope: 'element',
+        link: function(scope, element, attrs) {
+
+            scope.openDialog = function(event) {
+                event.stopPropagation();
+                scope.dialog.find('p').html(attrs.dialogText)
+                scope.dialog.dialog({
+                    resizeable: false,
+                    width: 600,
+                    height: 300,
+                    model: true,
+                    buttons: {
+                        "Ok": function() {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+            };
+            scope.dialog_id = scope.$id;
+            scope.callback = $parse(attrs.callback);
+            scope.dialog = $('<div style="display:none;" id="dialog_' + scope.dialog_id + '" title="'+ attrs.dialogTitle +'"><p></p></div>');
+            element.after(scope.dialog);
+
+            element.bind('click', scope.openDialog);
+        }
+    };
+}).
+
 /*
     labeled must point to existing template!
     labeled="[template]"

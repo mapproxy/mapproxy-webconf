@@ -5,11 +5,16 @@
     <li class="label" ng-repeat="source in mapproxy_sources | orderBy:'name'"
     ng-click="editSource(source)">
       {{source.name}}
-      <i class="icon-remove"
+      <i ng-show="!hasDependencies(source)" class="icon-remove"
         ask-dialog
         dialog-title="Confirm!"
         dialog-text='Really remove source "{{source.name}}"?'
         callback="removeSource(source)">
+      </i>
+      <i ng-show="hasDependencies(source)" class="icon-remove"
+        confirm-dialog
+        dialog-title="Confirm!"
+        dialog-text='Can not remove source "{{source.name}}" because its depends on:<br>{{getDependencies(source)}}'>
        </i>
     </li>
   </ul>

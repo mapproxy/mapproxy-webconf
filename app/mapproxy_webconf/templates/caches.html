@@ -7,12 +7,17 @@
           ng-repeat="cache in mapproxy_caches | orderBy:'name'"
           ng-click="editCache(cache)">
           {{cache.name}}
-          <i class="icon-remove"
-           ask-dialog
-           dialog-title="Confirm!"
-           dialog-text='Really remove cache "{{cache.name}}"?'
-           callback="removeCache(cache)">
+          <i ng-show="!hasDependencies(cache)" class="icon-remove"
+            ask-dialog
+            dialog-title="Confirm!"
+            dialog-text='Really remove cache "{{cache.name}}"?'
+            callback="removeCache(cache)">
           </i>
+          <i ng-show="hasDependencies(cache)" class="icon-remove"
+            confirm-dialog
+            dialog-title="Confirm!"
+            dialog-text='Can not remove cache "{{cache.name}}" because its depends on:<br>{{getDependencies(cache)}}'>
+           </i>
       </li>
       </ul>
       <button class="btn btn-small pull-right" ng-click="newCache()">New cache</button>
