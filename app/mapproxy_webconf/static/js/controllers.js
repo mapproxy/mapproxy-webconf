@@ -137,7 +137,7 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
         event.preventDefault();
         $scope.source = clearData($scope.source)
         MapproxySources.add($scope.source);
-        $scope.resetForm();
+        console.log($scope.source)
     };
     $scope.resetForm = function(event) {
         if(!angular.isUndefined(event)) {
@@ -170,16 +170,6 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
     $scope.$on('sources.current', function() {
         $scope.source = MapproxySources.current(true);
         $scope.formTitle = angular.equals($scope.source, DEFAULT_SOURCE) ? 'New Source' : 'Edit Source';
-    });
-    $scope.$on('sources.added', function() {
-        MapproxySources.current(true, DEFAULT_SOURCE)
-        $scope.formTitle = 'New Source';
-        $('#source_save_ok').show().fadeOut(3000)
-    });
-    $scope.$on('sources.updated', function() {
-        MapproxySources.current(true, DEFAULT_SOURCE)
-        $scope.formTitle = 'New Source';
-        $('#source_save_ok').show().fadeOut(3000)
     });
 }
 
@@ -215,7 +205,6 @@ function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
         event.preventDefault();
         $scope.cache = clearData($scope.cache);
         MapproxyCaches.add($scope.cache);
-        $scope.resetForm();
     };
     $scope.resetForm = function(event) {
         if(!angular.isUndefined(event)) {
@@ -238,16 +227,6 @@ function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
         }
         $scope.formTitle = angular.equals($scope.cache, DEFAULT_CACHE) ? 'New Cache' : 'Edit Cache';
     });
-    $scope.$on('caches.added', function() {
-        MapproxyCaches.current(true, DEFAULT_CACHE);
-        $scope.formTitle = 'New Cache';
-        $('#cache_save_ok').show().fadeOut(3000)
-    });
-    $scope.$on('caches.updated', function() {
-        MapproxyCaches.current(true, DEFAULT_CACHE);
-        $scope.formTitle = 'New Cache';
-        $('#cache_save_ok').show().fadeOut(3000)
-    })
 
     $scope.$on('grids.load_complete', refreshGrids);
     $scope.$on('grids.added', refreshGrids);
@@ -283,7 +262,6 @@ function MapproxyGridFormCtrl($scope, MapproxyGrids) {
     $scope.addGrid = function(event) {
         event.preventDefault();
         MapproxyGrids.add(clearData($scope.grid));
-        $scope.resetForm();
     };
     $scope.resetForm = function(event) {
         if(angular.isDefined(event)) {
@@ -304,16 +282,6 @@ function MapproxyGridFormCtrl($scope, MapproxyGrids) {
         }
         $scope.formTitle = angular.equals($scope.grid, DEFAULT_GRID) ? 'New Grid' : 'Edit Grid';
     });
-    $scope.$on('grids.added', function() {
-        MapproxyGrids.current(true, DEFAULT_GRID)
-        $scope.formTitle = 'New Grid';
-        $('#grid_save_ok').show().fadeOut(3000)
-    });
-    $scope.$on('grids.updated', function() {
-        MapproxyGrids.current(true, DEFAULT_GRID)
-        $scope.formTitle = 'New Grid';
-        $('#grid_save_ok').show().fadeOut(3000)
-    })
 }
 
 function MapproxyLayerListCtrl($scope, MapproxyLayers) {
@@ -351,7 +319,6 @@ function MapproxyLayerFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
     $scope.addLayer = function() {
         $scope.layer = clearData($scope.layer)
         MapproxyLayers.add(angular.copy($scope.layer));
-        $scope.resetForm();
     };
     $scope.resetForm = function() {
         $scope.layer = MapproxyLayers.current(true);
@@ -375,17 +342,6 @@ function MapproxyLayerFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
         $scope.layer = MapproxyLayers.current(true);
         $scope.formTitle = angular.equals($scope.layer, DEFAULT_LAYER) ? 'New Layer' : 'Edit Layer';
     });
-    $scope.$on('layers.added', function() {
-        MapproxyLayers.current(true, DEFAULT_LAYER)
-        $scope.formTitle = 'New Layer';
-        $('#layer_save_ok').show().fadeOut(3000)
-    });
-    $scope.$on('layers.updated', function() {
-        MapproxyLayers.current(true, DEFAULT_LAYER)
-        $scope.formTitle = 'New Layer';
-        $('#layer_save_ok').show().fadeOut(3000)
-    });
-
 }
 
 function MapproxyGlobalsFormCtrl($scope, MapproxyGlobals) {
