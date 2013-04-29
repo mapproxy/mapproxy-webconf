@@ -25,7 +25,7 @@
     <div>
         <ul sortable ng-model="mapproxy_layers" class="vertical-list">
           <hr>
-            <div class="{{isSelected(layer)}}"  ng-repeat="layer in mapproxy_layers | orderBy:'_rank'">
+            <div class="{{isSelected(layer)}}" ng-repeat="layer in mapproxy_layers | orderBy:'_rank'">
               <li>
                 <div draggable item-data="{{layer}}" ng-model="mapproxy_layers" class="mapproxy_layer">
                     <div class="droppable_name" ng-click="editLayer(layer)">{{layer.title}} ({{layer.name}})
@@ -35,13 +35,13 @@
                         dialog-title="Confirm!"
                         dialog-text='Really remove layer "{{layer.title}} ({{layer.name}})"?'
                         callback="removeLayer(layer)"></i>
-                    <div
+<!--                     <div
                         ng-include="'mapproxy_layer_renderer.html'"
                         style="margin-left: 0.5em"
                         sortable
                         ng-model="layer._layers"
                         >
-                    </div>
+                    </div> -->
                 </div>
               </li>
               <hr>
