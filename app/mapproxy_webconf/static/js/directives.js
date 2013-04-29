@@ -286,7 +286,14 @@ directive('droppable', function($parse) {
             scope.change = angular.isUndefined(attrs.changeCallback) ? undefined : $parse(attrs.changeCallback);
             scope.insert = angular.isUndefined(attrs.insertCallback) ? undefined : $parse(attrs.insertCallback);
 
+            var acceptClasses = [];
+            angular.forEach(scope.accepts, function(acceptClass) {
+                acceptClasses.push('.'+acceptClass);
+            });
+
             $(element).droppable({
+                accept: acceptClasses.toString(),
+                activeClass: 'droppable-active',
                 drop: scope.dropHandler
             });
         }

@@ -196,3 +196,9 @@ ul.vertical-list div.mapproxy_source, ul.vertical-list div.mapproxy_cache  {
     background-color: #eee;
     color: black;
 }
+
+/* */
+
+input.droppable-active, div.droppable-active {
+    border: 1px solid #F89406;
+}
