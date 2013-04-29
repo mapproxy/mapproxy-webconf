@@ -39,6 +39,7 @@ var MapproxyBaseService = function(_section, _dependencies) {
             if(result) {
                 angular.forEach(result, function(item) {
                     item.dependencies = {};
+                    item._section = _this._section;
                     _this._items[item._id] = item;
                 })
                 if(angular.isDefined(_this._rootScope))
