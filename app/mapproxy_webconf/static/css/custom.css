@@ -180,29 +180,7 @@ ul.vertical-list div.selected li i.icon-remove {
 .accordion-heading i.icon-remove:hover {
     opacity: 0.9;
 }
-/*
-.nav-pills.nav-stacked  > li.active > a:focus,
-.nav-pills.nav-stacked  > li.active > a:hover {
-    background-color: #eee;
-    color: black;
-}
 
-.nav-pills.nav-stacked > li > a {
-    background-color: white;
-    color: grey;
-}
-
-.nav-pills.nav-stacked > li.active > a {
-    background-color: white;
-    color: green;
-}
-
-.nav-pills.nav-stacked > li.selected > a {
-    background-color: #eee;
-    color: black;
-}
-*/
-/* */
 
 input.droppable-active, div.droppable-active {
     border: 1px solid #F89406;
@@ -214,4 +192,10 @@ input.droppable-active, div.droppable-active {
     border: 1px solid #F89406;
     padding: 0.5em;
     background-color: #eee;
+}
+
+.mapproxy_layer_dropzone {
+    height: 20px;
+    width: 20px;
+    border: 1px solid red;
 }
