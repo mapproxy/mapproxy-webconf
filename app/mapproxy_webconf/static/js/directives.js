@@ -66,7 +66,8 @@ directive('sortable', function() {
 
             var sortable_element = $(element).sortable({
                 start: scope.dragStart,
-                update: scope.dragEnd
+                update: scope.dragEnd,
+                axis: "y"
             });
         }
     };
