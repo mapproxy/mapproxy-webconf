@@ -3,10 +3,14 @@ function TreeCtrl($scope, WMSSources) {
     var refreshTree = function() {
         $scope.wms_list = WMSSources.list();
     };
-    $scope.itemData = function(layer) {
+    $scope.prepareLayer = function(layer, sourceURL) {
         if(!layer.name) {
+            $.each(layer.layers, function(idx, layer) {
+                layer.sourceURL = sourceURL;
+            });
             return layer.layers;
         }
+        layer.sourceURL = sourceURL;
         return layer;
     };
     $scope.addCapabilities = function() {
@@ -40,7 +44,7 @@ function TreeCtrl($scope, WMSSources) {
 
 }
 
-function MapproxySourceListCtrl($scope, MapproxySources) {
+function MapproxySourceListCtrl($scope, MapproxySources, WMSSources) {
     var DEFAULT_SOURCE = {"type": "wms", "req": {}};
     var refreshList = function() {
         $scope.mapproxy_sources = MapproxySources.list();
@@ -89,6 +93,44 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
                     }
                 }
             });
+        }
+    };
+    $scope.checkURL = function(callback, new_data) {
+        var addLayer = false;
+        var urlReplaceAsk = false;
+        if(angular.isUndefined($scope.source.req.url)) {
+            $scope.source.req.url = new_data.sourceURL;
+            addLayer = true;
+        } else {
+            if(angular.equals($scope.source.req.url, new_data.sourceURL)) {
+                addLayer = true;
+            } else {
+                urlReplaceAsk = true;
+            }
+        }
+        if(urlReplaceAsk) {
+            $('#confirm_url_change_dialog').dialog({
+                resizeable: false,
+                width: 400,
+                height: 200,
+                model: true,
+                buttons: {
+                    "Change url and insert layer": function() {
+                        $(this).dialog("close");
+                        $scope.source.req.url = new_data.sourceURL;
+                        $scope.source.req.layers = undefined;
+                        $scope.$apply();
+                        callback(true);
+                    },
+                    "Keep url and reject layer": function() {
+                        $(this).dialog("close");
+                        callback(false);
+                    }
+                }
+            });
+        }
+        if(addLayer) {
+            callback(true);
         }
     };
     $scope.addSource = function(event) {

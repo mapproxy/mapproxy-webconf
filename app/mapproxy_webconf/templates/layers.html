@@ -12,7 +12,7 @@
           <i class="icon-remove"
             ask-dialog
             dialog-title="Confirm!"
-            dialog-text='Really remove layer "{{layer.name}}"?'
+            dialog-text='Really remove layer "{{layer.title}} ({{layer.name}})"?'
             callback="removeLayer(layer)"></i>
             <div
               ng-include="'mapproxy_layer_renderer.html'"
@@ -28,12 +28,12 @@
             <div ng-repeat="layer in mapproxy_layers | orderBy:'_rank'">
               <li>
                 <div draggable item-data="{{layer}}" ng-model="mapproxy_layers" class="mapproxy_layer">
-                    <div ng-click="editLayer(layer)">{{layer.name}} ({{layer.title}})
-<!--                     <div class="mapproxy_layer_dropzone" droppable ng-model="layer._layers" allow-array="true" parent-id="{{layer._id}}" parent-save="true"></div>
+                    <div ng-click="editLayer(layer)">{{layer.title}} ({{layer.name}})
+<!--                  <div class="mapproxy_layer_dropzone" droppable ng-model="layer._layers" allow-array="true" parent-id="{{layer._id}}" parent-save="true"></div>
  -->                    <i class="icon-remove pull-right"
                         ask-dialog
                         dialog-title="Confirm!"
-                        dialog-text='Really remove layer "{{layer.name}}"?'
+                        dialog-text='Really remove layer "{{layer.title}} ({{layer.name}})"?'
                         callback="removeLayer(layer)"></i>
                     <div
                         ng-include="'mapproxy_layer_renderer.html'"

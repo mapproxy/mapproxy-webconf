@@ -232,4 +232,39 @@ describe('droppable', function() {
             expect(elm_false_scope.drop_false_data).toBe(undefined);
         });
     });
+
+    describe('insert callbacks', function() {
+        var elm_true, elm_false;
+
+        beforeEach(inject(function($rootScope, $compile) {
+            scope = $rootScope;
+            scope.callback_true = function(callback, new_data) {
+                callback(true);
+            };
+            scope.callback_false = function(callback, new_data) {
+                callback(false);
+            };
+
+            elm_true = angular.element('<div droppable ng-model="drop_true_data" insert-callback="callback_true(callback, new_data)"></div>');
+            elm_false = angular.element('<div droppable ng-model="drop_false_data" insert-callback="callback_false(callback, new_data)"></div>');
+
+
+            $compile(elm_true)(scope);
+            $compile(elm_false)(scope);
+            scope.$digest();
+
+            elm_true_scope = elm_true.scope().$$childTail;
+            elm_false_scope = elm_false.scope().$$childTail;
+        }));
+
+        it('should do insert', function() {
+            elm_true_scope.dropHandler(null, ui1);
+            expect(elm_true_scope.drop_true_data).toEqual({"foo": 2});
+        });
+
+        it('should not insert', function() {
+            elm_false_scope.dropHandler(null, ui1);
+            expect(elm_false_scope.drop_false_data).toBe(undefined);
+        });
+    });
 });

@@ -52,7 +52,8 @@
                 ng-model="source.req.layers"
                 name="source_form.req_layers"
                 use-key-for-value="name"
-                class="input-xlarge insertable-list uneditable-input">
+                class="input-xlarge insertable-list uneditable-input"
+                insert-callback="checkURL(callback, new_data)">
 
               <div sortable ng-model="source.req.layers" >
                 <div ng-repeat="layer in source.req.layers" class="label">
@@ -118,7 +119,7 @@
                <div
                     ng-repeat="layer in wms.layer.layers"
                     ng-include="'wms_layer_renderer'"
-                    draggable item-data="{{itemData(layer)}}"
+                    draggable item-data="{{prepareLayer(layer, wms.url)}}"
                     class="wms_layer"></div>
                     <!-- wms_layer is required for dropping into droppable -->
               </div>
