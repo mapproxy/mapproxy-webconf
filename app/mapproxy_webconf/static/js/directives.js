@@ -60,6 +60,7 @@ directive('sortable', function() {
                 scope.items.splice(scope.items.indexOf(item), 1);
                 if(scope.items.length == 0) {
                     ngModelCtrl.$setViewValue(undefined);
+                    ngModelCtrl.$setValidity(false);
                 }
             };
 
@@ -205,6 +206,9 @@ directive('droppable', function($parse) {
 
                 scope.$apply(function() {
                     ngModelCtrl.$setViewValue(scope.items);
+                    if(angular.isUndefined(scope.items)) {
+                        ngModelCtrl.$setValidity(false);
+                    }
                 });
             };
             scope.insertCallback = function(insert) {
