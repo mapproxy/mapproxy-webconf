@@ -495,7 +495,9 @@ function MapproxyServicesCtrl($scope, MapproxyServices, DataShareService) {
     var setServices = function() {
         var services = MapproxyServices.list();
         if(services.length > 0) {
-            $scope.services = services[0];
+            angular.forEach($scope.services, function(service, key) {
+                $scope.services[key] = services[0][key];
+            })
             DataShareService.data('services', $scope.services)
         }
     };
