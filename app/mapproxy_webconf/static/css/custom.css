@@ -61,20 +61,47 @@ ul.vertical-list {
     margin: 0;
 }
 
-ul.vertical-list li {
-    width: 95%;
-    margin: 0.5em;
-    padding-top:0.6em;
-    padding-bottom:0.6em;
-    padding-left: 1em;
-    cursor: pointer;
-    white-space: normal;
+ul.vertical-list div:hover,
+ul.vertical-list div:focus
+/*ul.vertical-list div:hover li i.icon-remove*/
+{
+  background-color: #eeeeee;
 }
 
+ul.vertical-list div.active {
+  background-color: #3A87AD;
+  color: white;
+}
+
+ul.vertical-list li {
+    margin-left: 0.5em;
+    cursor: pointer;
+    white-space: normal;
+    padding: 0.5em;
+}
+
+ul.vertical-list hr {
+    margin: 0;
+    border: 0px;
+    border-bottom: 1px solid #ccc;
+}
 
 ul.vertical-list li i.icon-remove {
     float: right;
     cursor: pointer;
+    opacity: 0.25;
+    margin-right: 4px;
+    margin-top: 4px;
+    height: 20px; // make clickable area bigger
+}
+
+ul.vertical-list li i.icon-remove:hover {
+    opacity: 0.9;
+}
+
+ul.vertical-list div.active li i.icon-remove {
+    background-image: url("../img/glyphicons-halflings-white.png");
+    opacity: 0.9;
 }
 
 ul.vertical-list li.mapproxy_source.label, ul.vertical-list li.mapproxy_cache.label  {
@@ -86,7 +113,6 @@ ul.vertical-list li.mapproxy_source.label, ul.vertical-list li.mapproxy_cache.la
     cursor: default;
     overflow: auto;
 }
-
 
 .insertable-list .label {
     white-space: normal;
@@ -103,11 +129,15 @@ ul.vertical-list li.mapproxy_source.label, ul.vertical-list li.mapproxy_cache.la
 .insertable-list .label .icon-remove {
     float: right;
     cursor: pointer;
+    opacity: 0.25;
+}
+
+.insertable-list .label .icon-remove:hover {
+    opacity: 0.9;
 }
 
 .insertable-list .label:hover {
-    background-color: #999999;
-    color: white;
+    background-color: #eeeeee;
     cursor: pointer;
 }
 
@@ -120,18 +150,30 @@ ul.vertical-list li.mapproxy_source.label, ul.vertical-list li.mapproxy_cache.la
     width: 100%;
 }
 
+.accordion_wms_source {
+    cursor: pointer;
+}
+
 .accordion-group {
     border: 1px solid #CCCCCC;
 }
 
-.accordion-heading i.icon-refresh, .accordion-heading i.icon-remove {
+.accordion-heading i.icon-refresh,
+.accordion-heading i.icon-remove {
     float: right;
     cursor: pointer;
     margin-top: -1.8em;
     margin-right: 0.5em;
+    opacity: 0.25;
 }
+
 .accordion-heading i.icon-refresh {
     margin-right: 2em;
+}
+
+.accordion-heading i.icon-refresh:hover,
+.accordion-heading i.icon-remove:hover {
+    opacity: 0.9;
 }
 
 .nav-pills.nav-stacked  > li.active > a:focus,

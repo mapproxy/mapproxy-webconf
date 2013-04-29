@@ -2,8 +2,10 @@
 <div ng-controller="MapproxySourceListCtrl">
   <h3>Sources</h3>
   <ul class="vertical-list">
-    <li class="label" ng-repeat="source in mapproxy_sources | orderBy:'name'"
+    <hr>
+    <div class="" ng-repeat="source in mapproxy_sources | orderBy:'name'"
     ng-click="editSource(source)">
+    <li>
       {{source.name}}
       <i class="icon-remove"
         ask-dialog
@@ -11,7 +13,9 @@
         dialog-text='Really remove source "{{source.name}}"?'
         callback="removeSource(source)">
        </i>
-    </li>
+     </li>
+     <hr>
+    </div>
   </ul>
   <button class="btn btn-small pull-right" ng-click="newSource()">New source</button>
 </div>
@@ -36,7 +40,7 @@
           </div>
           <div labeled="input_label" name-for="source_form.req_url" text="URL">
             <div droppable change-callback="openDialog(callback, new_data)"
-              class="droppable_input_wrapper input-xlarge"
+              class="droppable_input_wrapper"
               accepts="wms_source" use-key-for-value="url" ng-model="source.req.url">
                 <input class="input-xlarge" type="url" value="{{source.wms_source}}"
                   id="source_form.req_url" required ng-model="source.req.url" />
@@ -108,7 +112,7 @@
             <div class="accordion-body" ng-show="$first">
                <div class="accordion-inner">
                <h6>Infos</h6>
-               <small class="accordion-infotext wms_source" draggable item-data="{{wms}}">URL: {{wms.url}}</small></li>
+               <small class="accordion_wms_source wms_source" draggable item-data="{{wms}}">URL: {{wms.url}}</small></li>
 
                <h6>Layers</h6>
                <div
@@ -117,19 +121,26 @@
                     draggable item-data="{{itemData(layer)}}"
                     class="wms_layer"></div>
                     <!-- wms_layer is required for dropping into droppable -->
-
               </div>
             </div>
         </div>
     </div>
-    <div ng-show="false" id="capabilities_refresh_ok">{{refresh_msg}}</div>
+    <div ng-show="false" id="capabilities_refresh_ok" class="text-success">
+        <i class="icon-ok"></i>
+        <strong>{{refresh_msg}}</strong>
+    </div>
     <hr>
     <form name="capabilities_form" novalidate>
         <div class="input-append" labeled="input_label" name-for="addCapabilities"  text="Load WMS">
             <input type="url" required name="capabilities_url" ng-model="capabilities.url" id="addCapabilities">
             <button class="btn" ng-click="addCapabilities()" ng-disabled="!capabilities_form.$valid">Add</button>
         </div>
-        <i id="capabilities_add_ok" class="icon-ok" ng-show="false"></i>
+        <div>
+          <span class="text-success" id="capabilities_add_ok" ng-show="false">
+            <i class="icon-ok"></i>
+            <strong>Add WMS successfully</strong>
+          </span>
+        </div>
     </form>
 </div>
   %end
