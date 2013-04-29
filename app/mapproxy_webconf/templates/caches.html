@@ -37,6 +37,7 @@
         <div labeled="input_label" name-for="cache_form.sources" text="Sources">
             <div
                 droppable
+                sortable
                 required
                 accepts="mapproxy_source"
                 allow-array="true"
@@ -44,11 +45,9 @@
                 name="cache_form.sources"
                 use-key-for-value="_id"
                 class="input-xlarge insertable-list uneditable-input">
-                <div sortable ng-model="cache.sources" >
-                    <div ng-repeat="source in cache.sources" class="label">
-                        <span ng-bind="showName(source)"></span>
-                        <i class="icon-remove" ng-click="remove(source)"></i>
-                    </div>
+                <div ng-repeat="source in cache.sources" class="label">
+                    <span ng-bind="showName(source)"></span>
+                    <i class="icon-remove" ng-click="remove(source)"></i>
                 </div>
             </div>
         </div>

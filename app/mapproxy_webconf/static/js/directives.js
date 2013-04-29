@@ -52,7 +52,9 @@ directive('sortable', function() {
                     scope.items.splice(start, 1)[0]);
 
                 //tell angular $scope has changed
-                scope.$apply()
+                scope.$apply(function() {
+                    ngModelCtrl.$setValidity('required', true);
+                });
             };
 
             scope.remove = function(item) {
@@ -60,7 +62,7 @@ directive('sortable', function() {
                 scope.items.splice(scope.items.indexOf(item), 1);
                 if(scope.items.length == 0) {
                     ngModelCtrl.$setViewValue(undefined);
-                    ngModelCtrl.$setValidity(false);
+                    ngModelCtrl.$setValidity('required', false);
                 }
             };
 
@@ -186,8 +188,12 @@ directive('droppable', function($parse) {
                     insert_scope.remove();
                 }
                 delete(scope.j_ui);
+
                 scope.$apply(function() {
                     ngModelCtrl.$setViewValue(scope.items);
+                    if(angular.isDefined(scope.items)) {
+                        ngModelCtrl.$setValidity('required', true);
+                    }
                 });
             };
             scope.remove = function(item) {
@@ -207,7 +213,7 @@ directive('droppable', function($parse) {
                 scope.$apply(function() {
                     ngModelCtrl.$setViewValue(scope.items);
                     if(angular.isUndefined(scope.items)) {
-                        ngModelCtrl.$setValidity(false);
+                        ngModelCtrl.$setValidity('required', false);
                     }
                 });
             };
@@ -256,10 +262,8 @@ directive('droppable', function($parse) {
                     } else {
                         //check for existing items
                         if(angular.isArray(scope.new_item)) {
-
                             angular.forEach(scope.new_item, scope.checkExist);
                         } else {
-
                             scope.checkExist(scope.new_item);
                         }
                         //look if something to insert

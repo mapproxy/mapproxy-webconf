@@ -67,6 +67,7 @@
         <div labeled="input_label" name-for="layer_form.sources" text="Sources">
             <div
                 droppable
+                sortable
                 required
                 accepts="mapproxy_source,mapproxy_cache"
                 allow-array="true"
@@ -74,11 +75,9 @@
                 name="layer_sources"
                 use-key-for-value="_id"
                 class="input-xlarge insertable-list uneditable-input">
-                <div sortable ng-model="layer.sources" >
-                    <div ng-repeat="source in layer.sources" class="label">
-                        <span ng-bind="showName(source)"></span>
-                         <i class="icon-remove" ng-click="remove(source)"></i>
-                    </div>
+                <div ng-repeat="source in layer.sources" class="label">
+                    <span ng-bind="showName(source)"></span>
+                     <i class="icon-remove" ng-click="remove(source)"></i>
                 </div>
             </div>
         </div>

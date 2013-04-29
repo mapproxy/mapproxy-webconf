@@ -49,23 +49,20 @@
           </div>
 
           <div labeled="input_label" name-for="source_form.req_layer" text="Layer">
-            <div droppable required accepts="wms_layer" allow-array="true"
+            <div droppable sortable required accepts="wms_layer" allow-array="true"
                 ng-model="source.req.layers"
                 name="source_form.req_layers"
                 use-key-for-value="name"
                 class="input-xlarge insertable-list uneditable-input"
                 insert-callback="checkURL(callback, new_data)">
 
-              <div sortable ng-model="source.req.layers" >
                 <div ng-repeat="layer in source.req.layers" class="label">
                   {{layer}}
                   <span ng-show="layerTitle(layer)">({{layerTitle(layer)}})</span>
                    <i class="icon-remove" ng-click="remove(layer)"></i>
-                 </div>
-              </div>
+                </div>
             </div>
           </div>
-
           <div class="input-append" labeled="input_label" name-for="add_layer_manual" text="Manual add layer">
             <input type="text" id="add_layer_manual" name="add_layer_manual" ng-model="custom.layer_manual" class="input-xlarge">
             <button class="btn" ng-click="addLayerManual($event)">Add</button>
