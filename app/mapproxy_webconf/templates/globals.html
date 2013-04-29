@@ -15,6 +15,10 @@
                 <input type="number" ng-model="globals.cache.meta_buffer" id="globals_form.cache_meta_buffer">
             </div>
             <button class="btn btn-small" ng-click="save($event)" ng-disabled="!globals_form.$valid">Save</button>
+            <span class="text-success" id="globals_save_ok" ng-show="false">
+                <i class="icon-ok"></i>
+                <strong>Saved successfully</strong>
+            </span>
         </form>
     </div>
 </div>

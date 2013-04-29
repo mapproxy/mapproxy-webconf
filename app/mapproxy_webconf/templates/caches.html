@@ -2,20 +2,20 @@
 <div ng-controller="MapproxyCacheListCtrl">
     <h3>Cache</h3>
     <ul class="vertical-list">
-        <li
-          class="label"
-          ng-repeat="cache in mapproxy_caches | orderBy:'name'"
-          ng-click="editCache(cache)">
-          {{cache.name}}
+      <hr>
+      <div ng-repeat="cache in mapproxy_caches | orderBy:'name'" ng-click="editCache(cache)">
+        <li>{{cache.name}}
           <i class="icon-remove"
-           ask-dialog
-           dialog-title="Confirm!"
-           dialog-text='Really remove cache "{{cache.name}}"?'
-           callback="removeCache(cache)">
+             ask-dialog
+             dialog-title="Confirm!"
+             dialog-text='Really remove cache "{{cache.name}}"?'
+             callback="removeCache(cache)">
           </i>
-      </li>
-      </ul>
-      <button class="btn btn-small pull-right" ng-click="newCache()">New cache</button>
+        </li>
+        <hr>
+      </div>
+    </ul>
+    <button class="btn btn-small pull-right" ng-click="newCache()">New cache</button>
   </div>
 %end
 
@@ -66,13 +66,13 @@
 <div ng-controller="MapproxySourceListCtrl">
     <h3>Sources</h3>
     <ul class="vertical-list">
-        <li
-            draggable
-            class="mapproxy_source label"
-            ng-repeat="source in mapproxy_sources | orderBy:'name'"
-            item-data="{{source}}">
-            {{source.name}}
+      <div draggable class="mapproxy_source" ng-repeat="source in mapproxy_sources | orderBy:'name'"
+          item-data="{{source}}">
+        <li>
+          {{source.name}}
         </li>
+        <hr>
+      </div>
     </ul>
 </div>
 %end

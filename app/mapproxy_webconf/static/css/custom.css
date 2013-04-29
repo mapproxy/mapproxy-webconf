@@ -104,7 +104,7 @@ ul.vertical-list div.active li i.icon-remove {
     opacity: 0.9;
 }
 
-ul.vertical-list li.mapproxy_source.label, ul.vertical-list li.mapproxy_cache.label  {
+ul.vertical-list div.mapproxy_source, ul.vertical-list div.mapproxy_cache  {
     width: 300px;
 }
 

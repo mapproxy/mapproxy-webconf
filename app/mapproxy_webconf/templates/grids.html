@@ -2,17 +2,18 @@
   <div ng-controller="MapproxyGridListCtrl">
     <h3>Grids</h3>
      <ul class="vertical-list">
-      <li class="label"
-           ng-repeat="grid in mapproxy_grids | orderBy:'name'"
-           ng-click="editGrid(grid)">
-           {{grid.name}}
-       <i class="icon-remove"
-         ask-dialog
-         dialog-title="Confirm!"
-         dialog-text='Really remove grid "{{grid.name}}"?'
-        callback="removeGrid(grid)">
-       </i>
-      </li>
+      <hr>
+       <div ng-repeat="grid in mapproxy_grids | orderBy:'name'" ng-click="editGrid(grid)">
+         <li>{{grid.name}}
+         <i class="icon-remove"
+           ask-dialog
+           dialog-title="Confirm!"
+           dialog-text='Really remove grid "{{grid.name}}"?'
+          callback="removeGrid(grid)">
+         </i>
+        </li>
+      </div>
+      <hr>
     </ul>
     <button class="btn btn-small pull-right" ng-click="newGrid()">New grid</button>
   </div>
