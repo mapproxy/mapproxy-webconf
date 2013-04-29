@@ -1,5 +1,10 @@
 %def leftblock():
 <div ng-controller="MapproxyLayerListCtrl">
+   <button class="btn btn-small btn-info pull-right" ng-click="newLayer()">
+        <span class="icon-plus-sign icon-white" ></span>
+    New layer</button>
+   <button class="btn btn-small btn-success pull-right" ng-click="updateLayerTree()" style="margin-right:1em;">Save</button>
+
   <h3>Layer</h3>
    <script type="text/ng-template"  id="mapproxy_layer_renderer.html">
     <ul sortable ng-model="layer._layers">
@@ -45,8 +50,6 @@
         </div>
       </ul>
     </div>
-   <button class="btn btn-small" ng-click="updateLayerTree()">Save</button>
-   <button class="btn btn-small" ng-click="newLayer()">New layer</button>
 
    <div class="text-success" id="layertree_save_ok" ng-show="false">
     <i class="icon-ok"></i>
