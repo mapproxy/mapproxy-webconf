@@ -68,6 +68,27 @@ function MapproxySourceListCtrl($scope, MapproxySources, WMSSources) {
         $scope.selected = undefined;
         MapproxySources.current(true, DEFAULT_SOURCE);
     };
+    $scope.hasDependencies = function(source) {
+        var hasDependencies = false;
+        angular.forEach(source.dependencies, function(kind) {
+            if(kind.length > 0) {
+                hasDependencies = true;
+            }
+        });
+        return hasDependencies;
+    };
+    $scope.getDependencies = function(source) {
+        var result = '';
+        angular.forEach(source.dependencies, function(dependencies, name) {
+            if(dependencies.length > 0) {
+                result += name +'<br>';
+                angular.forEach(dependencies, function(dependency) {
+                    result += '&nbsp;&nbsp;' + dependency.name + '<br>';
+                });
+            }
+        });
+        return result;
+    };
 
     $scope.$on('sources.load_complete', refreshList);
     $scope.$on('sources.added', refreshList);
@@ -207,6 +228,27 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches) {
         $scope.selected = undefined;
         MapproxyCaches.current(true, DEFAULT_CACHE);
     }
+    $scope.hasDependencies = function(cache) {
+        var hasDependencies = false;
+        angular.forEach(cache.dependencies, function(kind) {
+            if(kind.length > 0) {
+                hasDependencies = true;
+            }
+        });
+        return hasDependencies;
+    };
+    $scope.getDependencies = function(cache) {
+        var result = '';
+        angular.forEach(cache.dependencies, function(dependencies, name) {
+            if(dependencies.length > 0) {
+                result += name +'<br>';
+                angular.forEach(dependencies, function(dependency) {
+                    result += '&nbsp;&nbsp;' + dependency.name + '<br>';
+                });
+            }
+        });
+        return result;
+    };
 
     $scope.$on('caches.load_complete', refreshList);
     $scope.$on('caches.added', refreshList);
@@ -279,6 +321,28 @@ function MapproxyGridListCtrl($scope, MapproxyGrids) {
         MapproxyGrids.current(true, DEFAULT_GRID);
     };
 
+    $scope.hasDependencies = function(grid) {
+        var hasDependencies = false;
+        angular.forEach(grid.dependencies, function(kind) {
+            if(kind.length > 0) {
+                hasDependencies = true;
+            }
+        });
+        return hasDependencies;
+    };
+    $scope.getDependencies = function(grid) {
+        var result = '';
+        angular.forEach(grid.dependencies, function(dependencies, name) {
+            if(dependencies.length > 0) {
+                result += name +'<br>';
+                angular.forEach(dependencies, function(dependency) {
+                    result += '&nbsp;&nbsp;' + dependency.name + '<br>';
+                });
+            }
+        });
+        return result;
+    };
+
     $scope.$on('grids.load_complete', refreshList);
     $scope.$on('grids.added', refreshList);
     $scope.$on('grids.updated', refreshList);
@@ -342,7 +406,7 @@ function MapproxyLayerListCtrl($scope, MapproxyLayers) {
     $scope.newLayer = function() {
         $scope.selected = undefined;
         MapproxyLayers.current(true, DEFAULT_LAYER)
-    }
+    };
 
     $scope.$on('layers.load_complete', refreshTree);
     $scope.$on('layers.added', added);

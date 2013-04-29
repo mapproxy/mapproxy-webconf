@@ -1,21 +1,54 @@
-var MapproxyBaseService = function(_section) {
+var MapproxyBaseService = function(_section, _dependencies) {
     var _this = this;
     this._items = {};
     this._item;
     this._last;
     this._section = _section;
+    this._dependencies = _dependencies;
+    this._dependenciesLoadComplete = {};
+    this._dependenciesLoadComplete[_section] = false;
     this._rootScope;
     this._resource;
     this.error;
+    this._waitForLoadComplete = function(event) {
+        var name = event.name.split('.')[0];
+        _this._dependenciesLoadComplete[name] = true;
+        var loadComplete = true;
+        angular.forEach(_this._dependenciesLoadComplete, function(loaded) {
+            if(!loaded) {
+                loadComplete = false;
+            }
+        });
+        if(loadComplete) {
+            angular.forEach(_this._items, function(item, id) {
+                angular.forEach(_this._dependencies, function(dependency) {
+                    item.dependencies[dependency._section] = []
+                    angular.forEach(dependency._items, function(dependencyItem) {
+                        var useSection = _this._section;
+                        //layers only have sources for cache- and source-items
+                        if(item._section == 'caches' && dependencyItem._section == 'layers') {
+                            useSection = 'sources';
+                        }
+                        if($.inArray(item._id, dependencyItem[useSection]) != -1) {
+                            item.dependencies[dependency._section].push(dependencyItem);
+                        }
+                    });
+                });
+            });
+            _this._rootScope.$broadcast(_this._section + '.load_complete');
+        }
+    }
     this.load = function() {
         _this._items = {};
         _this._resource.query({action: _this._section}, function(result) {
             if(result) {
                 angular.forEach(result, function(item) {
+                    item.dependencies = {};
+                    item._section = _this._section;
                     _this._items[item._id] = item;
                 })
                 if(angular.isDefined(_this._rootScope))
-                    _this._rootScope.$broadcast(_this._section + '.load_complete');
+                    _this._rootScope.$broadcast(_this._section + '.load_finished');
             }
         });
     };
@@ -77,6 +110,13 @@ var MapproxyBaseService = function(_section) {
     this.return_func = function($rootScope, MapproxyResource) {
         _this._rootScope = $rootScope;
         _this._resource = MapproxyResource;
+        _this._rootScope.$on(_this._section + '.load_finished', _this._waitForLoadComplete);
+        angular.forEach(_this._dependencies, function(dependency) {
+            _this._dependenciesLoadComplete[dependency._section] = false;
+            _this._rootScope.$on(dependency._section + '.load_finished', _this._waitForLoadComplete)
+            dependency.return_func(_this._rootScope, _this._resource);
+
+        });
         _this.load();
         return _this.return_dict;
     };
@@ -174,13 +214,13 @@ WMSSourceService = function(_section) {
     this.return_dict['refresh'] = _this.refresh;
 };
 
-var wmsService = new WMSSourceService('wms_capabilities');
-var sourceService = new MapproxyBaseService('sources');
-var cacheService = new MapproxyBaseService('caches');
-var gridService = new MapproxyBaseService('grids');
 var layerService = new MapproxyLayerService('layers');
 var globalsService = new MapproxyBaseService('globals');
 var servicesService = new MapproxyBaseService('services');
+var cacheService = new MapproxyBaseService('caches', [layerService]);
+var gridService = new MapproxyBaseService('grids', [cacheService]);
+var sourceService = new MapproxyBaseService('sources', [cacheService, layerService]);
+var wmsService = new WMSSourceService('wms_capabilities');
 
 angular.module('mapproxy_gui.services', ['mapproxy_gui.resources']).
 

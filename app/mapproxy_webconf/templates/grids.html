@@ -10,11 +10,16 @@
        <div class="{{isSelected(grid)}}" ng-repeat="grid in mapproxy_grids | orderBy:'name'"
         ng-click="editGrid(grid)">
          <li>{{grid.name}}
-         <i class="icon-remove"
+         <i ng-show="!hasDependencies(grid)" class="icon-remove"
            ask-dialog
            dialog-title="Confirm!"
            dialog-text='Really remove grid "{{grid.name}}"?'
           callback="removeGrid(grid)">
+         </i>
+         <i ng-show="hasDependencies(grid)" class="icon-remove"
+            confirm-dialog
+            dialog-title="Confirm!"
+            dialog-text='Can not remove grid "{{grid.name}}" because its depends on:<br>{{getDependencies(grid)}}'>
          </i>
         </li>
         <hr>

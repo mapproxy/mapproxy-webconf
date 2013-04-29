@@ -52,7 +52,9 @@ directive('sortable', function() {
                     scope.items.splice(start, 1)[0]);
 
                 //tell angular $scope has changed
-                scope.$apply()
+                scope.$apply(function() {
+                    ngModelCtrl.$setValidity('required', true);
+                });
             };
 
             scope.remove = function(item) {
@@ -60,7 +62,7 @@ directive('sortable', function() {
                 scope.items.splice(scope.items.indexOf(item), 1);
                 if(scope.items.length == 0) {
                     ngModelCtrl.$setViewValue(undefined);
-                    ngModelCtrl.$setValidity(false);
+                    ngModelCtrl.$setValidity('required', false);
                 }
             };
 
@@ -190,8 +192,12 @@ directive('droppable', function($parse) {
                     insert_scope.remove();
                 }
                 delete(scope.j_ui);
+
                 scope.$apply(function() {
                     ngModelCtrl.$setViewValue(scope.items);
+                    if(angular.isDefined(scope.items)) {
+                        ngModelCtrl.$setValidity('required', true);
+                    }
                 });
             };
             scope.remove = function(item) {
@@ -211,7 +217,7 @@ directive('droppable', function($parse) {
                 scope.$apply(function() {
                     ngModelCtrl.$setViewValue(scope.items);
                     if(angular.isUndefined(scope.items)) {
-                        ngModelCtrl.$setValidity(false);
+                        ngModelCtrl.$setValidity('required', false);
                     }
                 });
             };
@@ -260,10 +266,8 @@ directive('droppable', function($parse) {
                     } else {
                         //check for existing items
                         if(angular.isArray(scope.new_item)) {
-
                             angular.forEach(scope.new_item, scope.checkExist);
                         } else {
-
                             scope.checkExist(scope.new_item);
                         }
                         //look if something to insert
@@ -378,6 +382,37 @@ directive('askDialog', function($parse) {
                             scope.callback(scope);
                         },
                         "No": function() {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+            };
+            scope.dialog_id = scope.$id;
+            scope.callback = $parse(attrs.callback);
+            scope.dialog = $('<div style="display:none;" id="dialog_' + scope.dialog_id + '" title="'+ attrs.dialogTitle +'"><p></p></div>');
+            element.after(scope.dialog);
+
+            element.bind('click', scope.openDialog);
+        }
+    };
+}).
+
+directive('confirmDialog', function($parse) {
+    return {
+        restrict: 'A',
+        scope: 'element',
+        link: function(scope, element, attrs) {
+
+            scope.openDialog = function(event) {
+                event.stopPropagation();
+                scope.dialog.find('p').html(attrs.dialogText)
+                scope.dialog.dialog({
+                    resizeable: false,
+                    width: 600,
+                    height: 300,
+                    model: true,
+                    buttons: {
+                        "Ok": function() {
                             $(this).dialog("close");
                         }
                     }
