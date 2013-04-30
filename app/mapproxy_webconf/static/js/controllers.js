@@ -1,3 +1,5 @@
+var PAGE_LEAVE_MSG = "You have unsaved changes in this form. Realy leave the page and disgard unsaved changes?";
+
 function TreeCtrl($scope, WMSSources) {
 
     var refreshTree = function() {
@@ -168,14 +170,14 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
         event.preventDefault();
         $scope.source = clearData($scope.source)
         MapproxySources.add($scope.source);
-        console.log($scope.source)
+        $scope.source_form.$setPristine();
     };
     $scope.resetForm = function(event) {
         if(!angular.isUndefined(event)) {
             event.preventDefault();
         }
         $scope.source = MapproxySources.current(true);
-        // $scope.source_form.$setPristine();
+        $scope.source_form.$setPristine();
     };
     $scope.addLayerManual = function(event) {
         event.preventDefault();
@@ -203,7 +205,15 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
     $scope.$on('sources.current', function() {
         $scope.source = MapproxySources.current(true);
         $scope.formTitle = angular.equals($scope.source, DEFAULT_SOURCE) ? 'New Source' : 'Edit Source';
+        $scope.source_form.$setPristine();
     });
+
+    $(window).on('beforeunload', function() {
+        if($scope.source_form.$dirty) {
+            return PAGE_LEAVE_MSG;
+        }
+    });
+
 }
 
 function MapproxyCacheListCtrl($scope, MapproxyCaches) {
@@ -268,12 +278,14 @@ function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
         event.preventDefault();
         $scope.cache = clearData($scope.cache);
         MapproxyCaches.add($scope.cache);
+        $scope.cache_form.$setPristine();
     };
     $scope.resetForm = function(event) {
         if(!angular.isUndefined(event)) {
             event.preventDefault();
         }
         $scope.cache = MapproxyCaches.current(true);
+        $scope.cache_form.$setPristine();
     };
     $scope.showName = function(_id) {
         return MapproxySources.byId(_id).name;
@@ -289,12 +301,19 @@ function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
             $scope.cache.meta_size = [null, null];
         }
         $scope.formTitle = angular.equals($scope.cache, DEFAULT_CACHE) ? 'New Cache' : 'Edit Cache';
+        $scope.cache_form.$setPristine();
     });
 
     $scope.$on('grids.load_complete', refreshGrids);
     $scope.$on('grids.added', refreshGrids);
     $scope.$on('grids.updated', refreshGrids);
     $scope.$on('grids.deleted', refreshGrids);
+
+    $(window).on('beforeunload', function() {
+        if($scope.cache_form.$dirty) {
+            return PAGE_LEAVE_MSG;
+        }
+    });
 
 }
 
@@ -356,13 +375,14 @@ function MapproxyGridFormCtrl($scope, MapproxyGrids) {
     $scope.addGrid = function(event) {
         event.preventDefault();
         MapproxyGrids.add(clearData($scope.grid));
+        $scope.grid_form.$setPristine();
     };
     $scope.resetForm = function(event) {
         if(angular.isDefined(event)) {
             event.preventDefault();
         }
         $scope.grid = MapproxyGrids.current(true);
-
+        $scope.grid_form.$setPristine();
     };
 
     $scope.grid = angular.copy(DEFAULT_GRID);
@@ -375,7 +395,15 @@ function MapproxyGridFormCtrl($scope, MapproxyGrids) {
             $scope.grid.bbox = [null, null, null, null];
         }
         $scope.formTitle = angular.equals($scope.grid, DEFAULT_GRID) ? 'New Grid' : 'Edit Grid';
+        $scope.grid_form.$setPristine();
     });
+
+    $(window).on('beforeunload', function() {
+        if($scope.grid_form.$dirty) {
+            return PAGE_LEAVE_MSG;
+        }
+    });
+
 }
 
 function MapproxyLayerListCtrl($scope, MapproxyLayers) {
@@ -424,9 +452,11 @@ function MapproxyLayerFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
     $scope.addLayer = function() {
         $scope.layer = clearData($scope.layer)
         MapproxyLayers.add(angular.copy($scope.layer));
+        $scope.layer_form.$setPristine();
     };
     $scope.resetForm = function() {
         $scope.layer = MapproxyLayers.current(true);
+        $scope.layer_form.$setPristine();
     };
     $scope.layerTitle = function(name) {
         var layer = MapproxyLayers.byName(name);
@@ -446,6 +476,13 @@ function MapproxyLayerFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
     $scope.$on('layers.current', function() {
         $scope.layer = MapproxyLayers.current(true);
         $scope.formTitle = angular.equals($scope.layer, DEFAULT_LAYER) ? 'New Layer' : 'Edit Layer';
+        $scope.layer_form.$setPristine();
+    });
+
+    $(window).on('beforeunload', function() {
+        if($scope.layer_form.$dirty) {
+            return PAGE_LEAVE_MSG;
+        }
     });
 }
 
@@ -462,12 +499,19 @@ function MapproxyGlobalsFormCtrl($scope, MapproxyGlobals) {
             event.preventDefault();
         }
         MapproxyGlobals.add($scope.globals);
+        $scope.globals_form.$setPristine();
     };
 
     $scope.globals = {'cache': {'meta_size': [null, null]}};
 
     $scope.$on('globals.load_complete', setGlobals);
     $scope.$on('globals.added', setGlobals);
+
+    $(window).on('beforeunload', function() {
+        if($scope.globals_form.$dirty) {
+            return PAGE_LEAVE_MSG;
+        }
+    });
 };
 
 function MapproxyServicesChooserCtrl($scope, DataShareService) {
@@ -511,6 +555,7 @@ function MapproxyServicesCtrl($scope, MapproxyServices, DataShareService) {
             event.preventDefault();
         }
         MapproxyServices.add($scope.services);
+        $scope.services_form.$setPristine();
     };
 
     $scope.services = {
@@ -527,7 +572,13 @@ function MapproxyServicesCtrl($scope, MapproxyServices, DataShareService) {
 
     $scope.$on('services.load_complete', setServices);
     $scope.$on('services.added', setServices);
-    $scope.$on('dss.service', setTemplate)
+    $scope.$on('dss.service', setTemplate);
+
+    $(window).on('beforeunload', function() {
+        if($scope.services_form.$dirty) {
+            return PAGE_LEAVE_MSG;
+        }
+    });
 };
 
 function MapproxySourceNoticeCtrl($scope, MapproxySources) {
