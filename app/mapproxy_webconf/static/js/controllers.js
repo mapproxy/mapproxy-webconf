@@ -180,12 +180,14 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
     $scope.addLayerManual = function(event) {
         event.preventDefault();
         var new_layer = $scope.custom.layer_manual;
-        if(!angular.isArray($scope.source.req.layers)) {
-            $scope.source.req.layers = [new_layer];
-        } else {
-            $scope.source.req.layers.push(new_layer);
+        if(angular.isDefined(new_layer)) {
+            if(!angular.isArray($scope.source.req.layers)) {
+                $scope.source.req.layers = [new_layer];
+            } else {
+                $scope.source.req.layers.push(new_layer);
+            }
+            $scope.custom.layer_manual = undefined;
         }
-        $scope.custom.layer_manual = undefined;
     };
     $scope.layerTitle = function(layer) {
         return WMSSources.layerTitle($scope.source.req.url, layer);
@@ -493,7 +495,9 @@ function MapproxyServicesCtrl($scope, MapproxyServices, DataShareService) {
     var setServices = function() {
         var services = MapproxyServices.list();
         if(services.length > 0) {
-            $scope.services = services[0];
+            angular.forEach($scope.services, function(service, key) {
+                $scope.services[key] = services[0][key];
+            })
             DataShareService.data('services', $scope.services)
         }
     };
