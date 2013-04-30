@@ -13,7 +13,7 @@
     },
     {
         "key": "_replace_url_",
-        "value": "Das ersetzen der Service-URL führt zum leeren der Layerliste!"
+        "value": "Das Ersetzen der Service-URL führt zum leeren der Layerliste!"
     },
     {
         "key": "_confirm_url_change_",
@@ -33,7 +33,7 @@
     },
     {
         "key": "_manual_add_layer_",
-        "value": "Nicht aufgeführten Layer hinzufügen"
+        "value": "Manuell Layer hinzufügen"
     },
     {
         "key": "_add_",
@@ -106,5 +106,13 @@
     {
         "key": "_cannot_remove_source_",
         "value": "Wegen Abhängigkeiten kann diese Source nicht entfernt werden:"
+    },
+    {
+        "key": "_change_url_",
+        "value": "URL ändern"
+    },
+    {
+        "key": "_keep_url_",
+        "value": "URL beibehalten"
     }
 ]

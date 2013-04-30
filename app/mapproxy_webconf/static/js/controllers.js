@@ -108,23 +108,24 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
            $scope.source.req.layers.length == 0) {
             callback(true);
         } else  {
+            var buttons = {};
+            buttons[localize.getLocalizedString('_change_url_')] = function() {
+                $(this).dialog("close");
+                $scope.source.req.layers = undefined;
+                $scope.$apply();
+                callback(true);
+            };
+            buttons[localize.getLocalizedString('_keep_url_')] = function() {
+                $(this).dialog("close");
+                callback(false);
+            };
+
             $('#confirm_url_change_dialog').dialog({
                 resizeable: false,
                 width: 400,
                 height: 200,
                 model: true,
-                buttons: {
-                    "Change url": function() {
-                        $(this).dialog("close");
-                        $scope.source.req.layers = undefined;
-                        $scope.$apply();
-                        callback(true);
-                    },
-                    "Keep url": function() {
-                        $(this).dialog("close");
-                        callback(false);
-                    }
-                }
+                buttons: buttons
             });
         }
     };
