@@ -198,6 +198,7 @@ directive('droppable', function($parse) {
                     if(angular.isDefined(scope.items)) {
                         ngModelCtrl.$setValidity('required', true);
                     }
+                    ngModelCtrl.$render();
                 });
             };
             scope.remove = function(item) {
