@@ -1,6 +1,11 @@
 %def leftblock():
 <div ng-controller="MapproxySourceListCtrl">
-  <h3>Sources</h3>
+  <div class="pull-right">
+    <button class="btn btn-small btn-info pull-right" ng-click="newSource()">
+      <span class="icon-plus-sign icon-white" ></span>
+      New source</button>
+  </div>
+    <h3>Sources</h3>
   <ul class="vertical-list">
     <hr>
     <div class="{{isSelected(source)}}" ng-repeat="source in mapproxy_sources | orderBy:'name'"
@@ -22,7 +27,6 @@
      <hr>
     </div>
   </ul>
-  <button class="btn btn-small pull-right" ng-click="newSource()">New source</button>
 </div>
 %end
 

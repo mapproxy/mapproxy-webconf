@@ -1,5 +1,9 @@
 %def leftblock():
 <div ng-controller="MapproxyCacheListCtrl">
+    <button class="btn btn-small btn-info pull-right" ng-click="newCache()">
+      <span class="icon-plus-sign icon-white" ></span>
+      New cache</button>
+
     <h3>Cache</h3>
     <ul class="vertical-list">
       <hr>
@@ -21,7 +25,6 @@
         <hr>
       </div>
     </ul>
-    <button class="btn btn-small pull-right" ng-click="newCache()">New cache</button>
   </div>
 %end
 
