@@ -5,17 +5,14 @@ var MapproxyBaseService = function(_section, _dependencies) {
     this._last;
     this._section = _section;
     this._dependencies = _dependencies;
-    this._dependenciesLoadComplete = {};
-    this._dependenciesLoadComplete[_section] = false;
     this._rootScope;
     this._resource;
     this.error;
     this._waitForLoadComplete = function(event) {
         var name = event.name.split('.')[0];
-        _this._dependenciesLoadComplete[name] = true;
-        var loadComplete = true;
-        angular.forEach(_this._dependenciesLoadComplete, function(loaded) {
-            if(!loaded) {
+        var loadComplete = _this._loaded;
+        angular.forEach(_this.dependencies, function(dependency) {
+            if(!dependency._loaded) {
                 loadComplete = false;
             }
         });
@@ -40,13 +37,15 @@ var MapproxyBaseService = function(_section, _dependencies) {
     }
     this.load = function() {
         _this._items = {};
+        _this._loaded = false;
         _this._resource.query({action: _this._section}, function(result) {
             if(result) {
                 angular.forEach(result, function(item) {
                     item.dependencies = {};
                     item._section = _this._section;
                     _this._items[item._id] = item;
-                })
+                });
+                _this._loaded = true;
                 if(angular.isDefined(_this._rootScope))
                     _this._rootScope.$broadcast(_this._section + '.load_finished');
             }
@@ -108,13 +107,15 @@ var MapproxyBaseService = function(_section, _dependencies) {
         return _this._error_msg;
     }
     this.return_func = function($rootScope, MapproxyResource) {
+        _this._inited = true;
         _this._rootScope = $rootScope;
         _this._resource = MapproxyResource;
         _this._rootScope.$on(_this._section + '.load_finished', _this._waitForLoadComplete);
         angular.forEach(_this._dependencies, function(dependency) {
-            _this._dependenciesLoadComplete[dependency._section] = false;
             _this._rootScope.$on(dependency._section + '.load_finished', _this._waitForLoadComplete)
-            dependency.return_func(_this._rootScope, _this._resource);
+            if(!dependency._inited) {
+              dependency.return_func(_this._rootScope, _this._resource);
+            }
 
         });
         _this.load();

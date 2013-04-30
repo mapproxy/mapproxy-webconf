@@ -1,6 +1,11 @@
 %def leftblock():
 <div ng-controller="MapproxySourceListCtrl">
-  <h3>Sources</h3>
+  <div class="pull-right">
+    <button class="btn btn-small btn-info pull-right" ng-click="newSource()">
+      <span class="icon-plus-sign icon-white" ></span>
+      New source</button>
+  </div>
+    <h3>Sources</h3>
   <ul class="vertical-list">
     <hr>
     <div class="{{isSelected(source)}}" ng-repeat="source in mapproxy_sources | orderBy:'name'"
@@ -22,7 +27,6 @@
      <hr>
     </div>
   </ul>
-  <button class="btn btn-small pull-right" ng-click="newSource()">New source</button>
 </div>
 %end
 
@@ -44,12 +48,18 @@
             <input class="input-xlarge" type="text" required ng-model="source.name" id="source_form.name"/>
           </div>
           <div id="source_wms_url" labeled="input_label" name-for="source_form.req_url" text="URL">
-            <div droppable change-callback="openDialog(callback, new_data)"
-              class="droppable_input_wrapper"
-              accepts="wms_source" use-key-for-value="url" ng-model="source.req.url">
-                <input class="input-xlarge" type="url" value="{{source.wms_source}}"
-                  id="source_form.req_url" required ng-model="source.req.url" />
-            </div>
+            <input
+              id="source_form.req_url"
+              class="input-xlarge"
+              type="url"
+              value="{{source.wms_source}}"
+              ng-model="source.req.url"
+              required
+              droppable
+              change-callback="openDialog(callback, new_data)"
+              accepts="wms_source"
+              use-key-for-value="url"
+            />
           </div>
 
           <div labeled="input_label" name-for="source_form.req_layer" text="Layer">
