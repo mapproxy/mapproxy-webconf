@@ -10,7 +10,7 @@ var MapproxyBaseService = function(_section, _dependencies) {
     this.error;
     this._waitForLoadComplete = function(event) {
         var name = event.name.split('.')[0];
-        var loadComplete = true;
+        var loadComplete = _this._loaded;
         angular.forEach(_this.dependencies, function(dependency) {
             if(!dependency._loaded) {
                 loadComplete = false;
@@ -45,7 +45,7 @@ var MapproxyBaseService = function(_section, _dependencies) {
                     item._section = _this._section;
                     _this._items[item._id] = item;
                 });
-                _this._loaded = false;
+                _this._loaded = true;
                 if(angular.isDefined(_this._rootScope))
                     _this._rootScope.$broadcast(_this._section + '.load_finished');
             }
