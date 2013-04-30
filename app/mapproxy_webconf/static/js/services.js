@@ -108,13 +108,16 @@ var MapproxyBaseService = function(_section, _dependencies) {
         return _this._error_msg;
     }
     this.return_func = function($rootScope, MapproxyResource) {
+        _this._inited = true;
         _this._rootScope = $rootScope;
         _this._resource = MapproxyResource;
         _this._rootScope.$on(_this._section + '.load_finished', _this._waitForLoadComplete);
         angular.forEach(_this._dependencies, function(dependency) {
             _this._dependenciesLoadComplete[dependency._section] = false;
             _this._rootScope.$on(dependency._section + '.load_finished', _this._waitForLoadComplete)
-            dependency.return_func(_this._rootScope, _this._resource);
+            if(!dependency._inited) {
+              dependency.return_func(_this._rootScope, _this._resource);
+            }
 
         });
         _this.load();
