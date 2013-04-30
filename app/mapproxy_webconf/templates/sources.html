@@ -44,12 +44,18 @@
             <input class="input-xlarge" type="text" required ng-model="source.name" id="source_form.name"/>
           </div>
           <div id="source_wms_url" labeled="input_label" name-for="source_form.req_url" text="URL">
-            <div droppable change-callback="openDialog(callback, new_data)"
-              class="droppable_input_wrapper"
-              accepts="wms_source" use-key-for-value="url" ng-model="source.req.url">
-                <input class="input-xlarge" type="url" value="{{source.wms_source}}"
-                  id="source_form.req_url" required ng-model="source.req.url" />
-            </div>
+            <input
+              id="source_form.req_url"
+              class="input-xlarge"
+              type="url"
+              value="{{source.wms_source}}"
+              ng-model="source.req.url"
+              required
+              droppable
+              change-callback="openDialog(callback, new_data)"
+              accepts="wms_source"
+              use-key-for-value="url"
+            />
           </div>
 
           <div labeled="input_label" name-for="source_form.req_layer" text="Layer">
