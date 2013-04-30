@@ -179,6 +179,10 @@ def yaml(project):
 def static(filepath):
     return static_file(filepath, root=os.path.join(os.path.dirname(__file__), 'static'))
 
+@app.route('/i18n/<filename>', name='i18n')
+def i18n(filename):
+    return static_file(filename, root=os.path.join(os.path.dirname(__file__), 'static/i18n'))
+
 @app.route('/conf/<project>/yaml', 'GET')
 def write_config(project, storage):
     mapproxy_conf = config.mapproxy_conf_from_storage(storage, project)

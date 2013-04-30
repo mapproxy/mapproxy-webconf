@@ -25,7 +25,7 @@
  * to manipulate by controller but by directive
  */
 
-angular.module('mapproxy_gui.directives', []).
+angular.module('mapproxy_gui.directives', ['localization']).
 directive('sortable', function() {
     return {
         restrict: 'A',
@@ -363,7 +363,7 @@ directive('pane', function() {
     };
 }).
 
-directive('askDialog', function($parse) {
+directive('askDialog', function($parse, localize) {
     return {
         restrict: 'A',
         scope: 'element',
@@ -371,21 +371,21 @@ directive('askDialog', function($parse) {
 
             scope.openDialog = function(event) {
                 event.stopPropagation();
+                var buttons = {};
+                buttons[localize.getLocalizedString('_yes_')] = function() {
+                    $(this).dialog("close");
+                    scope.callback(scope);
+                };
+                buttons[localize.getLocalizedString('_no_')] = function() {
+                    $(this).dialog("close");
+                };
                 scope.dialog.find('p').text(attrs.dialogText)
                 scope.dialog.dialog({
                     resizeable: false,
                     width: 400,
                     height: 200,
                     model: true,
-                    buttons: {
-                        "Yes": function() {
-                            $(this).dialog("close");
-                            scope.callback(scope);
-                        },
-                        "No": function() {
-                            $(this).dialog("close");
-                        }
-                    }
+                    buttons: buttons
                 });
             };
             scope.dialog_id = scope.$id;
@@ -403,7 +403,6 @@ directive('confirmDialog', function($parse) {
         restrict: 'A',
         scope: 'element',
         link: function(scope, element, attrs) {
-
             scope.openDialog = function(event) {
                 event.stopPropagation();
                 scope.dialog.find('p').html(attrs.dialogText)
@@ -433,7 +432,7 @@ directive('confirmDialog', function($parse) {
     labeled must point to existing template!
     labeled="[template]"
 */
-directive('labeled', function() {
+directive('labeled', function($parse, localize) {
     return {
         restrict: 'A',
         replace: true,
@@ -450,7 +449,7 @@ directive('labeled', function() {
                     return '<div class="control-group">' +
                              '<div class="controls">' +
                                  '<label class="control-label" for="{{name}}">' +
-                                     '<span ng-transclude></span> {{text}}' +
+                                     '<span ng-transclude></span> {{getText()}}' +
                                  '</label>' +
                                  '<span ng-show="showWarning()" id="tooltip_{{$id}}" class="icon-warning-sign warning_icon"></span>' +
                              '</div>' +
@@ -460,7 +459,7 @@ directive('labeled', function() {
                 default:
                     return '<div class="control-group">' +
                           '<div class="controls">' +
-                              '<label class="control-label" for="{{name}}">{{text}}:</label>' +
+                              '<label class="control-label" for="{{name}}">{{getText()}}:</label>' +
                               '<span ng-transclude></span>'+
                               '<span ng-show="showWarning()" id="tooltip_{{$id}}" class="icon-warning-sign warning_icon"></span>' +
                           '</div>' +
@@ -470,6 +469,7 @@ directive('labeled', function() {
         },
         scope: 'element',
         link: function(scope, element, attrs) {
+
             scope.showWarning = function() {
                 if(scope.warning) {
                     element.addClass('warning');
@@ -486,9 +486,12 @@ directive('labeled', function() {
             scope.warningMsg = function() {
                 return attrs.warningMsg;
             };
+            scope.getText = function() {
+                return attrs.text;
+            };
 
             scope.name = attrs.nameFor;
-            scope.text = attrs.text;
+
             if(angular.isDefined(attrs.$attr.warning)) {
                 scope.warning_msg = attrs.warningMsg;
                 attrs.$observe('warning', function(val) {

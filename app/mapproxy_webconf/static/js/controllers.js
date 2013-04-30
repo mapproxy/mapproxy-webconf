@@ -1,6 +1,6 @@
 var PAGE_LEAVE_MSG = "You have unsaved changes in this form. Realy leave the page and disgard unsaved changes?";
 
-function TreeCtrl($scope, WMSSources) {
+function TreeCtrl($scope, localize, WMSSources) {
 
     var refreshTree = function() {
         $scope.wms_list = WMSSources.list();
@@ -34,7 +34,7 @@ function TreeCtrl($scope, WMSSources) {
         refreshTree();
     });
     $scope.$on('wms_capabilities.updated', function() {
-        $scope.refresh_msg = WMSSources.last().title + ' refreshed';
+        $scope.refresh_msg = WMSSources.last().title + ' ' + localize.getLocalizedString('_refreshed_');
         refreshTree();
         $('#capabilities_refresh_ok').show().fadeOut(3000);
     });
@@ -46,7 +46,7 @@ function TreeCtrl($scope, WMSSources) {
 
 }
 
-function MapproxySourceListCtrl($scope, MapproxySources) {
+function MapproxySourceListCtrl($scope, localize, MapproxySources) {
     var DEFAULT_SOURCE = {"type": "wms", "req": {}};
     var refreshList = function() {
         $scope.mapproxy_sources = MapproxySources.list();
@@ -98,7 +98,7 @@ function MapproxySourceListCtrl($scope, MapproxySources) {
     $scope.$on('sources.deleted', refreshList);
 }
 
-function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
+function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
     var DEFAULT_SOURCE = {"type": "wms", "req": {}};
 
     $scope.openDialog = function(callback, new_data) {
@@ -198,13 +198,13 @@ function MapproxySourceFormCtrl($scope, MapproxySources, WMSSources) {
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {};
     $scope.source = angular.copy(DEFAULT_SOURCE);
-    $scope.formTitle = 'New Source';
+    $scope.formTitle = '_new_source_';
 
     MapproxySources.current(true, $scope.source)
 
     $scope.$on('sources.current', function() {
         $scope.source = MapproxySources.current(true);
-        $scope.formTitle = angular.equals($scope.source, DEFAULT_SOURCE) ? 'New Source' : 'Edit Source';
+        $scope.formTitle = angular.equals($scope.source, DEFAULT_SOURCE) ? '_new_source_' : '_edit_source_';
         $scope.source_form.$setPristine();
     });
 
@@ -581,7 +581,7 @@ function MapproxyServicesCtrl($scope, MapproxyServices, DataShareService) {
     });
 };
 
-function MapproxySourceNoticeCtrl($scope, MapproxySources) {
+function MapproxySourceNoticeCtrl($scope, localize, MapproxySources) {
     //define all watch results
     $scope.invalid_image_settings = false;
     $scope.high_number_of_concurrent_requests = false;

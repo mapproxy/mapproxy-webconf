@@ -18,6 +18,7 @@
     <!-- libs -->
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/angular.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/angular-resource.js') }"></script>
+    <script type="text/javascript" src="${ get_url('static', filepath='js/lib/localize.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/jquery-1.9.1.min.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/jquery-ui-1.10.0.custom.js') }"></script>
 
@@ -34,7 +35,7 @@
     <script type="text/javascript" src="${ get_url('static', filepath='js/controllers.js') }"></script>
     <script type="text/javascript">
      /* add directives and services*/
-        var app = angular.module('mapproxy_gui', ['mapproxy_gui.directives', 'mapproxy_gui.services', 'mapproxy_gui.validators']);
+        var app = angular.module('mapproxy_gui', ['localization', 'mapproxy_gui.directives', 'mapproxy_gui.services', 'mapproxy_gui.validators']);
     </script>
     <!-- include again when templateURL in labeled directive can be used, see https://github.com/angular/angular.js/issues/1941 -->
     <!--%include angular_templates-->
