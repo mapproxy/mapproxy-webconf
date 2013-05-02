@@ -282,6 +282,26 @@
     {
         "key": "You have unsaved changes in this form. Realy leave the page and disgard unsaved changes?",
         "value": "Es gibt ungespeicherte Änderungen. Wirklich die Seiter verlassen und die Änderungen verwerfen?"
+    },
+    {
+        "key": "wms",
+        "value": "WMS"
+    },
+    {
+        "key": "tms",
+        "value": "TMS"
+    },
+    {
+        "key": "wmts",
+        "value": "WMTS"
+    },
+    {
+        "key": "kml",
+        "value": "KML"
+    },
+    {
+        "key": "demo",
+        "value": "Demo"
     }
 
 ]

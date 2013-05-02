@@ -15,7 +15,7 @@
 
 %def middleblock():
     <script type="text/ng-template"  id="wms.html">
-        <h3>WMS</h3>
+        <h3>{{'wms'|i18n}}</h3>
         <div labeled="checkbox_label" name-for="services_form.wms_active" text="{{'Active'|i18n}}">
             <input type="checkbox" ng-model="services.wms.active" id="services_form.wms_active">
         </div>
@@ -31,25 +31,25 @@
          </div>
     </script>
     <script type="text/ng-template"  id="tms.html">
-        <h3>TMS</h3>
+        <h3>{{'tms'|i18n}}</h3>
         <div labeled="checkbox_label" name-for="services_form.tms_active" text="{{'Active'|i18n}}">
             <input type="checkbox" ng-model="services.tms.active" id="services_form.tms_active">
         </div>
     </script>
     <script type="text/ng-template"  id="wmts.html">
-        <h3>WMTS</h3>
+        <h3>{{'wmts'|i18n}}</h3>
         <div labeled="checkbox_label" name-for="services_form.wmts_active" text="{{'Active'|i18n}}">
             <input type="checkbox" ng-model="services.wmts.active" id="services_form.wmts_active">
         </div>
     </script>
     <script type="text/ng-template"  id="kml.html">
-        <h3>KML</h3>
+        <h3>{{'kml'|i18n}}</h3>
         <div labeled="checkbox_label" name-for="services_form.kml_active" text="{{'Active'|i18n}}">
             <input type="checkbox" ng-model="services.kml.active" id="services_form.kml_active">
         </div>
     </script>
     <script type="text/ng-template"  id="demo.html">
-        <h3>Demo</h3>
+        <h3>{{'demo'|i18n}}</h3>
         <div labeled="checkbox_label" name-for="services_form.demo_active" text="{{'Active'|i18n}}">
             <input type="checkbox" ng-model="services.demo.active" id="services_form.demo_active">
         </div>
