@@ -218,10 +218,19 @@ WMSSourceService = function(_section) {
             if(angular.isDefined(_this._rootScope))
                 _this._rootScope.$broadcast(_this._section + '.updated');
         });
+    };
+
+    this.allURLs = function() {
+        var result = [];
+        angular.forEach(_this._items, function(wms) {
+            result.push(wms.url);
+        });
+        return result;
     }
 
     this.return_dict['layerTitle'] = _this.layerTitle;
     this.return_dict['refresh'] = _this.refresh;
+    this.return_dict['allURLs'] = _this.allURLs;
 };
 
 var layerService = new MapproxyLayerService('layers');

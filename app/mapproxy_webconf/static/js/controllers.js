@@ -4,6 +4,7 @@ function TreeCtrl($scope, localize, WMSSources) {
 
     var refreshTree = function() {
         $scope.wms_list = WMSSources.list();
+        $scope.wms_urls = WMSSources.allURLs();
     };
     $scope.prepareLayer = function(layer, sourceURL) {
         if(!layer.name) {
