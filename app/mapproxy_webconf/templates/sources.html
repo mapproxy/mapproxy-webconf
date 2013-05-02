@@ -155,7 +155,7 @@
     <hr>
     <form name="capabilities_form" novalidate>
         <div class="input-append" labeled="input_label" name-for="addCapabilities"  text="{{'Load WMS'|i18n}}">
-            <input type="url" required name="capabilities_url" ng-model="capabilities.url" id="addCapabilities">
+            <input type="url" required name="capabilities_url" ng-model="capabilities.url" id="addCapabilities" unique="{{wms_urls}}">
             <button class="btn" ng-click="addCapabilities()" ng-disabled="!capabilities_form.$valid">{{'Add'|i18n}}</button>
         </div>
         <div>
