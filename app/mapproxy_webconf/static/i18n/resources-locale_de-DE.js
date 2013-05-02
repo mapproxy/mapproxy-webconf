@@ -1,118 +1,118 @@
 [
     {
-        "key": "_create_new_source_",
+        "key": "Create new source",
         "value": "Neue Source anlegen"
     },
     {
-        "key": "_sources_",
+        "key": "Sources",
         "value": "Sources"
     },
     {
-        "key": "_new_source_",
+        "key": "New source",
         "value": "Neue Source"
     },
     {
-        "key": "_replace_url_",
+        "key": "Edit source",
+        "value": "Source editieren"
+    },
+    {
+        "key": "Replace service URL deletes all layers depends to it!",
         "value": "Das Ersetzen der Service-URL führt zum leeren der Layerliste!"
     },
     {
-        "key": "_confirm_url_change_",
-        "value": "Bitte URL Änderung bestätigen!"
-    },
-    {
-        "key": "_name_",
+        "key": "Name",
         "value": "Name"
     },
     {
-        "key": "_url_",
+        "key": "URL",
         "value": "URL"
     },
     {
-        "key": "_layer_",
+        "key": "Layer",
         "value": "Layer"
     },
     {
-        "key": "_manual_add_layer_",
+        "key": "Manual add layer",
         "value": "Manuell Layer hinzufügen"
     },
     {
-        "key": "_add_",
+        "key": "Add",
         "value": "hinzufügen"
     },
     {
-        "key": "_transparency_",
-        "value": "Transparent"
+        "key": "Transparency",
+        "value": "Transparenz"
     },
     {
-        "key": "_warning_msg_transparency_",
+        "key": "Selectet image format(s) not support transparency.",
         "value": "Das ausgewählte Bildformat unterstüzt keine Transparenz"
     },
     {
-        "key": "_save_",
+        "key": "Save",
         "value": "Speichern"
     },
     {
-        "key": "_reset_",
+        "key": "Reset",
         "value": "Zurücksetzen"
     },
     {
-        "key": "_save_success_",
+        "key": "Saved successfully",
         "value": "Speichern erfolgreich!"
     },
     {
-        "key": "_confirm_",
-        "value": "Bitte bestätigen"
+        "key": "Confirm!",
+        "value": "Bitte bestätigen!"
     },
     {
-        "key": "_remove_source_",
+        "key": "Really remove source:",
         "value": "Soll der WMS wirklich gelöscht werden:"
     },
     {
-        "key": "_yes_",
-        "value": "Ja"
-    },
-    {
-        "key": "_no_",
-        "value": "Nein"
-    },
-    {
-        "key": "_infos_",
-        "value": "Informationen"
-    },
-    {
-        "key": "_layers_",
-        "value": "Layers"
-    },
-    {
-        "key": "_refreshed_",
-        "value": "aktualisiert"
-    },
-    {
-        "key": "_load_wms_",
-        "value": "WMS laden"
-    },
-    {
-        "key": "_wms_add_success_",
-        "value": "WMS erfolgreich hinzugefügt!"
-    },
-    {
-        "key": "_available_wms_",
-        "value": "Verfügbare WMS"
-    },
-    {
-        "key": "_really_remove_source_",
-        "value": "Wirklich diese Source enternen:"
-    },
-    {
-        "key": "_cannot_remove_source_",
+        "key": "Can not remove source:",
         "value": "Wegen Abhängigkeiten kann diese Source nicht entfernt werden:"
     },
     {
-        "key": "_change_url_",
+        "key": "Yes",
+        "value": "Ja"
+    },
+    {
+        "key": "No",
+        "value": "Nein"
+    },
+    {
+        "key": "Infos",
+        "value": "Informationen"
+    },
+    {
+        "key": "Layers",
+        "value": "Layers"
+    },
+    {
+        "key": "refreshed",
+        "value": "aktualisiert"
+    },
+    {
+        "key": "Load WMS",
+        "value": "WMS laden"
+    },
+    {
+        "key": "Add WMS successfully",
+        "value": "WMS erfolgreich hinzugefügt!"
+    },
+    {
+        "key": "Available WMS",
+        "value": "Verfügbare WMS"
+    },
+    {
+        "key": "Really remove WMS:",
+        "value": "Wirklich dieser WMS enternen:"
+    },
+    {
+        "key": "Change URL",
         "value": "URL ändern"
     },
     {
-        "key": "_keep_url_",
+        "key": "Keep URL",
         "value": "URL beibehalten"
     }
 ]

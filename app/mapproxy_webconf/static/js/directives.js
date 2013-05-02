@@ -372,11 +372,11 @@ directive('askDialog', function($parse, localize) {
             scope.openDialog = function(event) {
                 event.stopPropagation();
                 var buttons = {};
-                buttons[localize.getLocalizedString('_yes_')] = function() {
+                buttons[localize.getLocalizedString('Yes')] = function() {
                     $(this).dialog("close");
                     scope.callback(scope);
                 };
-                buttons[localize.getLocalizedString('_no_')] = function() {
+                buttons[localize.getLocalizedString('No')] = function() {
                     $(this).dialog("close");
                 };
                 scope.dialog.find('p').text(attrs.dialogText)

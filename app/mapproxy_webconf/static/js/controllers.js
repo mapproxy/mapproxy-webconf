@@ -34,7 +34,7 @@ function TreeCtrl($scope, localize, WMSSources) {
         refreshTree();
     });
     $scope.$on('wms_capabilities.updated', function() {
-        $scope.refresh_msg = WMSSources.last().title + ' ' + localize.getLocalizedString('_refreshed_');
+        $scope.refresh_msg = WMSSources.last().title + ' ' + localize.getLocalizedString('refreshed');
         refreshTree();
         $('#capabilities_refresh_ok').show().fadeOut(3000);
     });
@@ -109,13 +109,13 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
             callback(true);
         } else  {
             var buttons = {};
-            buttons[localize.getLocalizedString('_change_url_')] = function() {
+            buttons[localize.getLocalizedString('Change URL')] = function() {
                 $(this).dialog("close");
                 $scope.source.req.layers = undefined;
                 $scope.$apply();
                 callback(true);
             };
-            buttons[localize.getLocalizedString('_keep_url_')] = function() {
+            buttons[localize.getLocalizedString('Keep URL')] = function() {
                 $(this).dialog("close");
                 callback(false);
             };
@@ -199,13 +199,13 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {};
     $scope.source = angular.copy(DEFAULT_SOURCE);
-    $scope.formTitle = '_new_source_';
+    $scope.formTitle = 'New source';
 
     MapproxySources.current(true, $scope.source)
 
     $scope.$on('sources.current', function() {
         $scope.source = MapproxySources.current(true);
-        $scope.formTitle = angular.equals($scope.source, DEFAULT_SOURCE) ? '_new_source_' : '_edit_source_';
+        $scope.formTitle = angular.equals($scope.source, DEFAULT_SOURCE) ? 'New source' : 'Edit source';
         $scope.source_form.$setPristine();
     });
 

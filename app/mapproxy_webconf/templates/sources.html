@@ -3,10 +3,10 @@
   <div class="pull-right">
     <!-- konflikt mit bootstrap -->
     <button class="btn btn-small btn-info pull-right" ng-click="newSource()">
-      <span class="icon-plus-sign icon-white" ></span> {{'_create_new_source_'|i18n}}
+      <span class="icon-plus-sign icon-white" ></span> {{'Create new source'|i18n}}
     </button>
   </div>
-    <h3>{{'_sources_'|i18n}}</h3>
+    <h3>{{'Sources'|i18n}}</h3>
   <ul class="vertical-list">
     <hr>
     <div class="{{isSelected(source)}}" ng-repeat="source in mapproxy_sources | orderBy:'name'"
@@ -15,14 +15,14 @@
       {{source.name}}
       <i ng-show="!hasDependencies(source)" class="icon-remove"
         ask-dialog
-        dialog-title="{{'_confirm_'|i18n}}"
-        dialog-text="{{'_really_remove_source_'|i18n}} {{source.name}}?"
+        dialog-title="{{'Confirm!'|i18n}}"
+        dialog-text="{{'Really remove source:'|i18n}} {{source.name}}?"
         callback="removeSource(source)">
       </i>
       <i ng-show="hasDependencies(source)" class="icon-remove"
         confirm-dialog
-        dialog-title="{{'_confirm_'|i18n}}"
-        dialog-text="{{'_cannot_remove_source_'|i18n}} {{source.name}}<br>{{getDependencies(source)}}">
+        dialog-title="{{'Confirm!'|i18n}}"
+        dialog-text="{{'Can not remove source:'|i18n}} {{source.name}}<br>{{getDependencies(source)}}">
        </i>
      </li>
      <hr>
@@ -42,14 +42,14 @@
         <div
           style="display:none;"
           id="confirm_url_change_dialog"
-          title="{{'_confirm_'|i18n}}">
-            <p>{{'_replace_url_'|i18n}}</p>
+          title="{{'Confirm!'|i18n}}">
+            <p>{{'Replace service URL deletes all layers depends to it!'|i18n}}</p>
         </div>
         <div ng-show="true">
-          <div labeled="input_label" name-for="source_form.name" text="{{'_name_'|i18n}}">
+          <div labeled="input_label" name-for="source_form.name" text="{{'Name'|i18n}}">
             <input class="input-xlarge" type="text" required ng-model="source.name" id="source_form.name"/>
           </div>
-          <div id="source_wms_url" labeled="input_label" name-for="source_form.req_url" text="{{'_url_'|i18n}}">
+          <div id="source_wms_url" labeled="input_label" name-for="source_form.req_url" text="{{'URL'|i18n}}">
             <input
               id="source_form.req_url"
               class="input-xlarge"
@@ -64,7 +64,7 @@
             />
           </div>
 
-          <div labeled="input_label" name-for="source_form.req_layer" text="{{'_layer_'|i18n}}">
+          <div labeled="input_label" name-for="source_form.req_layer" text="{{'Layer'|i18n}}">
             <div droppable sortable required accepts="wms_layer" allow-array="true"
                 ng-model="source.req.layers"
                 name="source_form.req_layers"
@@ -79,21 +79,21 @@
                 </div>
             </div>
           </div>
-          <div class="input-append" labeled="input_label" name-for="add_layer_manual" text="{{'_manual_add_layer_'|i18n}}">
+          <div class="input-append" labeled="input_label" name-for="add_layer_manual" text="{{'Manual add layer'|i18n}}">
             <input type="text" id="add_layer_manual" name="add_layer_manual" ng-model="custom.layer_manual" class="input-xlarge">
-            <button class="btn" ng-click="addLayerManual($event)">{{'_add_'|i18n}}</button>
+            <button class="btn" ng-click="addLayerManual($event)">{{'Add'|i18n}}</button>
           </div>
 
-          <div labeled='checkbox_label' name-for="source_form.req_transparent" text="{{'_transparency_'|i18n}}" warning="{{invalid_image_settings}}" warning-msg="{{'_warning_msg_transparency_'|i18n}}">
+          <div labeled='checkbox_label' name-for="source_form.req_transparent" text="{{'Transparency'|i18n}}" warning="{{invalid_image_settings}}" warning-msg="{{'Selectet image format(s) not support transparency.'|i18n}}">
             <input type="checkbox" ng-model="source.req.transparent" id="source_form.req_transparent">
           </div>
         </div>
       </div>
-      <button class="btn" ng-click="addSource($event)" ng-disabled="!source_form.$valid">{{'_save_'|i18n}}</button>
-      <button class="btn" ng-click="resetForm($event)">{{'_reset_'|i18n}}</button>
+      <button class="btn" ng-click="addSource($event)" ng-disabled="!source_form.$valid">{{'Save'|i18n}}</button>
+      <button class="btn" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
       <span class="text-success" id="source_save_ok" ng-show="false">
         <i class="icon-ok"></i>
-         <strong>{{'_save_success_'|i18n}}</strong>
+         <strong>{{'Saved successfully'|i18n}}</strong>
        </span>
       </fieldset>
     </form>
@@ -103,7 +103,7 @@
 
 %def rightblock():
 <div ng-controller="TreeCtrl">
-    <h3>{{'_available_wms_'|i18n}}</h3>
+    <h3>{{'Available WMS'|i18n}}</h3>
     <script type="text/ng-template"  id="wms_layer_renderer">
         <div ng-click="show_infos(layer)" class="label droppable_name">
             {{layer.title}} – <span ng-show="layer.name">{{layer.name}}</span>
@@ -122,17 +122,17 @@
               <div class="accordion-toggle">
                   {{wms.title}}</div>
                 <i class="icon-refresh"  ng-click="refreshCapabilities($event, wms)"></i>
-                <i class="icon-remove" ask-dialog dialog-title="{{'_confirm_'|i18n}}" dialog-text="{{'_remove_source_'|i18n}} {{wms.title}}?" callback="removeCapabilities(wms)"></i>
+                <i class="icon-remove" ask-dialog dialog-title="{{'Confirm!'|i18n}}" dialog-text="{{'Really remove WMS:'|i18n}} {{wms.title}}?" callback="removeCapabilities(wms)"></i>
               </div>
             <div class="accordion-body" ng-show="$first">
                <div class="accordion-inner">
-               <h6>{{'_infos_'|i18n}}</h6>
+               <h6>{{'Infos'|i18n}}</h6>
                <div class="accordion_wms_source wms_source" draggable item-data="{{wms}}">
                   <div class="droppable_name label">
-                    {{'_url_'|i18n}}: {{wms.url}}</div>
+                    {{'URL'|i18n}}: {{wms.url}}</div>
                </div>
 
-               <h6>{{'_layers_'|i18n}}</h6>
+               <h6>{{'Layers'|i18n}}</h6>
                <div
                     ng-repeat="layer in wms.layer.layers"
                     ng-include="'wms_layer_renderer'"
@@ -149,14 +149,14 @@
     </div>
     <hr>
     <form name="capabilities_form" novalidate>
-        <div class="input-append" labeled="input_label" name-for="addCapabilities"  text="{{'_load_wms_'|i18n}}">
+        <div class="input-append" labeled="input_label" name-for="addCapabilities"  text="{{'Load WMS'|i18n}}">
             <input type="url" required name="capabilities_url" ng-model="capabilities.url" id="addCapabilities">
-            <button class="btn" ng-click="addCapabilities()" ng-disabled="!capabilities_form.$valid">{{'_add_'|i18n}}</button>
+            <button class="btn" ng-click="addCapabilities()" ng-disabled="!capabilities_form.$valid">{{'Add'|i18n}}</button>
         </div>
         <div>
           <span class="text-success" id="capabilities_add_ok" ng-show="false">
             <i class="icon-ok"></i>
-            <strong>{{'_wms_add_success_'|i18n}}</strong>
+            <strong>{{'Add WMS successfully'|i18n}}</strong>
           </span>
         </div>
     </form>
