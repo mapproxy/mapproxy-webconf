@@ -171,6 +171,7 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
         event.preventDefault();
         $scope.source = clearData($scope.source)
         MapproxySources.add($scope.source);
+        $scope.formTitle = 'Edit source';
         $scope.source_form.$setPristine();
     };
     $scope.resetForm = function(event) {
@@ -280,6 +281,7 @@ function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
         $scope.cache = clearData($scope.cache);
         MapproxyCaches.add($scope.cache);
         $scope.cache_form.$setPristine();
+        $scope.formTitle = 'Edit cache';
     };
     $scope.resetForm = function(event) {
         if(!angular.isUndefined(event)) {
@@ -376,6 +378,7 @@ function MapproxyGridFormCtrl($scope, MapproxyGrids) {
     $scope.addGrid = function(event) {
         event.preventDefault();
         MapproxyGrids.add(clearData($scope.grid));
+        $scope.formTitle = "Edit grid";
         $scope.grid_form.$setPristine();
     };
     $scope.resetForm = function(event) {
@@ -453,6 +456,7 @@ function MapproxyLayerFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
     $scope.addLayer = function() {
         $scope.layer = clearData($scope.layer)
         MapproxyLayers.add(angular.copy($scope.layer));
+        $scope.formTitle = "Edit layer"
         $scope.layer_form.$setPristine();
     };
     $scope.resetForm = function() {
