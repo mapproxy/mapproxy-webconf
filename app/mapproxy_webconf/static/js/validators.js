@@ -79,12 +79,17 @@ directive('unique', function() {
             ctrl.$parsers.unshift(function(viewValue) {
                 var unique = true;
                 angular.forEach(angular.fromJson(attrs.unique), function(item) {
-                    console.log(viewValue, item)
                     if(viewValue == item) {
                         unique = false;
                     }
                 });
-                return unique;
+                if(unique) {
+                    ctrl.$setValidity('unique', true);
+                    return viewValue;
+                } else {
+                    ctrl.$setValidity('unique', false);
+                    return undefined;
+                }
             });
         }
     }
