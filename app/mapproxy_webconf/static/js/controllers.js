@@ -451,7 +451,7 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids) {
 
 }
 
-function MapproxyLayerListCtrl($scope, MapproxyLayers) {
+function MapproxyLayerListCtrl($scope, localize, MapproxyLayers) {
     var DEFAULT_LAYER = {};
     var refreshTree = function() {
         $scope.mapproxy_layers = MapproxyLayers.tree();
@@ -495,7 +495,13 @@ function MapproxyLayerListCtrl($scope, MapproxyLayers) {
     $scope.$on('layers.deleted', MapproxyLayers.refresh);
     $scope.$on('layers.updatedStructure', function() {
         $('#layertree_save_ok').show().fadeOut(3000);
-    })
+    });
+
+    $(window).on('beforeunload', function() {
+        if($scope.mapproxy_layers != MapproxyLayers.tree()) {
+            return localize.getLocalizedString(PAGE_LEAVE_MSG);
+        }
+    });
 }
 
 function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches, MapproxyLayers) {
