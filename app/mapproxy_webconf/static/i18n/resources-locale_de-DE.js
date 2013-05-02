@@ -13,7 +13,7 @@
     },
     {
         "key": "Edit source",
-        "value": "Source editieren"
+        "value": "Source bearbeiten"
     },
     {
         "key": "Replace service URL deletes all layers depends to it!",
@@ -37,7 +37,7 @@
     },
     {
         "key": "Add",
-        "value": "hinzufügen"
+        "value": "Hinzufügen"
     },
     {
         "key": "Transparency",
@@ -173,7 +173,7 @@
     },
     {
         "key": "Edit cache",
-        "value": "Cache editieren"
+        "value": "Cache bearbeiten"
     },
     {
         "key": "The MapProxy configuration is grouped into sections, each configures a different aspect of MapProxy. These are the following sections:",
@@ -229,7 +229,7 @@
     },
     {
         "key": "Edit grid",
-        "value": "Grid editieren"
+        "value": "Grid bearbeiten"
     },
     {
         "key": "SRS",
@@ -261,7 +261,7 @@
     },
     {
         "key": "Edit layer",
-        "value": "Layer editieren"
+        "value": "Layer bearbeiten"
     },
     {
         "key": "Title",
