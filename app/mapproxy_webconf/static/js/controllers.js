@@ -96,6 +96,7 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources) {
     $scope.$on('sources.load_complete', refreshList);
     $scope.$on('sources.added', function() {
         $('#source_save_ok').show().fadeOut(3000);
+        $scope.selected = MapproxySources.last();
         refreshList();
     });
     $scope.$on('sources.updated', function() {
@@ -282,6 +283,7 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches) {
     $scope.$on('caches.load_complete', refreshList);
     $scope.$on('caches.added', function() {
         $('#cache_save_ok').show().fadeOut(3000);
+        $scope.selected = MapproxyCaches.last();
         refreshList();
     });
     $scope.$on('caches.updated', function() {
@@ -398,6 +400,7 @@ function MapproxyGridListCtrl($scope, MapproxyGrids) {
     $scope.$on('grids.load_complete', refreshList);
     $scope.$on('grids.added', function() {
         $('#grid_save_ok').show().fadeOut(3000);
+        $scope.selected = MapproxyGrids.last();
         refreshList();
     });
     $scope.$on('grids.updated', function() {
@@ -457,7 +460,8 @@ function MapproxyLayerListCtrl($scope, localize, MapproxyLayers) {
         $scope.mapproxy_layers = MapproxyLayers.tree();
     };
     var added = function() {
-        $scope.mapproxy_layers.push(MapproxyLayers.last());
+        $scope.selected = MapproxyLayers.last()
+        $scope.mapproxy_layers.push($scope.selected);
     };
     $scope.isSelected = function(layer) {
         var class_;
