@@ -13,7 +13,7 @@
     },
     {
         "key": "Edit source",
-        "value": "Source editieren"
+        "value": "Source bearbeiten"
     },
     {
         "key": "Replace service URL deletes all layers depends to it!",
@@ -33,11 +33,11 @@
     },
     {
         "key": "Manual add layer",
-        "value": "Manuell Layer hinzufügen"
+        "value": "Layer manuell hinzufügen"
     },
     {
         "key": "Add",
-        "value": "hinzufügen"
+        "value": "Hinzufügen"
     },
     {
         "key": "Transparency",
@@ -173,7 +173,7 @@
     },
     {
         "key": "Edit cache",
-        "value": "Cache editieren"
+        "value": "Cache bearbeiten"
     },
     {
         "key": "The MapProxy configuration is grouped into sections, each configures a different aspect of MapProxy. These are the following sections:",
@@ -229,7 +229,7 @@
     },
     {
         "key": "Edit grid",
-        "value": "Grid editieren"
+        "value": "Grid bearbeiten"
     },
     {
         "key": "SRS",
@@ -261,7 +261,7 @@
     },
     {
         "key": "Edit layer",
-        "value": "Layer editieren"
+        "value": "Layer bearbeiten"
     },
     {
         "key": "Title",
@@ -282,6 +282,34 @@
     {
         "key": "You have unsaved changes in this form. Realy leave the page and disgard unsaved changes?",
         "value": "Es gibt ungespeicherte Änderungen. Wirklich die Seiter verlassen und die Änderungen verwerfen?"
+    },
+    {
+        "key": "wms",
+        "value": "WMS"
+    },
+    {
+        "key": "tms",
+        "value": "TMS"
+    },
+    {
+        "key": "wmts",
+        "value": "WMTS"
+    },
+    {
+        "key": "kml",
+        "value": "KML"
+    },
+    {
+        "key": "demo",
+        "value": "Demo"
+    },
+    {
+        "key": "Saving failed",
+        "value": "Speichern fehlgeschlagen"
+    },
+    {
+        "key": "Name already exists.",
+        "value": "Der angegebene Name existiert bereits."
     }
 
 ]
