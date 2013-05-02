@@ -2,9 +2,9 @@
   <div ng-controller="MapproxyGridListCtrl">
     <button class="btn btn-small btn-info pull-right" ng-click="newGrid()">
       <span class="icon-plus-sign icon-white" ></span>
-      New grid</button>
+      {{'Create new grid'|i18n}}</button>
 
-    <h3>Grids</h3>
+    <h3>{{'Grids'|i18n}}</h3>
      <ul class="vertical-list">
       <hr>
        <div class="{{isSelected(grid)}}" ng-repeat="grid in mapproxy_grids | orderBy:'name'"
@@ -12,14 +12,14 @@
          <li>{{grid.name}}
          <i ng-show="!hasDependencies(grid)" class="icon-remove"
            ask-dialog
-           dialog-title="Confirm!"
-           dialog-text='Really remove grid "{{grid.name}}"?'
+           dialog-title="{{'Confirm!'|i18n}}"
+           dialog-text="{{'Really remove grid:'|i18n}} {{grid.name}}?"
           callback="removeGrid(grid)">
          </i>
          <i ng-show="hasDependencies(grid)" class="icon-remove"
             confirm-dialog
             dialog-title="Confirm!"
-            dialog-text='Can not remove grid "{{grid.name}}" because its depends on:<br>{{getDependencies(grid)}}'>
+            dialog-text="{{'Can not remove grid:'|i18n}} {{grid.name}}<br>{{getDependencies(grid)}}">
          </i>
         </li>
         <hr>
@@ -31,13 +31,13 @@
 %def middleblock():
 <div>
   <form name="grid_form" ng-controller="MapproxyGridFormCtrl" novalidate>
-    <h3>{{formTitle}}</h3>
+    <h3>{{formTitle|i18n}}</h3>
     <!-- name -->
-      <div labeled="input_label" name-for="grid_form.name" text="Name">
+      <div labeled="input_label" name-for="grid_form.name" text="{{'Name'|i18n}}">
           <input required type="text" ng-model="grid.name" id="grid_form.name" />
       </div>
   <!-- SRS -->
-      <div labeled="input_label" name-for="grid_form.srs" text="SRS">
+      <div labeled="input_label" name-for="grid_form.srs" text="{{'SRS'|i18n}}">
            <select ng-model="grid.srs" id="grid_form.srs">
               <option value="EPSG:3857">EPSG:3857</option>
               <option value="EPSG:4326">EPSG:4326</option>
@@ -45,14 +45,14 @@
           </select>
       </div>
   <!-- BBox -->
-      <div labeled="input_label" name-for="grid_form.bbox_0" text="BBox">
+      <div labeled="input_label" name-for="grid_form.bbox_0" text="{{'BBox'|i18n}}">
           <input type="number" ng-model="grid.bbox[0]" class="input-mini" id="grid_form.bbox_0" />
           <input type="number" ng-model="grid.bbox[1]" class="input-mini" id="grid_form.bbox_1" />
           <input type="number" ng-model="grid.bbox[2]" class="input-mini" id="grid_form.bbox_2" />
           <input type="number" ng-model="grid.bbox[3]" class="input-mini" id="grid_form.bbox_3" />
       </div>
   <!-- BBox SRS -->
-      <div labeled="input_label" name-for="grid_form.bbox_srs" text="BBox SRS">
+      <div labeled="input_label" name-for="grid_form.bbox_srs" text="{{'BBox SRS'|i18n}}">
           <select ng-model="grid.bbox_srs" id="grid_form.bbox_srs">
               <option value="EPSG:3857">EPSG:3857</option>
               <option value="EPSG:4326">EPSG:4326</option>
@@ -60,17 +60,17 @@
           </select>
       </div>
   <!-- origin -->
-      <div labeled="input_label" name-for="grid_form.origin" text="Origin">
+      <div labeled="input_label" name-for="grid_form.origin" text="{{'Origin'|i18n}}">
           <select ng-model="grid.origin" id="grid_form.origin">
               <option value="sw">SW / LL</option>
               <option value="nw">NW / UL</option>
           </select>
       </div>
-      <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="!grid_form.$valid">Save</button>
-      <button class="btn btn-small" ng-click="resetForm($event)">Reset</button>
+      <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="!grid_form.$valid">{{'Save'|i18n}}</button>
+      <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
       <span class="text-success" id="grid_save_ok" ng-show="false">
         <i class="icon-ok"></i>
-        <strong>Saved successfully</strong>
+        <strong>{{'Saved successfully'|i18n}}</strong>
        </span>
   </form>
 </div>

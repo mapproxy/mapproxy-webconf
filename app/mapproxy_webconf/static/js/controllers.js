@@ -211,7 +211,7 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
 
     $(window).on('beforeunload', function() {
         if($scope.source_form.$dirty) {
-            return PAGE_LEAVE_MSG;
+            return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
 
@@ -293,7 +293,7 @@ function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
     };
 
     $scope.cache = angular.copy(DEFAULT_CACHE);
-    $scope.formTitle = 'New Cache';
+    $scope.formTitle = 'New cache';
     MapproxyCaches.current(true, $scope.cache);
 
     $scope.$on('caches.current', function() {
@@ -301,7 +301,7 @@ function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
         if(angular.isUndefined($scope.cache.meta_size)) {
             $scope.cache.meta_size = [null, null];
         }
-        $scope.formTitle = angular.equals($scope.cache, DEFAULT_CACHE) ? 'New Cache' : 'Edit Cache';
+        $scope.formTitle = angular.equals($scope.cache, DEFAULT_CACHE) ? 'New cache' : 'Edit cache';
         $scope.cache_form.$setPristine();
     });
 
@@ -312,7 +312,7 @@ function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
 
     $(window).on('beforeunload', function() {
         if($scope.cache_form.$dirty) {
-            return PAGE_LEAVE_MSG;
+            return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
 
@@ -387,7 +387,7 @@ function MapproxyGridFormCtrl($scope, MapproxyGrids) {
     };
 
     $scope.grid = angular.copy(DEFAULT_GRID);
-    $scope.formTitle = 'New Grid'
+    $scope.formTitle = 'New grid'
     MapproxyGrids.current(true, $scope.grid);
 
     $scope.$on('grids.current', function() {
@@ -395,13 +395,13 @@ function MapproxyGridFormCtrl($scope, MapproxyGrids) {
         if(angular.isUndefined($scope.grid.bbox)) {
             $scope.grid.bbox = [null, null, null, null];
         }
-        $scope.formTitle = angular.equals($scope.grid, DEFAULT_GRID) ? 'New Grid' : 'Edit Grid';
+        $scope.formTitle = angular.equals($scope.grid, DEFAULT_GRID) ? 'New grid' : 'Edit grid';
         $scope.grid_form.$setPristine();
     });
 
     $(window).on('beforeunload', function() {
         if($scope.grid_form.$dirty) {
-            return PAGE_LEAVE_MSG;
+            return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
 
@@ -472,17 +472,17 @@ function MapproxyLayerFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
 
     $scope.layer = angular.copy(DEFAULT_LAYER);
     MapproxyLayers.current(true, $scope.layer);
-    $scope.formTitle = 'New Layer';
+    $scope.formTitle = 'New layer';
 
     $scope.$on('layers.current', function() {
         $scope.layer = MapproxyLayers.current(true);
-        $scope.formTitle = angular.equals($scope.layer, DEFAULT_LAYER) ? 'New Layer' : 'Edit Layer';
+        $scope.formTitle = angular.equals($scope.layer, DEFAULT_LAYER) ? 'New layer' : 'Edit layer';
         $scope.layer_form.$setPristine();
     });
 
     $(window).on('beforeunload', function() {
         if($scope.layer_form.$dirty) {
-            return PAGE_LEAVE_MSG;
+            return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
 }
@@ -510,7 +510,7 @@ function MapproxyGlobalsFormCtrl($scope, MapproxyGlobals) {
 
     $(window).on('beforeunload', function() {
         if($scope.globals_form.$dirty) {
-            return PAGE_LEAVE_MSG;
+            return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
 };
@@ -577,7 +577,7 @@ function MapproxyServicesCtrl($scope, MapproxyServices, DataShareService) {
 
     $(window).on('beforeunload', function() {
         if($scope.services_form.$dirty) {
-            return PAGE_LEAVE_MSG;
+            return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
 };
@@ -626,9 +626,10 @@ function MapproxySourceNoticeCtrl($scope, localize, MapproxySources) {
 function MapproxyConfigCtrl($scope, $http) {
 
     $scope.mapproxy_yaml = undefined;
+    $scope.yaml_written = false;
 
     $http.get('/conf/base/yaml').success(function(result) {
         $scope.mapproxy_yaml = result;
-        $scope.yaml_msg = 'Mapproxy YAML written.'
+        $scope.yaml_written = true;
     });
 }

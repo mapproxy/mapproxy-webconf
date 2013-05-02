@@ -1,7 +1,7 @@
 %def content():
 <div class="span8 offset1">
 	<div  ng-controller="MapproxyConfigCtrl">
-	    <div>{{yaml_msg}}</div>
+	    <div ng-show="yaml_written">{{'Mapproxy YAML written.'|i18n}}</div>
 	    <pre ng-bind="mapproxy_yaml"></pre>
 	</div>
 </div>

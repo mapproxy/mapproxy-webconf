@@ -4,20 +4,20 @@
 
 %def middleblock():
 <div>
-    <h3>Globals</h3>
+    <h3>{{'Globals'|i18n}}</h3>
     <div ng-controller="MapproxyGlobalsFormCtrl">
         <form name="globals_form" novalidate>
-            <div labeled="input_label" name-for="globals_form.cache_meta_size" text="Meta size">
+            <div labeled="input_label" name-for="globals_form.cache_meta_size" text="{{'Meta size'|i18n}}">
                 <input type="number" ng-model="globals.cache.meta_size[0]" class="input-mini" id="globals_form.cache_meta_size" />
-                <input type="number" ng-model="globals.cache.meta_size[1]" class="input-mini" od="globals_form.cache_meta_size_1" />
+                <input type="number" ng-model="globals.cache.meta_size[1]" class="input-mini" id="globals_form.cache_meta_size_1" />
             </div>
-            <div labeled="input_label" name-for="globals_form.cache_meta_buffer" text="Meta buffer">
+            <div labeled="input_label" name-for="globals_form.cache_meta_buffer" text="{{'Meta buffer'|i18n}}">
                 <input type="number" ng-model="globals.cache.meta_buffer" id="globals_form.cache_meta_buffer">
             </div>
-            <button class="btn btn-small" ng-click="save($event)" ng-disabled="!globals_form.$valid">Save</button>
+            <button class="btn btn-small" ng-click="save($event)" ng-disabled="!globals_form.$valid">{{'Save'|i18n}}</button>
             <span class="text-success" id="globals_save_ok" ng-show="false">
                 <i class="icon-ok"></i>
-                <strong>Saved successfully</strong>
+                <strong>{{'Saved successfully'|i18n}}</strong>
             </span>
         </form>
     </div>

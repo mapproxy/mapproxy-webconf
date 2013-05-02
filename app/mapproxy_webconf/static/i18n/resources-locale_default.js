@@ -1,118 +1,287 @@
 [
     {
-        "key": "_create_new_source_",
+        "key": "Create new source",
         "value": "Neue Source anlegen"
     },
     {
-        "key": "_sources_",
+        "key": "Sources",
         "value": "Sources"
     },
     {
-        "key": "_new_source_",
+        "key": "New source",
         "value": "Neue Source"
     },
     {
-        "key": "_replace_url_",
+        "key": "Edit source",
+        "value": "Source editieren"
+    },
+    {
+        "key": "Replace service URL deletes all layers depends to it!",
         "value": "Das Ersetzen der Service-URL führt zum leeren der Layerliste!"
     },
     {
-        "key": "_confirm_url_change_",
-        "value": "Bitte URL Änderung bestätigen!"
-    },
-    {
-        "key": "_name_",
+        "key": "Name",
         "value": "Name"
     },
     {
-        "key": "_url_",
+        "key": "URL",
         "value": "URL"
     },
     {
-        "key": "_layer_",
+        "key": "Layer",
         "value": "Layer"
     },
     {
-        "key": "_manual_add_layer_",
+        "key": "Manual add layer",
         "value": "Manuell Layer hinzufügen"
     },
     {
-        "key": "_add_",
+        "key": "Add",
         "value": "hinzufügen"
     },
     {
-        "key": "_transparency_",
-        "value": "Transparent"
+        "key": "Transparency",
+        "value": "Transparenz"
     },
     {
-        "key": "_warning_msg_transparency_",
+        "key": "Selectet image format(s) not support transparency.",
         "value": "Das ausgewählte Bildformat unterstüzt keine Transparenz"
     },
     {
-        "key": "_save_",
+        "key": "Save",
         "value": "Speichern"
     },
     {
-        "key": "_reset_",
+        "key": "Reset",
         "value": "Zurücksetzen"
     },
     {
-        "key": "_save_success_",
+        "key": "Saved successfully",
         "value": "Speichern erfolgreich!"
     },
     {
-        "key": "_confirm_",
-        "value": "Bitte bestätigen"
+        "key": "Confirm!",
+        "value": "Bitte bestätigen!"
     },
     {
-        "key": "_remove_source_",
+        "key": "Really remove source:",
         "value": "Soll der WMS wirklich gelöscht werden:"
     },
     {
-        "key": "_yes_",
-        "value": "Ja"
-    },
-    {
-        "key": "_no_",
-        "value": "Nein"
-    },
-    {
-        "key": "_infos_",
-        "value": "Informationen"
-    },
-    {
-        "key": "_layers_",
-        "value": "Layers"
-    },
-    {
-        "key": "_refreshed_",
-        "value": "aktualisiert"
-    },
-    {
-        "key": "_load_wms_",
-        "value": "WMS laden"
-    },
-    {
-        "key": "_wms_add_success_",
-        "value": "WMS erfolgreich hinzugefügt!"
-    },
-    {
-        "key": "_available_wms_",
-        "value": "Verfügbare WMS"
-    },
-    {
-        "key": "_really_remove_source_",
-        "value": "Wirklich diese Source enternen:"
-    },
-    {
-        "key": "_cannot_remove_source_",
+        "key": "Can not remove source:",
         "value": "Wegen Abhängigkeiten kann diese Source nicht entfernt werden:"
     },
     {
-        "key": "_change_url_",
+        "key": "Yes",
+        "value": "Ja"
+    },
+    {
+        "key": "No",
+        "value": "Nein"
+    },
+    {
+        "key": "Infos",
+        "value": "Informationen"
+    },
+    {
+        "key": "Layers",
+        "value": "Layers"
+    },
+    {
+        "key": "refreshed",
+        "value": "aktualisiert"
+    },
+    {
+        "key": "Load WMS",
+        "value": "WMS laden"
+    },
+    {
+        "key": "Add WMS successfully",
+        "value": "WMS erfolgreich hinzugefügt!"
+    },
+    {
+        "key": "Available WMS",
+        "value": "Verfügbare WMS"
+    },
+    {
+        "key": "Really remove WMS:",
+        "value": "Wirklich dieser WMS enternen:"
+    },
+    {
+        "key": "Change URL",
         "value": "URL ändern"
     },
     {
-        "key": "_keep_url_",
+        "key": "Keep URL",
         "value": "URL beibehalten"
+    },
+    {
+        "key": "Project",
+        "value": "Projekt"
+    },
+    {
+        "key": "Configuration",
+        "value": "Konfiguration"
+    },
+    {
+        "key": "Seeding",
+        "value": "Seeding"
+    },
+    {
+        "key": "Demo",
+        "value": "Demo"
+    },
+    {
+        "key": "Globals",
+        "value": "Globals"
+    },
+    {
+        "key": "Grids",
+        "value": "Grids"
+    },
+    {
+        "key": "Caches",
+        "value": "Caches"
+    },
+    {
+        "key": "Services",
+        "value": "Dienste"
+    },
+    {
+        "key": "YAML",
+        "value": "YAML"
+    },
+    {
+        "key": "Create new cache",
+        "value": "Neuen Cache erstellen"
+    },
+    {
+        "key": "Cache",
+        "value": "Cache"
+    },
+    {
+        "key": "Really remove cache:",
+        "value": "Diesen Cache wirklich entfernen:"
+    },
+    {
+        "key": "Can not remove cache:",
+        "value": "Wegen abhängigkeiten kann dieser Cache nicht entfernt werden:"
+    },
+    {
+        "key": "New cache",
+        "value": "Neuer Cache"
+    },
+    {
+        "key": "Edit cache",
+        "value": "Cache editieren"
+    },
+    {
+        "key": "The MapProxy configuration is grouped into sections, each configures a different aspect of MapProxy. These are the following sections:",
+        "value": "Die MapProxy Konfiguration ist in Abschnitte unterteilt, die die unterschiedlichen Bereiche des MapProxy konfigurieren. Dies sind die folgenden Abschnitte."
+    },
+    {
+        "key": "Internals of MapProxy and default values that are used in the other configuration sections.",
+        "value": "MapProxy spezifische Konfigurationen und Standartwerte für andere Konfigurationsabschnitte."
+    },
+    {
+        "key": "Define where MapProxy can retrieve new data.",
+        "value": "Definieren der Datenquellen des MapProxy."
+    },
+    {
+        "key": "Configure the internal caches.",
+        "value": "Konfiguriert die internen Caches."
+    },
+    {
+        "key": "Define the grids that MapProxy uses to aligns cached images.",
+        "value": "Definieren der Grids die MapProxy verwendet um die gecachten Kacheln auszurichten."
+    },
+    {
+        "key": "Configure the layers that MapProxy offers. Each layer can consist of multiple sources and caches.",
+        "value": "Konfiguriert die durch MapProxy bereitgestellten Layer. Jeder Layer kann aus mehreren Sourcen und Caches bestehen."
+    },
+    {
+        "key": "The services MapProxy offers, e.g. WMS or TMS.",
+        "value": "Die durch den MapProxy bereitgestellten Dienste, z.B. WMS oder TMS"
+    },
+    {
+        "key": "Meta size",
+        "value": "Metakachelgröße"
+    },
+    {
+        "key": "Meta buffer",
+        "value": "Metapuffer"
+    },
+    {
+        "key": "Create new grid",
+        "value": "Neues Grid erstellen"
+    },
+    {
+        "key": "Really remove grid:",
+        "value": "Wirklich dieses Grid entfernen:"
+    },
+    {
+        "key": "Can not remove grid:",
+        "value": "Dieses Grid kann wegen Abhängigkeiten nicht entfernt werden"
+    },
+    {
+        "key": "New grid",
+        "value": "Neues Grid"
+    },
+    {
+        "key": "Edit grid",
+        "value": "Grid editieren"
+    },
+    {
+        "key": "SRS",
+        "value": "SRS"
+    },
+    {
+        "key": "BBox",
+        "value": "BBox"
+    },
+    {
+        "key": "BBox SRS",
+        "value": "BBox SRS"
+    },
+    {
+        "key": "Origin",
+        "value": "Orientierung"
+    },
+    {
+        "key": "Create new layer",
+        "value": "Neuen Layer erstellen"
+    },
+    {
+        "key": "Really remove layer:",
+        "value": "Wirklich diesen Layer entfernen:"
+    },
+    {
+        "key": "New layer",
+        "value": "Neuer Layer"
+    },
+    {
+        "key": "Edit layer",
+        "value": "Layer editieren"
+    },
+    {
+        "key": "Title",
+        "value": "Titel"
+    },
+    {
+        "key": "Start the configruation",
+        "value": "Starten der Konfiguration"
+    },
+    {
+        "key": "Active",
+        "value": "Aktiv"
+    },
+    {
+        "key": "Mapproxy YAML written.",
+        "value": "Mapproxy YAML geschrieben."
+    },
+    {
+        "key": "You have unsaved changes in this form. Realy leave the page and disgard unsaved changes?",
+        "value": "Es gibt ungespeicherte Änderungen. Wirklich die Seiter verlassen und die Änderungen verwerfen?"
     }
+
 ]

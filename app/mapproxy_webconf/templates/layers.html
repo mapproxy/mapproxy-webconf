@@ -2,10 +2,10 @@
 <div ng-controller="MapproxyLayerListCtrl">
    <button class="btn btn-small btn-info pull-right" ng-click="newLayer()">
         <span class="icon-plus-sign icon-white" ></span>
-    New layer</button>
-   <button class="btn btn-small btn-success pull-right" ng-click="updateLayerTree()" style="margin-right:1em;">Save</button>
+    {{'Create new layer'|i18n}}</button>
+   <button class="btn btn-small btn-success pull-right" ng-click="updateLayerTree()" style="margin-right:1em;">{{'Save'|i18n}}</button>
 
-  <h3>Layer</h3>
+  <h3>{{'Layer'|i18n}}</h3>
    <script type="text/ng-template"  id="mapproxy_layer_renderer.html">
     <ul sortable ng-model="layer._layers">
       <li ng-repeat="layer in layer._layers | orderBy:'_rank'">  <!-- new scope -->
@@ -14,8 +14,8 @@
         <div ng-click="editLayer(layer)">{{layer.name}} ({{layer.title}})
           <i class="icon-remove"
             ask-dialog
-            dialog-title="Confirm!"
-            dialog-text='Really remove layer "{{layer.title}} ({{layer.name}})"?'
+            dialog-title="{{'Confirm!'|i18n}}"
+            dialog-text="{{'Really remove layer:'|i18n}} {{layer.title}} ({{layer.name}})?"
             callback="removeLayer(layer)"></i>
             <div
               ng-include="'mapproxy_layer_renderer.html'"
@@ -35,8 +35,8 @@
             {{layer.title}} ({{layer.name}})
             <i class="icon-remove pull-right"
               ask-dialog
-              dialog-title="Confirm!"
-              dialog-text='Really remove layer "{{layer.title}} ({{layer.name}})"?'
+              dialog-title="{{'Confirm!'|i18n}}"
+              dialog-text="{{'Really remove layer:'|i18n}} {{layer.title}} ({{layer.name}})?"
               callback="removeLayer(layer)"></i>
 <!--               <div
                 ng-include="'mapproxy_layer_renderer.html'"
@@ -53,7 +53,7 @@
 
    <div class="text-success" id="layertree_save_ok" ng-show="false">
     <i class="icon-ok"></i>
-    <strong>Saved successfully</strong>
+    <strong>{{'Saved successfully'|i18n}}</strong>
    </div>
 
 </div>
@@ -62,17 +62,17 @@
 %def middleblock():
 <div ng-controller="MapproxyLayerFormCtrl">
   <form name="layer_form" ng-model="layer">
-    <h3>{{formTitle}}</h3>
+    <h3>{{formTitle|i18n}}</h3>
     <!-- name -->
-        <div labeled="input_label" name-for="layer_form.layer_name" text="Name">
+        <div labeled="input_label" name-for="layer_form.layer_name" text="{{'Name'|i18n}}">
             <input required type="text" required ng-model="layer.name" class="input-xlarge" id="layer_form.layer_name"/>
         </div>
     <!-- title -->
-        <div labeled="input_label" name-for="layer_form.layer_title" text="Title">
+        <div labeled="input_label" name-for="layer_form.layer_title" text="{{'Title'|i18n}}">
             <input required type="text" required ng-model="layer.title" class="input-xlarge" id="layer_form.layer_title"/>
         </div>
     <!-- sources -->
-        <div labeled="input_label" name-for="layer_form.sources" text="Sources">
+        <div labeled="input_label" name-for="layer_form.sources" text="{{'Sources'|i18n}}">
             <div
                 droppable
                 sortable
@@ -90,11 +90,11 @@
             </div>
         </div>
     </form>
-    <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!layer_form.$valid">Save</button>
-    <button class="btn btn-small" ng-click="resetForm()">Reset</button>
+    <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!layer_form.$valid">{{'Save'|i18n}}</button>
+    <button class="btn btn-small" ng-click="resetForm()">{{'Reset'|i18n}}</button>
     <span class="text-success" id="layer_save_ok" ng-show="false">
       <i class="icon-ok"></i>
-      <strong>Saved successfully</strong>
+      <strong>{{'Saved successfully'|i18n}}</strong>
     </span>
 
 </div>
@@ -102,7 +102,7 @@
 
 %def rightblock():
   <div>
-      <h3>Sources</h3>
+      <h3>{{'Sources'|i18n}}</h3>
       <ul class="vertical-list" ng-controller="MapproxySourceListCtrl">
           <div
               draggable
@@ -114,7 +114,7 @@
             </div>
       </ul>
       <hr>
-      <h3>Caches</h3>
+      <h3>{{'Caches'|i18n}}</h3>
       <ul class="vertical-list" ng-controller="MapproxyCacheListCtrl">
           <div
               draggable

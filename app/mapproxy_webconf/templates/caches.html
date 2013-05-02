@@ -2,9 +2,9 @@
 <div ng-controller="MapproxyCacheListCtrl">
     <button class="btn btn-small btn-info pull-right" ng-click="newCache()">
       <span class="icon-plus-sign icon-white" ></span>
-      New cache</button>
+      {{'Create new cache'|i18n}}</button>
 
-    <h3>Cache</h3>
+    <h3>{{'Cache'|i18n}}</h3>
     <ul class="vertical-list">
       <hr>
       <div class="{{isSelected(cache)}}" ng-repeat="cache in mapproxy_caches | orderBy:'name'"
@@ -12,14 +12,14 @@
         <li>{{cache.name}}
           <i ng-show="!hasDependencies(cache)" class="icon-remove"
              ask-dialog
-             dialog-title="Confirm!"
-             dialog-text='Really remove cache "{{cache.name}}"?'
+             dialog-title="{{'Confirm!'|i18n}}"
+             dialog-text="{{'Really remove cache:'|i18n}} {{cache.name}}?"
              callback="removeCache(cache)">
           </i>
           <i ng-show="hasDependencies(cache)" class="icon-remove"
             confirm-dialog
             dialog-title="Confirm!"
-            dialog-text='Can not remove cache "{{cache.name}}" because its depends on:<br>{{getDependencies(cache)}}'>
+            dialog-text="{{'Can not remove cache:'|i18n}} {{cache.name}}<br>{{getDependencies(cache)}}">
           </i>
         </li>
         <hr>
@@ -31,14 +31,14 @@
 %def middleblock():
 <div ng-controller="MapproxyCacheFormCtrl">
   <form name="cache_form" ng-model="cache">
-    <h3>{{formTitle}}</h3>
+    <h3>{{formTitle|i18n}}</h3>
     <!-- name -->
-        <div labeled="input_label" name-for="cache_form.cache_name" text="Name">
+        <div labeled="input_label" name-for="cache_form.cache_name" text="{{'Name'|i18n}}">
             <input required class="input-xlarge" type="text" ng-model="cache.name" id="cache_form.cache_name"/>
         </div>
     <!-- sources -->
         <!-- change-callback MUST provide parameters callback and new_data -->
-        <div labeled="input_label" name-for="cache_form.sources" text="Sources">
+        <div labeled="input_label" name-for="cache_form.sources" text="{{'Sources'|i18n}}">
             <div
                 droppable
                 sortable
@@ -56,23 +56,23 @@
             </div>
         </div>
     <!-- grids XXXkai: replace by received list of supported srs combined with user defined grids-->
-        <div labeled="input_label" name-for="cache_form.grids" text="Grids">
+        <div labeled="input_label" name-for="cache_form.grids" text="{{'Grids'|i18n}}">
             <select class="input-xlarge" ng-model="cache.grids" id="cache_form.grids" multiple="multiple" ng-options="value._id as value.name for value in available_grids"/>
             </select>
         </div>
     </form>
-    <button class="btn btn-small" ng-click="addCache($event)" ng-disabled="!cache_form.$valid">Save</button>
-    <button class="btn btn-small" ng-click="resetForm($event)">Reset</button>
+    <button class="btn btn-small" ng-click="addCache($event)" ng-disabled="!cache_form.$valid">{{'Save'|i18n}}</button>
+    <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
     <span class="text-success" id="cache_save_ok" ng-show="false">
       <i class="icon-ok"></i>
-       <strong>Saved successfully</strong>
+       <strong>{{'Saved successfully'|i18n}}</strong>
     </span>
 </div>
 %end
 
 %def rightblock():
 <div ng-controller="MapproxySourceListCtrl">
-    <h3>Sources</h3>
+    <h3>{{'Sources'|i18n}}</h3>
     <ul class="vertical-list">
       <div draggable class="mapproxy_source" ng-repeat="source in mapproxy_sources | orderBy:'name'"
           item-data="{{source}}">
