@@ -5,9 +5,8 @@
             <hr>
             <div class="{{getClasses(service)}}"
                 ng-repeat="(service, data) in services"
-                ng-click="show(service)"
-                ng-hide="service=='_id'">
-                <li href="#">{{service}}</a>
+                ng-click="show(service)">
+                <li href="#">{{service|i18n}}</a>
             </li>
             <hr>
         </ul>
