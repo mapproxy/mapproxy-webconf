@@ -66,7 +66,7 @@
               <option value="nw">NW / UL</option>
           </select>
       </div>
-      <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="!grid_form.$valid">{{'Save'|i18n}}</button>
+      <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="!grid_form.$valid" id="grid_form_save">{{'Save'|i18n}}</button>
       <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
       <span class="text-success" id="grid_save_ok" ng-show="false">
         <i class="icon-ok"></i>

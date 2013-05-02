@@ -57,7 +57,7 @@
     <div ng-controller="MapproxyServicesCtrl">
         <form name="services_form">
             <div ng-include src="template"></div>
-            <button class="btn pull-right" ng-click="save($event)" ng-disabled="!services_form.$valid">{{'Save'|i18n}}</button>
+            <button class="btn pull-right" ng-click="save($event)" ng-disabled="!services_form.$valid" id="services_form_save">{{'Save'|i18n}}</button>
             <span class="text-success" id="services_save_ok" ng-show="false">
                 <i class="icon-ok"></i>
                 <strong>{{'Saved successfully'|i18n}}</strong>

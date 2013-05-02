@@ -61,7 +61,7 @@
             </select>
         </div>
     </form>
-    <button class="btn btn-small" ng-click="addCache($event)" ng-disabled="!cache_form.$valid">{{'Save'|i18n}}</button>
+    <button class="btn btn-small" ng-click="addCache($event)" ng-disabled="!cache_form.$valid" id="cache_form_save">{{'Save'|i18n}}</button>
     <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
     <span class="text-success" id="cache_save_ok" ng-show="false">
       <i class="icon-ok"></i>
