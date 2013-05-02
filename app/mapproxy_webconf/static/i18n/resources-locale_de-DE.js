@@ -33,7 +33,7 @@
     },
     {
         "key": "Manual add layer",
-        "value": "Manuell Layer hinzufügen"
+        "value": "Layer manuell hinzufügen"
     },
     {
         "key": "Add",
