@@ -538,6 +538,8 @@ function MapproxyServicesChooserCtrl($scope, DataShareService) {
     $scope.$on('dss.services', function() {
         $scope.services = DataShareService.data('services');
     });
+
+    $scope.selected = 'wms';
 };
 
 function MapproxyServicesCtrl($scope, MapproxyServices, DataShareService) {
