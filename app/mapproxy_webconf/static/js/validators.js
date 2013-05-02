@@ -70,4 +70,22 @@ directive('biggerThan', function() {
             });
         }
     };
+}).
+
+directive('unique', function() {
+    return {
+        require: 'ngModel',
+        link: function(scope, elm, attrs, ctrl) {
+            ctrl.$parsers.unshift(function(viewValue) {
+                var unique = true;
+                angular.forEach(angular.fromJson(attrs.unique), function(item) {
+                    console.log(viewValue, item)
+                    if(viewValue == item) {
+                        unique = false;
+                    }
+                });
+                return unique;
+            });
+        }
+    }
 });
