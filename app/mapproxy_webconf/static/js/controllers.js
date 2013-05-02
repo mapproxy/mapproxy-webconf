@@ -545,7 +545,7 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
     });
 }
 
-function MapproxyGlobalsFormCtrl($scope, MapproxyGlobals) {
+function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals) {
     var setGlobals = function() {
         var globals = MapproxyGlobals.list();
         if(globals.length > 0) {
@@ -603,7 +603,7 @@ function MapproxyServicesChooserCtrl($scope, DataShareService) {
     $scope.selected = 'wms';
 };
 
-function MapproxyServicesCtrl($scope, MapproxyServices, DataShareService) {
+function MapproxyServicesCtrl($scope, localize, MapproxyServices, DataShareService) {
     var setServices = function() {
         var services = MapproxyServices.list();
         if(services.length > 0) {
