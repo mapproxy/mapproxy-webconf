@@ -27,10 +27,10 @@
     </script>
     <div>
       <ul sortable ng-model="mapproxy_layers" class="vertical-list">
-        <hr>
         <div class="{{isSelected(layer)}}"
           ng-repeat="layer in mapproxy_layers | orderBy:'_rank'"
           ng-click="editLayer(layer)">
+          <hr ng-show="$first">
           <li>
             {{layer.title}} ({{layer.name}})
             <i class="icon-remove pull-right"
