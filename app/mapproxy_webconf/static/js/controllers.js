@@ -510,6 +510,9 @@ function MapproxyLayerListCtrl($scope, localize, MapproxyLayers) {
         $scope.selected = undefined;
         MapproxyLayers.current(true, DEFAULT_LAYER)
     };
+    $scope.listChanged = function() {
+        return (!angular.equals($scope.mapproxy_layers, MapproxyLayers.tree()));
+    }
 
     $scope.$on('layers.load_complete', refreshTree);
     $scope.$on('layers.added', function() {
@@ -526,7 +529,7 @@ function MapproxyLayerListCtrl($scope, localize, MapproxyLayers) {
     });
 
     $(window).on('beforeunload', function() {
-        if($scope.mapproxy_layers != MapproxyLayers.tree()) {
+        if($scope.listChanged()) {
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });

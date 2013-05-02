@@ -3,7 +3,7 @@
    <button class="btn btn-small btn-info pull-right" ng-click="newLayer()">
         <span class="icon-plus-sign icon-white" ></span>
     {{'Create new layer'|i18n}}</button>
-   <button class="btn btn-small btn-success pull-right" ng-click="updateLayerTree()" style="margin-right:1em;">{{'Save'|i18n}}</button>
+   <button class="btn btn-small btn-success pull-right" ng-click="updateLayerTree()" style="margin-right:1em;" ng-disabled="!listChanged()">{{'Save'|i18n}}</button>
 
   <h3>{{'Layer'|i18n}}</h3>
    <script type="text/ng-template"  id="mapproxy_layer_renderer.html">
