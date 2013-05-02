@@ -302,6 +302,14 @@
     {
         "key": "demo",
         "value": "Demo"
+    },
+    {
+        "key": "Saving failed",
+        "value": "Speichern fehlgeschlagen"
+    },
+    {
+        "key": "Name already exists.",
+        "value": "Der angegebene Name existiert bereits."
     }
 
 ]

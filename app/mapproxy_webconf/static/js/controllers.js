@@ -176,9 +176,14 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
     $scope.addSource = function(event) {
         event.preventDefault();
         $scope.source = clearData($scope.source)
-        MapproxySources.add($scope.source);
-        $scope.formTitle = 'Edit source';
-        $scope.source_form.$setPristine();
+        if(angular.isDefined($scope.source._id) || !$scope.exist($scope.source.name)) {
+            MapproxySources.add($scope.source);
+            $scope.formTitle = 'Edit source';
+            $scope.source_form.$setPristine();
+        } else {
+            $scope.errorMsg = localize.getLocalizedString("Name already exists.");
+            $('#source_save_error').show().fadeOut(3000);
+        }
     };
     $scope.resetForm = function(event) {
         if(!angular.isUndefined(event)) {
@@ -198,6 +203,9 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
             }
             $scope.custom.layer_manual = undefined;
         }
+    };
+    $scope.exist = function(name) {
+        return (MapproxySources.byName(name)) ? true : false;
     };
     $scope.layerTitle = function(layer) {
         return WMSSources.layerTitle($scope.source.req.url, layer);
@@ -282,7 +290,7 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches) {
     $scope.$on('caches.deleted', refreshList);
 }
 
-function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches, MapproxyGrids) {
+function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches, MapproxyGrids) {
     var DEFAULT_CACHE = {'meta_size': [null, null]}
     var refreshGrids = function() {
         $scope.available_grids = MapproxyGrids.list();
@@ -291,9 +299,14 @@ function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
     $scope.addCache = function(event) {
         event.preventDefault();
         $scope.cache = clearData($scope.cache);
-        MapproxyCaches.add($scope.cache);
-        $scope.cache_form.$setPristine();
-        $scope.formTitle = 'Edit cache';
+        if(angular.isDefined($scope.cache._id) || !$scope.exist($scope.cache.name)) {
+            MapproxyCaches.add($scope.cache);
+            $scope.formTitle = 'Edit cache';
+            $scope.cache_form.$setPristine();
+        } else {
+            $scope.errorMsg = localize.getLocalizedString("Name already exists.");
+            $('#cache_save_error').show().fadeOut(3000);
+        }
     };
     $scope.resetForm = function(event) {
         if(!angular.isUndefined(event)) {
@@ -305,7 +318,9 @@ function MapproxyCacheFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
     $scope.showName = function(_id) {
         return MapproxySources.byId(_id).name;
     };
-
+    $scope.exist = function(name) {
+        return (MapproxyCaches.byName(name)) ? true : false;
+    };
     $scope.cache = angular.copy(DEFAULT_CACHE);
     $scope.formTitle = 'New cache';
     MapproxyCaches.current(true, $scope.cache);
@@ -391,13 +406,18 @@ function MapproxyGridListCtrl($scope, MapproxyGrids) {
     $scope.$on('grids.deleted', refreshList);
 }
 
-function MapproxyGridFormCtrl($scope, MapproxyGrids) {
+function MapproxyGridFormCtrl($scope, localize, MapproxyGrids) {
     var DEFAULT_GRID = {'bbox': [null, null, null, null]};
     $scope.addGrid = function(event) {
         event.preventDefault();
-        MapproxyGrids.add(clearData($scope.grid));
-        $scope.formTitle = "Edit grid";
-        $scope.grid_form.$setPristine();
+        if(angular.isDefined($scope.grid._id) || !$scope.exist($scope.grid.name)) {
+            MapproxyGrids.add(clearData($scope.grid));
+            $scope.formTitle = "Edit grid";
+            $scope.grid_form.$setPristine();
+         } else {
+            $scope.errorMsg = localize.getLocalizedString("Name already exists.");
+            $('#grid_save_error').show().fadeOut(3000);
+        }
     };
     $scope.resetForm = function(event) {
         if(angular.isDefined(event)) {
@@ -406,7 +426,9 @@ function MapproxyGridFormCtrl($scope, MapproxyGrids) {
         $scope.grid = MapproxyGrids.current(true);
         $scope.grid_form.$setPristine();
     };
-
+    $scope.exist = function(name) {
+        return (MapproxyGrids.byName(name)) ? true : false;
+    };
     $scope.grid = angular.copy(DEFAULT_GRID);
     $scope.formTitle = 'New grid'
     MapproxyGrids.current(true, $scope.grid);
@@ -475,13 +497,18 @@ function MapproxyLayerListCtrl($scope, MapproxyLayers) {
     })
 }
 
-function MapproxyLayerFormCtrl($scope, MapproxySources, MapproxyCaches, MapproxyLayers) {
+function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches, MapproxyLayers) {
     var DEFAULT_LAYER = {};
     $scope.addLayer = function() {
-        $scope.layer = clearData($scope.layer)
-        MapproxyLayers.add(angular.copy($scope.layer));
-        $scope.formTitle = "Edit layer"
-        $scope.layer_form.$setPristine();
+        if(angular.isDefined($scope.layer._id) || !$scope.exist($scope.layer.name)) {
+            $scope.layer = clearData($scope.layer)
+            MapproxyLayers.add(angular.copy($scope.layer));
+            $scope.formTitle = "Edit layer"
+            $scope.layer_form.$setPristine();
+        } else {
+            $scope.errorMsg = localize.getLocalizedString("Name already exists.");
+            $('#layer_save_error').show().fadeOut(3000);
+        }
     };
     $scope.resetForm = function() {
         $scope.layer = MapproxyLayers.current(true);
@@ -496,7 +523,9 @@ function MapproxyLayerFormCtrl($scope, MapproxySources, MapproxyCaches, Mapproxy
     $scope.showName = function(_id) {
         return MapproxySources.byId(_id) ? MapproxySources.byId(_id).name : MapproxyCaches.byId(_id).name;
     };
-
+    $scope.exist = function(name) {
+        return (MapproxyLayers.byName(name)) ? true : false;
+    };
 
     $scope.layer = angular.copy(DEFAULT_LAYER);
     MapproxyLayers.current(true, $scope.layer);

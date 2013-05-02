@@ -67,6 +67,11 @@
       <i class="icon-ok"></i>
        <strong>{{'Saved successfully'|i18n}}</strong>
     </span>
+    <span class="text-error" id="cache_save_error" ng-show="false">
+      <i class="icon-thumbs-down"></i>
+      <strong>{{'Saving failed'|i18n}}</strong>
+      <p>{{errorMsg}}</p>
+    </span>
 </div>
 %end
 

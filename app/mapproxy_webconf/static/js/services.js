@@ -91,6 +91,14 @@ var MapproxyBaseService = function(_section, _dependencies) {
     this.byId = function(_id) {
         return angular.isDefined(_this._items[_id]) ? _this._items[_id] : false;
     };
+    this.byName = function(_name) {
+        for(var id in _this._items) {
+            if(_this._items[id].name == _name) {
+                return _this._items[id];
+            }
+        }
+        return false;
+    };
     this.current = function(copy, _item) {
         if(_item) {
             _this._item = _item;
@@ -128,6 +136,7 @@ var MapproxyBaseService = function(_section, _dependencies) {
         remove: _this.remove,
         list: _this.list,
         byId: _this.byId,
+        byName: _this.byName,
         current: _this.current,
         last: _this.last,
         error: _this.error
