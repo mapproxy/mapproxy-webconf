@@ -346,9 +346,6 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
     });
 
     $scope.$on('grids.load_complete', refreshGrids);
-    $scope.$on('grids.added', refreshGrids);
-    $scope.$on('grids.updated', refreshGrids);
-    $scope.$on('grids.deleted', refreshGrids);
 
     $scope.$watch('cache_form.$valid', function(formValid) {
         if(formValid) {
