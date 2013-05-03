@@ -508,7 +508,8 @@ function MapproxyLayerListCtrl($scope, localize, MapproxyLayers) {
         MapproxyLayers.current(true, DEFAULT_LAYER)
     };
     $scope.listChanged = function() {
-        return (!angular.equals($scope.mapproxy_layers, MapproxyLayers.tree()));
+        $scope._listChanged = (!angular.equals($scope.mapproxy_layers, MapproxyLayers.tree()));
+        return $scope._listChanged;
     }
 
     $scope.$on('layers.load_complete', refreshTree);
@@ -523,6 +524,14 @@ function MapproxyLayerListCtrl($scope, localize, MapproxyLayers) {
     $scope.$on('layers.deleted', MapproxyLayers.refresh);
     $scope.$on('layers.updatedStructure', function() {
         $('#layertree_save_ok').show().fadeOut(3000);
+    });
+
+    $scope.$watch('_listChanged', function(changed) {
+        if(changed) {
+            $('#layer_list_save').addClass('btn-success');
+        } else {
+            $('#layer_list_save').removeClass('btn-success');
+        }
     });
 
     $(window).on('beforeunload', function() {
