@@ -100,6 +100,10 @@
         "value": "WMS erfolgreich hinzugefügt!"
     },
     {
+        "key": "An error occured",
+        "value": "Es ist ein Fehler aufgetreten"
+    },
+    {
         "key": "Available WMS",
         "value": "Verfügbare WMS"
     },
