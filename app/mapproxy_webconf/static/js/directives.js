@@ -303,7 +303,8 @@ directive('droppable', function($parse) {
             $(element).droppable({
                 accept: acceptClasses.toString(),
                 activeClass: 'droppable-active',
-                drop: scope.dropHandler
+                drop: scope.dropHandler,
+                tolerance: 'touch'
             });
         }
     };
