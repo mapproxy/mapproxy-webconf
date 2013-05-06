@@ -241,6 +241,13 @@ WMSSourceService = function(_section) {
         }
         return false;
     };
+
+    this.layerSRS = function(url, layerName) {
+        var layer = _this._identifyLayer(url, layerName);
+        if(layer) {
+            return layer.srs;
+        }
+        return false;
     };
 
     this.refresh = function(_item) {
@@ -266,6 +273,7 @@ WMSSourceService = function(_section) {
     this.return_dict['refresh'] = _this.refresh;
     this.return_dict['allURLs'] = _this.allURLs;
     this.return_dict['coverage'] = _this.coverage;
+    this.return_dict['layerSRS'] = _this.layerSRS;
 };
 
 var layerService = new MapproxyLayerService('layers');

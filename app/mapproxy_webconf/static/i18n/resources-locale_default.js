@@ -327,6 +327,14 @@
     },
     {
         "key": "Use coverage from WMS",
-        "value": "Den Coverage des WMS benutzen"
+        "value": "Coverage des WMS benutzen"
+    },
+    {
+        "key": "Supported SRS",
+        "value": "Unterstütze Koordinatensysteme"
+    },
+    {
+        "key": "Manual add SRS",
+        "value": "Koordinatensystem manuell hinzufügen"
     }
 ]

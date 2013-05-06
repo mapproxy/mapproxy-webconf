@@ -129,6 +129,20 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
         $scope.sourceformErrorMsg = MapproxySources.error();
         $('#sourceform_service_error').show().fadeOut(3000);
     };
+    var updateSRS = function() {
+        var srsList = angular.copy($scope.userSRS);
+        angular.forEach($scope.source.req.layers, function(layer) {
+            var result = WMSSources.layerSRS($scope.source.req.url, layer);
+            if(result) {
+                angular.forEach(result, function(srs) {
+                    if($.inArray(srs, srsList) === -1) {
+                        srsList.push(srs);
+                    }
+                });
+            }
+        });
+        return srsList;
+    };
     $scope.openDialog = function(callback, new_data) {
         if(angular.isUndefined($scope.source.req) ||
            angular.isUndefined($scope.source.req.url) ||
@@ -231,6 +245,14 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
             $scope.custom.layer_manual = undefined;
         }
     };
+    $scope.addSRSManual = function(event) {
+        event.preventDefault();
+        if($.inArray($scope.custom.srs_manual, $scope.userSRS) === -1) {
+            $scope.userSRS.push($scope.custom.srs_manual);
+            $scope.srsList = updateSRS();
+            $scope.custom.srs_manual = undefined;
+        }
+    };
     $scope.exist = function(name) {
         return (MapproxySources.byName(name)) ? true : false;
     };
@@ -240,6 +262,7 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
 
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {};
+    $scope.userSRS = [];
     $scope.source = angular.copy(DEFAULT_SOURCE);
     $scope.formTitle = 'New source';
 
@@ -260,6 +283,9 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
         } else {
             $('#source_form_save').removeClass('btn-success');
         }
+    });
+    $scope.$watch('source.req.layers', function() {
+        $scope.srsList = updateSRS();
     });
 
     $(window).on('beforeunload', function() {
