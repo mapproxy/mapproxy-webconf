@@ -124,7 +124,7 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources) {
 };
 
 function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
-    var DEFAULT_SOURCE = {"type": "wms", "req": {}};
+    var DEFAULT_SOURCE = {"type": "wms", "req": {}, "coverage": {}};
     var errorHandler = function() {
         $scope.sourceformErrorMsg = MapproxySources.error();
         $('#sourceform_service_error').show().fadeOut(3000);
@@ -206,6 +206,11 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
             $scope.errorMsg = localize.getLocalizedString("Name already exists.");
             $('#source_save_error').show().fadeOut(3000);
         }
+    };
+    $scope.addCoverage = function(event) {
+        event.preventDefault();
+        $scope.source.coverage.bbox = WMSSources.coverage($scope.source.req.url);
+
     };
     $scope.resetForm = function(event) {
         if(!angular.isUndefined(event)) {

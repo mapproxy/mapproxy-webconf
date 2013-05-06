@@ -314,6 +314,19 @@
     {
         "key": "Name already exists.",
         "value": "Der angegebene Name existiert bereits."
+    },
+    {
+        "key": "Coverage BBOX",
+        "value": "Coverage BBOX",
+        "description": "How to translate coverage?"
+    },
+    {
+        "key": "Coverage SRS",
+        "value": "Coverage SRS",
+        "description": "How to translate coverage?"
+    },
+    {
+        "key": "Use coverage from WMS",
+        "value": "Den Coverage des WMS benutzen"
     }
-
 ]

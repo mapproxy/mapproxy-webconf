@@ -218,6 +218,16 @@ WMSSourceService = function(_section) {
         return title;
     };
 
+    this.coverage = function(url) {
+        var coverage = false;
+        angular.forEach(_this._items, function(wms) {
+            if(wms.url == url) {
+                coverage = wms.layer.llbbox;
+            }
+        });
+        return coverage;
+    };
+
     this.refresh = function(_item) {
         var item = new _this._resource(_item);
         _this._action = '.update';
@@ -240,6 +250,7 @@ WMSSourceService = function(_section) {
     this.return_dict['layerTitle'] = _this.layerTitle;
     this.return_dict['refresh'] = _this.refresh;
     this.return_dict['allURLs'] = _this.allURLs;
+    this.return_dict['coverage'] = _this.coverage;
 };
 
 var layerService = new MapproxyLayerService('layers');
