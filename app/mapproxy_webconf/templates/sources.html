@@ -6,7 +6,12 @@
       <span class="icon-plus-sign icon-white" ></span> {{'Create new source'|i18n}}
     </button>
   </div>
-    <h3>{{'Sources'|i18n}}</h3>
+  <h3>{{'Sources'|i18n}}</h3>
+  <span class="text-error" id="sourcelist_service_error" ng-show="false">
+    <i class="icon-thumbs-down"></i>
+    <strong>{{'An error occured'|i18n}}</strong>
+    <p>{{sourcelistErrorMsg}}</p>
+  </span>
   <ul class="vertical-list">
     <hr>
     <div class="{{isSelected(source)}}" ng-repeat="source in mapproxy_sources | orderBy:'name'"
@@ -95,10 +100,10 @@
         <i class="icon-ok"></i>
          <strong>{{'Saved successfully'|i18n}}</strong>
        </span>
-       <span class="text-error" id="source_save_error" ng-show="false">
+       <span class="text-error" id="sourceform_service_error" ng-show="false">
           <i class="icon-thumbs-down"></i>
           <strong>{{'Saving failed'|i18n}}</strong>
-          <p>{{errorMsg}}</p>
+          <p>{{sourceformErrorMsg}}</p>
         </span>
       </fieldset>
     </form>
@@ -152,6 +157,11 @@
         <i class="icon-ok"></i>
         <strong>{{refresh_msg}}</strong>
     </div>
+    <div ng-show="false" id="capabilities_refresh_error" class="text-error">
+        <i class="icon-thumbs-down"></i>
+        <strong>{{'An error occured'|i18n}}</strong>
+        <p>{{treeErrorMsg}}</p>
+    </div>
     <hr>
     <form name="capabilities_form" novalidate>
         <div class="input-append" labeled="input_label" name-for="addCapabilities"  text="{{'Load WMS'|i18n}}">
@@ -162,6 +172,13 @@
           <span class="text-success" id="capabilities_add_ok" ng-show="false">
             <i class="icon-ok"></i>
             <strong>{{'Add WMS successfully'|i18n}}</strong>
+          </span>
+        </div>
+        <div>
+          <span class="text-error" id="capabilities_service_error" ng-show="false">
+            <i class="icon-thumbs-down"></i>
+            <strong>{{'An error occured'|i18n}}</strong>
+            <p>{{treeErrorMsg}}</p>
           </span>
         </div>
     </form>

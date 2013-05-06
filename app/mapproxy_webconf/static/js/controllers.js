@@ -6,6 +6,10 @@ function TreeCtrl($scope, localize, WMSSources) {
         $scope.wms_list = WMSSources.list();
         $scope.wms_urls = WMSSources.allURLs();
     };
+    var errorHandler = function() {
+        $scope.treeErrorMsg = WMSSources.error();
+        $('#capabilities_service_error').show().fadeOut(3000);
+    };
     $scope.prepareLayer = function(layer, sourceURL) {
         if(!layer.name) {
             $.each(layer.layers, function(idx, layer) {
@@ -17,7 +21,6 @@ function TreeCtrl($scope, localize, WMSSources) {
         return layer;
     };
     $scope.addCapabilities = function() {
-        $scope.capabilities.error = false;
         WMSSources.add({url: $scope.capabilities.url});
     };
     $scope.refreshCapabilities = function(event, wms) {
@@ -39,18 +42,29 @@ function TreeCtrl($scope, localize, WMSSources) {
         refreshTree();
         $('#capabilities_refresh_ok').show().fadeOut(3000);
     });
-    $scope.$on('wms_capabilities.error', function() {
-        $scope.capabilities.error = WMSSources.error();
-    });
-    $scope.capabilities = {};
-    $scope.capabilities.error = false;
 
-}
+    $scope.$on('wms_capabilities.update_error', function() {
+        $scope.treeErrorMsg = WMSSources.error();
+        $('#capabilities_refresh_error').show().fadeOut(3000);
+    });
+    $scope.$on('wms_capabilities.delete_error', function() {
+        $scope.treeErrorMsg = WMSSources.error();
+        $('#capabilities_refresh_error').show().fadeOut(3000);
+    });
+    $scope.$on('wms_capabilities.load_error', errorHandler);
+    $scope.$on('wms_capabilities.add_error', errorHandler);
+
+    $scope.capabilities = {};
+};
 
 function MapproxySourceListCtrl($scope, localize, MapproxySources) {
     var DEFAULT_SOURCE = {"type": "wms", "req": {}};
     var refreshList = function() {
         $scope.mapproxy_sources = MapproxySources.list();
+    };
+    var errorHandler = function() {
+        $scope.sourcelistErrorMsg = MapproxySources.error();
+        $('#sourcelist_service_error').show().fadeOut(3000);
     };
     $scope.isSelected = function(source) {
         var class_;
@@ -104,11 +118,17 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources) {
         refreshList();
     });
     $scope.$on('sources.deleted', refreshList);
+
+    $scope.$on('sources.load_error', errorHandler);
+    $scope.$on('sources.delete_error', errorHandler);
 };
 
 function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
     var DEFAULT_SOURCE = {"type": "wms", "req": {}};
-
+    var errorHandler = function() {
+        $scope.sourceformErrorMsg = MapproxySources.error();
+        $('#sourceform_service_error').show().fadeOut(3000);
+    };
     $scope.openDialog = function(callback, new_data) {
         if(angular.isUndefined($scope.source.req) ||
            angular.isUndefined($scope.source.req.url) ||
@@ -226,6 +246,9 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
         $scope.source_form.$setPristine();
     });
 
+    $scope.$on('sources.add_error', errorHandler);
+    $scope.$on('sources.update_error', errorHandler);
+
     $scope.$watch('source_form.$valid', function(formValid) {
         if(formValid) {
             $('#source_form_save').addClass('btn-success');
@@ -240,13 +263,17 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
         }
     });
 
-}
+};
 
 function MapproxyCacheListCtrl($scope, MapproxyCaches) {
     var DEFAULT_CACHE = {'meta_size': [null, null]}
     var refreshList = function() {
         $scope.mapproxy_caches = MapproxyCaches.list();
-    }
+    };
+    var errorHandler = function() {
+        $scope.cachelistErrorMsg = MapproxyCaches.error();
+        $('#cachelist_service_error').show().fadeOut(3000);
+    };
     $scope.isSelected = function(cache) {
         var class_;
         if($scope.selected == cache) {
@@ -299,14 +326,20 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches) {
         refreshList();
     });
     $scope.$on('caches.deleted', refreshList);
-}
+    $scope.$on('caches.load_error', errorHandler);
+    $scope.$on('caches.update_error', errorHandler);
+    $scope.$on('caches.delete_error', errorHandler);
+};
 
 function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches, MapproxyGrids) {
     var DEFAULT_CACHE = {'meta_size': [null, null]}
     var refreshGrids = function() {
         $scope.available_grids = MapproxyGrids.list();
     };
-
+    var errorHandler = function() {
+        $scope.cacheformErrorMsg = MapproxyCaches.error();
+        $('#cacheform_service_error').show().fadeOut(3000);
+    };
     $scope.addCache = function(event) {
         event.preventDefault();
         $scope.cache = clearData($scope.cache);
@@ -347,6 +380,13 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
 
     $scope.$on('grids.load_complete', refreshGrids);
 
+    $scope.$on('caches.add_error', errorHandler);
+    $scope.$on('caches.update_error', errorHandler);
+    $scope.$on('grids.load_error', function() {
+        $scope.cacheformErrorMsg = MapproxyGrids.error();
+        $('#cacheform_service_error').show().fadeOut(3000);
+    });
+
     $scope.$watch('cache_form.$valid', function(formValid) {
         if(formValid) {
             $('#cache_form_save').addClass('btn-success');
@@ -361,12 +401,16 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         }
     });
 
-}
+};
 
 function MapproxyGridListCtrl($scope, MapproxyGrids) {
     var DEFAULT_GRID = {'bbox': [null, null, null, null]};
     var refreshList = function() {
         $scope.mapproxy_grids = MapproxyGrids.list();
+    };
+    var errorHandler = function() {
+        $scope.gridlistErrorMsg = MapproxyGrids.error();
+        $('#gridlist_service_error').show().fadeOut(3000);
     };
     $scope.isSelected = function(grid) {
         var class_;
@@ -412,19 +456,23 @@ function MapproxyGridListCtrl($scope, MapproxyGrids) {
 
     $scope.$on('grids.load_complete', refreshList);
     $scope.$on('grids.added', function() {
-        $('#grid_save_ok').show().fadeOut(3000);
         $scope.selected = MapproxyGrids.last();
         refreshList();
     });
     $scope.$on('grids.updated', function() {
-        $('#grid_save_ok').show().fadeOut(3000);
         refreshList();
     });
     $scope.$on('grids.deleted', refreshList);
-}
+    $scope.$on('grids.load_error', errorHandler);
+    $scope.$on('grids.delete_error', errorHandler);
+};
 
 function MapproxyGridFormCtrl($scope, localize, MapproxyGrids) {
     var DEFAULT_GRID = {'bbox': [null, null, null, null]};
+    var errorHandler = function() {
+        $scope.gridformErrorMsg = MapproxyGrids.error();
+        $('#gridform_service_error').show().fadeOut(3000);
+    };
     $scope.addGrid = function(event) {
         event.preventDefault();
         if(angular.isDefined($scope.grid._id) || !$scope.exist($scope.grid.name)) {
@@ -459,6 +507,15 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids) {
         $scope.grid_form.$setPristine();
     });
 
+    $scope.$on('grids.added', function() {
+        $('#grid_save_ok').show().fadeOut(3000);
+    });
+    $scope.$on('grids.updated', function() {
+        $('#grid_save_ok').show().fadeOut(3000);
+    });
+    $scope.$on('grids.add_error', errorHandler);
+    $scope.$on('grids.update_error', errorHandler);
+
     $scope.$watch('grid_form.$valid', function(formValid) {
         if(formValid) {
             $('#grid_form_save').addClass('btn-success');
@@ -473,12 +530,16 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids) {
         }
     });
 
-}
+};
 
 function MapproxyLayerListCtrl($scope, localize, MapproxyLayers) {
     var DEFAULT_LAYER = {};
     var refreshTree = function() {
         $scope.mapproxy_layers = MapproxyLayers.tree();
+    };
+    var errorHandler = function() {
+        $scope.layerlistErrorMsg = MapproxyLayers.error();
+        $('#layerlist_service_error').show().fadeOut(3000);
     };
     var added = function() {
         $scope.selected = MapproxyLayers.last()
@@ -514,17 +575,18 @@ function MapproxyLayerListCtrl($scope, localize, MapproxyLayers) {
 
     $scope.$on('layers.load_complete', refreshTree);
     $scope.$on('layers.added', function() {
-        $('#layer_save_ok').show().fadeOut(3000);
         added();
     });
     $scope.$on('layers.updated', function() {
-        $('#layer_save_ok').show().fadeOut(3000);
         refreshTree();
     });
     $scope.$on('layers.deleted', MapproxyLayers.refresh);
     $scope.$on('layers.updatedStructure', function() {
         $('#layertree_save_ok').show().fadeOut(3000);
     });
+    $scope.$on('layers.load_error', errorHandler);
+    $scope.$on('layers.delete_error', errorHandler);
+    $scope.$on('layers.updateStructure_error', errorHandler);
 
     $scope.$watch('_listChanged', function(changed) {
         if(changed) {
@@ -539,10 +601,14 @@ function MapproxyLayerListCtrl($scope, localize, MapproxyLayers) {
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
-}
+};
 
 function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches, MapproxyLayers) {
     var DEFAULT_LAYER = {};
+    var errorHandler = function() {
+        $scope.layerformErrorMsg = MapproxyLayers.error();
+        $('#layerform_service_error').show().fadeOut(3000);
+    };
     $scope.addLayer = function() {
         if(angular.isDefined($scope.layer._id) || !$scope.exist($scope.layer.name)) {
             $scope.layer = clearData($scope.layer)
@@ -581,6 +647,15 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         $scope.layer_form.$setPristine();
     });
 
+    $scope.$on('layers.added', function() {
+        $('#layer_save_ok').show().fadeOut(3000);
+    });
+    $scope.$on('layers.updated', function() {
+        $('#layer_save_ok').show().fadeOut(3000);
+    });
+    $scope.$on('layers.add_error', errorHandler);
+    $scope.$on('layers.update_error', errorHandler);
+
     $scope.$watch('layer_form.$valid', function(formValid) {
         if(formValid) {
             $('#layer_form_save').addClass('btn-success');
@@ -594,7 +669,7 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
-}
+};
 
 function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals) {
     var setGlobals = function() {
@@ -603,7 +678,10 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals) {
             $scope.globals = globals[0];
         }
     };
-
+    var errorHandler = function() {
+        $scope.errorMsg = MapproxyGlobals.error();
+        $('#globals_service_error').show().fadeOut(3000);
+    };
     $scope.save = function(event) {
         if(angular.isDefined(event)) {
             event.preventDefault();
@@ -623,6 +701,9 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals) {
         $('#globals_save_ok').show().fadeOut(3000);
         setGlobals();
     });
+    $scope.$on('globals.load_error', errorHandler);
+    $scope.$on('globals.add_error', errorHandler);
+    $scope.$on('globals.update_error', errorHandler);
 
     $scope.$watch('globals_form.$valid', function(formValid) {
         if(formValid) {
@@ -675,15 +756,16 @@ function MapproxyServicesCtrl($scope, localize, MapproxyServices, DataShareServi
 
     var setTemplate = function() {
         $scope.template = DataShareService.data('service');
-    }
-
+    };
+    var errorHandler = function() {
+        $scope.errorMsg = MapproxyServices.error();
+        $('#services_service_error').show().fadeOut(3000);
+    };
     $scope.save = function(event) {
         if(angular.isDefined(event)) {
             event.preventDefault();
         }
         MapproxyServices.add($scope.services);
-        $('#services_save_ok').show().fadeOut(3000);
-        $scope.services_form.$setPristine();
     };
 
     $scope.services = {
@@ -699,8 +781,20 @@ function MapproxyServicesCtrl($scope, localize, MapproxyServices, DataShareServi
     $scope.template = 'wms.html'
 
     $scope.$on('services.load_complete', setServices);
-    $scope.$on('services.added', setServices);
+    $scope.$on('services.added', function() {
+        $('#services_save_ok').show().fadeOut(3000);
+        $scope.services_form.$setPristine();
+        setServices();
+    });
+    $scope.$on('services.updated', function() {
+        $('#services_save_ok').show().fadeOut(3000);
+        $scope.services_form.$setPristine();
+        setServices();
+    });
     $scope.$on('dss.service', setTemplate);
+    $scope.$on('services.load_error', errorHandler);
+    $scope.$on('services.add_error', errorHandler);
+    $scope.$on('services.update_error', errorHandler);
 
     $scope.$watch('services_form.$valid', function(formValid) {
         if(formValid) {
@@ -756,7 +850,7 @@ function MapproxySourceNoticeCtrl($scope, localize, MapproxySources) {
     $scope.$on('sources.current', function() {
         $scope.watch_source = MapproxySources.current();
     });
-}
+};
 
 function MapproxyConfigCtrl($scope, $http) {
 
@@ -767,4 +861,4 @@ function MapproxyConfigCtrl($scope, $http) {
         $scope.mapproxy_yaml = result;
         $scope.yaml_written = true;
     });
-}
+};

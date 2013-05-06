@@ -5,6 +5,11 @@
       {{'Create new cache'|i18n}}</button>
 
     <h3>{{'Cache'|i18n}}</h3>
+    <span class="text-error" id="cachelist_service_error" ng-show="false">
+      <i class="icon-thumbs-down"></i>
+      <strong>{{'An error occured'|i18n}}</strong>
+      <p>{{cachelistErrorMsg}}</p>
+    </span>
     <ul class="vertical-list">
       <hr>
       <div class="{{isSelected(cache)}}" ng-repeat="cache in mapproxy_caches | orderBy:'name'"
@@ -67,10 +72,10 @@
       <i class="icon-ok"></i>
        <strong>{{'Saved successfully'|i18n}}</strong>
     </span>
-    <span class="text-error" id="cache_save_error" ng-show="false">
+    <span class="text-error" id="cacheform_service_error" ng-show="false">
       <i class="icon-thumbs-down"></i>
-      <strong>{{'Saving failed'|i18n}}</strong>
-      <p>{{errorMsg}}</p>
+      <strong>{{'An error occured'|i18n}}</strong>
+      <p>{{cacheformErrorMsg}}</p>
     </span>
 </div>
 %end
@@ -87,6 +92,11 @@
         <hr>
       </div>
     </ul>
+    <span class="text-error" id="sourcelist_service_error" ng-show="false">
+      <i class="icon-thumbs-down"></i>
+      <strong>{{'An error occured'|i18n}}</strong>
+      <p>{{sourcelistErrorMsg}}</p>
+    </span>
 </div>
 %end
 

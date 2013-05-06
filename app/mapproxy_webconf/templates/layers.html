@@ -6,6 +6,11 @@
    <button class="btn btn-small pull-right" id="layer_list_save" ng-click="updateLayerTree()" style="margin-right:1em;" ng-disabled="!listChanged()">{{'Save'|i18n}}</button>
 
   <h3>{{'Layer'|i18n}}</h3>
+   <span class="text-error" id="layerlist_service_error" ng-show="false">
+      <i class="icon-thumbs-down"></i>
+      <strong>{{'An error occured'|i18n}}</strong>
+      <p>{{layerlistErrorMsg}}</p>
+   </span>
    <script type="text/ng-template"  id="mapproxy_layer_renderer.html">
     <ul sortable ng-model="layer._layers">
       <li ng-repeat="layer in layer._layers | orderBy:'_rank'">  <!-- new scope -->
@@ -95,18 +100,24 @@
       <i class="icon-ok"></i>
       <strong>{{'Saved successfully'|i18n}}</strong>
     </span>
-    <span class="text-error" id="layer_save_error" ng-show="false">
+    <span class="text-error" id="layerform_service_error" ng-show="false">
       <i class="icon-thumbs-down"></i>
       <strong>{{'Saving failed'|i18n}}</strong>
-      <p>{{errorMsg}}</p>
+      <p>{{layerformErrorMsg}}</p>
     </span>
 </div>
 %end
 
 %def rightblock():
   <div>
+    <span ng-controller="MapproxySourceListCtrl">
       <h3>{{'Sources'|i18n}}</h3>
-      <ul class="vertical-list" ng-controller="MapproxySourceListCtrl">
+      <span class="text-error" id="sourcelist_service_error" ng-show="false">
+        <i class="icon-thumbs-down"></i>
+        <strong>{{'An error occured'|i18n}}</strong>
+        <p>{{sourcelistErrorMsg}}</p>
+      </span>
+      <ul class="vertical-list">
           <div
               draggable
               class="mapproxy_source"
@@ -116,9 +127,16 @@
               <hr>
             </div>
       </ul>
-      <hr>
+    </span>
+    <hr>
+    <span ng-controller="MapproxyCacheListCtrl">
       <h3>{{'Caches'|i18n}}</h3>
-      <ul class="vertical-list" ng-controller="MapproxyCacheListCtrl">
+      <span class="text-error" id="cachelist_service_error" ng-show="false">
+        <i class="icon-thumbs-down"></i>
+        <strong>{{'An error occured'|i18n}}</strong>
+        <p>{{cachelistErrorMsg}}</p>
+      </span>
+      <ul class="vertical-list">
           <div
               draggable
               class="mapproxy_cache"
@@ -128,6 +146,7 @@
               <hr>
           </div>
       </ul>
-    </div>
+    </span>
+  </div>
 %end
 %rebase base_config leftblock=leftblock, rightblock=rightblock, middleblock=middleblock,  project=get('project'),  active='layers'

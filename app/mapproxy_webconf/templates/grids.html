@@ -5,6 +5,11 @@
       {{'Create new grid'|i18n}}</button>
 
     <h3>{{'Grids'|i18n}}</h3>
+    <span class="text-error" id="gridlist_service_error" ng-show="false">
+      <i class="icon-thumbs-down"></i>
+      <strong>{{'An error occured'|i18n}}</strong>
+      <p>{{gridlistErrorMsg}}</p>
+    </span>
      <ul class="vertical-list">
       <hr>
        <div class="{{isSelected(grid)}}" ng-repeat="grid in mapproxy_grids | orderBy:'name'"
@@ -72,10 +77,10 @@
         <i class="icon-ok"></i>
         <strong>{{'Saved successfully'|i18n}}</strong>
        </span>
-       <span class="text-error" id="grid_save_error" ng-show="false">
+       <span class="text-error" id="gridform_service_error" ng-show="false">
           <i class="icon-thumbs-down"></i>
           <strong>{{'Saving failed'|i18n}}</strong>
-          <p>{{errorMsg}}</p>
+          <p>{{gridformErrorMsg}}</p>
         </span>
   </form>
 </div>
