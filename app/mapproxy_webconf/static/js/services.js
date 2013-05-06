@@ -204,28 +204,43 @@ WMSSourceService = function(_section) {
     MapproxyBaseService.call(this, _section);
     var _this = this;
 
-    this.layerTitle = function(url, layer_name) {
-        var title = false;
-        angular.forEach(_this._items, function(wms) {
-            if(wms.url == url) {
-                angular.forEach(wms.layer.layers, function(layer) {
-                    if(layer.name == layer_name) {
-                        title = layer.title;
-                    }
-                });
+    this._identifySource = function(url) {
+        var source = false;
+        angular.forEach(_this._items, function(_source) {
+            if(_source.url == url) {
+                source = _source;
             }
         });
-        return title;
+        return source;
+    };
+    this._identifyLayer = function(url, layerName) {
+        var layer = false;
+        var source = _this._identifySource(url);
+        if(source) {
+            angular.forEach(source.layer.layers, function(_layer) {
+                if(_layer.name == layerName) {
+                    layer = _layer;
+                }
+            });
+        }
+        return layer;
+    };
+
+    this.layerTitle = function(url, layerName) {
+        var layer = _this._identifyLayer(url, layerName);
+        if(layer) {
+            return layer.title;
+        }
+        return false;
     };
 
     this.coverage = function(url) {
-        var coverage = false;
-        angular.forEach(_this._items, function(wms) {
-            if(wms.url == url) {
-                coverage = wms.layer.llbbox;
-            }
-        });
-        return coverage;
+        var source = _this._identifySource(url);
+        if(source) {
+            return source.layer.llbbox;
+        }
+        return false;
+    };
     };
 
     this.refresh = function(_item) {
