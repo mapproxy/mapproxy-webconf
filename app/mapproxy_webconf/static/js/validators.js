@@ -78,11 +78,13 @@ directive('unique', function() {
         link: function(scope, elm, attrs, ctrl) {
             ctrl.$parsers.unshift(function(viewValue) {
                 var unique = true;
-                angular.forEach(angular.fromJson(attrs.unique), function(item) {
-                    if(viewValue == item) {
-                        unique = false;
-                    }
-                });
+                if(attrs.unique !== "") {
+                    angular.forEach(angular.fromJson(attrs.unique), function(item) {
+                        if(viewValue == item) {
+                            unique = false;
+                        }
+                    });
+                }
                 if(unique) {
                     ctrl.$setValidity('unique', true);
                     return viewValue;
