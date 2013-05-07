@@ -72,7 +72,7 @@ def mapproxy_conf_from_storage(storage, project):
     mapproxy_conf['layers'] = [replace_ids_layer(l, id_map) for l in layers]
     mapproxy_conf['caches'] = id_dict_to_named_dict(dict((k, replace_ids_cache(caches[k], id_map)) for k in used_caches))
     mapproxy_conf['sources'] = id_dict_to_named_dict(dict((k, sources[k]) for k in used_sources))
-    mapproxy_conf['grids'] = id_dict_to_named_dict(dict((k, grids[k]) for k in used_grids))
+    mapproxy_conf['grids'] = id_dict_to_named_dict(dict((k, grids[k]) for k in used_grids if type(k) == int))
 
     if 'sources' in mapproxy_conf:
         for source in mapproxy_conf['sources'].values():
@@ -84,7 +84,7 @@ def mapproxy_conf_from_storage(storage, project):
 
 def replace_ids_cache(cache, id_map):
     if 'grids' in cache:
-        cache['grids'] = [id_map[i] for i in cache['grids']]
+        cache['grids'] = [id_map[i] if type(i) == int else i for i in cache['grids']]
     if 'sources' in cache:
         cache['sources'] = [id_map[i] for i in cache['sources']]
     return cache
