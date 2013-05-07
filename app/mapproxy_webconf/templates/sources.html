@@ -17,6 +17,7 @@
     <div class="{{isSelected(source)}}" ng-repeat="source in mapproxy_sources | orderBy:'name'"
     ng-click="editSource(source)">
     <li>
+      <i ng-show="source._manual" class="icon-pencil"></i>
       {{source.name}}
       <i ng-show="!hasDependencies(source)" class="icon-remove"
         ask-dialog
