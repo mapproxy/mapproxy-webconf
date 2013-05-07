@@ -220,17 +220,9 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
     };
     $scope.saveSourceManual = function() {
         console.log($scope.custom.manualEdition)
-        var source = false;
-        try {
-            source = clearData(angular.fromJson($scope.custom.manualEdition));
-        } catch(e) {
-            console.log(e)
-            //show dialog with "invalid json" or so
-        }
-        if(source) {
-            source._manual = true;
-            MapproxySources.add(source);
-        }
+        var source = $scope.custom.manualEdition;
+        source._manual = true;
+        MapproxySources.add(source);
     };
     $scope.addCoverage = function(event) {
         event.preventDefault();
