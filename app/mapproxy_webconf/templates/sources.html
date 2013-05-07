@@ -97,9 +97,10 @@
             <button class="btn" ng-disabled="!source.req.url" ng-click="addCoverage($event)" id="source_form_load_coverage">{{'Use coverage from WMS'|i18n}}</button>
           </div>
           <div labeled="input_label" name-for="source_form.supported_srs" text="{{'Supported SRS'|i18n}}">
-            <div ng-model="source.supported_srs" name="source_form.supported_srs" class="input-xlarge uneditable-input insertable-list">
-              <div ng-repeat="srs in srsList">{{srs}}</div>
+            <div name="source_form.supported_srs" class="well well-small input-xlarge">
+              <span class="badge" ng-repeat="srs in source.supported_srs">{{srs}}<i class="icon-remove" ng-click="removeSRS($event, srs)"></i></span>
             </div>
+            <button class="btn" ng-click="loadSRS($event)" ng-disabled="!source.req.url">{{'Add SRS from WMS'|i18n}}</button>
           </div>
           <div class="input-append" labeled="input_label" name-for="add_srs_manual" text="{{'Manual add SRS'|i18n}}">
             <input type="text" id="add_srs_manual" name="add_srs_manual" ng-model="custom.srs_manual" class="input-xlarge">

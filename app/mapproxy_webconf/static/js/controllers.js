@@ -58,7 +58,7 @@ function TreeCtrl($scope, localize, WMSSources) {
 };
 
 function MapproxySourceListCtrl($scope, localize, MapproxySources) {
-    var DEFAULT_SOURCE = {"type": "wms", "req": {}};
+    var DEFAULT_SOURCE = {"type": "wms", "req": {}, "coverage": {}, "supported_srs": []};
     var refreshList = function() {
         $scope.mapproxy_sources = MapproxySources.list();
     };
@@ -124,24 +124,21 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources) {
 };
 
 function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
-    var DEFAULT_SOURCE = {"type": "wms", "req": {}, "coverage": {}};
+    var DEFAULT_SOURCE = {"type": "wms", "req": {}, "coverage": {}, "supported_srs": []};
+
     var errorHandler = function() {
         $scope.sourceformErrorMsg = MapproxySources.error();
         $('#sourceform_service_error').show().fadeOut(3000);
     };
-    var updateSRS = function() {
-        var srsList = angular.copy($scope.userSRS);
-        angular.forEach($scope.source.req.layers, function(layer) {
-            var result = WMSSources.layerSRS($scope.source.req.url, layer);
-            if(result) {
-                angular.forEach(result, function(srs) {
-                    if($.inArray(srs, srsList) === -1) {
-                        srsList.push(srs);
-                    }
-                });
-            }
-        });
-        return srsList;
+    $scope.loadSRS = function() {
+        var result = WMSSources.srs($scope.source.req.url);
+        if(result) {
+            angular.forEach(result, function(srs) {
+                if($.inArray(srs, $scope.source.supported_srs) === -1) {
+                    $scope.source.supported_srs.push(srs);
+                }
+            });
+        }
     };
     $scope.openDialog = function(callback, new_data) {
         if(angular.isUndefined($scope.source.req) ||
@@ -224,8 +221,19 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
     $scope.addCoverage = function(event) {
         event.preventDefault();
         $scope.source.coverage.bbox = WMSSources.coverage($scope.source.req.url);
-
     };
+    $scope.toggleSRS = function(event, srs) {
+        console.log('here')
+        if(event) {
+            event.preventDefault();
+        }
+        var srsIdx = $.inArray(srs, $scope.source.supported_srs);
+        if(srsIdx === -1) {
+            $scope.source.supported_srs.push(srs);
+        } else {
+            $scope.source.supported_srs.splice(srsIdx, 1);
+        }
+    }
     $scope.resetForm = function(event) {
         if(!angular.isUndefined(event)) {
             event.preventDefault();
@@ -247,10 +255,16 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
     };
     $scope.addSRSManual = function(event) {
         event.preventDefault();
-        if($.inArray($scope.custom.srs_manual, $scope.userSRS) === -1) {
-            $scope.userSRS.push($scope.custom.srs_manual);
-            $scope.srsList = updateSRS();
-            $scope.custom.srs_manual = undefined;
+        if($.inArray($scope.custom.srs_manual, $scope.supported_srs) === -1) {
+            $scope.source.supported_srs.push($scope.custom.srs_manual);
+        }
+    };
+    $scope.removeSRS = function(event, srs) {
+        event.preventDefault();
+        event.stopPropagation();
+        var supportedSRSID = $.inArray(srs, $scope.source.supported_srs);
+        if(supportedSRSID !== -1) {
+            $scope.source.supported_srs.splice(supportedSRSID, 1);
         }
     };
     $scope.exist = function(name) {
@@ -262,7 +276,7 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
 
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {};
-    $scope.userSRS = [];
+
     $scope.source = angular.copy(DEFAULT_SOURCE);
     $scope.formTitle = 'New source';
 
@@ -285,16 +299,12 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
             $('#source_form_save').removeClass('btn-success');
         }
     });
-    $scope.$watch('source.req.layers', function() {
-        $scope.srsList = updateSRS();
-    });
 
     $(window).on('beforeunload', function() {
         if($scope.source_form.$dirty) {
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
-
 };
 
 function MapproxyCacheListCtrl($scope, MapproxyCaches) {

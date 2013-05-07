@@ -336,5 +336,9 @@
     {
         "key": "Manual add SRS",
         "value": "Koordinatensystem manuell hinzufügen"
+    },
+    {
+        "key": "Add SRS from WMS",
+        "value": "SRS von WMS hinzufügen"
     }
 ]
