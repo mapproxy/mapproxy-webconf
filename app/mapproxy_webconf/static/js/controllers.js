@@ -75,7 +75,7 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources) {
     };
     $scope.editSource = function(source) {
         $scope.selected = source
-        MapproxySources.current(true, source);
+        MapproxySources.current(true, $.extend({}, DEFAULT_SOURCE, source));
     };
     $scope.removeSource = function(source) {
         $scope.selected = undefined;
