@@ -340,5 +340,17 @@
     {
         "key": "Add SRS from WMS",
         "value": "SRS von WMS hinzufügen"
+    },
+    {
+        "key": "Default grids",
+        "value": "Default Grids"
+    },
+    {
+        "key": "User defined grids",
+        "value": "Benutzerdefinierte Grids"
+    },
+    {
+        "key": "Default grid",
+        "value": "Default Grid"
     }
 ]

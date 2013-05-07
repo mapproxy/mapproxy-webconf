@@ -448,7 +448,15 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
 function MapproxyGridListCtrl($scope, MapproxyGrids) {
     var DEFAULT_GRID = {'bbox': [null, null, null, null]};
     var refreshList = function() {
-        $scope.mapproxy_grids = MapproxyGrids.list();
+        $scope.default_grids = [];
+        $scope.mapproxy_grids = [];
+        angular.forEach(MapproxyGrids.list(), function(grid) {
+            if(grid.default) {
+                $scope.default_grids.push(grid);
+            } else {
+                $scope.mapproxy_grids.push(grid);
+            }
+        });
     };
     var errorHandler = function() {
         $scope.gridlistErrorMsg = MapproxyGrids.error();
@@ -546,7 +554,13 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids) {
             $scope.grid.bbox = [null, null, null, null];
         }
         $scope.formTitle = angular.equals($scope.grid, DEFAULT_GRID) ? 'New grid' : 'Edit grid';
-        $scope.grid_form.$setPristine();
+        if($scope.grid.default) {
+            $scope.formTitle = 'Default grid';
+            $scope.default_grid = true;
+        } else {
+            $scope.default_grid = false;
+            $scope.grid_form.$setPristine();
+        }
     });
 
     $scope.$on('grids.added', function() {

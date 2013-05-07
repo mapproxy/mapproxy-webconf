@@ -1,10 +1,27 @@
 %def leftblock():
   <div ng-controller="MapproxyGridListCtrl">
+
+    <h3>{{'Default grids'|i18n}}</h3>
+    <span class="text-error" id="gridlist_service_error" ng-show="false">
+      <i class="icon-thumbs-down"></i>
+      <strong>{{'An error occured'|i18n}}</strong>
+      <p>{{gridlistErrorMsg}}</p>
+    </span>
+     <ul class="vertical-list">
+      <hr>
+       <div class="{{isSelected(grid)}}" ng-repeat="grid in default_grids | orderBy:'name'"
+        ng-click="editGrid(grid)">
+         <li>{{grid.name}}
+        </li>
+        <hr>
+      </div>
+    </ul>
+    <hr>
     <button class="btn btn-small btn-info pull-right" ng-click="newGrid()">
       <span class="icon-plus-sign icon-white" ></span>
       {{'Create new grid'|i18n}}</button>
 
-    <h3>{{'Grids'|i18n}}</h3>
+    <h3>{{'User defined grids'|i18n}}</h3>
     <span class="text-error" id="gridlist_service_error" ng-show="false">
       <i class="icon-thumbs-down"></i>
       <strong>{{'An error occured'|i18n}}</strong>
@@ -34,9 +51,9 @@
 %end
 
 %def middleblock():
-<div>
-  <form name="grid_form" ng-controller="MapproxyGridFormCtrl" novalidate>
-    <h3>{{formTitle|i18n}}</h3>
+<div ng-controller="MapproxyGridFormCtrl">
+  <h3>{{formTitle|i18n}}</h3>
+  <form name="grid_form" id="grid_form" ng-show="!default_grid" novalidate>
     <!-- name -->
       <div labeled="input_label" name-for="grid_form.name" text="{{'Name'|i18n}}">
           <input required type="text" ng-model="grid.name" id="grid_form.name" />
@@ -83,6 +100,11 @@
           <p>{{gridformErrorMsg}}</p>
         </span>
   </form>
+  <div ng-show="default_grid">
+    <div labeled="input_label" name-for="default_grid.name" text="{{'Name'|i18n}}">
+      <div class="input-xlarge">{{grid.name}}</div>
+    </div>
+  </div>
 </div>
 %end
 

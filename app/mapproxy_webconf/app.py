@@ -121,13 +121,25 @@ class RESTLayers(RESTBase):
         super(RESTLayers, self).setup_routing(app)
         app.route('/conf/<project>/%s' % self.section, 'PUT', self.update_tree)
 
+class RESTGrids(RESTBase):
+    def __init__(self):
+        RESTBase.__init__(self, 'grids')
+
+    def list(self, project, storage):
+        default_grids = {
+            'default_0': {'_id': 'default_0', 'name': 'GLOBAL_MERCATOR', 'default': True},
+            'default_1': {'_id': 'default_1', 'name': 'GLOBAL_GEODETIC', 'default': True}
+        }
+        default_grids.update(storage.get_all(self.section, project, with_id=True))
+        return default_grids
+
 RESTBase('sources').setup_routing(app)
 RESTBase('caches').setup_routing(app)
-RESTBase('grids').setup_routing(app)
 RESTBase('globals').setup_routing(app)
 RESTBase('services').setup_routing(app)
 RESTWMSCapabilities().setup_routing(app)
 RESTLayers().setup_routing(app)
+RESTGrids().setup_routing(app)
 
 ## other
 
