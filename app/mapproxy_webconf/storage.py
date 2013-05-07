@@ -129,6 +129,7 @@ class SQLiteStore(object):
                 data TEXT NOT NULL,
                 rank INTEGER,
                 parent INTEGER,
+                manual BOOLEAN,
                 FOREIGN KEY(parent) REFERENCES store(id) ON DELETE CASCADE
             )
         """)
@@ -144,10 +145,11 @@ class SQLiteStore(object):
             append_data = False
 
         cur = self.db.cursor()
-        cur.execute("SELECT id, data, parent, rank FROM store WHERE section = ? AND project = ?",
+        cur.execute("SELECT id, data, parent, rank, manual FROM store WHERE section = ? AND project = ?",
             (section, project))
         for row in cur.fetchall():
             data = json.loads(row['data'])
+            data['_manual'] = row['manual']
             if with_id:
                 data['_id'] = row['id']
             if with_rank:
@@ -176,27 +178,30 @@ class SQLiteStore(object):
     def add(self, section, project, data):
         rank = data.pop('_rank', None)
         parent = data.pop('_parent', None)
+        manual = data.pop('_manual', False)
         data.pop('_id', None)
+
 
         data = json.dumps(data)
 
         cur = self.db.cursor()
-        cur.execute("INSERT INTO store (section, project, data, parent, rank) VALUES (?, ?, ?, ?, ?)",
-            (section, project, data, parent, rank))
+        cur.execute("INSERT INTO store (section, project, data, parent, rank, manual) VALUES (?, ?, ?, ?, ?, ?)",
+            (section, project, data, parent, rank, manual))
         self.db.commit()
         return cur.lastrowid
 
     def update(self, id, section, project, data):
         rank = data.pop('_rank', None)
         parent = data.pop('_parent', None)
+        manual = data.pop('_manual', False)
         data.pop('_id', None)
         data.pop('_layers', None)
 
         data = json.dumps(data)
 
         cur = self.db.cursor()
-        cur.execute("UPDATE store SET data = ?, parent = ?, rank = ? WHERE id = ? AND SECTION = ? AND project = ?",
-            (data, parent, rank, id, section, project))
+        cur.execute("UPDATE store SET data = ?, parent = ?, rank = ?, manual = ? WHERE id = ? AND SECTION = ? AND project = ?",
+            (data, parent, rank, manual, id, section, project))
         self.db.commit()
 
     def updates(self, section, project, data):
