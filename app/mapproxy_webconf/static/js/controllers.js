@@ -255,8 +255,9 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
     };
     $scope.addSRSManual = function(event) {
         event.preventDefault();
-        if($.inArray($scope.custom.srs_manual, $scope.supported_srs) === -1) {
+        if($.inArray($scope.custom.srs_manual, $scope.source.supported_srs) === -1) {
             $scope.source.supported_srs.push($scope.custom.srs_manual);
+            $scope.custom.srs_manual = undefined;
         }
     };
     $scope.removeSRS = function(event, srs) {
