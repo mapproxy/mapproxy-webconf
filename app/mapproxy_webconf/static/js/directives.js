@@ -501,6 +501,97 @@ directive('labeled', function($parse, localize) {
             }
         }
     };
+}).
+
+directive('editarea', function() {
+    return {
+        restrict: 'A',
+        scope: 'element',
+        require: 'ngModel',
+        link: function(scope, element, attrs, ngModelCtrl) {
+            scope = scope.$new(false)
+
+            var tabwidth = attrs.tabwidth || 2;
+            var indent = attrs.indent || 'spaces';
+            var maxrows = attrs.maxrows || 30;
+
+            var privateAttributes = {};
+
+            var valid = true;
+
+            var prepareEditareaValue = function(value) {
+                angular.forEach(value, function(val, key) {
+                    if(key.startsWith('_')) {
+                        privateAttributes[key] = val;
+                    }
+                });
+                angular.forEach(privateAttributes, function(val, key) {
+                    delete value[key];
+                });
+
+                return angular.toJson(value, true);
+            };
+            var prepareModelValue = function(value) {
+                $.extend({}, value, privateAttributes);
+            };
+
+            var checkValidity = function() {
+                var value = $(element).val();
+                try {
+                    value = angular.fromJson(value);
+                } catch(e) {
+                    valid = false;
+                }
+                if(valid) {
+                    ngModelCtrl.$setViewValue(prepareModelValue(value));
+                    console.log(ngModelCtrl.$viewValue)
+                }
+                ngModelCtrl.$setValidity('json', valid);
+
+            };
+
+            // replace tabs with spaces or tabs
+            $(element).on('keydown', function(e) {
+                if(e.keyCode == 9) {
+                    var _indent = "";
+                    if (indent == 'spaces') {
+                        for (var i=0; i<tabwidth; i++) {
+                            _indent += ' '
+                        }
+                    } else {
+                        for (var i=0; i<tabwidth; i++) {
+                            _indent += '\t'
+                        }
+                    }
+                    var startPos = this.selectionStart;
+                    this.value = this.value.substring(0, startPos) + _indent + this.value.substring(this.selectionEnd);
+                    this.selectionStart = startPos + tabwidth;
+                    return false;
+                }
+            });
+            $(element).on('keyup', function() {
+                scope.$apply(function() {
+                    checkValidity();
+                });
+            });
+
+
+            $(element).val(prepareEditareaValue(ngModelCtrl.$modelValue));
+
+            scope.$watch(attrs.observe, function(areaValue, b) {
+                if(angular.isDefined(areaValue)) {
+                    var value = prepareEditareaValue(areaValue)
+                    var rows = value.match(/[^\n]*\n[^\n]*/gi).length + 1
+                    $(element.attr('rows', (rows > maxrows) ? maxrows : rows));
+                    $(element).val(value);
+                    scope.$apply(function() {
+                        checkValidity();
+                    });
+                }
+            })
+
+        }
+    };
 });
 
 /* Controller for directives */

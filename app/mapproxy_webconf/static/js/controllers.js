@@ -218,6 +218,20 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
             $('#source_save_error').show().fadeOut(3000);
         }
     };
+    $scope.saveSourceManual = function() {
+        console.log($scope.custom.manualEdition)
+        var source = false;
+        try {
+            source = clearData(angular.fromJson($scope.custom.manualEdition));
+        } catch(e) {
+            console.log(e)
+            //show dialog with "invalid json" or so
+        }
+        if(source) {
+            source._manual = true;
+            MapproxySources.add(source);
+        }
+    };
     $scope.addCoverage = function(event) {
         event.preventDefault();
         var bbox = WMSSources.coverage($scope.source.req.url);
@@ -268,6 +282,7 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
 
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {};
+    $scope.custom.manualEdition = false;
 
     $scope.source = angular.copy(DEFAULT_SOURCE);
     $scope.formTitle = 'New source';
@@ -291,6 +306,8 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
             $('#source_form_save').removeClass('btn-success');
         }
     });
+
+    console.log($scope)
 
     $(window).on('beforeunload', function() {
         if($scope.source_form.$dirty) {
