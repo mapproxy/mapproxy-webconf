@@ -13,7 +13,23 @@ var MapproxyBaseService = function(_section, _dependencies) {
     this._errorHandler = function(error) {
         _this._error_msg = error.data.error;
         _this._rootScope.$broadcast(_this._section + _this._action + '_error');
-    }
+    };
+    this._addDependencies = function(item) {
+        item._dependencies = {};
+        angular.forEach(_this._dependencies, function(dependency) {
+            item._dependencies[dependency._section] = []
+            angular.forEach(dependency._items, function(dependencyItem) {
+                var useSection = _this._section;
+                //layers only have sources for cache- and source-items
+                if(item._section == 'caches' && dependencyItem._section == 'layers') {
+                    useSection = 'sources';
+                }
+                if($.inArray(item._id, dependencyItem[useSection]) != -1) {
+                    item._dependencies[dependency._section].push(dependencyItem);
+                }
+            });
+        });
+    };
     this._waitForLoadComplete = function(event) {
         var name = event.name.split('.')[0];
         var loadComplete = _this._loaded;
@@ -23,24 +39,10 @@ var MapproxyBaseService = function(_section, _dependencies) {
             }
         });
         if(loadComplete) {
-            angular.forEach(_this._items, function(item, id) {
-                angular.forEach(_this._dependencies, function(dependency) {
-                    item.dependencies[dependency._section] = []
-                    angular.forEach(dependency._items, function(dependencyItem) {
-                        var useSection = _this._section;
-                        //layers only have sources for cache- and source-items
-                        if(item._section == 'caches' && dependencyItem._section == 'layers') {
-                            useSection = 'sources';
-                        }
-                        if($.inArray(item._id, dependencyItem[useSection]) != -1) {
-                            item.dependencies[dependency._section].push(dependencyItem);
-                        }
-                    });
-                });
-            });
+            angular.forEach(_this._items, _this._addDependencies);
             _this._rootScope.$broadcast(_this._section + '.load_complete');
         }
-    }
+    };
     this.load = function() {
         _this._items = {};
         _this._loaded = false;
@@ -48,7 +50,6 @@ var MapproxyBaseService = function(_section, _dependencies) {
         _this._resource.query({action: _this._section}, function(result) {
             if(result) {
                 angular.forEach(result, function(item) {
-                    item.dependencies = {};
                     item._section = _this._section;
                     _this._items[item._id] = item;
                 });
@@ -60,10 +61,14 @@ var MapproxyBaseService = function(_section, _dependencies) {
     };
     this.add = function(_item) {
         var item = new _this._resource(_item);
+        delete item._dependencies;
+        delete item._section;
         if(angular.isUndefined(item._id)) {
             _this._action = '.add';
             item.$save({action: _this._section},
                 function(result) {
+                    result._section = _this._section;
+                    _this._addDependencies(result);
                     _this._items[result._id] = result;
                     if(angular.isDefined(_this._rootScope)) {
                         _this._last = result;
@@ -73,6 +78,8 @@ var MapproxyBaseService = function(_section, _dependencies) {
         } else {
             _this._action = '.update';
             item.$update({action: _this._section, id: item._id}, function(result) {
+                result._section = _this._section;
+                _this._addDependencies(result);
                 _this._items[result._id] = result;
                 if(angular.isDefined(_this._rootScope))
                     _this._rootScope.$broadcast(_this._section + '.updated');

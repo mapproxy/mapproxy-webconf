@@ -87,7 +87,7 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources) {
     };
     $scope.hasDependencies = function(source) {
         var hasDependencies = false;
-        angular.forEach(source.dependencies, function(kind) {
+        angular.forEach(source._dependencies, function(kind) {
             if(kind.length > 0) {
                 hasDependencies = true;
             }
@@ -96,10 +96,10 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources) {
     };
     $scope.getDependencies = function(source) {
         var result = '';
-        angular.forEach(source.dependencies, function(dependencies, name) {
-            if(dependencies.length > 0) {
+        angular.forEach(source._dependencies, function(_dependencies, name) {
+            if(_dependencies.length > 0) {
                 result += name +'<br>';
-                angular.forEach(dependencies, function(dependency) {
+                angular.forEach(_dependencies, function(dependency) {
                     result += '&nbsp;&nbsp;' + dependency.name + '<br>';
                 });
             }
@@ -337,7 +337,7 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches) {
     }
     $scope.hasDependencies = function(cache) {
         var hasDependencies = false;
-        angular.forEach(cache.dependencies, function(kind) {
+        angular.forEach(cache._dependencies, function(kind) {
             if(kind.length > 0) {
                 hasDependencies = true;
             }
@@ -346,10 +346,10 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches) {
     };
     $scope.getDependencies = function(cache) {
         var result = '';
-        angular.forEach(cache.dependencies, function(dependencies, name) {
-            if(dependencies.length > 0) {
+        angular.forEach(cache._dependencies, function(_dependencies, name) {
+            if(_dependencies.length > 0) {
                 result += name +'<br>';
-                angular.forEach(dependencies, function(dependency) {
+                angular.forEach(_dependencies, function(dependency) {
                     result += '&nbsp;&nbsp;' + dependency.name + '<br>';
                 });
             }
@@ -484,7 +484,7 @@ function MapproxyGridListCtrl($scope, MapproxyGrids) {
 
     $scope.hasDependencies = function(grid) {
         var hasDependencies = false;
-        angular.forEach(grid.dependencies, function(kind) {
+        angular.forEach(grid._dependencies, function(kind) {
             if(kind.length > 0) {
                 hasDependencies = true;
             }
@@ -493,10 +493,10 @@ function MapproxyGridListCtrl($scope, MapproxyGrids) {
     };
     $scope.getDependencies = function(grid) {
         var result = '';
-        angular.forEach(grid.dependencies, function(dependencies, name) {
-            if(dependencies.length > 0) {
+        angular.forEach(grid._dependencies, function(_dependencies, name) {
+            if(_dependencies.length > 0) {
                 result += name +'<br>';
-                angular.forEach(dependencies, function(dependency) {
+                angular.forEach(_dependencies, function(dependency) {
                     result += '&nbsp;&nbsp;' + dependency.name + '<br>';
                 });
             }
