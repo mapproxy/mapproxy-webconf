@@ -93,7 +93,7 @@
             <input type="checkbox" ng-model="source.req.transparent" id="source_form.req_transparent">
           </div>
           <div class="input-append" labeled='input_label' name-for="source_form.coverage_bbox" text="{{'Coverage BBOX'|i18n}}">
-            <input ng-model="source.coverage.bbox" ng-readonly id="source_form.coverage_bbox" ng-disabled="true" class="input-xlarge uneditable-input"></input>
+            <input type="text" ng-model="source.coverage.bbox" id="source_form.coverage_bbox" class="input-xlarge">
             <button class="btn" ng-disabled="!source.req.url" ng-click="addCoverage($event)" id="source_form_load_coverage">{{'Use coverage from WMS'|i18n}}</button>
           </div>
           <div labeled="input_label" name-for="source_form.supported_srs" text="{{'Supported SRS'|i18n}}">
