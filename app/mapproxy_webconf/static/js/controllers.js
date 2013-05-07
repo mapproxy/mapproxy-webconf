@@ -220,7 +220,10 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
     };
     $scope.addCoverage = function(event) {
         event.preventDefault();
-        $scope.source.coverage.bbox = WMSSources.coverage($scope.source.req.url);
+        var bbox = WMSSources.coverage($scope.source.req.url);
+        if(bbox) {
+            $scope.source.coverage.bbox = bbox;
+        }
     };
     $scope.toggleSRS = function(event, srs) {
         console.log('here')
