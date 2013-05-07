@@ -269,6 +269,7 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
     MapproxySources.current(true, $scope.source)
 
     $scope.$on('sources.current', function() {
+        $scope.source = {};
         $scope.source = MapproxySources.current(true);
         $scope.formTitle = angular.equals($scope.source, DEFAULT_SOURCE) ? 'New source' : 'Edit source';
         $scope.source_form.$setPristine();
