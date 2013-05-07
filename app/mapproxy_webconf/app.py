@@ -28,9 +28,11 @@ class RESTBase(object):
     @requires_json
     def add(self, project, storage):
         data = request.json
+        manual = data.get('_manual', False)
         id = storage.add(self.section, project, data)
         response.status = 201
         data['_id'] = id
+        data['_manual'] = manual
         return data
 
     def get(self, project, id, storage):
@@ -43,9 +45,11 @@ class RESTBase(object):
     @requires_json
     def update(self, project, id, storage):
         data = request.json
+        manual = data.get('_manual', False)
         # used deepcopy cause storage.update modifies data
         storage.update(id, self.section, project, deepcopy(data))
         response.status = 200
+        data['_manual'] = manual
         return data
 
     def delete(self, project, id, storage):
