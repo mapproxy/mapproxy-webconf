@@ -515,26 +515,40 @@ directive('editarea', function() {
             var indent = attrs.indent || 'spaces';
             var maxrows = attrs.maxrows || 30;
 
+            var privateAttributes = {};
+
+            var prepareEditareaValue = function(value) {
+                angular.forEach(value, function(val, key) {
+                    if(key.startsWith('_')) {
+                        privateAttributes[key] = val;
+                    }
+                });
+                angular.forEach(privateAttributes, function(val, key) {
+                    delete value[key];
+                });
+
+                return angular.toJson(value, true);
+            };
+            var prepareModelValue = function(value) {
+                return $.extend({}, value, privateAttributes);
+            };
+
             var checkValidity = function() {
-                console.log('here')
-                var value = $(element).val();
                 var valid = true;
+                var value = $(element).val();
                 try {
-                    angular.fromJson(value);
+                    value = angular.fromJson(value);
                 } catch(e) {
                     valid = false;
                 }
-                console.log(valid)
                 if(valid) {
-                    scope.$apply(function() {
-                        ngModelCtrl.$setViewValue();
-                    });
+                    ngModelCtrl.$setViewValue(prepareModelValue(value));
+                } else {
+                    ngModelCtrl.$setViewValue(undefined);
                 }
-                scope.$apply(function() {
-                    ngModelCtrl.$setValidity('json', valid);
-                });
+                ngModelCtrl.$setValidity('json', valid);
 
-            }
+            };
 
             // replace tabs with spaces or tabs
             $(element).on('keydown', function(e) {
@@ -555,17 +569,22 @@ directive('editarea', function() {
                     return false;
                 }
             });
-            $(element).on('keyup', checkValidity);
+            $(element).on('keyup', function() {
+                scope.$apply(function() {
+                    checkValidity();
+                });
+            });
 
-            $(element).val(angular.fromJson(ngModelCtrl.$modelValue, true));
 
-            scope.$watch(attrs.observe, function(areaValue) {
+            $(element).val(prepareEditareaValue(ngModelCtrl.$modelValue));
+
+            scope.$watch(attrs.observe, function(areaValue, b) {
                 if(angular.isDefined(areaValue)) {
-                    var value = angular.toJson(areaValue, true);
+                    var value = prepareEditareaValue(areaValue)
                     var rows = value.match(/[^\n]*\n[^\n]*/gi).length + 1
                     $(element.attr('rows', (rows > maxrows) ? maxrows : rows));
-                    $(element).val(angular.toJson(areaValue, true));
-                    ngModelCtrl.$setViewValue($(element).val());
+                    $(element).val(value);
+                    checkValidity();
                 }
             })
 
