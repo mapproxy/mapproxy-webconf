@@ -225,18 +225,6 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
             $scope.source.coverage.bbox = bbox;
         }
     };
-    $scope.toggleSRS = function(event, srs) {
-        console.log('here')
-        if(event) {
-            event.preventDefault();
-        }
-        var srsIdx = $.inArray(srs, $scope.source.supported_srs);
-        if(srsIdx === -1) {
-            $scope.source.supported_srs.push(srs);
-        } else {
-            $scope.source.supported_srs.splice(srsIdx, 1);
-        }
-    }
     $scope.resetForm = function(event) {
         if(!angular.isUndefined(event)) {
             event.preventDefault();
