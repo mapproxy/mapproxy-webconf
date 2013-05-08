@@ -522,7 +522,7 @@ directive('editarea', function($http) {
           "<i class='icon-ok'></i>" +
           "<strong>{{'Saved successfully'|i18n}}</strong>" +
           "</span>" +
-          "<span class='text-error' id='sourceform_service_error' ng-show='editareaErrorMsg'>" +
+          "<span class='text-error' id='editarea_error' ng-show='false'>" +
           "<i class='icon-thumbs-down'></i>" +
           "{{editareaErrorMsg}}" +
           "</span>" +
@@ -534,6 +534,11 @@ directive('editarea', function($http) {
             var _editareaElement = $($element).find('#_editarea');
             var privateAttributes = {};
 
+            var errorHandler = function(response) {
+                $scope.editareaErrorMsg = response.error;
+                $('#editarea_error').show().fadeOut(3000)
+            };
+
             var loadYAML = function() {
                 //need to copy cause we modify the object in called function
                 var json = prepareEditareaValue(angular.copy($scope.currentModelValue));
@@ -544,9 +549,7 @@ directive('editarea', function($http) {
                         _editareaElement.attr('rows', (rows > maxrows) ? maxrows : rows);
                         _editareaElement.val(yaml);
                     })
-                    .error(function(response) {
-                        $scope.editareaErrorMsg = response.error;
-                    });
+                    .error(errorHandler);
             };
 
             var prepareEditareaValue = function(value) {
@@ -583,9 +586,7 @@ directive('editarea', function($http) {
                         $scope.currentModelValue._manual = true;
                         $scope.$root.$broadcast('editarea.save', $scope.currentModelValue);
                     })
-                    .error(function(response) {
-                        $scope.editareaErrorMsg = response.error;
-                    });
+                    .error(errorHandler);
             };
             $scope.leaveEditarea = function() {
                 privateAttributes = {};
