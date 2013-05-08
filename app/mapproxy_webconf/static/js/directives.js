@@ -517,6 +517,10 @@ directive('editarea', function($http) {
           "<button ng-click='save()' ng-show='_editarea.visible&&currentModelValue._manual' class='btn'>{{'Save'|i18n}}</button>" +
           "<button ng-click='reset()' ng-show='_editarea.visible' class='btn'>Reset</button>" +
           "<button ng-click='leaveEditarea()' ng-show='_editarea.visible&&!currentModelValue._manual' class='btn'>Back to form edit</button>" +
+          "<span class='text-success source_save_ok' ng-show='false'>" +
+          "<i class='icon-ok'></i>" +
+          "<strong>{{'Saved successfully'|i18n}}</strong>" +
+          "</span>" +
           "<span class='text-error' id='sourceform_service_error' ng-show='editareaErrorMsg'>" +
           "<i class='icon-thumbs-down'></i>" +
           "{{editareaErrorMsg}}" +
