@@ -65,7 +65,7 @@
     },
     {
         "key": "Really remove source:",
-        "value": "Soll der WMS wirklich gelöscht werden:"
+        "value": "Soll die Source wirklich gelöscht werden:"
     },
     {
         "key": "Can not remove source:",
