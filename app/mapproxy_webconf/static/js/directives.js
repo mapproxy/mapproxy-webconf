@@ -531,6 +531,8 @@ directive('editarea', function($http) {
         controller: function($scope, $element, $attrs) {
             //$scope.$parent -> outer scope
             var maxrows = $attrs.maxrows || 30;
+            var yamlURL = $attrs.yamlUrl;
+            var jsonURL = $attrs.jsonUrl;
             var _editareaElement = $($element).find('#_editarea');
             var privateAttributes = {};
 
@@ -543,7 +545,7 @@ directive('editarea', function($http) {
                 //need to copy cause we modify the object in called function
                 var json = prepareEditareaValue(angular.copy($scope.currentModelValue));
                 //make url configurateable
-                $http.post('/yaml', json)
+                $http.post(yamlURL, json)
                     .success(function(yaml) {
                         var rows = yaml.match(/[^\n]*\n[^\n]*/gi).length + 1;
                         _editareaElement.attr('rows', (rows > maxrows) ? maxrows : rows);
@@ -580,7 +582,7 @@ directive('editarea', function($http) {
             };
             $scope.save = function() {
                 var yaml = _editareaElement.val();
-                $http.post('/json', {"yaml": yaml})
+                $http.post(jsonURL, {"yaml": yaml})
                     .success(function(json) {
                         $scope.currentModelValue = $.extend({}, json, privateAttributes);
                         $scope.currentModelValue._manual = true;
