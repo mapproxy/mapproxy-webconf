@@ -629,8 +629,9 @@ directive('editarea', function($http) {
                         }
                     }
                     var startPos = this.selectionStart;
-                    this.value = this.value.substring(0, startPos) + _indent + this.value.substring(this.selectionEnd);
+                    this.value = this.value.substring(0, startPos) + _indent + this.value.substring(startPos);
                     this.selectionStart = startPos + tabwidth;
+                    this.selectionEnd = startPos + tabwidth;
                     return false;
                 }
             });
