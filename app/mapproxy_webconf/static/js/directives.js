@@ -512,11 +512,12 @@ directive('editarea', function($http) {
         template:
           "<div>" +
           "<button class='btn' ng-show='!_editarea.visible' ng-click='show()'>Edit manual</button>" +
-          "<textarea class='input-xlarge' id='_editarea' ng-show='_editarea.visible'></textarea>"+
-          "<button ng-show='_editarea.visible&&!currentModelValue._manual' ask-dialog dialog-title=\"{{'Confirm!'|i18n}}\" dialog-text=\"{{'If you save the manual edition, you wont be able to edit it in the above form again. Realy save the manual edition?'|i18n}}\" callback='save()' class='btn'>{{'Save'|i18n}}</button>" +
-          "<button ng-click='save()' ng-show='_editarea.visible&&currentModelValue._manual' class='btn'>{{'Save'|i18n}}</button>" +
-          "<button ng-click='reset()' ng-show='_editarea.visible' class='btn'>Reset</button>" +
-          "<button ng-click='leaveEditarea()' ng-show='_editarea.visible&&!currentModelValue._manual' class='btn'>Back to form edit</button>" +
+          "<div ng-show='_editarea.visible'>" +
+          "<textarea class='input-xlarge' id='_editarea'></textarea>"+
+          "<button ng-show='!currentModelValue._manual' ask-dialog dialog-title=\"{{'Confirm!'|i18n}}\" dialog-text=\"{{'If you save the manual edition, you wont be able to edit it in the above form again. Realy save the manual edition?'|i18n}}\" callback='save()' class='btn'>{{'Save'|i18n}}</button>" +
+          "<button ng-click='save()' ng-show='currentModelValue._manual' class='btn'>{{'Save'|i18n}}</button>" +
+          "<button ng-click='reset()' ng-show='' class='btn'>Reset</button>" +
+          "<button ng-click='leaveEditarea()' ng-show='!currentModelValue._manual' class='btn'>Back to form edit</button>" +
           "<span class='text-success source_save_ok' ng-show='false'>" +
           "<i class='icon-ok'></i>" +
           "<strong>{{'Saved successfully'|i18n}}</strong>" +
@@ -525,6 +526,7 @@ directive('editarea', function($http) {
           "<i class='icon-thumbs-down'></i>" +
           "{{editareaErrorMsg}}" +
           "</span>" +
+          "</div>" +
           "</div>",
         controller: function($scope, $element, $attrs) {
             //$scope.$parent -> outer scope
