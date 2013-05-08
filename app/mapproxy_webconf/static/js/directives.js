@@ -515,7 +515,8 @@ directive('editarea', function($http) {
           "<textarea class='input-xlarge' id='_editarea' ng-show='_editarea.visible'></textarea>"+
           "<button ng-show='_editarea.visible&&!currentModelValue._manual' ask-dialog dialog-title=\"{{'Confirm!'|i18n}}\" dialog-text=\"{{'If you save the manual edition, you wont be able to edit it in the above form again. Realy save the manual edition?'|i18n}}\" callback='save()' class='btn'>{{'Save'|i18n}}</button>" +
           "<button ng-click='save()' ng-show='_editarea.visible&&currentModelValue._manual' class='btn'>{{'Save'|i18n}}</button>" +
-          "<button ng-click='reset()' ng-show='_editarea.visible' ng-disabled='currentModelValue._manual' class='btn'>Back to form edit</button>" +
+          "<button ng-click='reset()' ng-show='_editarea.visible' class='btn'>Reset</button>" +
+          "<button ng-click='leaveEditarea()' ng-show='_editarea.visible' ng-disabled='currentModelValue._manual' class='btn'>Back to form edit</button>" +
           "<span class='text-error' id='sourceform_service_error' ng-show='editareaErrorMsg'>" +
           "<i class='icon-thumbs-down'></i>" +
           "{{editareaErrorMsg}}" +
@@ -576,12 +577,18 @@ directive('editarea', function($http) {
                         $scope.editareaErrorMsg = response.error;
                     });
             };
-            $scope.reset = function() {
+            $scope.leaveEditarea = function() {
                 privateAttributes = {};
                 $scope._editarea.visible = false;
                 $scope._editarea.dirty = false;
                 $scope.currentModelValue = undefined;
                 $scope.editareaErrorMsg = undefined;
+            };
+            $scope.reset = function() {
+                privateAttributes = {};
+                $scope._editarea.dirty = false;
+                $scope.editareaErrorMsg = undefined;
+                loadYAML();
             };
 
             //register necessary functions and variables in parent scope
