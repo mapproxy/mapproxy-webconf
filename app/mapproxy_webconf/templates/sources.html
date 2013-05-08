@@ -38,93 +38,91 @@
 %end
 
 %def middleblock():
-<div>
-  <div ng-controller="MapproxySourceNoticeCtrl">
-    <div ng-controller="MapproxySourceFormCtrl">
-      <form name="source_form" novalidate ng-show="!_editarea.visible">
-        <h3>{{formTitle|i18n}}</h3>
-        <fieldset>
-        <div toggle-group mode="multiShow">
-          <!-- title? -->
-          <div
-            style="display:none;"
-            id="confirm_url_change_dialog"
-            title="{{'Confirm!'|i18n}}">
-              <p>{{'Replace service URL deletes all layers depends to it!'|i18n}}</p>
+<div ng-controller="MapproxySourceNoticeCtrl">
+  <div ng-controller="MapproxySourceFormCtrl">
+    <form name="source_form" novalidate ng-show="!_editarea.visible">
+      <h3>{{formTitle|i18n}}</h3>
+      <fieldset>
+      <div toggle-group mode="multiShow">
+        <!-- title? -->
+        <div
+          style="display:none;"
+          id="confirm_url_change_dialog"
+          title="{{'Confirm!'|i18n}}">
+            <p>{{'Replace service URL deletes all layers depends to it!'|i18n}}</p>
+        </div>
+        <div ng-show="true">
+          <div labeled="input_label" name-for="source_form.name" text="{{'Name'|i18n}}">
+            <input class="input-xlarge" type="text" required ng-model="source.name" id="source_form.name"/>
           </div>
-          <div ng-show="true">
-            <div labeled="input_label" name-for="source_form.name" text="{{'Name'|i18n}}">
-              <input class="input-xlarge" type="text" required ng-model="source.name" id="source_form.name"/>
-            </div>
-            <div id="source_wms_url" labeled="input_label" name-for="source_form.req_url" text="{{'URL'|i18n}}">
-              <input
-                id="source_form.req_url"
-                class="input-xlarge"
-                type="url"
-                value="{{source.wms_source}}"
-                ng-model="source.req.url"
-                required
-                droppable
-                change-callback="openDialog(callback, new_data)"
-                accepts="wms_source"
-                use-key-for-value="url"
-              />
-            </div>
+          <div id="source_wms_url" labeled="input_label" name-for="source_form.req_url" text="{{'URL'|i18n}}">
+            <input
+              id="source_form.req_url"
+              class="input-xlarge"
+              type="url"
+              value="{{source.wms_source}}"
+              ng-model="source.req.url"
+              required
+              droppable
+              change-callback="openDialog(callback, new_data)"
+              accepts="wms_source"
+              use-key-for-value="url"
+            />
+          </div>
 
-            <div labeled="input_label" name-for="source_form.req_layer" text="{{'Layer'|i18n}}">
-              <div droppable sortable required accepts="wms_layer" allow-array="true"
-                  ng-model="source.req.layers"
-                  name="source_form.req_layers"
-                  use-key-for-value="name"
-                  class="input-xlarge insertable-list uneditable-input"
-                  insert-callback="checkURL(callback, new_data)">
+          <div labeled="input_label" name-for="source_form.req_layer" text="{{'Layer'|i18n}}">
+            <div droppable sortable required accepts="wms_layer" allow-array="true"
+                ng-model="source.req.layers"
+                name="source_form.req_layers"
+                use-key-for-value="name"
+                class="input-xlarge insertable-list uneditable-input"
+                insert-callback="checkURL(callback, new_data)">
 
-                  <div ng-repeat="layer in source.req.layers" class="label">
-                    {{layer}}
-                    <span ng-show="layerTitle(layer)">({{layerTitle(layer)}})</span>
-                     <i class="icon-remove" ng-click="remove(layer)"></i>
-                  </div>
-              </div>
+                <div ng-repeat="layer in source.req.layers" class="label">
+                  {{layer}}
+                  <span ng-show="layerTitle(layer)">({{layerTitle(layer)}})</span>
+                   <i class="icon-remove" ng-click="remove(layer)"></i>
+                </div>
             </div>
-            <div class="input-append" labeled="input_label" name-for="add_layer_manual" text="{{'Manual add layer'|i18n}}">
-              <input type="text" id="add_layer_manual" name="add_layer_manual" ng-model="custom.layer_manual" class="input-xlarge" unique="{{source.req.layers}}">
-              <button class="btn" ng-click="addLayerManual($event)" ng-disabled="!custom.layer_manual">{{'Add'|i18n}}</button>
-            </div>
+          </div>
+          <div class="input-append" labeled="input_label" name-for="add_layer_manual" text="{{'Manual add layer'|i18n}}">
+            <input type="text" id="add_layer_manual" name="add_layer_manual" ng-model="custom.layer_manual" class="input-xlarge" unique="{{source.req.layers}}">
+            <button class="btn" ng-click="addLayerManual($event)" ng-disabled="!custom.layer_manual">{{'Add'|i18n}}</button>
+          </div>
 
-            <div labeled='checkbox_label' name-for="source_form.req_transparent" text="{{'Transparency'|i18n}}" warning="{{invalid_image_settings}}" warning-msg="{{'Selectet image format(s) not support transparency.'|i18n}}">
-              <input type="checkbox" ng-model="source.req.transparent" id="source_form.req_transparent">
+          <div labeled='checkbox_label' name-for="source_form.req_transparent" text="{{'Transparency'|i18n}}" warning="{{invalid_image_settings}}" warning-msg="{{'Selectet image format(s) not support transparency.'|i18n}}">
+            <input type="checkbox" ng-model="source.req.transparent" id="source_form.req_transparent">
+          </div>
+          <div class="input-append" labeled='input_label' name-for="source_form.coverage_bbox" text="{{'Coverage BBOX'|i18n}}">
+            <input type="text" ng-model="source.coverage.bbox" id="source_form.coverage_bbox" class="input-xlarge">
+            <button class="btn" ng-disabled="!source.req.url" ng-click="addCoverage($event)" id="source_form_load_coverage">{{'Use coverage from WMS'|i18n}}</button>
+          </div>
+          <div labeled="input_label" name-for="source_form.supported_srs" text="{{'Supported SRS'|i18n}}">
+            <div name="source_form.supported_srs" class="well well-small input-xlarge">
+              <span class="badge" ng-repeat="srs in source.supported_srs">{{srs}}<i class="icon-remove" ng-click="removeSRS($event, srs)"></i></span>
             </div>
-            <div class="input-append" labeled='input_label' name-for="source_form.coverage_bbox" text="{{'Coverage BBOX'|i18n}}">
-              <input type="text" ng-model="source.coverage.bbox" id="source_form.coverage_bbox" class="input-xlarge">
-              <button class="btn" ng-disabled="!source.req.url" ng-click="addCoverage($event)" id="source_form_load_coverage">{{'Use coverage from WMS'|i18n}}</button>
-            </div>
-            <div labeled="input_label" name-for="source_form.supported_srs" text="{{'Supported SRS'|i18n}}">
-              <div name="source_form.supported_srs" class="well well-small input-xlarge">
-                <span class="badge" ng-repeat="srs in source.supported_srs">{{srs}}<i class="icon-remove" ng-click="removeSRS($event, srs)"></i></span>
-              </div>
-              <button class="btn" ng-click="loadSRS($event)" ng-disabled="!source.req.url">{{'Add SRS from WMS'|i18n}}</button>
-            </div>
-            <div class="input-append" labeled="input_label" name-for="add_srs_manual" text="{{'Manual add SRS'|i18n}}">
-              <input type="text" id="add_srs_manual" name="add_srs_manual" ng-model="custom.srs_manual" class="input-xlarge">
-              <button class="btn" ng-click="addSRSManual($event)" ng-disabled="!custom.srs_manual">{{'Add'|i18n}}</button>
-            </div>
+            <button class="btn" ng-click="loadSRS($event)" ng-disabled="!source.req.url">{{'Add SRS from WMS'|i18n}}</button>
+          </div>
+          <div class="input-append" labeled="input_label" name-for="add_srs_manual" text="{{'Manual add SRS'|i18n}}">
+            <input type="text" id="add_srs_manual" name="add_srs_manual" ng-model="custom.srs_manual" class="input-xlarge">
+            <button class="btn" ng-click="addSRSManual($event)" ng-disabled="!custom.srs_manual">{{'Add'|i18n}}</button>
           </div>
         </div>
-        <button class="btn" ng-click="addSource($event)" ng-disabled="!source_form.$valid" id="source_form_save">{{'Save'|i18n}}</button>
-        <button class="btn" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
-        <span class="text-success source_save_ok" ng-show="false">
-          <i class="icon-ok"></i>
-           <strong>{{'Saved successfully'|i18n}}</strong>
-         </span>
-         <span class="text-error" id="sourceform_service_error" ng-show="false">
-            <i class="icon-thumbs-down"></i>
-            <strong>{{'Saving failed'|i18n}}</strong>
-            <p>{{sourceformErrorMsg}}</p>
-          </span>
-        </fieldset>
-      </form>
-      <div editarea ng-model="source"></div>
-    </div>
+      </div>
+      <button class="btn" ng-click="addSource($event)" ng-disabled="!source_form.$valid" id="source_form_save">{{'Save'|i18n}}</button>
+      <button class="btn" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
+      <span class="text-success save_ok" ng-show="false">
+        <i class="icon-ok"></i>
+         <strong>{{'Saved successfully'|i18n}}</strong>
+       </span>
+       <span class="text-error" id="sourceform_service_error" ng-show="false">
+          <i class="icon-thumbs-down"></i>
+          <strong>{{'Saving failed'|i18n}}</strong>
+          <p>{{sourceformErrorMsg}}</p>
+        </span>
+      </fieldset>
+    </form>
+    <div editarea ng-model="source" yaml-URL="/yaml" json-URL="/json"></div>
   </div>
 </div>
 %end
