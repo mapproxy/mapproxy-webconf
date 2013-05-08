@@ -586,7 +586,7 @@ directive('editarea', function() {
                     $(element).val(value);
                     checkValidity();
                 }
-            })
+            }, true)
 
         }
     };
