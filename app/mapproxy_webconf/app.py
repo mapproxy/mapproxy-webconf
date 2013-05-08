@@ -1,4 +1,5 @@
 import os
+import yaml
 from copy import deepcopy
 
 from xml.etree.ElementTree import ParseError
@@ -188,7 +189,7 @@ def services(project):
     return template('services', project=project)
 
 @app.route('/project/<project>/conf/yaml', name='yaml')
-def yaml(project):
+def yaml_page(project):
     return template('yaml', project=project)
 
 @app.route('/static/<filepath:path>', name='static')
@@ -203,6 +204,16 @@ def i18n(filename):
 def write_config(project, storage):
     mapproxy_conf = config.mapproxy_conf_from_storage(storage, project)
     return config.write_mapproxy_yaml(mapproxy_conf, os.path.join(configuration.get('app', 'output_path'), project + '.yaml'))
+
+@app.route('/yaml', 'POST')
+def create_yaml():
+    data = request.json
+    return yaml.safe_dump(data, default_flow_style=False)
+
+@app.route('/json', 'POST')
+def create_json():
+    data = request.json
+    return yaml.load(data['yaml'])
 
 def init_app(storage_dir):
     app.install(storage.SQLiteStorePlugin(os.path.join(configuration.get('app', 'storage_path'), configuration.get('app', 'sqlite_db'))))
