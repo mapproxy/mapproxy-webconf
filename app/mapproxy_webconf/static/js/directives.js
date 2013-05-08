@@ -513,6 +513,7 @@ directive('editarea', function($http) {
           "<div>" +
           "<button class='btn' ng-show='!_editarea.visible' ng-click='show()'>Edit manual</button>" +
           "<div ng-show='_editarea.visible'>" +
+          "<h3>Edit manual</h3>" +
           "<textarea class='input-xlarge' id='_editarea'></textarea>"+
           "<button ng-show='!currentModelValue._manual' ask-dialog dialog-title=\"{{'Confirm!'|i18n}}\" dialog-text=\"{{'If you save the manual edition, you wont be able to edit it in the above form again. Realy save the manual edition?'|i18n}}\" callback='save()' class='btn'>{{'Save'|i18n}}</button>" +
           "<button ng-click='save()' ng-show='currentModelValue._manual' class='btn'>{{'Save'|i18n}}</button>" +
