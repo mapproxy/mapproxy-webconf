@@ -503,52 +503,79 @@ directive('labeled', function($parse, localize) {
     };
 }).
 
-directive('editarea', function() {
+directive('editarea', function($http) {
     return {
         restrict: 'A',
         scope: 'element',
         require: 'ngModel',
-        link: function(scope, element, attrs, ngModelCtrl) {
-            scope = scope.$new(false)
+        replace: true,
+        transclude: true,
+        template:
+          "<div>" +
+          "<button class='btn' ng-show='!editareaVisible' ng-click='showEditarea()'>Edit manual</button>" +
+          "<pre ng-bind='editareaVisible'></pre>" +
+          "<textarea class='input-xlarge' id='_editarea' ng-show='editareaVisible'></textarea>"+
+          "<button ng-click='save()' ng-show='editareaVisible' class='btn'>Save</button><button ng-click='reset()' ng-show='editareaVisible' class='btn'>Reset</button>" +
+          "</div>",
+        controller: function($scope, $element, $attrs) {
+            $scope.maxrows = $attrs.maxrows || 30;
+            var _editarea = $($element).find('#_editarea');
+            console.log(_editarea)
+            $scope.$parent.editareaVisible = false;
 
-            var tabwidth = attrs.tabwidth || 2;
-            var indent = attrs.indent || 'spaces';
-            var maxrows = attrs.maxrows || 30;
+            $scope.privateAttributes = {};
 
-            var privateAttributes = {};
+            $scope.showEditarea = function() {
+                $scope.$parent.editareaVisible = true;
+                $scope.loadYAML();
+            };
+            $scope.save = function() {
+                var yaml = _editarea.val();
+                $http.post('/json', {"yaml": yaml})
+                    .success(function(a, b, c) {
+                        console.log(a, b, c);
+                    })
+                    .error(function(a, b, c) {
+                        console.log(a, b, c)
+                    })
+            }
+            $scope.loadYAML = function() {
+                var json = $scope.prepareEditareaValue(angular.copy($scope.modelCtrl.$modelValue));
+                //make url configurateable
+                $http.post('/yaml', json)
+                    .success(function(yaml) {
+                        var rows = yaml.match(/[^\n]*\n[^\n]*/gi).length + 1;
+                        _editarea.attr('rows', (rows > $scope.maxrows) ? $scope.maxrows : rows);
+                        _editarea.val(yaml);
+                    })
+                    .error(function(a, b, c) {
+                        console.log(a, b, c);
+                    });
+            };
 
-            var prepareEditareaValue = function(value) {
+            $scope.prepareEditareaValue = function(value) {
                 angular.forEach(value, function(val, key) {
                     if(key[0] === '_') {
-                        privateAttributes[key] = val;
+                        $scope.privateAttributes[key] = val;
                     }
                 });
-                angular.forEach(privateAttributes, function(val, key) {
+                angular.forEach($scope.privateAttributes, function(val, key) {
                     delete value[key];
                 });
 
                 return angular.toJson(value, true);
             };
-            var prepareModelValue = function(value) {
+            $scope.prepareModelValue = function(value) {
                 return $.extend({}, value, privateAttributes);
             };
-
-            var checkValidity = function() {
-                var valid = true;
-                var value = $(element).val();
-                try {
-                    value = angular.fromJson(value);
-                } catch(e) {
-                    valid = false;
-                }
-                if(valid) {
-                    ngModelCtrl.$setViewValue(prepareModelValue(value));
-                } else {
-                    ngModelCtrl.$setViewValue(undefined);
-                }
-                ngModelCtrl.$setValidity('json', valid);
-
-            };
+        },
+        link: function(scope, element, attrs, ngModelCtrl) {
+            //console.log(ngModelCtrl)
+            scope = scope.$new(false);
+            //scope.editareaVisible = false;
+            //console.log(scope)
+            var tabwidth = attrs.tabwidth || 2;
+            var indent = attrs.indent || 'spaces';
 
             // replace tabs with spaces or tabs
             $(element).on('keydown', function(e) {
@@ -569,24 +596,46 @@ directive('editarea', function() {
                     return false;
                 }
             });
-            $(element).on('keyup', function() {
-                scope.$apply(function() {
-                    checkValidity();
-                });
-            });
+
+            scope.$parent.modelCtrl = ngModelCtrl;
+
+            // $(element).on('keyup', function() {
+            //     scope.$apply(function() {
+            //         checkValidity();
+            //     });
+            // });
 
 
-            $(element).val(prepareEditareaValue(ngModelCtrl.$modelValue));
 
-            scope.$watch(attrs.observe, function(areaValue, b) {
-                if(angular.isDefined(areaValue)) {
-                    var value = prepareEditareaValue(angular.copy(areaValue));
-                    var rows = value.match(/[^\n]*\n[^\n]*/gi).length + 1;
-                    $(element.attr('rows', (rows > maxrows) ? maxrows : rows));
-                    $(element).val(value);
-                    checkValidity();
-                }
-            }, true)
+
+            // var checkValidity = function() {
+            //     var valid = true;
+            //     var value = $(element).val();
+            //     try {
+            //         value = angular.fromJson(value);
+            //     } catch(e) {
+            //         valid = false;
+            //     }
+            //     if(valid) {
+            //         ngModelCtrl.$setViewValue(prepareModelValue(value));
+            //     } else {
+            //         ngModelCtrl.$setViewValue(undefined);
+            //     }
+            //     ngModelCtrl.$setValidity('json', valid);
+
+            // };
+
+            // $(element).val(prepareEditareaValue(ngModelCtrl.$modelValue));
+
+            // scope.$watch(attrs.observe, function(areaValue, b) {
+            //     if(angular.isDefined(areaValue)) {
+            //         var value = prepareEditareaValue(angular.copy(areaValue));
+            //         var rows = value.match(/[^\n]*\n[^\n]*/gi).length + 1;
+            //         $(element.attr('rows', (rows > maxrows) ? maxrows : rows));
+            //         $(element).val(value);
+            //         checkValidity();
+            //     }
+            // }, true)
 
         }
     };
