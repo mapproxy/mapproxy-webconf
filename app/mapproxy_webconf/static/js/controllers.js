@@ -272,7 +272,6 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
 
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {};
-    $scope.custom.manualEdition = false;
 
     $scope.source = angular.copy(DEFAULT_SOURCE);
     $scope.formTitle = 'New source';
@@ -285,7 +284,6 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
         $scope.formTitle = angular.equals($scope.source, DEFAULT_SOURCE) ? 'New source' : 'Edit source';
         $scope.source_form.$setPristine();
 
-        //code for editeare
         if($scope.source._manual) {
             $scope._editarea.show($scope.source);
         } else {
@@ -296,7 +294,6 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
     $scope.$on('sources.add_error', errorHandler);
     $scope.$on('sources.update_error', errorHandler);
 
-    //code for editeare
     $scope.$on('editarea.save', function(scope, source) {
         $scope.source = source;
         $scope.addSource();
