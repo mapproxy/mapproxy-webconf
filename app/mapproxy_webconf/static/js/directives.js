@@ -564,6 +564,10 @@ directive('editarea', function($http) {
 
             $scope.show = function(modelValue) {
                 $scope._editarea.visible = true;
+                privateAttributes = {};
+                $scope._editarea.dirty = false;
+                $scope.currentModelValue = undefined;
+                $scope.editareaErrorMsg = undefined;
                 //if this function is called from outside of directive, we need to pass the modelValue,
                 //cause $scope.modelCtrl.$modelValue is not up-to-date in that case
                 $scope.currentModelValue = (angular.isDefined(modelValue)) ? modelValue : $scope.modelCtrl.$modelValue;
