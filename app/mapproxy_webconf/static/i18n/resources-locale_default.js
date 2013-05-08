@@ -352,5 +352,17 @@
     {
         "key": "Default grid",
         "value": "Default Grid"
+    },
+    {
+        "key": "Edit source manually",
+        "value": "Source manuell editieren"
+    },
+    {
+        "key": "If you save the manual edition, you wont be able to edit it in the above form again. Realy save the manual edition?",
+        "value": "Wenn Sie die manuelle Bearbeitung speichern werden Sie nicht mehr in der Lage sein, dieses Element im Formular zu bearbeiten. Möchten Sie wirklich die manuelle Bearbeitung speichern?"
+    },
+    {
+        "key": "Save manual edition",
+        "value": "Manuelle Bearbeitung speichern"
     }
 ]
