@@ -207,7 +207,9 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
         }
     };
     $scope.addSource = function(event) {
-        event.preventDefault();
+        if(angular.isDefined(event)) {
+            event.preventDefault();
+        }
         $scope.source = clearData($scope.source)
         if(angular.isDefined($scope.source._id) || !$scope.exist($scope.source.name)) {
             MapproxySources.add($scope.source);
@@ -217,12 +219,6 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
             $scope.errorMsg = localize.getLocalizedString("Name already exists.");
             $('#source_save_error').show().fadeOut(3000);
         }
-    };
-    $scope.saveSourceManual = function() {
-        console.log($scope.custom.manualEdition)
-        var source = $scope.custom.manualEdition;
-        source._manual = true;
-        MapproxySources.add(source);
     };
     $scope.addCoverage = function(event) {
         event.preventDefault();
@@ -275,6 +271,7 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {};
     $scope.custom.manualEdition = false;
+    $scope.editareaVisible = false;
 
     $scope.source = angular.copy(DEFAULT_SOURCE);
     $scope.formTitle = 'New source';
@@ -286,10 +283,19 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
         $scope.source = MapproxySources.current(true);
         $scope.formTitle = angular.equals($scope.source, DEFAULT_SOURCE) ? 'New source' : 'Edit source';
         $scope.source_form.$setPristine();
+        if($scope.source._manual) {
+            $scope.showEditarea($scope.source);
+        } else {
+            $scope.editareaVisible = false;
+        }
     });
 
     $scope.$on('sources.add_error', errorHandler);
     $scope.$on('sources.update_error', errorHandler);
+    $scope.$on('editarea.save', function(scope, source) {
+        $scope.source = source;
+        $scope.addSource();
+    });
 
     $scope.$watch('source_form.$valid', function(formValid) {
         if(formValid) {
@@ -298,9 +304,6 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
             $('#source_form_save').removeClass('btn-success');
         }
     });
-
-    console.log($scope)
-
     $(window).on('beforeunload', function() {
         if($scope.source_form.$dirty) {
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
