@@ -15,7 +15,7 @@
                 <input type="number" min=1 ng-model="globals.cache.meta_buffer" id="globals_form.cache_meta_buffer">
             </div>
             <button class="btn btn-small" ng-click="save($event)" ng-disabled="!globals_form.$valid" id="globals_form_save">{{'Save'|i18n}}</button>
-            <span class="text-success" id="globals_save_ok" ng-show="false">
+            <span class="text-success save_ok" ng-show="false">
                 <i class="icon-ok"></i>
                 <strong>{{'Saved successfully'|i18n}}</strong>
             </span>

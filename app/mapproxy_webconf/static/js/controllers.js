@@ -109,12 +109,12 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources) {
 
     $scope.$on('sources.load_complete', refreshList);
     $scope.$on('sources.added', function() {
-        $('.source_save_ok').show().fadeOut(3000);
+        $('.save_ok').show().fadeOut(3000);
         $scope.selected = MapproxySources.last();
         refreshList();
     });
     $scope.$on('sources.updated', function() {
-        $('.source_save_ok').show().fadeOut(3000);
+        $('.save_ok').show().fadeOut(3000);
         $scope.selected = MapproxySources.last();
         refreshList();
     });
@@ -366,12 +366,12 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches) {
 
     $scope.$on('caches.load_complete', refreshList);
     $scope.$on('caches.added', function() {
-        $('#cache_save_ok').show().fadeOut(3000);
+        $('.save_ok').show().fadeOut(3000);
         $scope.selected = MapproxyCaches.last();
         refreshList();
     });
     $scope.$on('caches.updated', function() {
-        $('#cache_save_ok').show().fadeOut(3000);
+        $('.save_ok').show().fadeOut(3000);
         refreshList();
     });
     $scope.$on('caches.deleted', refreshList);
@@ -571,10 +571,10 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids) {
     });
 
     $scope.$on('grids.added', function() {
-        $('#grid_save_ok').show().fadeOut(3000);
+       $('.save_ok').show().fadeOut(3000);
     });
     $scope.$on('grids.updated', function() {
-        $('#grid_save_ok').show().fadeOut(3000);
+       $('.save_ok').show().fadeOut(3000);
     });
     $scope.$on('grids.add_error', errorHandler);
     $scope.$on('grids.update_error', errorHandler);
@@ -645,7 +645,7 @@ function MapproxyLayerListCtrl($scope, localize, MapproxyLayers) {
     });
     $scope.$on('layers.deleted', MapproxyLayers.refresh);
     $scope.$on('layers.updatedStructure', function() {
-        $('#layertree_save_ok').show().fadeOut(3000);
+        $('#.save_ok').show().fadeOut(3000);
     });
     $scope.$on('layers.load_error', errorHandler);
     $scope.$on('layers.delete_error', errorHandler);
@@ -711,10 +711,10 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
     });
 
     $scope.$on('layers.added', function() {
-        $('#layer_save_ok').show().fadeOut(3000);
+        $('.save_ok').show().fadeOut(3000);
     });
     $scope.$on('layers.updated', function() {
-        $('#layer_save_ok').show().fadeOut(3000);
+        $('.save_ok').show().fadeOut(3000);
     });
     $scope.$on('layers.add_error', errorHandler);
     $scope.$on('layers.update_error', errorHandler);
@@ -757,11 +757,11 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals) {
 
     $scope.$on('globals.load_complete', setGlobals);
     $scope.$on('globals.added', function() {
-        $('#globals_save_ok').show().fadeOut(3000);
+        $('.save_ok').show().fadeOut(3000);
         setGlobals();
     });
     $scope.$on('globals.updated', function() {
-        $('#globals_save_ok').show().fadeOut(3000);
+        $('.save_ok').show().fadeOut(3000);
         setGlobals();
     });
     $scope.$on('globals.load_error', errorHandler);
@@ -845,12 +845,12 @@ function MapproxyServicesCtrl($scope, localize, MapproxyServices, DataShareServi
 
     $scope.$on('services.load_complete', setServices);
     $scope.$on('services.added', function() {
-        $('#services_save_ok').show().fadeOut(3000);
+        $('.save_ok').show().fadeOut(3000);
         $scope.services_form.$setPristine();
         setServices();
     });
     $scope.$on('services.updated', function() {
-        $('#services_save_ok').show().fadeOut(3000);
+        $('.save_ok').show().fadeOut(3000);
         $scope.services_form.$setPristine();
         setServices();
     });

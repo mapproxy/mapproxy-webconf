@@ -518,7 +518,7 @@ directive('editarea', function($http) {
           "<button ng-click='save()' ng-show='currentModelValue._manual' class='btn'>{{'Save'|i18n}}</button>" +
           "<button ng-click='reset()' class='btn'>Reset</button>" +
           "<button ng-click='leaveEditarea()' ng-show='!currentModelValue._manual' class='btn'>Back to form edit</button>" +
-          "<span class='text-success source_save_ok' ng-show='false'>" +
+          "<span class='text-success save_ok' ng-show='false'>" +
           "<i class='icon-ok'></i>" +
           "<strong>{{'Saved successfully'|i18n}}</strong>" +
           "</span>" +
