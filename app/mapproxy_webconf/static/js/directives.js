@@ -580,8 +580,8 @@ directive('editarea', function() {
 
             scope.$watch(attrs.observe, function(areaValue, b) {
                 if(angular.isDefined(areaValue)) {
-                    var value = prepareEditareaValue(areaValue)
-                    var rows = value.match(/[^\n]*\n[^\n]*/gi).length + 1
+                    var value = prepareEditareaValue(angular.copy(areaValue));
+                    var rows = value.match(/[^\n]*\n[^\n]*/gi).length + 1;
                     $(element.attr('rows', (rows > maxrows) ? maxrows : rows));
                     $(element).val(value);
                     checkValidity();
