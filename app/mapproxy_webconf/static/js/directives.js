@@ -519,7 +519,7 @@ directive('editarea', function() {
 
             var prepareEditareaValue = function(value) {
                 angular.forEach(value, function(val, key) {
-                    if(key.startsWith('_')) {
+                    if(key[0] === '_') {
                         privateAttributes[key] = val;
                     }
                 });
