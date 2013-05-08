@@ -208,12 +208,20 @@ def write_config(project, storage):
 @app.route('/yaml', 'POST')
 def create_yaml():
     data = request.json
-    return yaml.safe_dump(data, default_flow_style=False)
+    try:
+        return yaml.safe_dump(data, default_flow_style=False)
+    except yaml.YAMLError:
+        response.status = 400
+        return {'error': 'creating yaml failed'}
 
 @app.route('/json', 'POST')
 def create_json():
     data = request.json
-    return yaml.load(data['yaml'])
+    try:
+        return yaml.load(data['yaml'])
+    except yaml.YAMLError:
+        response.status = 400
+        return {'error': 'parsing yaml failed'}
 
 def init_app(storage_dir):
     app.install(storage.SQLiteStorePlugin(os.path.join(configuration.get('app', 'storage_path'), configuration.get('app', 'sqlite_db'))))

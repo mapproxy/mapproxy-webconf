@@ -516,12 +516,15 @@ directive('editarea', function($http) {
           "<button ng-show='_editarea.visible&&!currentModelValue._manual' ask-dialog dialog-title=\"{{'Confirm!'|i18n}}\" dialog-text=\"{{'If you save the manual edition, you wont be able to edit it in the above form again. Realy save the manual edition?'|i18n}}\" callback='save()' class='btn'>{{'Save'|i18n}}</button>" +
           "<button ng-click='save()' ng-show='_editarea.visible&&currentModelValue._manual' class='btn'>{{'Save'|i18n}}</button>" +
           "<button ng-click='reset()' ng-show='_editarea.visible' ng-disabled='currentModelValue._manual' class='btn'>Back to form edit</button>" +
+          "<span class='text-error' id='sourceform_service_error' ng-show='editareaErrorMsg'>" +
+          "<i class='icon-thumbs-down'></i>" +
+          "{{editareaErrorMsg}}" +
+          "</span>" +
           "</div>",
         controller: function($scope, $element, $attrs) {
             //$scope.$parent -> outer scope
             var maxrows = $attrs.maxrows || 30;
             var _editareaElement = $($element).find('#_editarea');
-            $scope.currentModelValue = undefined;
             var privateAttributes = {};
 
             var loadYAML = function() {
@@ -534,8 +537,8 @@ directive('editarea', function($http) {
                         _editareaElement.attr('rows', (rows > maxrows) ? maxrows : rows);
                         _editareaElement.val(yaml);
                     })
-                    .error(function(a, b, c) {
-                        console.log(a, b, c);
+                    .error(function(response) {
+                        $scope.editareaErrorMsg = response.error;
                     });
             };
 
@@ -551,12 +554,11 @@ directive('editarea', function($http) {
 
                 return angular.toJson(value, true);
             };
-            var prepareModelValue = function(value) {
 
-            };
+            $scope.currentModelValue = undefined;
 
             $scope.show = function(modelValue) {
-                $scope.$parent._editarea.visible = true;
+                $scope._editarea.visible = true;
                 //if this function is called from outside of directive, we need to pass the modelValue,
                 //cause $scope.modelCtrl.$modelValue is not up-to-date in that case
                 $scope.currentModelValue = (angular.isDefined(modelValue)) ? modelValue : $scope.modelCtrl.$modelValue;
@@ -570,21 +572,23 @@ directive('editarea', function($http) {
                         $scope.currentModelValue._manual = true;
                         $scope.$root.$broadcast('editarea.save', $scope.currentModelValue);
                     })
-                    .error(function(a, b, c) {
-                        console.log(a, b, c)
-                    })
+                    .error(function(response) {
+                        $scope.editareaErrorMsg = response.error;
+                    });
             };
             $scope.reset = function() {
                 privateAttributes = {};
-                $scope.$parent._editarea.visible = false;
+                $scope._editarea.visible = false;
+                $scope._editarea.dirty = false;
+                $scope.currentModelValue = undefined;
+                $scope.editareaErrorMsg = undefined;
             };
 
-            $scope.dirty = false;
-
+            //register necessary functions and variables in parent scope
             $scope.$parent._editarea = {
                 visible: false,
                 show: $scope.show,
-                dirty: $scope.dirty
+                dirty: false
             };
         },
         link: function(scope, element, attrs, ngModelCtrl) {
@@ -600,11 +604,11 @@ directive('editarea', function($http) {
                     var _indent = "";
                     if (indent == 'spaces') {
                         for (var i=0; i<tabwidth; i++) {
-                            _indent += ' '
+                            _indent += ' ';
                         }
                     } else {
                         for (var i=0; i<tabwidth; i++) {
-                            _indent += '\t'
+                            _indent += '\t';
                         }
                     }
                     var startPos = this.selectionStart;
@@ -615,7 +619,7 @@ directive('editarea', function($http) {
             });
             _editareaElement.on('keyup', function(e) {
                 scope._editarea.dirty = true;
-            })
+            });
             scope.$parent.modelCtrl = ngModelCtrl;
         }
     };
