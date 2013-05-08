@@ -164,7 +164,7 @@ class SQLiteStore(object):
 
     def get(self, id, section, project):
         cur = self.db.cursor()
-        cur.execute("SELECT data, parent, rank FROM store WHERE id = ? AND section = ? AND project = ?",
+        cur.execute("SELECT data, parent, rank, manual FROM store WHERE id = ? AND section = ? AND project = ?",
             (id, section, project))
         row = cur.fetchone()
         if row:
@@ -173,6 +173,8 @@ class SQLiteStore(object):
                 data['_parent'] = row[1]
             if row[2] is not None:
                 data['_rank'] = row[2]
+            if row[3] is not None:
+                data['_manual'] = row[3]
             return data
 
     def add(self, section, project, data):
@@ -206,7 +208,7 @@ class SQLiteStore(object):
 
     def updates(self, section, project, data):
         #ensure all needed values are present or None
-        data = [{'id': d['_id'], 'rank': d['_rank'] if '_rank' in d else None, 'parent': d['_parent'] if '_parent' in d else None} for d in data if '_id' in d]
+        data = [{'id': d['_id'], 'rank': d['_rank'] if '_rank' in d else None, 'parent': d['_parent'] if '_parent' in d else None, 'manual': d['_manual'] if '_manual' in d else False} for d in data if '_id' in d]
         cur = self.db.cursor()
         cur.executemany("UPDATE store SET parent = :parent, rank = :rank WHERE id = :id", data)
         self.db.commit()
