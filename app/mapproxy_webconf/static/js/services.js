@@ -81,8 +81,10 @@ var MapproxyBaseService = function(_section, _dependencies) {
                 result._section = _this._section;
                 _this._addDependencies(result);
                 _this._items[result._id] = result;
-                if(angular.isDefined(_this._rootScope))
+                if(angular.isDefined(_this._rootScope)) {
+                    _this._last = result;
                     _this._rootScope.$broadcast(_this._section + '.updated');
+                }
             }, _this._errorHandler);
         }
     };
