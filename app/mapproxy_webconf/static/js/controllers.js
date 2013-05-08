@@ -215,6 +215,7 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
             MapproxySources.add($scope.source);
             $scope.formTitle = 'Edit source';
             $scope.source_form.$setPristine();
+            $scope._editarea.dirty = false;
         } else {
             $scope.errorMsg = localize.getLocalizedString("Name already exists.");
             $('#source_save_error').show().fadeOut(3000);
@@ -271,7 +272,6 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {};
     $scope.custom.manualEdition = false;
-    $scope.editareaVisible = false;
 
     $scope.source = angular.copy(DEFAULT_SOURCE);
     $scope.formTitle = 'New source';
@@ -283,15 +283,19 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
         $scope.source = MapproxySources.current(true);
         $scope.formTitle = angular.equals($scope.source, DEFAULT_SOURCE) ? 'New source' : 'Edit source';
         $scope.source_form.$setPristine();
+
+        //code for editeare
         if($scope.source._manual) {
-            $scope.showEditarea($scope.source);
+            $scope._editarea.show($scope.source);
         } else {
-            $scope.editareaVisible = false;
+            $scope._editarea.visible = false;
         }
     });
 
     $scope.$on('sources.add_error', errorHandler);
     $scope.$on('sources.update_error', errorHandler);
+
+    //code for editeare
     $scope.$on('editarea.save', function(scope, source) {
         $scope.source = source;
         $scope.addSource();
@@ -304,8 +308,9 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
             $('#source_form_save').removeClass('btn-success');
         }
     });
+
     $(window).on('beforeunload', function() {
-        if($scope.source_form.$dirty) {
+        if($scope.source_form.$dirty || $scope._editarea.dirty) {
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
