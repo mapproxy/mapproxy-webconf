@@ -41,7 +41,8 @@
 <div>
   <div ng-controller="MapproxySourceNoticeCtrl">
     <div ng-controller="MapproxySourceFormCtrl" toggle-group mode='hideOther'>
-      <form name="source_form" novalidate >
+      <form name="source_form" novalidate ng-show="!source._manual">
+        <pre ng-bind="source._manual"></pre>
         <h3  toggle-element="next">{{formTitle|i18n}}</h3>
         <fieldset>
         <div toggle-group mode="multiShow">
@@ -125,7 +126,7 @@
       </form>
       <form name="manual_source_form">
         <h3 toggle-element="next">{{'Edit source manually'|i18n}}</h3>
-        <div ng-show="false">
+        <div ng-show="source._manual">
           <textarea editarea observe="source" id="edit_source_manual" class="input-xlarge" name="edit_source_manual" ng-model="custom.manualEdition"></textarea>
           <button ask-dialog dialog-title="{{'Confirm!'|i18n}}" dialog-text="{{'If you save the manual edition, you wont be able to edit it in the above form again. Realy save the manual edition?'|i18n}}" callback="saveSourceManual()" ng-disabled="!manual_source_form.$valid">{{'Save manual edition'|i18n}}</button>
         </div>
