@@ -109,12 +109,12 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources) {
 
     $scope.$on('sources.load_complete', refreshList);
     $scope.$on('sources.added', function() {
-        $('#source_save_ok').show().fadeOut(3000);
+        $('.source_save_ok').show().fadeOut(3000);
         $scope.selected = MapproxySources.last();
         refreshList();
     });
     $scope.$on('sources.updated', function() {
-        $('#source_save_ok').show().fadeOut(3000);
+        $('.source_save_ok').show().fadeOut(3000);
         refreshList();
     });
     $scope.$on('sources.deleted', refreshList);
