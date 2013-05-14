@@ -854,9 +854,9 @@ function MapproxyGlobalsChooserCtrl($scope, DataShareService) {
         }
         return classes;
     };
-    $scope.filtered = function(globals) {
-        var result = {};
-        angular.forEach(globals, function(value, key) {
+    $scope.filtered = function() {
+        var result = {}
+        angular.forEach($scope.globals, function(value, key) {
             if(key[0] != '_') {
                 result[key] = value;
             }
@@ -871,8 +871,12 @@ function MapproxyGlobalsChooserCtrl($scope, DataShareService) {
     $scope.$on('dss.globals', function() {
         $scope.globals = DataShareService.data('globals');
     });
+    $scope.$on('dss._editarea_visible', function() {
+        $scope._editarea_visible = DataShareService.data('_editarea_visible');
+    });
 
     $scope.selected = 'cache';
+    $scope._editarea_visible = false;
 };
 
 function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareService) {
@@ -881,7 +885,11 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareSer
         if(globals.length > 0) {
             $scope.globals = $.extend($scope.globals, globals[0]);
         }
-        DataShareService.data('globals', $scope.globals)
+        DataShareService.data('globals', $scope.globals);
+        if($scope.globals._manual) {
+            DataShareService.data('_editarea_visible', true);
+            $scope._editarea.show($scope.globals)
+        }
     };
     var setTemplate = function() {
         $scope.template = DataShareService.data('global');
@@ -923,12 +931,21 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareSer
     $scope.$on('globals.add_error', errorHandler);
     $scope.$on('globals.update_error', errorHandler);
 
+    $scope.$on('editarea.save', function(scope, globals) {
+        $scope.globals = globals;
+        MapproxyGlobals.add($scope.globals);
+    });
+
     $scope.$watch('globals_form.$valid', function(formValid) {
         if(formValid) {
             $('#globals_form_save').addClass('btn-success');
         } else {
             $('#globals_form_save').removeClass('btn-success');
         }
+    });
+
+    $scope.$watch('_editarea.visible', function(visible, b) {
+        DataShareService.data('_editarea_visible', visible);
     });
 
     $(window).on('beforeunload', function() {
