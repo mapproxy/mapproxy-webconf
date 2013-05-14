@@ -22,3 +22,17 @@ var clearData = function(dict) {
     });
     return dict;
 };
+
+var isEmpty = function(item) {
+    if(angular.isArray(item) || angular.isObject(item)) {
+        var empty = true;
+        angular.forEach(item, function(itm) {
+            if(!isEmpty(itm)) {
+                empty = false;
+            }
+        });
+        return empty;
+    } else {
+        return item == undefined || item == [] || item == {} || item == null || item == '';
+    }
+};
