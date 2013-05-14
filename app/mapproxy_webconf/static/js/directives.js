@@ -534,6 +534,8 @@ directive('editarea', function($http) {
             var yamlURL = $attrs.yamlUrl;
             var jsonURL = $attrs.jsonUrl;
             var _editareaElement = $($element).find('#_editarea');
+
+            var emptyAttributes = {};
             $scope.privateAttributes = {};
 
             var errorHandler = function(response) {
@@ -547,9 +549,12 @@ directive('editarea', function($http) {
                 //make url configurateable
                 $http.post(yamlURL, json)
                     .success(function(yaml) {
-                        var rows = yaml.match(/[^\n]*\n[^\n]*/gi).length + 1;
-                        _editareaElement.attr('rows', (rows > maxrows) ? maxrows : rows);
-                        _editareaElement.val(yaml);
+                        if(!isEmpty(yaml)) {
+                            var rows = yaml.match(/[^\n]*\n[^\n]*/gi).length + 1;
+                            _editareaElement.attr('rows', (rows > maxrows) ? maxrows : rows);
+                            _editareaElement.val(yaml);
+                        }
+
                     })
                     .error(errorHandler);
             };
@@ -558,10 +563,34 @@ directive('editarea', function($http) {
                 angular.forEach(value, function(val, key) {
                     if(key[0] === '_') {
                         $scope.privateAttributes[key] = val;
+                    } else if(isEmpty(val)) {
+                        emptyAttributes[key] = val;
+                    } else if(angular.isObject(val)) {
+                        angular.forEach(val, function(_val, _key) {
+                            if(isEmpty(_val)) {
+                                if(angular.isUndefined(emptyAttributes[key])) {
+                                    emptyAttributes[key] = {};
+                                }
+                                emptyAttributes[key][_key] = _val;
+                            }
+                        });
                     }
                 });
                 angular.forEach($scope.privateAttributes, function(val, key) {
                     delete value[key];
+                });
+                angular.forEach(emptyAttributes, function(val, key) {
+                    if(angular.isObject(val) && !angular.isArray(val)) {
+                        if(Object.keys(val).length == 0) {
+                            delete value[key];
+                        } else {
+                            angular.forEach(val, function(_val, _key) {
+                                delete value[key][_key];
+                            });
+                        }
+                    } else {
+                        delete value[key];
+                    }
                 });
 
                 return angular.toJson(value, true);
@@ -584,7 +613,7 @@ directive('editarea', function($http) {
                 var yaml = _editareaElement.val();
                 $http.post(jsonURL, {"yaml": yaml})
                     .success(function(json) {
-                        $scope.editareaValue = $.extend({}, json, $scope.privateAttributes);
+                        $scope.editareaValue = $.extend(true, {}, emptyAttributes, json, $scope.privateAttributes);
                         $scope.editareaValue._manual = true;
                         $scope.$root.$broadcast('editarea.save', $scope.editareaValue);
                     })
@@ -615,6 +644,7 @@ directive('editarea', function($http) {
             //scope.$parent -> directive controller scope
             scope = scope.$new(false);
             var _editareaElement = $(element).find('#_editarea');
+
             var tabwidth = attrs.tabwidth || 2;
             var indent = attrs.indent || 'spaces';
 
