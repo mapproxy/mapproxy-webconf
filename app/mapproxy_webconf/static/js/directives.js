@@ -510,7 +510,7 @@ directive('editarea', function($http) {
         replace: true,
         template:
           "<div>" +
-          "<button class='btn' ng-show='!_editarea.visible' ng-click='show()'>Edit manual</button>" +
+          "<button class='btn' ng-show='!_editarea.visible' ng-click='show()' id='_editarea_toggle_button'>Edit manual</button>" +
           "<div ng-show='_editarea.visible'>" +
           "<h3>Edit manual</h3>" +
           "<textarea class='input-xlarge' id='_editarea'></textarea>"+
@@ -642,6 +642,11 @@ directive('editarea', function($http) {
                 scope._editarea.dirty = true;
             });
             scope.$parent.editareaValue = attrs.editareaValue;
+
+            var _toggleButtonContainer = $('#_editarea_toggle_button_container');
+            if(_toggleButtonContainer) {
+                $(element).find('#_editarea_toggle_button').appendTo(_toggleButtonContainer);
+            }
         }
     };
 });
