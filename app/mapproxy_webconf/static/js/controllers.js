@@ -822,7 +822,6 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         $('.save_ok').show().fadeOut(3000);
     });
     $scope.$on('editarea.save', function(scope, layer) {
-        console.log('here')
         $scope.layer = $scope.replaceNamesWithIds(layer);
         $scope.addLayer();
     });
@@ -844,12 +843,48 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
     });
 };
 
-function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals) {
+function MapproxyGlobalsChooserCtrl($scope, DataShareService) {
+    $scope.getClasses = function(global) {
+        var classes = "";
+        if(global == $scope.selected) {
+            classes += 'selected';
+        }
+        if(angular.isDefined($scope.globals[global].active) && $scope.globals[global].active) {
+            classes += ' active';
+        }
+        return classes;
+    };
+    $scope.filtered = function(globals) {
+        var result = {};
+        angular.forEach(globals, function(value, key) {
+            if(key[0] != '_') {
+                result[key] = value;
+            }
+        });
+        return result;
+    };
+
+    $scope.show = function(global) {
+        $scope.selected = global;
+        DataShareService.data('global', global + '.html');
+    };
+    $scope.$on('dss.globals', function() {
+        $scope.globals = DataShareService.data('globals');
+    });
+
+    $scope.selected = 'cache';
+};
+
+function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareService) {
     var setGlobals = function() {
         var globals = MapproxyGlobals.list();
         if(globals.length > 0) {
-            $scope.globals = globals[0];
+            $scope.globals = $.extend($scope.globals, globals[0]);
         }
+        DataShareService.data('globals', $scope.globals)
+    };
+    var setTemplate = function() {
+        $scope.template = DataShareService.data('global');
     };
     var errorHandler = function() {
         $scope.errorMsg = MapproxyGlobals.error();
@@ -863,7 +898,16 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals) {
         $scope.globals_form.$setPristine();
     };
 
-    $scope.globals = {'cache': {'meta_size': [null, null]}};
+    $scope.globals = {
+        'cache': {
+            'meta_size': [null, null]
+        },
+        'image': {}
+    };
+
+    DataShareService.data('globals', $scope.globals);
+
+    $scope.template = "cache.html";
 
     $scope.$on('globals.load_complete', setGlobals);
     $scope.$on('globals.added', function() {
@@ -874,6 +918,7 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals) {
         $('.save_ok').show().fadeOut(3000);
         setGlobals();
     });
+    $scope.$on('dss.global', setTemplate);
     $scope.$on('globals.load_error', errorHandler);
     $scope.$on('globals.add_error', errorHandler);
     $scope.$on('globals.update_error', errorHandler);

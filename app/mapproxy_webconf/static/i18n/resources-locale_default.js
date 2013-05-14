@@ -364,5 +364,13 @@
     {
         "key": "Save manual edition",
         "value": "Manuelle Bearbeitung speichern"
+    },
+    {
+        "key": "cache",
+        "value": "Cache"
+    },
+    {
+        "key": "image",
+        "value": "Image"
     }
 ]

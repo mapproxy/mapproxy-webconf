@@ -364,5 +364,21 @@
     {
         "key": "Save manual edition",
         "value": "Manuelle Bearbeitung speichern"
+    },
+    {
+        "key": "cache",
+        "value": "Cache"
+    },
+    {
+        "key": "image",
+        "value": "Image"
+    },
+    {
+        "key": "Resampling method",
+        "value": "Resampling Methode"
+    },
+    {
+        "key": "Paletted",
+        "value": "Paletted"
     }
 ]
