@@ -510,14 +510,14 @@ directive('editarea', function($http) {
         replace: true,
         template:
           "<div>" +
-          "<button class='btn' ng-show='!_editarea.visible' ng-click='show()' id='_editarea_toggle_button'>Edit manual</button>" +
+          "<button class='btn' ng-show='!_editarea.visible' ng-click='show()' id='_editarea_toggle_button'>{{'Edit manual'|i18n}}</button>" +
           "<div ng-show='_editarea.visible'>" +
-          "<h3>Edit manual</h3>" +
+          "<h3>{{'Edit manual'|i18n}}</h3>" +
           "<textarea class='input-xlarge' id='_editarea'></textarea>"+
           "<button ng-show='!privateAttributes._manual' ask-dialog dialog-title=\"{{'Confirm!'|i18n}}\" dialog-text=\"{{'If you save the manual edition, you wont be able to edit it in the above form again. Realy save the manual edition?'|i18n}}\" callback='save()' class='btn'>{{'Save'|i18n}}</button>" +
           "<button ng-click='save()' ng-show='privateAttributes._manual' class='btn'>{{'Save'|i18n}}</button>" +
-          "<button ng-click='reset()' class='btn'>Reset</button>" +
-          "<button ng-click='leaveEditarea()' ng-show='!privateAttributes._manual' class='btn'>Back to form edit</button>" +
+          "<button ng-click='reset()' class='btn'>{{'Reset'|i18n}}</button>" +
+          "<button ng-click='leaveEditarea()' ng-show='!privateAttributes._manual' class='btn'>{{'Back to form edit'|i18n}}</button>" +
           "<span class='text-success save_ok' ng-show='false'>" +
           "<i class='icon-ok'></i>" +
           "<strong>{{'Saved successfully'|i18n}}</strong>" +

@@ -380,5 +380,13 @@
     {
         "key": "Paletted",
         "value": "Paletted"
+    },
+    {
+        "key": "Edit manual",
+        "value": "Manuell bearbeiten"
+    },
+    {
+        "key": "Back to form edit",
+        "value": "Zurück zum formularbasierten Editieren"
     }
 ]
