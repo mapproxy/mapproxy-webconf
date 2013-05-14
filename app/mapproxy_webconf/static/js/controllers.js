@@ -118,7 +118,10 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources) {
         $scope.selected = MapproxySources.last();
         refreshList();
     });
-    $scope.$on('sources.deleted', refreshList);
+    $scope.$on('sources.deleted', function() {
+        refreshList();
+        MapproxySources.current(true, DEFAULT_SOURCE);
+    });
 
     $scope.$on('sources.load_error', errorHandler);
     $scope.$on('sources.delete_error', errorHandler);
@@ -374,7 +377,10 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches) {
         $('.save_ok').show().fadeOut(3000);
         refreshList();
     });
-    $scope.$on('caches.deleted', refreshList);
+    $scope.$on('caches.deleted', function() {
+        refreshList();
+        MapproxyCaches.current(true, DEFAULT_CACHE);
+    });
     $scope.$on('caches.load_error', errorHandler);
     $scope.$on('caches.update_error', errorHandler);
     $scope.$on('caches.delete_error', errorHandler);
@@ -567,7 +573,10 @@ function MapproxyGridListCtrl($scope, MapproxyGrids) {
         $scope.selected = MapproxyGrids.last();
         refreshList();
     });
-    $scope.$on('grids.deleted', refreshList);
+    $scope.$on('grids.deleted', function() {
+        refreshList();
+        MapproxyGrids.current(true, DEFAULT_GRID);
+    });
     $scope.$on('grids.load_error', errorHandler);
     $scope.$on('grids.delete_error', errorHandler);
 };
@@ -705,7 +714,10 @@ function MapproxyLayerListCtrl($scope, localize, MapproxyLayers) {
         $scope.selected = MapproxyLayers.last()
         refreshTree();
     });
-    $scope.$on('layers.deleted', MapproxyLayers.refresh);
+    $scope.$on('layers.deleted', function() {
+        MapproxyLayers.refresh();
+        MapproxyLayers.current(true, DEFAULT_LAYER);
+    });
     $scope.$on('layers.updatedStructure', function() {
         $('#.save_ok').show().fadeOut(3000);
     });
