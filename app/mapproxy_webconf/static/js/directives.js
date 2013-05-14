@@ -543,7 +543,7 @@ directive('editarea', function($http) {
 
             var loadYAML = function() {
                 //need to copy cause we modify the object in called function
-                var json = prepareEditareaValue(angular.fromJson($scope.editareaValue));
+                var json = prepareEditareaValue(angular.fromJson(angular.copy($scope.editareaValue)));
                 //make url configurateable
                 $http.post(yamlURL, json)
                     .success(function(yaml) {
