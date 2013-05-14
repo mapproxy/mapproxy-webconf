@@ -115,6 +115,15 @@ var MapproxyBaseService = function(_section, _dependencies) {
         }
         return false;
     };
+    this.idByName = function(_name) {
+        var item = _this.byName(_name);
+        return item ? item._id : false;
+
+    };
+    this.nameById = function(_id) {
+        var item = _this.byId(_id);
+        return item ? item.name : false;
+    };
     this.current = function(copy, _item) {
         if(_item) {
             _this._item = _item;
@@ -153,6 +162,8 @@ var MapproxyBaseService = function(_section, _dependencies) {
         list: _this.list,
         byId: _this.byId,
         byName: _this.byName,
+        idByName: _this.idByName,
+        nameById: _this.nameById,
         current: _this.current,
         last: _this.last,
         error: _this.error
