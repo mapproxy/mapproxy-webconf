@@ -507,7 +507,6 @@ directive('editarea', function($http) {
     return {
         restrict: 'A',
         scope: 'element',
-        require: 'ngModel',
         replace: true,
         template:
           "<div>" +
@@ -515,10 +514,10 @@ directive('editarea', function($http) {
           "<div ng-show='_editarea.visible'>" +
           "<h3>Edit manual</h3>" +
           "<textarea class='input-xlarge' id='_editarea'></textarea>"+
-          "<button ng-show='!currentModelValue._manual' ask-dialog dialog-title=\"{{'Confirm!'|i18n}}\" dialog-text=\"{{'If you save the manual edition, you wont be able to edit it in the above form again. Realy save the manual edition?'|i18n}}\" callback='save()' class='btn'>{{'Save'|i18n}}</button>" +
-          "<button ng-click='save()' ng-show='currentModelValue._manual' class='btn'>{{'Save'|i18n}}</button>" +
+          "<button ng-show='!privateAttributes._manual' ask-dialog dialog-title=\"{{'Confirm!'|i18n}}\" dialog-text=\"{{'If you save the manual edition, you wont be able to edit it in the above form again. Realy save the manual edition?'|i18n}}\" callback='save()' class='btn'>{{'Save'|i18n}}</button>" +
+          "<button ng-click='save()' ng-show='privateAttributes._manual' class='btn'>{{'Save'|i18n}}</button>" +
           "<button ng-click='reset()' class='btn'>Reset</button>" +
-          "<button ng-click='leaveEditarea()' ng-show='!currentModelValue._manual' class='btn'>Back to form edit</button>" +
+          "<button ng-click='leaveEditarea()' ng-show='{{privateAttributes._manual}}' class='btn'>Back to form edit</button>" +
           "<span class='text-success save_ok' ng-show='false'>" +
           "<i class='icon-ok'></i>" +
           "<strong>{{'Saved successfully'|i18n}}</strong>" +
@@ -535,7 +534,7 @@ directive('editarea', function($http) {
             var yamlURL = $attrs.yamlUrl;
             var jsonURL = $attrs.jsonUrl;
             var _editareaElement = $($element).find('#_editarea');
-            var privateAttributes = {};
+            $scope.privateAttributes = {};
 
             var errorHandler = function(response) {
                 $scope.editareaErrorMsg = response.error;
@@ -544,7 +543,7 @@ directive('editarea', function($http) {
 
             var loadYAML = function() {
                 //need to copy cause we modify the object in called function
-                var json = prepareEditareaValue(angular.copy($scope.currentModelValue));
+                var json = prepareEditareaValue(angular.fromJson($scope.editareaValue));
                 //make url configurateable
                 $http.post(yamlURL, json)
                     .success(function(yaml) {
@@ -558,48 +557,48 @@ directive('editarea', function($http) {
             var prepareEditareaValue = function(value) {
                 angular.forEach(value, function(val, key) {
                     if(key[0] === '_') {
-                        privateAttributes[key] = val;
+                        $scope.privateAttributes[key] = val;
                     }
                 });
-                angular.forEach(privateAttributes, function(val, key) {
+                angular.forEach($scope.privateAttributes, function(val, key) {
                     delete value[key];
                 });
 
                 return angular.toJson(value, true);
             };
 
-            $scope.currentModelValue = undefined;
 
-            $scope.show = function(modelValue) {
+            $scope.show = function(editareaValue) {
                 $scope._editarea.visible = true;
-                privateAttributes = {};
+                $scope.privateAttributes = {};
                 $scope._editarea.dirty = false;
-                $scope.currentModelValue = undefined;
+                //$scope.currentModelValue = undefined;
+                $scope.editareaValue = undefined;
                 $scope.editareaErrorMsg = undefined;
-                //if this function is called from outside of directive, we need to pass the modelValue,
-                //cause $scope.modelCtrl.$modelValue is not up-to-date in that case
-                $scope.currentModelValue = (angular.isDefined(modelValue)) ? modelValue : $scope.modelCtrl.$modelValue;
+                //if this function is called from outside of directive, we need to pass the editareaValue,
+                //cause $attrs.editareaValue is not up-to-date in that case
+                $scope.editareaValue = (angular.isDefined(editareaValue)) ? editareaValue : $attrs.editareaValue;
                 loadYAML();
             };
             $scope.save = function() {
                 var yaml = _editareaElement.val();
                 $http.post(jsonURL, {"yaml": yaml})
                     .success(function(json) {
-                        $scope.currentModelValue = $.extend({}, json, privateAttributes);
-                        $scope.currentModelValue._manual = true;
-                        $scope.$root.$broadcast('editarea.save', $scope.currentModelValue);
+                        $scope.editareaValue = $.extend({}, json, $scope.privateAttributes);
+                        $scope.editareaValue._manual = true;
+                        $scope.$root.$broadcast('editarea.save', $scope.editareaValue);
                     })
                     .error(errorHandler);
             };
             $scope.leaveEditarea = function() {
-                privateAttributes = {};
+                $scope.privateAttributes = {};
                 $scope._editarea.visible = false;
                 $scope._editarea.dirty = false;
-                $scope.currentModelValue = undefined;
+                $scope.editareaValue = undefined
                 $scope.editareaErrorMsg = undefined;
             };
             $scope.reset = function() {
-                privateAttributes = {};
+                $scope.privateAttributes = {};
                 $scope._editarea.dirty = false;
                 $scope.editareaErrorMsg = undefined;
                 loadYAML();
@@ -612,7 +611,7 @@ directive('editarea', function($http) {
                 dirty: false
             };
         },
-        link: function(scope, element, attrs, ngModelCtrl) {
+        link: function(scope, element, attrs) {
             //scope.$parent -> directive controller scope
             scope = scope.$new(false);
             var _editareaElement = $(element).find('#_editarea');
@@ -642,7 +641,7 @@ directive('editarea', function($http) {
             _editareaElement.on('keyup', function(e) {
                 scope._editarea.dirty = true;
             });
-            scope.$parent.modelCtrl = ngModelCtrl;
+            scope.$parent.editareaValue = attrs.editareaValue;
         }
     };
 });

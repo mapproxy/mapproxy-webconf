@@ -389,6 +389,38 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         $scope.cacheformErrorMsg = MapproxyCaches.error();
         $('#cacheform_service_error').show().fadeOut(3000);
     };
+    $scope.replaceIdsWithNames = function(data) {
+        data = angular.copy(data);
+        var named = [];
+        angular.forEach(data.sources, function(id) {
+            var sourceName = MapproxySources.nameById(id);
+            named.push(sourceName ? sourceName : id);
+        });
+        data.sources = named;
+        named = [];
+        angular.forEach(data.grids, function(id) {
+            var gridName = MapproxyGrids.nameById(id);
+            named.push(gridName ? gridName : id);
+        });
+        data.grids = named;
+        return data;
+    };
+    $scope.replaceNamesWithIds = function(data) {
+        data = angular.copy(data);
+        var ids = [];
+        angular.forEach(data.sources, function(name) {
+            var sourceId = MapproxySources.idByName(name);
+            ids.push(sourceId ? sourceId : name);
+        });
+        data.sources = ids;
+        ids = [];
+        angular.forEach(data.grids, function(name) {
+            var gridId = MapproxyGrids.idByName(name);
+            ids.push(gridId ? gridId : name);
+        });
+        data.grids = ids;
+        return data;
+    };
     $scope.addCache = function(event) {
         if(angular.isDefined(event)) {
             event.preventDefault();
@@ -412,7 +444,8 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         $scope.cache_form.$setPristine();
     };
     $scope.showName = function(_id) {
-        return MapproxySources.byId(_id).name;
+        var name = MapproxySources.nameById(_id);
+        return name ? name : _id;
     };
     $scope.exist = function(name) {
         return (MapproxyCaches.byName(name)) ? true : false;
@@ -446,7 +479,7 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
     });
 
     $scope.$on('editarea.save', function(scope, cache) {
-        $scope.cache = cache;
+        $scope.cache = $scope.replaceNamesWithIds(cache);
         $scope.addCache();
     });
 
@@ -701,6 +734,26 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         $scope.layerformErrorMsg = MapproxyLayers.error();
         $('#layerform_service_error').show().fadeOut(3000);
     };
+    $scope.replaceIdsWithNames = function(data) {
+        data = angular.copy(data);
+        var names = [];
+        angular.forEach(data.sources, function(id) {
+            var sourceName = MapproxySources.nameById(id) || MapproxyCaches.nameById(id);
+            names.push(sourceName ? sourceName : id);
+        });
+        data.sources = names;
+        return data;
+    };
+    $scope.replaceNamesWithIds = function(data) {
+        data = angular.copy(data);
+        var ids = [];
+        angular.forEach(data.sources, function(name) {
+            var sourceId = MapproxySources.idByName(name) || MapproxyCaches.idByName(name);
+            ids.push(sourceId ? sourceId : name);
+        });
+        data.sources = ids;
+        return data;
+    };
     $scope.addLayer = function(event) {
         if(angular.isDefined(event)) {
             event.preventDefault();
@@ -727,7 +780,8 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         }
     };
     $scope.showName = function(_id) {
-        return MapproxySources.byId(_id) ? MapproxySources.byId(_id).name : MapproxyCaches.byId(_id).name;
+        var name = MapproxySources.nameById(name) || MapproxyCaches.nameById(name);
+        return name ? name : _id;
     };
     $scope.exist = function(name) {
         return (MapproxyLayers.byName(name)) ? true : false;
@@ -743,7 +797,7 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         $scope.layer_form.$setPristine();
 
         if($scope.layer._manual) {
-            $scope._editarea.show($scope.layer);
+            $scope._editarea.show($scope.replaceIdsWithNames($scope.layer));
         } else {
             $scope._editarea.visible = false;
         }
@@ -757,7 +811,7 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
     });
     $scope.$on('editarea.save', function(scope, layer) {
         console.log('here')
-        $scope.layer = layer;
+        $scope.layer = $scope.replaceNamesWithIds(layer);
         $scope.addLayer();
     });
     $scope.$on('layers.add_error', errorHandler);

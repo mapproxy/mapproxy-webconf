@@ -107,7 +107,7 @@
       <p>{{layerformErrorMsg}}</p>
     </span>
   </form>
-  <div editarea ng-model="layer" yaml-URL="/yaml" json-URL="/json"></div>
+  <div editarea editarea-value="{{replaceIdsWithNames(layer)}}" yaml-URL="/yaml" json-URL="/json"></div>
 </div>
 %end
 

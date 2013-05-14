@@ -80,7 +80,7 @@
       <p>{{cacheformErrorMsg}}</p>
     </span>
   </form>
-  <div editarea ng-model="cache" yaml-URL="/yaml" json-URL="/json"></div>
+  <div editarea editarea-value="{{replaceIdsWithNames(cache)}}" yaml-URL="/yaml" json-URL="/json"></div>
 </div>
 %end
 
