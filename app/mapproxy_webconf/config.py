@@ -42,6 +42,14 @@ def create_id_name_map(*dicts):
 
     return id_map
 
+def validate(mapproxy_conf):
+    from mapproxy.config.spec import validate_mapproxy_conf
+    from mapproxy.util.ext.dictspec.validator import ValidationError
+    try:
+        return validate_mapproxy_conf(utils.convert(mapproxy_conf))[1]
+    except ValidationError:
+        return False
+
 def mapproxy_conf_from_storage(storage, project):
     mapproxy_conf = {}
 
