@@ -1,6 +1,14 @@
 %def content():
   <div class="span4">
+    %for project, valid in projects.items():
+        <h3>${project}</h3>
+        %if valid:
+            <span class="label label-success"><h5><i class="icon-thumbs-up"></i> Mapproxy configuration valid</h5></span>
+        %else:
+            <span class="label label-important"><h5><i class="icon-thumbs-down"></i> Mapproxy configuration invalid</h5></span>
+        %end
+    %end
   </div>
 % end
 
-%rebase base content=content, project=get('project')
+%rebase base content=content, projects=get('projects')

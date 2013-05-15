@@ -153,8 +153,12 @@ def services_list(project, storage):
     return storage.get_all('services', project, with_id=True)
 
 @app.route('/', name='index')
-def index():
-    return template('index')
+def index(storage):
+    projects = {}
+    for project in storage.get_projects():
+        mapproxy_conf = config.mapproxy_conf_from_storage(storage, project)
+        projects[project] = config.validate(mapproxy_conf)
+    return template('index', projects=projects)
 
 @app.route('/project/<project>/conf', name='configuration')
 def conf_index(project):
