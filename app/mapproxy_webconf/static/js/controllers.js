@@ -675,10 +675,6 @@ function MapproxyLayerListCtrl($scope, localize, MapproxyLayers) {
         $scope.layerlistErrorMsg = MapproxyLayers.error();
         $('#layerlist_service_error').show().fadeOut(3000);
     };
-    var added = function() {
-        $scope.selected = MapproxyLayers.last()
-        $scope.mapproxy_layers.push($scope.selected);
-    };
     $scope.isSelected = function(layer) {
         var class_;
         if(angular.equals($scope.selected, layer)) {
@@ -709,10 +705,11 @@ function MapproxyLayerListCtrl($scope, localize, MapproxyLayers) {
 
     $scope.$on('layers.load_complete', refreshTree);
     $scope.$on('layers.added', function() {
-        added();
+        $scope.selected = MapproxyLayers.last();
+        refreshTree();
     });
     $scope.$on('layers.updated', function() {
-        $scope.selected = MapproxyLayers.last()
+        $scope.selected = MapproxyLayers.last();
         refreshTree();
     });
     $scope.$on('layers.deleted', function() {
