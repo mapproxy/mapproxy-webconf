@@ -24,7 +24,7 @@ class RESTBase(object):
         self.section = section
 
     def list(self, project, storage):
-        return storage.get_all(self.section, project, with_id=True)
+        return storage.get_all(self.section, project, with_id=True, with_manual=True)
 
     @requires_json
     def add(self, project, storage):
@@ -114,7 +114,7 @@ class RESTLayers(RESTBase):
         RESTBase.__init__(self, 'layers')
 
     def list(self, project, storage):
-        return storage.get_all(self.section, project, with_rank=True, with_id=True)
+        return storage.get_all(self.section, project, with_rank=True, with_id=True, with_manual=True)
 
     @requires_json
     def update_tree(self, project, storage):
@@ -135,7 +135,7 @@ class RESTGrids(RESTBase):
             'GLOBAL_MERCATOR': {'_id': 'GLOBAL_MERCATOR', 'name': 'GLOBAL_MERCATOR', 'default': True},
             'GLOBAL_GEODETIC': {'_id': 'GLOBAL_GEODETIC', 'name': 'GLOBAL_GEODETIC', 'default': True}
         }
-        default_grids.update(storage.get_all(self.section, project, with_id=True))
+        default_grids.update(storage.get_all(self.section, project, with_id=True, with_manual=True))
         return default_grids
 
 RESTBase('sources').setup_routing(app)

@@ -134,7 +134,7 @@ class SQLiteStore(object):
             )
         """)
 
-    def get_all(self, section, project, default=DEFAULT_VALUE, with_rank=False, with_id=False):
+    def get_all(self, section, project, default=DEFAULT_VALUE, with_rank=False, with_id=False, with_manual=False):
         if default is DEFAULT_VALUE:
             default = {}
 
@@ -149,7 +149,8 @@ class SQLiteStore(object):
             (section, project))
         for row in cur.fetchall():
             data = json.loads(row['data'])
-            data['_manual'] = row['manual']
+            if with_manual:
+                data['_manual'] = row['manual']
             if with_id:
                 data['_id'] = row['id']
             if with_rank:
