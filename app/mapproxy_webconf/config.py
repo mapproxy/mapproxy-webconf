@@ -44,13 +44,15 @@ def create_id_name_map(*dicts):
 
 def mapproxy_conf_from_storage(storage, project):
     mapproxy_conf = {}
-    mapproxy_conf['services'] = {}
+
     services = storage.get_all('services', project).values()
     if services:
+        mapproxy_conf['services'] = {}
         for service, config in services[0].items():
             if 'active' in config and config['active']:
                 config.pop('active', None)
                 mapproxy_conf['services'][service] = config
+
     _globals = storage.get_all('globals', project).values()
     if _globals:
         mapproxy_conf['globals'] = _globals[0]
@@ -69,10 +71,14 @@ def mapproxy_conf_from_storage(storage, project):
 
     id_map = create_id_name_map(sources, caches, grids)
 
-    mapproxy_conf['layers'] = [replace_ids_layer(l, id_map) for l in layers]
-    mapproxy_conf['caches'] = id_dict_to_named_dict(dict((k, replace_ids_cache(caches[k], id_map)) for k in used_caches))
-    mapproxy_conf['sources'] = id_dict_to_named_dict(dict((k, sources[k]) for k in used_sources))
-    mapproxy_conf['grids'] = id_dict_to_named_dict(dict((k, grids[k]) for k in used_grids if type(k) == int))
+    if layers:
+        mapproxy_conf['layers'] = [replace_ids_layer(l, id_map) for l in layers]
+    if used_caches:
+        mapproxy_conf['caches'] = id_dict_to_named_dict(dict((k, replace_ids_cache(caches[k], id_map)) for k in used_caches))
+    if used_sources:
+        mapproxy_conf['sources'] = id_dict_to_named_dict(dict((k, sources[k]) for k in used_sources))
+    if used_grids:
+        mapproxy_conf['grids'] = id_dict_to_named_dict(dict((k, grids[k]) for k in used_grids if type(k) == int))
 
     if 'sources' in mapproxy_conf:
         for source in mapproxy_conf['sources'].values():
