@@ -134,6 +134,9 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
         $scope.sourceformErrorMsg = MapproxySources.error();
         $('#sourceform_service_error').show().fadeOut(3000);
     };
+    $scope.prepareForEditarea = function(data) {
+        return $.extend({'name': ""}, data);
+    };
     $scope.loadSRS = function() {
         var result = WMSSources.srs($scope.source.req.url);
         if(result) {
@@ -298,7 +301,7 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
         $scope.source_form.$setPristine();
 
         if($scope.source._manual) {
-            $scope._editarea.show($scope.source);
+            $scope._editarea.show($scope.prepareForEditarea($scope.source));
         } else {
             $scope._editarea.visible = false;
         }
@@ -441,6 +444,9 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         data.grids = ids;
         return data;
     };
+    $scope.prepareForEditarea = function(data) {
+        return $scope.replaceIdsWithNames($.extend({'name': ''}, data));
+    };
     $scope.addCache = function(event) {
         if(angular.isDefined(event)) {
             event.preventDefault();
@@ -509,7 +515,7 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
     });
 
     $scope.$on('editarea.save', function(scope, cache) {
-        $scope.cache = $scope.replaceNamesWithIds(cache);
+        $scope.cache = $scope.prepareForEditarea(cache);
         $scope.addCache();
     });
 
@@ -611,6 +617,9 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids) {
         $scope.gridformErrorMsg = MapproxyGrids.error();
         $('#gridform_service_error').show().fadeOut(3000);
     };
+    $scope.prepareForEditarea = function(data) {
+        return $.extend({'name': ""}, data);
+    };
     $scope.addGrid = function(event) {
         if(angular.isDefined(event)) {
             event.preventDefault();
@@ -663,7 +672,7 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids) {
             $scope.default_grid = false;
             $scope.grid_form.$setPristine();
             if($scope.grid._manual) {
-                $scope._editarea.show($scope.grid);
+                $scope._editarea.show($scope.prepareForEditarea($scope.grid));
             } else {
                 $scope._editarea.visible = false;
             }
@@ -788,6 +797,10 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         data.sources = names;
         return data;
     };
+    $scope.prepareForEditarea = function(data) {
+        data = $.extend({'name': ""}, data)
+        return $scope.replaceIdsWithNames(data);
+    };
     $scope.replaceNamesWithIds = function(data) {
         data = angular.copy(data);
         var ids = [];
@@ -851,7 +864,7 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         $scope.layer_form.$setPristine();
 
         if($scope.layer._manual) {
-            $scope._editarea.show($scope.replaceIdsWithNames($scope.layer));
+            $scope._editarea.show($scope.prepareForEditarea($scope.layer));
         } else {
             $scope._editarea.visible = false;
         }
@@ -864,8 +877,12 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         $('.save_ok').show().fadeOut(3000);
     });
     $scope.$on('editarea.save', function(scope, layer) {
-        $scope.layer = $scope.replaceNamesWithIds(layer);
-        $scope.addLayer();
+        if(angular.isUndefined(layer.name) || isEmpty(layer.name)) {
+            $scope._editarea.showErrorMsg('Name required');
+        } else {
+            $scope.layer = $scope.replaceNamesWithIds(layer);
+            $scope.addLayer();
+        }
     });
     $scope.$on('layers.add_error', errorHandler);
     $scope.$on('layers.update_error', errorHandler);

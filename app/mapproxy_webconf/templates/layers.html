@@ -109,7 +109,7 @@
       <p>{{layerformErrorMsg}}</p>
     </span>
   </form>
-  <div editarea editarea-value="{{replaceIdsWithNames(layer)}}" yaml-URL="/yaml" json-URL="/json"></div>
+  <div editarea editarea-value="{{prepareForEditarea(layer)}}" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
 </div>
 %end
 

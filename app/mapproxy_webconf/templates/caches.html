@@ -62,7 +62,6 @@
               </div>
           </div>
       </div>
-    <!-- grids XXXkai: replace by received list of supported srs combined with user defined grids-->
       <div labeled="input_label" name-for="cache_form.grids" text="{{'Grids'|i18n}}">
           <select class="input-xlarge" ng-model="cache.grids" id="cache_form.grids" multiple="multiple" ng-options="value._id as value.name for value in available_grids"/>
           </select>
@@ -80,7 +79,7 @@
       <p>{{cacheformErrorMsg}}</p>
     </span>
   </form>
-  <div editarea editarea-value="{{replaceIdsWithNames(cache)}}" yaml-URL="/yaml" json-URL="/json"></div>
+  <div editarea editarea-value="{{prepareForEditarea(cache)}}" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
 </div>
 %end
 

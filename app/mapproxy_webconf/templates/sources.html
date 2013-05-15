@@ -118,11 +118,11 @@
        <span class="text-error" id="sourceform_service_error" ng-show="false">
           <i class="icon-thumbs-down"></i>
           <strong>{{'Saving failed'|i18n}}</strong>
-          <p>{{sourceformErrorMsg}}</p>
+          {{sourceformErrorMsg}}
         </span>
       </fieldset>
     </form>
-    <div editarea editarea-value="{{source}}" yaml-URL="/yaml" json-URL="/json"></div>
+    <div editarea editarea-value="{{prepareForEditarea(source)}}" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
   </div>
 </div>
 %end
