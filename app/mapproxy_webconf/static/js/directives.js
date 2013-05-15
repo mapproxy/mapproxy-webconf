@@ -545,6 +545,9 @@ directive('editarea', function($http) {
             };
 
             var loadYAML = function() {
+                //clear editarea
+                _editareaElement.val('');
+                _editareaElement.attr('rows', minrows);
                 //need to copy cause we modify the object in called function
                 var json = prepareEditareaValue(angular.fromJson(angular.copy($scope.editareaValue)));
                 //make url configurateable
