@@ -392,5 +392,13 @@
     {
         "key": "Back to form edit",
         "value": "Zurück zum formularbasierten Editieren"
+    },
+    {
+        "key": "The mapproxy configuration of this project is valid",
+        "value": "Die MapProxy-Konfiguration dieses Projekts ist lauffähig"
+    },
+    {
+        "key": "The mapproxy configuration of this project is invalid",
+        "value": "Die MapProxy-Konfiguration dieses Projekts ist nicht lauffähig"
     }
 ]

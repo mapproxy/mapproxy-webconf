@@ -3,9 +3,9 @@
     %for project, valid in projects.items():
         <h3>${project}</h3>
         %if valid:
-            <span class="label label-success"><h5><i class="icon-thumbs-up"></i> Mapproxy configuration valid</h5></span>
+            <span class="label label-success"><h5><i class="icon-thumbs-up"></i> {{'The mapproxy configuration of this project is valid'|i18n}}</h5></span>
         %else:
-            <span class="label label-important"><h5><i class="icon-thumbs-down"></i> Mapproxy configuration invalid</h5></span>
+            <span class="label label-important"><h5><i class="icon-thumbs-down"></i> {{'The mapproxy configuration of this project is invalid'|i18n}}</h5></span>
         %end
     %end
   </div>
