@@ -157,7 +157,11 @@ def index(storage):
     projects = {}
     for project in storage.get_projects():
         mapproxy_conf = config.mapproxy_conf_from_storage(storage, project)
-        projects[project] = config.validate(mapproxy_conf)
+        errors, informal_only = config.validate(mapproxy_conf)
+        projects[project] = {
+            'valid': informal_only,
+            'errors': errors
+        }
     return template('index', projects=projects)
 
 @app.route('/project/<project>/conf', name='configuration')

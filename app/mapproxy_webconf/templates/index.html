@@ -1,14 +1,24 @@
 %def content():
   <div class="span4">
     <ul class="vertical-list">
-    %for project, valid in projects.items():
+    %for name, data in projects.items():
         <li>
-            <h3>${project}</h3>
+            <h3>${name}</h3>
             <a href="${ get_url('configuration', project='base') }">{{'To configuration'|i18n}}</a><br><br>
-            %if valid:
+            %if data['valid']:
                 <div class="label label-success"><h5><i class="icon-thumbs-up"></i> {{'The mapproxy configuration of this project is valid'|i18n}}</h5></div>
             %else:
-                <div class="label label-important"><h5><i class="icon-thumbs-down"></i> {{'The mapproxy configuration of this project is invalid'|i18n}}</h5></div>
+                <div class="btn-group">
+                    <a class="btn btn-danger dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="icon-thumbs-down"></i> {{'The mapproxy configuration of this project is invalid'|i18n}}
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        %for msg in data['errors']:
+                            <li>${msg}</li>
+                        %end
+                    </ul>
+                </div>
             %end
         </li>
     %end
