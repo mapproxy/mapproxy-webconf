@@ -400,5 +400,9 @@
     {
         "key": "The mapproxy configuration of this project is invalid",
         "value": "Die MapProxy-Konfiguration dieses Projekts ist nicht lauffähig"
+    },
+    {
+        "key": "To configuration",
+        "value": "Zur Konfiguration"
     }
 ]
