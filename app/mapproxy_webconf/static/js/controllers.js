@@ -68,7 +68,7 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources) {
     };
     $scope.isSelected = function(source) {
         var class_;
-        if($scope.selected == source) {
+        if(angular.equals($scope.selected, source)) {
             class_ = 'selected';
         }
         return class_;
@@ -328,7 +328,7 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches) {
     };
     $scope.isSelected = function(cache) {
         var class_;
-        if($scope.selected == cache) {
+        if(angular.equals($scope.selected, cache)) {
             class_ = 'selected';
         }
         return class_;
@@ -524,7 +524,7 @@ function MapproxyGridListCtrl($scope, MapproxyGrids) {
     };
     $scope.isSelected = function(grid) {
         var class_;
-        if($scope.selected == grid) {
+        if(angular.equals($scope.selected, grid)) {
             class_ = 'selected';
         }
         return class_;
@@ -681,7 +681,7 @@ function MapproxyLayerListCtrl($scope, localize, MapproxyLayers) {
     };
     $scope.isSelected = function(layer) {
         var class_;
-        if($scope.selected == layer) {
+        if(angular.equals($scope.selected, layer)) {
             class_ = 'selected';
         }
         return class_;
