@@ -369,7 +369,6 @@ directive('askDialog', function($parse, localize) {
         restrict: 'A',
         scope: 'element',
         link: function(scope, element, attrs) {
-
             scope.openDialog = function(event) {
                 event.stopPropagation();
                 var buttons = {};
@@ -380,7 +379,8 @@ directive('askDialog', function($parse, localize) {
                 buttons[localize.getLocalizedString('No')] = function() {
                     $(this).dialog("close");
                 };
-                scope.dialog.find('p').text(attrs.dialogText)
+                scope.dialog.attr('title', attrs.dialogTitle);
+                scope.dialog.find('p').text(attrs.dialogText);
                 scope.dialog.dialog({
                     resizeable: false,
                     width: 400,
@@ -391,7 +391,7 @@ directive('askDialog', function($parse, localize) {
             };
             scope.dialog_id = scope.$id;
             scope.callback = $parse(attrs.callback);
-            scope.dialog = $('<div style="display:none;" id="dialog_' + scope.dialog_id + '" title="'+ attrs.dialogTitle +'"><p></p></div>');
+            scope.dialog = $('<div style="display:none;" id="dialog_' + scope.dialog_id +'"><p></p></div>');
             element.after(scope.dialog);
 
             element.bind('click', scope.openDialog);
