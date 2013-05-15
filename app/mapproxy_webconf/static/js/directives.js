@@ -605,6 +605,7 @@ directive('editarea', function($http) {
             $scope.show = function(editareaValue) {
                 $scope._editarea.visible = true;
                 $scope.privateAttributes = {};
+                emptyAttributes = {};
                 $scope._editarea.dirty = false;
                 //$scope.currentModelValue = undefined;
                 $scope.editareaValue = undefined;
@@ -626,6 +627,7 @@ directive('editarea', function($http) {
             };
             $scope.leaveEditarea = function() {
                 $scope.privateAttributes = {};
+                emptyAttributes = {};
                 $scope._editarea.visible = false;
                 $scope._editarea.dirty = false;
                 $scope.editareaValue = undefined
@@ -633,6 +635,7 @@ directive('editarea', function($http) {
             };
             $scope.reset = function() {
                 $scope.privateAttributes = {};
+                emptyAttributes = {};
                 $scope._editarea.dirty = false;
                 $scope.editareaErrorMsg = undefined;
                 loadYAML();
