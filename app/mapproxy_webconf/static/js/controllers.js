@@ -591,8 +591,9 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids) {
         if(angular.isDefined(event)) {
             event.preventDefault();
         }
+        $scope.grid = clearData($scope.grid);
         if(angular.isDefined($scope.grid._id) || !$scope.exist($scope.grid.name)) {
-            MapproxyGrids.add(clearData($scope.grid));
+            MapproxyGrids.add($scope.grid);
             $scope.formTitle = "Edit grid";
             $scope.grid_form.$setPristine();
             $scope._editarea.dirty = false;
@@ -770,8 +771,8 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         if(angular.isDefined(event)) {
             event.preventDefault();
         }
+        $scope.layer = clearData($scope.layer)
         if(angular.isDefined($scope.layer._id) || !$scope.exist($scope.layer.name)) {
-            $scope.layer = clearData($scope.layer)
             MapproxyLayers.add(angular.copy($scope.layer));
             $scope.formTitle = "Edit layer"
             $scope.layer_form.$setPristine();
@@ -902,6 +903,7 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareSer
         if(angular.isDefined(event)) {
             event.preventDefault();
         }
+        $scope.globals = clearData($scope.globals);
         MapproxyGlobals.add($scope.globals);
         $scope.globals_form.$setPristine();
     };
