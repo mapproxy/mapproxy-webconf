@@ -134,6 +134,12 @@ class SQLiteStore(object):
             )
         """)
 
+    def get_projects(self):
+        cur = self.db.cursor()
+        cur.execute("SELECT DISTINCT project FROM store")
+        for row in cur.fetchall():
+            yield row['project']
+
     def get_all(self, section, project, default=DEFAULT_VALUE, with_rank=False, with_id=False, with_manual=False):
         if default is DEFAULT_VALUE:
             default = {}
