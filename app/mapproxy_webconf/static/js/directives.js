@@ -615,6 +615,10 @@ directive('editarea', function($http) {
                 $scope.editareaValue = (angular.isDefined(editareaValue)) ? editareaValue : $attrs.editareaValue;
                 loadYAML();
             };
+            $scope.showErrorMsg = function(errorMsg) {
+                $scope.editareaErrorMsg = errorMsg;
+                $('#editarea_error').show().fadeOut(3000)
+            };
             $scope.save = function() {
                 var yaml = _editareaElement.val();
                 $http.post(jsonURL, {"yaml": yaml})
@@ -643,8 +647,9 @@ directive('editarea', function($http) {
 
             //register necessary functions and variables in parent scope
             $scope.$parent._editarea = {
-                visible: false,
                 show: $scope.show,
+                showErrorMsg: $scope.showErrorMsg,
+                visible: false,
                 dirty: false
             };
         },
