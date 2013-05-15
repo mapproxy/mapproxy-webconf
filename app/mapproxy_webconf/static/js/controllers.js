@@ -751,7 +751,7 @@ function MapproxyLayerListCtrl($scope, localize, MapproxyLayers) {
         MapproxyLayers.current(true, DEFAULT_LAYER);
     });
     $scope.$on('layers.updatedStructure', function() {
-        $('#.save_ok').show().fadeOut(3000);
+        $('.list_save_ok').show().fadeOut(3000);
     });
     $scope.$on('layers.load_error', errorHandler);
     $scope.$on('layers.delete_error', errorHandler);
