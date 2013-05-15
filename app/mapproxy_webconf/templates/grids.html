@@ -44,7 +44,7 @@
           <i ng-show="hasDependencies(grid)" class="icon-remove"
             confirm-dialog
             dialog-title="Confirm!"
-            dialog-text="{{'Can not remove grid:'|i18n}} {{grid.name}}<br>{{getDependencies(grid)}}">
+            dialog-text="{{'Can not remove grid:'|i18n}} {{grid.name}}<br>{{'Dependencies are:'|i18n}}<br>{{getDependencies(grid)}}">
           </i>
         </li>
         <hr>

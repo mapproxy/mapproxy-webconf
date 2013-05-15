@@ -404,5 +404,9 @@
     {
         "key": "To configuration",
         "value": "Zur Konfiguration"
+    },
+    {
+        "key": "Dependencies are:",
+        "value": "Die Abhängigkeiten sind:"
     }
 ]

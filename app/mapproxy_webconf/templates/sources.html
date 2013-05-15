@@ -28,7 +28,7 @@
       <i ng-show="hasDependencies(source)" class="icon-remove"
         confirm-dialog
         dialog-title="{{'Confirm!'|i18n}}"
-        dialog-text="{{'Can not remove source:'|i18n}} {{source.name}}<br>{{getDependencies(source)}}">
+        dialog-text="{{'Can not remove source:'|i18n}} {{source.name}}<br>{{'Dependencies are:'|i18n}}<br>{{getDependencies(source)}}">
        </i>
      </li>
      <hr>

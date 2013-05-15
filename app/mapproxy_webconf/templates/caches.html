@@ -26,7 +26,7 @@
           <i ng-show="hasDependencies(cache)" class="icon-remove"
             confirm-dialog
             dialog-title="Confirm!"
-            dialog-text="{{'Can not remove cache:'|i18n}} {{cache.name}}<br>{{getDependencies(cache)}}">
+            dialog-text="{{'Can not remove cache:'|i18n}} {{cache.name}}<br>{{'Dependencies are:'|i18n}}<br>{{getDependencies(cache)}}">
           </i>
         </li>
         <hr>

@@ -95,15 +95,17 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources) {
         return hasDependencies;
     };
     $scope.getDependencies = function(source) {
-        var result = '';
+        var result = '<ul>';
         angular.forEach(source._dependencies, function(_dependencies, name) {
             if(_dependencies.length > 0) {
-                result += name +'<br>';
+                result += '<li>' + name[0].toUpperCase() + name.slice(1) +'<ul>';
                 angular.forEach(_dependencies, function(dependency) {
-                    result += '&nbsp;&nbsp;' + dependency.name + '<br>';
+                    result += '<li>' + dependency.name + '</li>';
                 });
+                result += '</ul>';
             }
         });
+        result += '</ul>';
         return result;
     };
 
@@ -372,15 +374,17 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches) {
         return hasDependencies;
     };
     $scope.getDependencies = function(cache) {
-        var result = '';
+        var result = '<ul>';
         angular.forEach(cache._dependencies, function(_dependencies, name) {
             if(_dependencies.length > 0) {
-                result += name +'<br>';
+                result += '<li>' + name[0].toUpperCase() + name.slice(1) +'<ul>';
                 angular.forEach(_dependencies, function(dependency) {
-                    result += '&nbsp;&nbsp;' + dependency.name + '<br>';
+                    result += '<li>' + dependency.name + '</li>';
                 });
+                result += '</ul>';
             }
         });
+        result += '</ul>';
         return result;
     };
 
@@ -582,15 +586,17 @@ function MapproxyGridListCtrl($scope, MapproxyGrids) {
         return hasDependencies;
     };
     $scope.getDependencies = function(grid) {
-        var result = '';
+        var result = '<ul>';
         angular.forEach(grid._dependencies, function(_dependencies, name) {
             if(_dependencies.length > 0) {
-                result += name +'<br>';
+                result += '<li>' + name[0].toUpperCase() + name.slice(1) +'<ul>';
                 angular.forEach(_dependencies, function(dependency) {
-                    result += '&nbsp;&nbsp;' + dependency.name + '<br>';
+                    result += '<li>' + dependency.name + '</li>';
                 });
+                result += '</ul>';
             }
         });
+        result += '</ul>';
         return result;
     };
 
