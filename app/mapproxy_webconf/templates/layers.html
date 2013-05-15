@@ -34,7 +34,9 @@
     </ul>
   </script>
   <div>
+    <ul class="vertical-list"><hr></ul>
     <ul sortable ng-model="mapproxy_layers" class="vertical-list">
+
       <div class="{{isSelected(layer)}}"
         ng-repeat="layer in mapproxy_layers | orderBy:'_rank'"
         ng-click="editLayer(layer)">
@@ -121,6 +123,7 @@
         <p>{{sourcelistErrorMsg}}</p>
       </span>
       <ul class="vertical-list">
+          <hr>
           <div
               draggable
               class="mapproxy_source"
@@ -140,6 +143,7 @@
         <p>{{cachelistErrorMsg}}</p>
       </span>
       <ul class="vertical-list">
+          <hr>
           <div
               draggable
               class="mapproxy_cache"

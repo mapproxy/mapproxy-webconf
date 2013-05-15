@@ -88,6 +88,7 @@
 <div ng-controller="MapproxySourceListCtrl">
     <h3>{{'Sources'|i18n}}</h3>
     <ul class="vertical-list">
+      <hr>
       <div draggable class="mapproxy_source" ng-repeat="source in mapproxy_sources | orderBy:'name'"
           item-data="{{source}}">
         <li class="droppable_name">
