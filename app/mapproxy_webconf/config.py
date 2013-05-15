@@ -100,12 +100,12 @@ def replace_ids_cache(cache, id_map):
     if 'grids' in cache:
         cache['grids'] = [id_map[i] if type(i) == int else i for i in cache['grids']]
     if 'sources' in cache:
-        cache['sources'] = [id_map[i] for i in cache['sources']]
+        cache['sources'] = [id_map[i] if type(i) == int else i for i in cache['sources']]
     return cache
 
 def replace_ids_layer(layer, id_map):
     if 'sources' in layer:
-        layer['sources'] = [id_map[i] for i in layer['sources']]
+        layer['sources'] = [id_map[i] if type(i) == int else i for i in layer['sources']]
     return layer
 
 def layer_tree(layers):
