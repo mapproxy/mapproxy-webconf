@@ -124,6 +124,10 @@
         "value": "Projekt"
     },
     {
+        "key": "Projects",
+        "value": "Projekte"
+    },
+    {
         "key": "Configuration",
         "value": "Konfiguration"
     },
