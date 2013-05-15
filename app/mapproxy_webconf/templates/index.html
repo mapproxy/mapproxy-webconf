@@ -6,7 +6,7 @@
             <h3>${name}</h3>
             <a href="${ get_url('configuration', project='base') }">{{'To configuration'|i18n}}</a><br><br>
             %if data['valid']:
-                <div class="label label-success"><h5><i class="icon-thumbs-up"></i> {{'The mapproxy configuration of this project is valid'|i18n}}</h5></div>
+                <span class="label label-success"><h5><i class="icon-thumbs-up"></i> {{'The mapproxy configuration of this project is valid'|i18n}}</h5></span>
             %else:
                 <div class="btn-group">
                     <a class="btn btn-danger dropdown-toggle" data-toggle="dropdown" href="#">
