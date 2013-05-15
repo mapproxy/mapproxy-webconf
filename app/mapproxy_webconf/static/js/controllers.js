@@ -793,7 +793,7 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         }
     };
     $scope.showName = function(_id) {
-        var name = MapproxySources.nameById(name) || MapproxyCaches.nameById(name);
+        var name = MapproxySources.nameById(_id) || MapproxyCaches.nameById(_id);
         return name ? name : _id;
     };
     $scope.exist = function(name) {
