@@ -530,6 +530,7 @@ directive('editarea', function($http) {
           "</div>",
         controller: function($scope, $element, $attrs) {
             //$scope.$parent -> outer scope
+            var minrows = $attrs.minrows || 10;
             var maxrows = $attrs.maxrows || 30;
             var yamlURL = $attrs.yamlUrl;
             var jsonURL = $attrs.jsonUrl;
@@ -551,6 +552,7 @@ directive('editarea', function($http) {
                     .success(function(yaml) {
                         if(!isEmpty(yaml)) {
                             var rows = yaml.match(/[^\n]*\n[^\n]*/gi).length + 1;
+                            rows = (rows < minrows) ? minrows : rows;
                             _editareaElement.attr('rows', (rows > maxrows) ? maxrows : rows);
                             _editareaElement.val(yaml);
                         }
