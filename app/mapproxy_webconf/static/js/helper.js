@@ -17,7 +17,11 @@ var clearData = function(dict) {
             }
 
         } else if(angular.isObject(value)) {
-            dict[key] = clearData(value);
+            if(isEmpty(value)) {
+                delete(dict[key]);
+            } else {
+                dict[key] = clearData(value);
+            }
         }
     });
     return dict;
@@ -26,8 +30,11 @@ var clearData = function(dict) {
 var isEmpty = function(item) {
     if(angular.isArray(item) || angular.isObject(item)) {
         var empty = true;
-        angular.forEach(item, function(itm) {
-            if(!isEmpty(itm)) {
+        angular.forEach(item, function(itm, key) {
+            //ignore angularjs vars
+            if(!angular.isNumber(key) && key.substr(0, 2) == '$$') {
+                angular.noop();
+            } else if(!isEmpty(itm)) {
                 empty = false;
             }
         });
