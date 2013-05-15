@@ -559,14 +559,17 @@ directive('editarea', function($http) {
                             _editareaElement.attr('rows', (rows > maxrows) ? maxrows : rows);
                             _editareaElement.val(yaml);
                         }
-
                     })
                     .error(errorHandler);
             };
 
             var prepareEditareaValue = function(value) {
+                var keepEmptyFields = angular.isDefined($attrs.keepEmptyFields) ? $attrs.keepEmptyFields.split(',') : [];
+
                 angular.forEach(value, function(val, key) {
-                    if(key[0] === '_') {
+                    if($.inArray(key, keepEmptyFields) != -1) {
+                        angular.noop();
+                    } else if(key[0] === '_') {
                         $scope.privateAttributes[key] = val;
                     } else if(isEmpty(val)) {
                         emptyAttributes[key] = val;
