@@ -469,7 +469,7 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         $scope.cache_form.$setPristine();
 
         if($scope.cache._manual) {
-            $scope._editarea.show($scope.cache);
+            $scope._editarea.show($scope.replaceIdsWithNames($scope.cache));
         } else {
             $scope._editarea.visible = false;
         }
