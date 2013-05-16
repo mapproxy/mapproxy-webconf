@@ -877,7 +877,7 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         } else {
             MapproxyCaches.add($scope.layer);
             $scope.formTitle = 'Edit layer';
-            $scope.cache_form.$setPristine();
+            $scope.layer_form.$setPristine();
             $scope._editarea.dirty = false;
         }
     };
