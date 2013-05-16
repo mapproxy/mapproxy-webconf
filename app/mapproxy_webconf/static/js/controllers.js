@@ -99,9 +99,15 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources) {
         angular.forEach(source._dependencies, function(_dependencies, name) {
             if(_dependencies.length > 0) {
                 result += '<li>' + name[0].toUpperCase() + name.slice(1) +'<ul>';
-                angular.forEach(_dependencies, function(dependency) {
-                    result += '<li>' + dependency.name + '</li>';
-                });
+                if(name == 'layers') {
+                    angular.forEach(_dependencies, function(dependency) {
+                        result += '<li>' + dependency.title + '(' + dependency.name + ')</li>';
+                    });
+                } else {
+                    angular.forEach(_dependencies, function(dependency) {
+                        result += '<li>' + dependency.name + '</li>';
+                    });
+                }
                 result += '</ul>';
             }
         });
@@ -378,9 +384,15 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches) {
         angular.forEach(cache._dependencies, function(_dependencies, name) {
             if(_dependencies.length > 0) {
                 result += '<li>' + name[0].toUpperCase() + name.slice(1) +'<ul>';
-                angular.forEach(_dependencies, function(dependency) {
-                    result += '<li>' + dependency.name + '</li>';
-                });
+                if(name == 'layers') {
+                    angular.forEach(_dependencies, function(dependency) {
+                        result += '<li>' + dependency.title + '(' + dependency.name + ')</li>';
+                    });
+                } else {
+                    angular.forEach(_dependencies, function(dependency) {
+                        result += '<li>' + dependency.name + '</li>';
+                    });
+                }
                 result += '</ul>';
             }
         });
@@ -590,9 +602,15 @@ function MapproxyGridListCtrl($scope, MapproxyGrids) {
         angular.forEach(grid._dependencies, function(_dependencies, name) {
             if(_dependencies.length > 0) {
                 result += '<li>' + name[0].toUpperCase() + name.slice(1) +'<ul>';
-                angular.forEach(_dependencies, function(dependency) {
-                    result += '<li>' + dependency.name + '</li>';
-                });
+                if(name == 'layers') {
+                    angular.forEach(_dependencies, function(dependency) {
+                        result += '<li>' + dependency.title + '(' + dependency.name + ')</li>';
+                    });
+                } else {
+                    angular.forEach(_dependencies, function(dependency) {
+                        result += '<li>' + dependency.name + '</li>';
+                    });
+                }
                 result += '</ul>';
             }
         });
