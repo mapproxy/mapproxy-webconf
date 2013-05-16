@@ -408,5 +408,9 @@
     {
         "key": "Dependencies are:",
         "value": "Die Abhängigkeiten sind:"
+    },
+    {
+        "key": "Name required.",
+        "value": "Name wird benötigt"
     }
 ]
