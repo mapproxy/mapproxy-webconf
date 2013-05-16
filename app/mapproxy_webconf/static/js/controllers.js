@@ -691,9 +691,8 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids) {
         $scope.formTitle = angular.equals($scope.grid, DEFAULT_GRID) ? 'New grid' : 'Edit grid';
         if($scope.grid.default) {
             $scope.formTitle = 'Default grid';
-            $scope.default_grid = true;
+            $scope._editare.visible = false;
         } else {
-            $scope.default_grid = false;
             $scope.grid_form.$setPristine();
             if($scope.grid._manual) {
                 $scope._editarea.show($scope.prepareForEditarea($scope.grid));

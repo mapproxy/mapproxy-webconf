@@ -57,7 +57,7 @@
 <div ng-controller="MapproxyGridFormCtrl">
   <div ng-show="!_editarea.visible">
     <h3>{{formTitle|i18n}}</h3>
-    <form name="grid_form" id="grid_form" ng-show="!default_grid" novalidate>
+    <form name="grid_form" id="grid_form" ng-show="!grid.default" novalidate>
       <!-- name -->
         <div labeled="input_label" name-for="grid_form.name" text="{{'Name'|i18n}}">
             <input required type="text" ng-model="grid.name" id="grid_form.name" />
@@ -104,13 +104,13 @@
             <p>{{gridformErrorMsg}}</p>
           </span>
     </form>
-    <div ng-show="default_grid">
-      <div labeled="input_label" name-for="default_grid.name" text="{{'Name'|i18n}}">
-        <div class="input-xlarge">{{grid.name}}</div>
-      </div>
+  </div>
+  <div ng-show="grid.default">
+    <div labeled="input_label" name-for="default_grid.name" text="{{'Name'|i18n}}">
+      <div class="input-xlarge" id="default_grid.name">{{grid.name}}</div>
     </div>
   </div>
-  <div ng-show="!grid.default" editarea editarea-value="{{prepareForEditarea(grid)}}" yaml-URL="/yaml" json-URL="/json"></div>
+  <div ng-show="!grid.default" editarea editarea-value="{{prepareForEditarea(grid)}}" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
 </div>
 %end
 
