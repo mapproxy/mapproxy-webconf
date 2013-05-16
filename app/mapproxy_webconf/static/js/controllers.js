@@ -1015,7 +1015,7 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareSer
     });
 
     $(window).on('beforeunload', function() {
-        if($scope.globals_form.$dirty) {
+        if($scope.globals_form.$dirty || $scope._editarea.dirty) {
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
