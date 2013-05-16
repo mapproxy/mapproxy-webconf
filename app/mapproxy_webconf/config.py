@@ -44,7 +44,75 @@ def create_id_name_map(*dicts):
     return id_map
 
 def validate(mapproxy_conf):
-    return validate_mapproxy_conf(utils.convert(mapproxy_conf))
+    conf_dict = utils.convert(mapproxy_conf)
+    #check given mapproxy config against specs
+
+    errors, informal_only = validate_mapproxy_conf(conf_dict)
+    if not informal_only:
+        return (errors, informal_only)
+
+    #check for needed sections to run mapproxy
+    errors = []
+    sources_conf = conf_dict.get('sources', False)
+    if not sources_conf:
+        errors.append('Missing sources section')
+    else:
+        for name, source in sources_conf.items():
+            if source.get('type', False) == 'wms':
+                if source.get('req', False):
+                    if not source.req.get('url', False):
+                        errors.append('Missing "url" for source %s' % name)
+                    if not source.req.get('layers', False):
+                        errors.append('Missing "layers" for source %s' % name)
+                else:
+                    errors.append('Missing "req" for source %s' % name)
+
+    grids_conf = conf_dict.get('grids', False)
+
+    caches_conf = conf_dict.get('caches', False)
+    if caches_conf:
+        for name, cache in caches_conf.items():
+            sources = cache.get('sources', False)
+            if sources:
+                for source in sources:
+                    if not sources_conf:
+                        errors.append('Source %s for cache %s not found in config' % (source, name))
+                    elif source not in sources_conf.keys():
+                        errors.append('Source %s for cache %s not found in config' % (source, name))
+            grids = cache.get('grids', False)
+            if grids:
+                for grid in grids:
+                    known_grids = ['GLOBAL_MERCATOR', 'GLOBAL_GEODETIC']
+                    if grids_conf:
+                        known_grids += grids_conf.keys()
+                    if grid not in known_grids:
+                        errors.append('Grid %s for cache %s not found in config' % (grid, name))
+
+    layers_conf = conf_dict.get('layers', False)
+    if not layers_conf:
+        errors.append('Missing layers section')
+    else:
+        for layer in layers_conf:
+            sources = layer.get('sources', False)
+            if not sources:
+                errors.append('Missing sources for layer %s' % layer['name'])
+            else:
+                for source in sources:
+                    found = False
+                    if caches_conf and source in caches_conf.keys():
+                        found = True
+                    elif sources_conf and source in sources_conf.keys():
+                        found = True
+                    if not found:
+                        errors.append('Source %s for layer %s neither found in caches- nor in sources-section' % (source, layer['name']))
+
+    services_conf = conf_dict.get('services', False)
+    if not services_conf:
+        errors.append('Missing services section')
+
+    if not errors:
+        return (None, True)
+    return (errors, False)
 
 def mapproxy_conf_from_storage(storage, project):
     mapproxy_conf = {}
