@@ -242,9 +242,9 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
                 $('#sourceform_service_error').show().fadeOut(3000);
             }
         } else {
-            MapproxyCaches.add($scope.source);
+            MapproxySources.add($scope.source);
             $scope.formTitle = 'Edit source';
-            $scope.cache_form.$setPristine();
+            $scope.source_form.$setPristine();
             $scope._editarea.dirty = false;
         }
     };
@@ -677,9 +677,9 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids) {
                 $('#gridform_service_error').show().fadeOut(3000);
             }
         } else {
-            MapproxyCaches.add($scope.grid);
+            MapproxyGrids.add($scope.grid);
             $scope.formTitle = 'Edit grid';
-            $scope.cache_form.$setPristine();
+            $scope.grid_form.$setPristine();
             $scope._editarea.dirty = false;
         }
     };
@@ -875,7 +875,7 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
                 $('#layerform_service_error').show().fadeOut(3000);
             }
         } else {
-            MapproxyCaches.add($scope.layer);
+            MapproxyLayers.add($scope.layer);
             $scope.formTitle = 'Edit layer';
             $scope.layer_form.$setPristine();
             $scope._editarea.dirty = false;
