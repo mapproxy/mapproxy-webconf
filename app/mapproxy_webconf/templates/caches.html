@@ -40,44 +40,50 @@
   <form name="cache_form" ng-model="cache" ng-show="!_editarea.visible">
     <h3>{{formTitle|i18n}}</h3>
     <!-- name -->
-      <div labeled="input_label" name-for="cache_form.cache_name" text="{{'Name'|i18n}}">
-          <input required class="input-xlarge" type="text" ng-model="cache.name" id="cache_form.cache_name"/>
-      </div>
+    <div labeled="input_label" name-for="cache_form.cache_name" text="{{'Name'|i18n}}">
+        <input required class="input-xlarge" type="text" ng-model="cache.name" id="cache_form.cache_name"/>
+    </div>
     <!-- sources -->
       <!-- change-callback MUST provide parameters callback and new_data -->
-      <div labeled="input_label" name-for="cache_form.sources" text="{{'Sources'|i18n}}">
-          <div
-              droppable
-              sortable
-              required
-              accepts="mapproxy_source"
-              allow-array="true"
-              ng-model="cache.sources"
-              name="cache_form.sources"
-              use-key-for-value="_id"
-              class="input-xlarge insertable-list uneditable-input">
-              <div ng-repeat="source in cache.sources" class="label">
-                  <span ng-bind="showName(source)"></span>
-                  <i class="icon-remove" ng-click="remove(source)"></i>
-              </div>
-          </div>
-      </div>
-      <div labeled="input_label" name-for="cache_form.grids" text="{{'Grids'|i18n}}">
-          <select class="input-xlarge" ng-model="cache.grids" id="cache_form.grids" multiple="multiple" ng-options="value._id as value.name for value in available_grids"/>
-          </select>
-      </div>
-
-    <button class="btn btn-small" ng-click="addCache($event)" ng-disabled="!cache_form.$valid" id="cache_form_save">{{'Save'|i18n}}</button>
-    <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
-    <span class="text-success save_ok" ng-show="false">
-      <i class="icon-ok"></i>
-       <strong>{{'Saved successfully'|i18n}}</strong>
-    </span>
-    <span class="text-error" id="cacheform_service_error" ng-show="false">
-      <i class="icon-thumbs-down"></i>
-      <strong>{{'An error occured'|i18n}}</strong>
-      <p>{{cacheformErrorMsg}}</p>
-    </span>
+    <div labeled="input_label" name-for="cache_form.sources" text="{{'Sources'|i18n}}">
+        <div
+            droppable
+            sortable
+            required
+            accepts="mapproxy_source"
+            allow-array="true"
+            ng-model="cache.sources"
+            name="cache_form.sources"
+            use-key-for-value="_id"
+            class="input-xlarge insertable-list uneditable-input">
+            <div ng-repeat="source in cache.sources" class="label">
+                <span ng-bind="showName(source)"></span>
+                <i class="icon-remove" ng-click="remove(source)"></i>
+            </div>
+        </div>
+    </div>
+    <div labeled="input_label" name-for="cache_form.grids" text="{{'Grids'|i18n}}">
+        <select class="input-xlarge" ng-model="cache.grids" id="cache_form.grids" multiple="multiple" ng-options="value._id as value.name for value in available_grids"/>
+        </select>
+    </div>
+    <div class="text-center">
+      <span id="_editarea_toggle_button_container"></span>
+      <button class="btn btn-small" ng-click="addCache($event)" ng-disabled="!cache_form.$valid" id="cache_form_save">{{'Save'|i18n}}</button>
+      <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
+    </div>
+    <div class="text-center">
+      <span class="text-success save_ok" ng-show="false">
+        <br>
+        <i class="icon-ok"></i>
+         <strong>{{'Saved successfully'|i18n}}</strong>
+      </span>
+      <span class="text-error" id="cacheform_service_error" ng-show="false">
+        <br>
+        <i class="icon-thumbs-down"></i>
+        <strong>{{'An error occured'|i18n}}</strong>
+        <p>{{cacheformErrorMsg}}</p>
+      </span>
+    </div>
   </form>
   <div editarea editarea-value="{{prepareForEditarea(cache)}}" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
 </div>

@@ -97,17 +97,24 @@
         </div>
       </div>
     </div>
-    <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!layer_form.$valid" id="layer_form_save">{{'Save'|i18n}}</button>
-    <button class="btn btn-small" ng-click="resetForm()">{{'Reset'|i18n}}</button>
-    <span class="text-success save_ok" ng-show="false">
-      <i class="icon-ok"></i>
-      <strong>{{'Saved successfully'|i18n}}</strong>
-    </span>
-    <span class="text-error" id="layerform_service_error" ng-show="false">
-      <i class="icon-thumbs-down"></i>
-      <strong>{{'Saving failed'|i18n}}</strong>
-      <p>{{layerformErrorMsg}}</p>
-    </span>
+    <div class="text-center">
+      <span id="_editarea_toggle_button_container"></span>
+      <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!layer_form.$valid" id="layer_form_save">{{'Save'|i18n}}</button>
+      <button class="btn btn-small" ng-click="resetForm()">{{'Reset'|i18n}}</button>
+    </div>
+    <div class="text-center">
+      <span class="text-success save_ok" ng-show="false">
+        <br>
+        <i class="icon-ok"></i>
+        <strong>{{'Saved successfully'|i18n}}</strong>
+      </span>
+      <span class="text-error" id="layerform_service_error" ng-show="false">
+        <br>
+        <i class="icon-thumbs-down"></i>
+        <strong>{{'Saving failed'|i18n}}</strong>
+        <p>{{layerformErrorMsg}}</p>
+      </span>
+    </div>
   </form>
   <div editarea editarea-value="{{prepareForEditarea(layer)}}" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
 </div>

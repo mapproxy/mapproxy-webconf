@@ -92,17 +92,24 @@
                 <option value="nw">NW / UL</option>
             </select>
         </div>
-        <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="!grid_form.$valid" id="grid_form_save">{{'Save'|i18n}}</button>
-        <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
-        <span class="text-success save_ok" ng-show="false">
-          <i class="icon-ok"></i>
-          <strong>{{'Saved successfully'|i18n}}</strong>
-         </span>
-         <span class="text-error" id="gridform_service_error" ng-show="false">
+        <div class="text-center">
+          <span id="_editarea_toggle_button_container"></span>
+          <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="!grid_form.$valid" id="grid_form_save">{{'Save'|i18n}}</button>
+          <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
+        </div>
+        <div class="text-center">
+          <span class="text-success save_ok" ng-show="false">
+            <br>
+            <i class="icon-ok"></i>
+            <strong>{{'Saved successfully'|i18n}}</strong>
+          </span>
+          <span class="text-error" id="gridform_service_error" ng-show="false">
+            <br>
             <i class="icon-thumbs-down"></i>
             <strong>{{'Saving failed'|i18n}}</strong>
             <p>{{gridformErrorMsg}}</p>
           </span>
+        </div>
     </form>
   </div>
   <div ng-show="grid.default">
