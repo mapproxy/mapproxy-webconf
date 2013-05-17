@@ -94,7 +94,7 @@
             </div>
             <div class="input-append" labeled="input_label" name-for="add_layer_manual" text="{{'Manual add layer'|i18n}}">
               <input type="text" id="add_layer_manual" name="add_layer_manual" ng-model="custom.layer_manual" class="input-xlarge" unique="{{source.req.layers}}">
-              <button class="btn btn-small" ng-click="addLayerManual($event)" ng-disabled="!custom.layer_manual">{{'Add'|i18n}}</button>
+              <button class="btn" ng-click="addLayerManual($event)" ng-disabled="!custom.layer_manual">{{'Add'|i18n}}</button>
             </div>
 
             <div labeled='checkbox_label' name-for="source_form.req_transparent" text="{{'Transparency'|i18n}}" warning="{{invalid_image_settings}}" warning-msg="{{'Selectet image format(s) not support transparency.'|i18n}}">
@@ -102,7 +102,7 @@
             </div>
             <div class="input-append" labeled='input_label' name-for="source_form.coverage_bbox" text="{{'Coverage BBOX'|i18n}}">
               <input type="text" ng-model="source.coverage.bbox" id="source_form.coverage_bbox" class="input-xlarge">
-              <button class="btn btn-small" ng-disabled="!source.req.url" ng-click="addCoverage($event)" id="source_form_load_coverage">{{'Use coverage from WMS'|i18n}}</button>
+              <button class="btn" ng-disabled="!source.req.url" ng-click="addCoverage($event)" id="source_form_load_coverage">{{'Use coverage from WMS'|i18n}}</button>
             </div>
             <div labeled="input_label" name-for="source_form.supported_srs" text="{{'Supported SRS'|i18n}}">
               <div name="source_form.supported_srs" class="well well-small input-xlarge">
@@ -112,7 +112,7 @@
             </div>
             <div class="input-append" labeled="input_label" name-for="add_srs_manual" text="{{'Manual add SRS'|i18n}}">
               <input type="text" id="add_srs_manual" name="add_srs_manual" ng-model="custom.srs_manual" class="input-xlarge">
-              <button class="btn btn-small" ng-click="addSRSManual($event)" ng-disabled="!custom.srs_manual">{{'Add'|i18n}}</button>
+              <button class="btn" ng-click="addSRSManual($event)" ng-disabled="!custom.srs_manual">{{'Add'|i18n}}</button>
             </div>
           </div>
         </div>
@@ -197,7 +197,7 @@
     <form name="capabilities_form" novalidate>
         <div class="input-append" labeled="input_label" name-for="addCapabilities"  text="{{'Load WMS'|i18n}}">
             <input type="url" required name="capabilities_url" ng-model="capabilities.url" id="addCapabilities" unique="{{wms_urls}}">
-            <button class="btn btn-small" ng-click="addCapabilities()" ng-disabled="!capabilities_form.$valid">{{'Add'|i18n}}</button>
+            <button class="btn" ng-click="addCapabilities()" ng-disabled="!capabilities_form.$valid">{{'Add'|i18n}}</button>
         </div>
         <div>
           <span class="text-success" id="capabilities_add_ok" ng-show="false">
