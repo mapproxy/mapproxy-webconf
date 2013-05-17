@@ -27,11 +27,15 @@
       <strong>{{'An error occured'|i18n}}</strong>
       <p>{{gridlistErrorMsg}}</p>
     </span>
+    <div>
+      <input type="text" ng-model="gridFilter" placeholder="{{'Filter'|i18n}}..."/>
+      <br>
+      <span ng-show="mapproxy_grids.length - filtered.length" ng-click="gridFilter=''">{{'Not shown grids'|i18n}}: {{mapproxy_grids.length - filtered.length}}</span>
+    </div>
      <ul class="vertical-list">
       <hr>
-       <div class="{{isSelected(grid)}}" ng-repeat="grid in mapproxy_grids | orderBy:'name'"
+       <div class="{{isSelected(grid)}}" ng-repeat="grid in filtered = (mapproxy_grids | filter: nameFilter) | orderBy:'name'"
         ng-click="editGrid(grid)">
-
          <li>
           <i ng-show="grid._manual" class="icon-pencil"></i>
           {{grid.name}}
@@ -50,6 +54,7 @@
         <hr>
       </div>
     </ul>
+    <span ng-show="false">{{filtered.length}}</span>
   </div>
 %end
 

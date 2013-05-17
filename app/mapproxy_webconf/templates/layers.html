@@ -12,6 +12,11 @@
     <strong>{{'An error occured'|i18n}}</strong>
     <p>{{layerlistErrorMsg}}</p>
   </span>
+  <div>
+    <input type="text" ng-model="layerFilter" placeholder="{{'Filter'|i18n}}..."/>
+    <br>
+    <span ng-show="mapproxy_layers.length - filtered.length" ng-click="layerFilter=''">{{'Not shown layers'|i18n}}: {{mapproxy_layers.length - filtered.length}}</span>
+  </div>
   <script type="text/ng-template"  id="mapproxy_layer_renderer.html">
     <ul sortable ng-model="layer._layers">
       <li ng-repeat="layer in layer._layers | orderBy:'_rank'">  <!-- new scope -->
@@ -38,7 +43,7 @@
     <ul sortable ng-model="mapproxy_layers" class="vertical-list">
 
       <div class="{{isSelected(layer)}}"
-        ng-repeat="layer in mapproxy_layers | orderBy:'_rank'"
+        ng-repeat="layer in filtered = (mapproxy_layers | filter: nameFilter) | orderBy:'_rank'"
         ng-click="editLayer(layer)">
         <li>
           <i ng-show="layer._manual" class="icon-pencil"></i>
@@ -59,6 +64,7 @@
         <hr>
       </div>
     </ul>
+    <span ng-show="false">{{filtered.length}}</span>
   </div>
   <div class="text-success list_save_ok" ng-show="false">
     <i class="icon-ok"></i>
@@ -129,17 +135,23 @@
         <strong>{{'An error occured'|i18n}}</strong>
         <p>{{sourcelistErrorMsg}}</p>
       </span>
+      <div>
+        <input type="text" ng-model="sourceFilter" placeholder="{{'Filter'|i18n}}..."/>
+        <br>
+        <span ng-show="mapproxy_sources.length - filtered.length" ng-click="sourceFilter=''">{{'Not shown sources'|i18n}}: {{mapproxy_sources.length - filtered.length}}</span>
+      </div>
       <ul class="vertical-list">
           <hr>
           <div
               draggable
               class="mapproxy_source"
-              ng-repeat="source in mapproxy_sources | orderBy:'name'"
+              ng-repeat="source in filtered = (mapproxy_sources |filter: nameFilter) | orderBy:'name'"
               item-data="{{source}}">
               <li class="droppable_name"> {{source.name}}</li>
               <hr>
             </div>
       </ul>
+      <span ng-show="false">{{filtered.length}}</span>
     </span>
     <hr>
     <span ng-controller="MapproxyCacheListCtrl">
@@ -149,17 +161,23 @@
         <strong>{{'An error occured'|i18n}}</strong>
         <p>{{cachelistErrorMsg}}</p>
       </span>
+      <div>
+        <input type="text" ng-model="cacheFilter" placeholder="{{'Filter'|i18n}}..."/>
+        <br>
+        <span ng-show="mapproxy_caches.length - filtered.length" ng-click="cacheFilter=''">{{'Not shown caches'|i18n}}: {{mapproxy_caches.length - filtered.length}}</span>
+      </div>
       <ul class="vertical-list">
           <hr>
           <div
               draggable
               class="mapproxy_cache"
-              ng-repeat="cache in mapproxy_caches | orderBy:'name'"
+              ng-repeat="cache in filtered = (mapproxy_caches | filter: nameFilter) | orderBy:'name'"
               item-data="{{cache}}">
               <li class="droppable_name">{{cache.name}}</li>
               <hr>
           </div>
       </ul>
+      <span ng-show="false">{{filtered.length}}</span>
     </span>
   </div>
 %end

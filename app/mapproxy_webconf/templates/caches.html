@@ -10,9 +10,14 @@
       <strong>{{'An error occured'|i18n}}</strong>
       <p>{{cachelistErrorMsg}}</p>
     </span>
+    <div>
+      <input type="text" ng-model="cacheFilter" placeholder="{{'Filter'|i18n}}..."/>
+      <br>
+      <span ng-show="mapproxy_caches.length - filtered.length" ng-click="cacheFilter=''">{{'Not shown caches'|i18n}}: {{mapproxy_caches.length - filtered.length}}</span>
+    </div>
     <ul class="vertical-list">
       <hr>
-      <div class="{{isSelected(cache)}}" ng-repeat="cache in mapproxy_caches | orderBy:'name'"
+      <div class="{{isSelected(cache)}}" ng-repeat="cache in filtered = (mapproxy_caches | filter: nameFilter) | orderBy:'name'"
       ng-click="editCache(cache)">
         <li>
           <i ng-show="cache._manual" class="icon-pencil"></i>
@@ -32,6 +37,7 @@
         <hr>
       </div>
     </ul>
+    <span ng-show="false">{{mapproxy_caches.length - filtered.length}}</span>
   </div>
 %end
 
@@ -92,9 +98,14 @@
 %def rightblock():
 <div ng-controller="MapproxySourceListCtrl">
     <h3>{{'Sources'|i18n}}</h3>
+    <div>
+      <input type="text" ng-model="sourceFilter" placeholder="{{'Filter'|i18n}}..."/>
+      <br>
+      <span ng-show="mapproxy_sources.length - filtered.length" ng-click="sourceFilter=''">{{'Not shown sources'|i18n}}: {{mapproxy_sources.length - filtered.length}}</span>
+    </div>
     <ul class="vertical-list">
       <hr>
-      <div draggable class="mapproxy_source" ng-repeat="source in mapproxy_sources | orderBy:'name'"
+      <div draggable class="mapproxy_source" ng-repeat="source in filtered = (mapproxy_sources | filter: nameFilter) | orderBy:'name'"
           item-data="{{source}}">
         <li class="droppable_name">
             {{source.name}}
@@ -102,6 +113,7 @@
         <hr>
       </div>
     </ul>
+    <span ng-show="false">{{filtered.length}}</span>
     <span class="text-error" id="sourcelist_service_error" ng-show="false">
       <i class="icon-thumbs-down"></i>
       <strong>{{'An error occured'|i18n}}</strong>

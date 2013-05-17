@@ -12,9 +12,14 @@
     <strong>{{'An error occured'|i18n}}</strong>
     <p>{{sourcelistErrorMsg}}</p>
   </span>
+  <div>
+    <input type="text" ng-model="sourceFilter" placeholder="{{'Filter'|i18n}}..."/>
+    <br>
+    <span ng-show="mapproxy_sources.length - filtered.length" ng-click="sourceFilter=''">{{'Not shown sources'|i18n}}: {{mapproxy_sources.length - filtered.length}}</span>
+  </div>
   <ul class="vertical-list">
     <hr>
-    <div class="{{isSelected(source)}}" ng-repeat="source in mapproxy_sources | orderBy:'name'"
+    <div class="{{isSelected(source)}}" ng-repeat="source in filtered = (mapproxy_sources | filter: nameFilter) | orderBy:'name'"
     ng-click="editSource(source)">
     <li>
       <i ng-show="source._manual" class="icon-pencil"></i>
@@ -34,6 +39,8 @@
      <hr>
     </div>
   </ul>
+  <!-- need to updated filtered after ng-repeat is finished -->
+  <span ng-show="false">{{filtered.length}}</span>
 </div>
 %end
 

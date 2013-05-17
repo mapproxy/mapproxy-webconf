@@ -66,6 +66,9 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources) {
         $scope.sourcelistErrorMsg = MapproxySources.error();
         $('#sourcelist_service_error').show().fadeOut(3000);
     };
+    $scope.nameFilter = function(item) {
+        return item.name.search($scope.sourceFilter) != -1;
+    }
     $scope.isSelected = function(source) {
         var class_;
         if(angular.equals($scope.selected, source)) {
@@ -355,6 +358,9 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches) {
         $scope.cachelistErrorMsg = MapproxyCaches.error();
         $('#cachelist_service_error').show().fadeOut(3000);
     };
+    $scope.nameFilter = function(item) {
+        return item.name.search($scope.cacheFilter) != -1;
+    }
     $scope.isSelected = function(cache) {
         var class_;
         if(angular.equals($scope.selected, cache)) {
@@ -580,6 +586,9 @@ function MapproxyGridListCtrl($scope, MapproxyGrids) {
         $scope.gridlistErrorMsg = MapproxyGrids.error();
         $('#gridlist_service_error').show().fadeOut(3000);
     };
+    $scope.nameFilter = function(item) {
+        return item.name.search($scope.gridFilter) != -1;
+    }
     $scope.isSelected = function(grid) {
         var class_;
         if(angular.equals($scope.selected, grid)) {
@@ -761,6 +770,9 @@ function MapproxyLayerListCtrl($scope, localize, MapproxyLayers) {
         $scope.layerlistErrorMsg = MapproxyLayers.error();
         $('#layerlist_service_error').show().fadeOut(3000);
     };
+    $scope.nameFilter = function(item) {
+        return item.name.search($scope.layerFilter) != -1;
+    }
     $scope.isSelected = function(layer) {
         var class_;
         if(angular.equals($scope.selected, layer)) {
