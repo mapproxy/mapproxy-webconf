@@ -138,7 +138,7 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources) {
     $scope.$on('sources.delete_error', errorHandler);
 };
 
-function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
+function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, ProjectDefaults) {
     var DEFAULT_SOURCE = {"type": "wms", "req": {}, "coverage": {}, "supported_srs": []};
 
     var errorHandler = function() {
@@ -307,6 +307,7 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
 
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {};
+    $scope.defaults = {};
 
     $scope.source = angular.copy(DEFAULT_SOURCE);
     $scope.formTitle = 'New source';
@@ -316,7 +317,14 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
     $scope.$on('sources.current', function() {
         $scope.source = {};
         $scope.source = MapproxySources.current(true);
-        $scope.formTitle = angular.equals($scope.source, DEFAULT_SOURCE) ? 'New source' : 'Edit source';
+        if(angular.equals($scope.source, DEFAULT_SOURCE)) {
+            $scope.formTitle = 'New source';
+            if(angular.isDefined($scope.defaults.srs)) {
+                $scope.source.supported_srs = angular.copy($scope.defaults.srs);
+            }
+        } else {
+            $scope.formTitle = 'Edit source';
+        }
         $scope.source_form.$setPristine();
 
         if($scope.source._manual) {
@@ -325,7 +333,15 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources) {
             $scope._editarea.visible = false;
         }
     });
-
+    $scope.$on('defaults.load_complete', function() {
+        var defaults = ProjectDefaults.list();
+        if(defaults.length > 0) {
+            $scope.defaults = defaults[0];
+            if(angular.equals($scope.source, DEFAULT_SOURCE)) {
+                $scope.source.supported_srs = angular.copy($scope.defaults.srs);
+            }
+        }
+    });
     $scope.$on('sources.add_error', errorHandler);
     $scope.$on('sources.update_error', errorHandler);
 
@@ -1214,5 +1230,64 @@ function MapproxyConfigCtrl($scope, $http) {
     $http.get('/conf/base/yaml').success(function(result) {
         $scope.mapproxy_yaml = result;
         $scope.yaml_written = true;
+    });
+};
+
+function ProjectDefaultsCtrl($scope, ProjectDefaults) {
+    var setDefaults = function() {
+        var defaults = ProjectDefaults.list();
+        if(defaults.length > 0) {
+            $scope.defaults = $.extend($scope.defaults, defaults[0]);
+        }
+    };
+    var errorHandler = function() {
+        $scope.errorMsg = ProjectDefaults.error();
+        $('defaultsform_service_error').show().fadeOut(3000);
+    };
+    $scope.save = function(event) {
+        if(angular.isDefined(event)) {
+            event.preventDefault();
+        }
+        $scope.defaults = clearData($scope.defaults);
+        ProjectDefaults.add($scope.defaults);
+        $scope.defaults_form.$setPristine();
+    };
+    $scope.addSRS = function(event) {
+        if(angular.isDefined(event)) {
+            event.preventDefault();
+        }
+        console.log($scope.custom.newSRS)
+        $scope.defaults.srs.push($scope.custom.newSRS);
+        $scope.custom.newSRS = undefined;
+    };
+    $scope.removeSRS = function(event, srs) {
+        var srsID = $.inArray(srs, $scope.defaults.srs);
+        if(srsID !== -1) {
+            $scope.defaults.srs.splice(srsID, 1);
+        }
+    }
+
+    $scope.defaults = {'srs': []};
+    $scope.custom = {};
+    $scope.custom.newSRS;
+
+    $scope.$on('defaults.load_error', errorHandler);
+    $scope.$on('defaults.add_error', errorHandler);
+    $scope.$on('defaults.update_error', errorHandler);
+
+    $scope.$on('defaults.load_complete', setDefaults);
+    $scope.$on('defaults.added', function() {
+        $('.save_ok').show().fadeOut(3000);
+        setDefaults();
+    });
+    $scope.$on('defaults.updated', function() {
+        $('.save_ok').show().fadeOut(3000);
+        setDefaults();
+    });
+
+    $(window).on('beforeunload', function() {
+        if($scope.defaults_form.$dirty) {
+            return localize.getLocalizedString(PAGE_LEAVE_MSG);
+        }
     });
 };

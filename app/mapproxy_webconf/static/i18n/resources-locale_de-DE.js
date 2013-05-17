@@ -432,5 +432,14 @@
     {
         "key": "Filter",
         "value": "Filter"
+    },
+    {
+        "key": "Add SRS",
+        "value": "Koordinatensystem hinzufügen"
+    },
+    {
+        "key": "Project defaults",
+        "value": "Defaultwerte des Projekts"
     }
+
 ]

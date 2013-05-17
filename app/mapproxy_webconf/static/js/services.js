@@ -306,6 +306,7 @@ var cacheService = new MapproxyBaseService('caches', [layerService]);
 var gridService = new MapproxyBaseService('grids', [cacheService]);
 var sourceService = new MapproxyBaseService('sources', [cacheService, layerService]);
 var wmsService = new WMSSourceService('wms_capabilities');
+var defaultsService = new MapproxyBaseService('defaults');
 
 angular.module('mapproxy_gui.services', ['mapproxy_gui.resources']).
 
@@ -316,6 +317,7 @@ service('MapproxyGrids', gridService.return_func).
 service('MapproxyLayers', layerService.return_func).
 service('MapproxyGlobals', globalsService.return_func).
 service('MapproxyServices', servicesService.return_func).
+service('ProjectDefaults', defaultsService.return_func).
 
 service('DataShareService', function($rootScope) {
     var _this = this;

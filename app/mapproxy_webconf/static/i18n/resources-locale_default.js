@@ -412,5 +412,34 @@
     {
         "key": "Name required.",
         "value": "Name wird benötigt"
+    },
+    {
+        "key": "Not shown sources",
+        "value": "Ausgeblendete Sources"
+    },
+    {
+        "key": "Not shown grids",
+        "value": "Ausgeblendete Grids"
+    },
+    {
+        "key": "Not shown caches",
+        "value": "Ausgeblendete Caches"
+    },
+    {
+        "key": "Not shown layers",
+        "value": "Ausgeblendete Layers"
+    },
+    {
+        "key": "Filter",
+        "value": "Filter"
+    },
+    {
+        "key": "Add SRS",
+        "value": "Koordinatensystem hinzufügen"
+    },
+    {
+        "key": "Project defaults",
+        "value": "Defaultwerte des Projekts"
     }
+
 ]
