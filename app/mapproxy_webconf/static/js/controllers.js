@@ -1,7 +1,6 @@
 var PAGE_LEAVE_MSG = "You have unsaved changes in this form. Realy leave the page and disgard unsaved changes?";
 
 function TreeCtrl($scope, localize, WMSSources) {
-
     var refreshTree = function() {
         $scope.wms_list = WMSSources.list();
         $scope.wms_urls = WMSSources.allURLs();
@@ -30,6 +29,23 @@ function TreeCtrl($scope, localize, WMSSources) {
     $scope.removeCapabilities = function(wms) {
         WMSSources.remove(wms);
     };
+    $scope.showMap = function(event, wms) {
+        event.stopPropagation();
+
+        var layers = [];
+        angular.forEach(wms.layer.layers, function(layer) {
+            layers.push(new OpenLayers.Layer.WMS(layer.title, wms.url, {
+                layers: [layer.name],
+                transparent: !layer.opaque
+            }));
+        });
+        $scope.map.show();
+        $scope.map.setOptions({
+            maxExtent: new OpenLayers.Bounds(wms.layer.llbbox)
+        });
+        $scope.map.addLayers(layers)
+        $scope.map.setCenter(new OpenLayers.LonLat(8, 52).transform(new OpenLayers.Projection('epsg:4326'), $scope.map.getProjectionObject()))
+    }
 
     $scope.$on('wms_capabilities.load_complete', refreshTree);
     $scope.$on('wms_capabilities.deleted', refreshTree);
@@ -53,6 +69,10 @@ function TreeCtrl($scope, localize, WMSSources) {
     });
     $scope.$on('wms_capabilities.load_error', errorHandler);
     $scope.$on('wms_capabilities.add_error', errorHandler);
+
+    $scope.$on('olmap.ready', function(scope, map) {
+        $scope.map = map;
+    });
 
     $scope.capabilities = {};
 };

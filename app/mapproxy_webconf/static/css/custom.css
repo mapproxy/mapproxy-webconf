@@ -163,6 +163,7 @@ ul.vertical-list div.selected li i.icon-remove {
     border: 1px solid #CCCCCC;
 }
 
+.accordion-heading i.icon-globe,
 .accordion-heading i.icon-refresh,
 .accordion-heading i.icon-remove {
     float: right;
@@ -175,7 +176,11 @@ ul.vertical-list div.selected li i.icon-remove {
 .accordion-heading i.icon-refresh {
     margin-right: 2em;
 }
+.accordion-heading i.icon-globe {
+    margin-right: 4em;
+}
 
+.accordion-heading i.icon-globe:hover,
 .accordion-heading i.icon-refresh:hover,
 .accordion-heading i.icon-remove:hover {
     opacity: 0.9;
@@ -198,4 +203,10 @@ input.droppable-active, div.droppable-active {
     height: 20px;
     width: 20px;
     border: 1px solid red;
+}
+
+/* Bootstrap overrides for normal OpenLayers look */
+img.olTileImage,
+.olPopup img {
+    max-width: none;
 }

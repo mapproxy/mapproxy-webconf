@@ -701,6 +701,71 @@ directive('editarea', function($http) {
             }
         }
     };
+}).
+
+directive('olmap', function() {
+    return {
+        restrict: 'A',
+        controller: function($scope, $element, $attrs) {
+            $scope.initMap = function(mapId) {
+                $scope.mapId = mapId;
+                $scope.map = new OpenLayers.Map(mapId, {
+                    controls: [
+                        new OpenLayers.Control.Navigation({
+                            documentDrag: true,
+                            dragPanOptions: {
+                                interval: 1,
+                                enableKinetic: true
+                            }
+                        }),
+                        new OpenLayers.Control.PanZoomBar({autoActivate: true})
+                    ]
+                });
+                $scope.map.show = function() {
+                    if($attrs.mapImageBaselayer) {
+                        $scope.map.addLayer(new OpenLayers.Layer.Image('background',
+                            OpenLayers.ImgPath+'/blank.gif',
+                            $scope.map.maxExtent,
+                            new OpenLayers.Size(500, 500), {
+                                maxResolution: $scope.map.maxResolution,
+                                displayInLayerSwitcher: false,
+                                isBaseLayer: true
+                        }));
+                    }
+                    $($element).show();
+                };
+                $scope.map.hide = function() {
+                    $($element).hide();
+                };
+
+                if($attrs.mapLayerSwitcher) {
+                    var layerswitcher = new OpenLayers.Control.LayerSwitcher({roundedCorner: true});
+                    $scope.map.addControl(layerswitcher);
+                    layerswitcher.maximizeControl();
+                }
+                $scope.$root.$broadcast('olmap.ready', $scope.map);
+                return $scope.map;
+            };
+        },
+        link: function(scope, element, attrs) {
+            var map_width = attrs.mapWidth;
+            var map_height = attrs.mapHeight;
+            var mapId = 'ol_map_' + scope.$id;
+
+            //setup map element and add to element
+            var mapElement = $('<div></div>');
+            mapElement.attr('id', mapId)
+            mapElement.css('width', map_width)
+            mapElement.css('height', map_height)
+            element.append(mapElement);
+
+            if(attrs.mapHidden) {
+                $(element).hide();
+            }
+
+            scope.initMap(mapId);
+        }
+    }
 });
 
 /* Controller for directives */
