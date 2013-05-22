@@ -219,7 +219,9 @@ directive('droppable', function($parse) {
                 if(insert) {
                     scope.items = ngModelCtrl.$modelValue;
                     scope.checkExist(scope.new_item);
-                    scope.insertItems();
+                    if(scope.to_insert.length > 0) {
+                        scope.insertItems();
+                    }
                 } else {
                     scope.j_ui.draggable('option', 'revert', true);
                 }
