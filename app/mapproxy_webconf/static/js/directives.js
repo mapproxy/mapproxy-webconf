@@ -650,8 +650,6 @@ directive('olmap', function() {
                     ],
                     layers: layers
                 });
-                console.log($scope)
-                //$scope.map.addLayers(layers);
                 if($attrs.mapLayerSwitcher) {
                     var layerswitcher = new OpenLayers.Control.LayerSwitcher({roundedCorner: true});
                     $scope.map.addControl(layerswitcher);
