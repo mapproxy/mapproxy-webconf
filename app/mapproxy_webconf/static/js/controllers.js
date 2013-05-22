@@ -200,24 +200,24 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
             }
         }
         if(urlReplaceAsk) {
+            var buttons = {};
+            buttons[localize.getLocalizedString("Change url and insert layer")] = function() {
+                $(this).dialog("close");
+                $scope.source.req.url = new_data.sourceURL;
+                $scope.source.req.layers = undefined;
+                $scope.$apply();
+                callback(true);
+            };
+            buttons[localize.getLocalizedString("Keep url and reject layer")] = function() {
+                $(this).dialog("close");
+                callback(false);
+            };
             $('#confirm_url_change_dialog').dialog({
                 resizeable: false,
-                width: 400,
-                height: 200,
+                width: 600,
+                height: 250,
                 model: true,
-                buttons: {
-                    "Change url and insert layer": function() {
-                        $(this).dialog("close");
-                        $scope.source.req.url = new_data.sourceURL;
-                        $scope.source.req.layers = undefined;
-                        $scope.$apply();
-                        callback(true);
-                    },
-                    "Keep url and reject layer": function() {
-                        $(this).dialog("close");
-                        callback(false);
-                    }
-                }
+                buttons: buttons
             });
         }
         if(addLayer) {
