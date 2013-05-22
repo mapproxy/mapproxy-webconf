@@ -270,7 +270,6 @@ directive('droppable', function($parse) {
                 }
             };
             scope.accepts = angular.isUndefined(attrs.accepts) ? [] : attrs.accepts.split(',');
-            scope.rejects = angular.isUndefined(attrs.rejects) ? [] : attrs.rejects.split(',');
 
             scope.use_key = attrs.useKeyForValue;
 
