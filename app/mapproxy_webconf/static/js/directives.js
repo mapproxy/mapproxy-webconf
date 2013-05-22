@@ -166,18 +166,6 @@ directive('droppable', function($parse) {
                     scope.to_insert.push(item);
                 }
             };
-            scope.checkClass = function(elem) {
-                var found = false;
-
-                if(scope.accepts.length == 0) return true
-
-                angular.forEach(scope.accepts, function(accept) {
-                    if(!found) {
-                        found = elem.hasClass(accept);
-                    }
-                });
-                return found;
-            };
             scope.insertItems = function() {
                 if(angular.isUndefined(scope.items)) {
                     scope.items = [];
@@ -249,11 +237,6 @@ directive('droppable', function($parse) {
                     return;
                 }
 
-                //check element class against accepts
-                if(!scope.checkClass(scope.j_ui)) {
-                    scope.j_ui.draggable('option', 'revert', true);
-                    return;
-                }
                 //get data (string) of dopped element and convert it to an object
                 scope.new_item = angular.fromJson(scope.j_ui.attr('item-data'));
 
