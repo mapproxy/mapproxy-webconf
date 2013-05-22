@@ -156,7 +156,10 @@ directive('droppable', function($parse) {
                 } else {
                     var exist = false;
                     if(scope.use_key) {
-                        item = item[scope.use_key];
+                        var keys = scope.use_key.split('.');
+                        angular.forEach(keys, function(key) {
+                            item = item[key];
+                        });
                     }
                     if(angular.isObject(scope.items) || angular.isArray(scope.items)) {
                         //because angular add a unique $$hashKey to objects
