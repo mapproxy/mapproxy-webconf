@@ -151,19 +151,24 @@ directive('droppable', function($parse) {
             scope = scope.$new(false)
 
             scope.checkExist = function(item) {
-                var exist = false;
-                if(scope.use_key) {
-                    item = item[scope.use_key];
-                }
-                //because angular add a unique $$hashKey to objects
-                angular.forEach(scope.items, function(scope_item) {
-                    //angular.forEach doesn't support break
-                    if(!exist) {
-                        exist = angular.equals(scope_item, item);
+                if(angular.isArray(item)) {
+                    angular.forEach(item, scope.checkExist);
+                } else {
+                    var exist = false;
+                    if(scope.use_key) {
+                        item = item[scope.use_key];
                     }
-                });
-                if(!exist) {
-                    scope.to_insert.push(item);
+                    //because angular add a unique $$hashKey to objects
+                    angular.forEach(scope.items, function(scope_item) {
+                        console.log(scope.item)
+                        //angular.forEach doesn't support break
+                        if(!exist) {
+                            exist = angular.equals(scope_item, item);
+                        }
+                    });
+                    if(!exist) {
+                        scope.to_insert.push(item);
+                    }
                 }
             };
             scope.insertItems = function() {
@@ -249,11 +254,7 @@ directive('droppable', function($parse) {
                         scope.insert(scope.$parent, {callback: scope.insertCallback, new_data: scope.new_item});
                     } else {
                         //check for existing items
-                        if(angular.isArray(scope.new_item)) {
-                            angular.forEach(scope.new_item, scope.checkExist);
-                        } else {
-                            scope.checkExist(scope.new_item);
-                        }
+                        scope.checkExist(scioe,bew_item);
                         //look if something to insert
                         if(scope.to_insert.length > 0) {
                             //run change callback if present
