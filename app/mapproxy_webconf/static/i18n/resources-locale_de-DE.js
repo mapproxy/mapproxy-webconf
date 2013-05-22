@@ -440,6 +440,18 @@
     {
         "key": "Project defaults",
         "value": "Defaultwerte des Projekts"
+    },
+    {
+        "key": "OK",
+        "value": "OK"
+    },
+    {
+        "key": "Change url and insert layer",
+        "value": "URL ändern und Layer einfügen"
+    },
+    {
+        "key": "Keep url and reject layer",
+        "value": "URL behalten und Layer nicht einfügen"
     }
 
 ]

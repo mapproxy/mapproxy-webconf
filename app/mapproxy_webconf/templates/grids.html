@@ -40,13 +40,15 @@
           <i ng-show="grid._manual" class="icon-pencil"></i>
           {{grid.name}}
           <i ng-show="!hasDependencies(grid)" class="icon-remove"
-            ask-dialog
+            dialog="ask"
             dialog-title="{{'Confirm!'|i18n}}"
             dialog-text="{{'Really remove grid:'|i18n}} {{grid.name}}?"
             callback="removeGrid(grid)">
           </i>
           <i ng-show="hasDependencies(grid)" class="icon-remove"
-            confirm-dialog
+            dialog="confirm"
+            dialog-width="600"
+            dialog-height="300"
             dialog-title="Confirm!"
             dialog-text="{{'Can not remove grid:'|i18n}} {{grid.name}}<br>{{'Dependencies are:'|i18n}}<br>{{getDependencies(grid)}}">
           </i>

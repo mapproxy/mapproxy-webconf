@@ -66,7 +66,7 @@ directive('sortable', function() {
                 }
             };
 
-            var sortable_element = $(element).sortable({
+            $(element).sortable({
                 start: scope.dragStart,
                 update: scope.dragEnd,
                 axis: "y"
@@ -151,32 +151,28 @@ directive('droppable', function($parse) {
             scope = scope.$new(false)
 
             scope.checkExist = function(item) {
-                var exist = false;
-                if(scope.use_key) {
-                    item = item[scope.use_key];
-                }
-                //because angular add a unique $$hashKey to objects
-                angular.forEach(scope.items, function(scope_item) {
-                    //angular.forEach doesn't support break
+                if(angular.isArray(item)) {
+                    angular.forEach(item, scope.checkExist);
+                } else {
+                    var exist = false;
+                    if(scope.use_key) {
+                        item = item[scope.use_key];
+                    }
+                    if(angular.isObject(scope.items) || angular.isArray(scope.items)) {
+                        //because angular add a unique $$hashKey to objects
+                        angular.forEach(scope.items, function(scope_item) {
+                            //angular.forEach doesn't support break
+                            if(!exist) {
+                                exist = angular.equals(scope_item, item);
+                            }
+                        });
+                    } else {
+                        exist = angular.equals(scope.items, item);
+                    }
                     if(!exist) {
-                        exist = angular.equals(scope_item, item);
+                        scope.to_insert.push(item);
                     }
-                });
-                if(!exist) {
-                    scope.to_insert.push(item);
                 }
-            };
-            scope.checkClass = function(elem) {
-                var found = false;
-
-                if(scope.accepts.length == 0) return true
-
-                angular.forEach(scope.accepts, function(accept) {
-                    if(!found) {
-                        found = elem.hasClass(accept);
-                    }
-                });
-                return found;
             };
             scope.insertItems = function() {
                 if(angular.isUndefined(scope.items)) {
@@ -226,7 +222,9 @@ directive('droppable', function($parse) {
                 if(insert) {
                     scope.items = ngModelCtrl.$modelValue;
                     scope.checkExist(scope.new_item);
-                    scope.insertItems();
+                    if(scope.to_insert.length > 0) {
+                        scope.insertItems();
+                    }
                 } else {
                     scope.j_ui.draggable('option', 'revert', true);
                 }
@@ -249,11 +247,6 @@ directive('droppable', function($parse) {
                     return;
                 }
 
-                //check element class against accepts
-                if(!scope.checkClass(scope.j_ui)) {
-                    scope.j_ui.draggable('option', 'revert', true);
-                    return;
-                }
                 //get data (string) of dopped element and convert it to an object
                 scope.new_item = angular.fromJson(scope.j_ui.attr('item-data'));
 
@@ -266,11 +259,7 @@ directive('droppable', function($parse) {
                         scope.insert(scope.$parent, {callback: scope.insertCallback, new_data: scope.new_item});
                     } else {
                         //check for existing items
-                        if(angular.isArray(scope.new_item)) {
-                            angular.forEach(scope.new_item, scope.checkExist);
-                        } else {
-                            scope.checkExist(scope.new_item);
-                        }
+                        scope.checkExist(scope.new_item);
                         //look if something to insert
                         if(scope.to_insert.length > 0) {
                             //run change callback if present
@@ -287,7 +276,6 @@ directive('droppable', function($parse) {
                 }
             };
             scope.accepts = angular.isUndefined(attrs.accepts) ? [] : attrs.accepts.split(',');
-            scope.rejects = angular.isUndefined(attrs.rejects) ? [] : attrs.rejects.split(',');
 
             scope.use_key = attrs.useKeyForValue;
 
@@ -330,41 +318,7 @@ directive('toggleElement', function() {
     }
 }).
 
-directive('tabs', function() {
-    return {
-        restrict: 'A',
-        transclude: true,
-        scope: {},
-        controller: tabsCtrl,
-        template:
-            '<div class="tabbable">' +
-            '<ul class="nav nav-tabs">' +
-            '<li ng-repeat="pane in panes" ng-class="{active:pane.selected}">'+
-            '<a href="" ng-click="select(pane)">{{pane.header}}</a>' +
-            '</li>' +
-            '</ul>' +
-            '<div class="tab-content" ng-transclude></div>' +
-            '</div>',
-        replace: true
-    };
-}).
-
-directive('pane', function() {
-    return {
-        require: '^tabs',
-        restrict: 'A',
-        transclude: true,
-        scope: { header: '@' },
-        link: function(scope, element, attrs, tabsCtrl) {
-            tabsCtrl.addPane(scope);
-        },
-        template:
-            '<div class="tab-pane" ng-class="{active: selected}" ng-transclude></div>',
-        replace: true
-    };
-}).
-
-directive('askDialog', function($parse, localize) {
+directive('dialog', function($parse, localize) {
     return {
         restrict: 'A',
         scope: 'element',
@@ -372,19 +326,28 @@ directive('askDialog', function($parse, localize) {
             scope.openDialog = function(event) {
                 event.stopPropagation();
                 var buttons = {};
-                buttons[localize.getLocalizedString('Yes')] = function() {
-                    $(this).dialog("close");
-                    scope.callback(scope);
-                };
-                buttons[localize.getLocalizedString('No')] = function() {
-                    $(this).dialog("close");
-                };
+                switch(attrs.dialog) {
+                    case 'ask':
+                        buttons[localize.getLocalizedString('Yes')] = function() {
+                            $(this).dialog("close");
+                            scope.callback(scope);
+                        };
+                        buttons[localize.getLocalizedString('No')] = function() {
+                            $(this).dialog("close");
+                        };
+                        break;
+                    case 'confirm':
+                        buttons[localize.getLocalizedString('OK')] = function() {
+                            $(this).dialog("close");
+                        }
+                        break;
+                }
                 scope.dialog.attr('title', attrs.dialogTitle);
-                scope.dialog.find('p').text(attrs.dialogText);
+                scope.dialog.find('p').html(attrs.dialogText);
                 scope.dialog.dialog({
                     resizeable: false,
-                    width: 400,
-                    height: 200,
+                    width: attrs.dialogWidth || 400,
+                    height: attrs.dialogHeight || 200,
                     model: true,
                     buttons: buttons
                 });
@@ -392,36 +355,6 @@ directive('askDialog', function($parse, localize) {
             scope.dialog_id = scope.$id;
             scope.callback = $parse(attrs.callback);
             scope.dialog = $('<div style="display:none;" id="dialog_' + scope.dialog_id +'"><p></p></div>');
-            element.after(scope.dialog);
-
-            element.bind('click', scope.openDialog);
-        }
-    };
-}).
-
-directive('confirmDialog', function($parse) {
-    return {
-        restrict: 'A',
-        scope: 'element',
-        link: function(scope, element, attrs) {
-            scope.openDialog = function(event) {
-                event.stopPropagation();
-                scope.dialog.find('p').html(attrs.dialogText)
-                scope.dialog.dialog({
-                    resizeable: false,
-                    width: 600,
-                    height: 300,
-                    model: true,
-                    buttons: {
-                        "Ok": function() {
-                            $(this).dialog("close");
-                        }
-                    }
-                });
-            };
-            scope.dialog_id = scope.$id;
-            scope.callback = $parse(attrs.callback);
-            scope.dialog = $('<div style="display:none;" id="dialog_' + scope.dialog_id + '" title="'+ attrs.dialogTitle +'"><p></p></div>');
             element.after(scope.dialog);
 
             element.bind('click', scope.openDialog);
@@ -508,32 +441,7 @@ directive('editarea', function($http) {
         restrict: 'A',
         scope: 'element',
         replace: true,
-        template:
-          "<div>" +
-          "<button class='btn btn-small' ng-show='!_editarea.visible' ng-click='show()' id='_editarea_toggle_button'>{{'Edit manual'|i18n}}</button>" +
-          "<div ng-show='_editarea.visible'>" +
-          "<h3>{{'Edit manual'|i18n}}</h3>" +
-          "<textarea class='input-xlarge' id='_editarea'></textarea>"+
-          "<div class='text-center'>" +
-          "<button ng-show='!privateAttributes._manual' ask-dialog dialog-title=\"{{'Confirm!'|i18n}}\" dialog-text=\"{{'If you save the manual edition, you wont be able to edit it in the above form again. Realy save the manual edition?'|i18n}}\" callback='save()' class='btn btn-small'>{{'Save'|i18n}}</button>" +
-          "<button ng-click='save()' ng-show='privateAttributes._manual' class='btn btn-small'>{{'Save'|i18n}}</button>" +
-          "<button ng-click='reset()' class='btn btn-small'>{{'Reset'|i18n}}</button>" +
-          "<button ng-click='leaveEditarea()' ng-show='!privateAttributes._manual' class='btn btn-small'>{{'Back to form edit'|i18n}}</button>" +
-          "</div>" +
-          "<div class='text-center'>" +
-          "<span class='text-success save_ok' ng-show='false'>" +
-          "<br>" +
-          "<i class='icon-ok'></i>" +
-          "<strong>{{'Saved successfully'|i18n}}</strong>" +
-          "</span>" +
-          "<span class='text-error' id='editarea_error' ng-show='false'>" +
-          "<br>" +
-          "<i class='icon-thumbs-down'></i>" +
-          "{{editareaErrorMsg}}" +
-          "</span>" +
-          "</div>" +
-          "</div>" +
-          "</div>",
+        templateUrl: 'editarea_tmpl',
         controller: function($scope, $element, $attrs) {
             //$scope.$parent -> outer scope
             var minrows = $attrs.minrows || 10;
@@ -824,21 +732,3 @@ var toggleGroupCtrl = function($scope, $element) {
         }
     };
 }
-
-// used by tabs
-var tabsCtrl = function($scope, $element) {
-
-    this.addPane = function(pane) {
-        if (panes.length == 0) $scope.select(pane);
-        panes.push(pane);
-    };
-
-    $scope.select = function(pane) {
-        angular.forEach(panes, function(pane) {
-            pane.selected = false;
-        });
-        pane.selected = true;
-    };
-
-    var panes = $scope.panes = [];
-};

@@ -1,3 +1,4 @@
 *.pyc
 mapproxy.sqlite
 .DS_Store
+testing
