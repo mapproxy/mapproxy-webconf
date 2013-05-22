@@ -13,9 +13,9 @@
     <p>{{layerlistErrorMsg}}</p>
   </span>
   <div>
-    <input type="text" ng-model="layerFilter" placeholder="{{'Filter'|i18n}}..."/>
+    <input type="text" ng-model="search.name" placeholder="{{'Filter'|i18n}}..."/>
     <br>
-    <span ng-show="mapproxy_layers.length - filtered.length" ng-click="layerFilter=''">{{'Not shown layers'|i18n}}: {{mapproxy_layers.length - filtered.length}}</span>
+    <span ng-show="mapproxy_layers.length - filtered.length" ng-click="search.name=''">{{'Not shown layers'|i18n}}: {{mapproxy_layers.length - filtered.length}}</span>
   </div>
   <script type="text/ng-template"  id="mapproxy_layer_renderer.html">
     <ul sortable ng-model="layer._layers">
@@ -43,7 +43,7 @@
     <ul sortable ng-model="mapproxy_layers" class="vertical-list">
 
       <div class="{{isSelected(layer)}}"
-        ng-repeat="layer in filtered = (mapproxy_layers | filter: nameFilter) | orderBy:'_rank'"
+        ng-repeat="layer in filtered = (mapproxy_layers | filter: search) | orderBy:'_rank'"
         ng-click="editLayer(layer)">
         <li>
           <i ng-show="layer._manual" class="icon-pencil"></i>
@@ -136,16 +136,16 @@
         <p>{{sourcelistErrorMsg}}</p>
       </span>
       <div>
-        <input type="text" ng-model="sourceFilter" placeholder="{{'Filter'|i18n}}..."/>
+        <input type="text" ng-model="search.name" placeholder="{{'Filter'|i18n}}..."/>
         <br>
-        <span ng-show="mapproxy_sources.length - filtered.length" ng-click="sourceFilter=''">{{'Not shown sources'|i18n}}: {{mapproxy_sources.length - filtered.length}}</span>
+        <span ng-show="mapproxy_sources.length - filtered.length" ng-click="search.name=''">{{'Not shown sources'|i18n}}: {{mapproxy_sources.length - filtered.length}}</span>
       </div>
       <ul class="vertical-list">
           <hr>
           <div
               draggable
               class="mapproxy_source"
-              ng-repeat="source in filtered = (mapproxy_sources |filter: nameFilter) | orderBy:'name'"
+              ng-repeat="source in filtered = (mapproxy_sources |filter: search) | orderBy:'name'"
               item-data="{{source}}">
               <li class="droppable_name"> {{source.name}}</li>
               <hr>
@@ -162,16 +162,16 @@
         <p>{{cachelistErrorMsg}}</p>
       </span>
       <div>
-        <input type="text" ng-model="cacheFilter" placeholder="{{'Filter'|i18n}}..."/>
+        <input type="text" ng-model="search.name" placeholder="{{'Filter'|i18n}}..."/>
         <br>
-        <span ng-show="mapproxy_caches.length - filtered.length" ng-click="cacheFilter=''">{{'Not shown caches'|i18n}}: {{mapproxy_caches.length - filtered.length}}</span>
+        <span ng-show="mapproxy_caches.length - filtered.length" ng-click="search.name=''">{{'Not shown caches'|i18n}}: {{mapproxy_caches.length - filtered.length}}</span>
       </div>
       <ul class="vertical-list">
           <hr>
           <div
               draggable
               class="mapproxy_cache"
-              ng-repeat="cache in filtered = (mapproxy_caches | filter: nameFilter) | orderBy:'name'"
+              ng-repeat="cache in filtered = (mapproxy_caches | filter: search) | orderBy:'name'"
               item-data="{{cache}}">
               <li class="droppable_name">{{cache.name}}</li>
               <hr>

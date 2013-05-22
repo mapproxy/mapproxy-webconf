@@ -11,13 +11,13 @@
       <p>{{cachelistErrorMsg}}</p>
     </span>
     <div>
-      <input type="text" ng-model="cacheFilter" placeholder="{{'Filter'|i18n}}..."/>
+      <input type="text" ng-model="search.name" placeholder="{{'Filter'|i18n}}..."/>
       <br>
-      <span ng-show="mapproxy_caches.length - filtered.length" ng-click="cacheFilter=''">{{'Not shown caches'|i18n}}: {{mapproxy_caches.length - filtered.length}}</span>
+      <span ng-show="mapproxy_caches.length - filtered.length" ng-click="search.name=''">{{'Not shown caches'|i18n}}: {{mapproxy_caches.length - filtered.length}}</span>
     </div>
     <ul class="vertical-list">
       <hr>
-      <div class="{{isSelected(cache)}}" ng-repeat="cache in filtered = (mapproxy_caches | filter: nameFilter) | orderBy:'name'"
+      <div class="{{isSelected(cache)}}" ng-repeat="cache in filtered = (mapproxy_caches | filter: search) | orderBy:'name'"
       ng-click="editCache(cache)">
         <li>
           <i ng-show="cache._manual" class="icon-pencil"></i>
@@ -101,13 +101,13 @@
 <div ng-controller="MapproxySourceListCtrl">
     <h3>{{'Sources'|i18n}}</h3>
     <div>
-      <input type="text" ng-model="sourceFilter" placeholder="{{'Filter'|i18n}}..."/>
+      <input type="text" ng-model="search.name" placeholder="{{'Filter'|i18n}}..."/>
       <br>
-      <span ng-show="mapproxy_sources.length - filtered.length" ng-click="sourceFilter=''">{{'Not shown sources'|i18n}}: {{mapproxy_sources.length - filtered.length}}</span>
+      <span ng-show="mapproxy_sources.length - filtered.length" ng-click="search.name=''">{{'Not shown sources'|i18n}}: {{mapproxy_sources.length - filtered.length}}</span>
     </div>
     <ul class="vertical-list">
       <hr>
-      <div draggable class="mapproxy_source" ng-repeat="source in filtered = (mapproxy_sources | filter: nameFilter) | orderBy:'name'"
+      <div draggable class="mapproxy_source" ng-repeat="source in filtered = (mapproxy_sources | filter: search) | orderBy:'name'"
           item-data="{{source}}">
         <li class="droppable_name">
             {{source.name}}
