@@ -205,6 +205,10 @@ input.droppable-active, div.droppable-active {
     border: 1px solid red;
 }
 
+.ol_map {
+    background-color: #fff;
+}
+
 /* Bootstrap overrides for normal OpenLayers look */
 img.olTileImage,
 .olPopup img {
