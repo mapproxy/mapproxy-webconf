@@ -144,75 +144,76 @@
 
 %def rightblock():
 <div ng-controller="TreeCtrl">
-    <h3>{{'Available WMS'|i18n}}</h3>
-    <script type="text/ng-template"  id="wms_layer_renderer">
-        <div ng-click="show_infos(layer)" class="label droppable_name">
-            {{layer.title}} – <span ng-show="layer.name">{{layer.name}}</span>
-        </div>
-        <div
-            ng-repeat="layer in layer.layers"
-            ng-include="'wms_layer_renderer'"
-            draggable
-            item-data="{{itemData(layer)}}"
-            class="wms_layer grp_layer label"></div>
-            <!-- wms_layer is required for dropping into droppable -->
-    </script>
-    <div toggle-group mode='hideOther' class="accordion">
-        <div ng-repeat="wms in wms_list" class="wms accordion-group">
-            <div class="accordion-heading" toggle-element="next">
-              <div class="accordion-toggle">
-                  {{wms.title}}</div>
-                <i class="icon-refresh"  ng-click="refreshCapabilities($event, wms)"></i>
-                <i class="icon-remove" ask-dialog dialog-title="{{'Confirm!'|i18n}}" dialog-text="{{'Really remove WMS:'|i18n}} {{wms.title}}?" callback="removeCapabilities(wms)"></i>
-              </div>
-            <div class="accordion-body" ng-show="$first">
-               <div class="accordion-inner">
-               <h6>{{'Infos'|i18n}}</h6>
-               <div class="accordion_wms_source wms_source" draggable item-data="{{wms}}">
-                  <div class="droppable_name label">
-                    {{'URL'|i18n}}: {{wms.url}}</div>
-               </div>
+  <h3>{{'Available WMS'|i18n}}</h3>
+  <script type="text/ng-template"  id="wms_layer_renderer">
+      <div ng-click="show_infos(layer)" class="label droppable_name">
+          {{layer.title}} – <span ng-show="layer.name">{{layer.name}}</span>
+      </div>
+      <div
+          ng-repeat="layer in layer.layers"
+          ng-include="'wms_layer_renderer'"
+          draggable
+          item-data="{{itemData(layer)}}"
+          class="wms_layer grp_layer label"></div>
+          <!-- wms_layer is required for dropping into droppable -->
+  </script>
+  <div toggle-group mode='hideOther' class="accordion">
+      <div ng-repeat="wms in wms_list" class="wms accordion-group">
+          <div class="accordion-heading" toggle-element="next">
+            <div class="accordion-toggle">{{wms.title}}</div>
+              <i class="icon-globe" ng-click="showMap($event, wms)"></i>
+              <i class="icon-refresh"  ng-click="refreshCapabilities($event, wms)"></i>
+              <i class="icon-remove" ask-dialog dialog-title="{{'Confirm!'|i18n}}" dialog-text="{{'Really remove WMS:'|i18n}} {{wms.title}}?" callback="removeCapabilities(wms)"></i>
+          </div>
+          <div class="accordion-body" ng-show="$first">
+             <div class="accordion-inner">
+             <h6>{{'Infos'|i18n}}</h6>
+             <div class="accordion_wms_source wms_source" draggable item-data="{{wms}}">
+                <div class="droppable_name label">
+                  {{'URL'|i18n}}: {{wms.url}}</div>
+             </div>
 
-               <h6>{{'Layers'|i18n}}</h6>
-               <div
-                    ng-repeat="layer in wms.layer.layers"
-                    ng-include="'wms_layer_renderer'"
-                    draggable item-data="{{prepareLayer(layer, wms.url)}}"
-                    class="wms_layer"></div>
-                    <!-- wms_layer is required for dropping into droppable -->
-              </div>
+             <h6>{{'Layers'|i18n}}</h6>
+             <div
+                  ng-repeat="layer in wms.layer.layers"
+                  ng-include="'wms_layer_renderer'"
+                  draggable item-data="{{prepareLayer(layer, wms.url)}}"
+                  class="wms_layer"></div>
+                  <!-- wms_layer is required for dropping into droppable -->
             </div>
-        </div>
-    </div>
-    <div ng-show="false" id="capabilities_refresh_ok" class="text-success">
-        <i class="icon-ok"></i>
-        <strong>{{refresh_msg}}</strong>
-    </div>
-    <div ng-show="false" id="capabilities_refresh_error" class="text-error">
-        <i class="icon-thumbs-down"></i>
-        <strong>{{'An error occured'|i18n}}</strong>
-        <p>{{treeErrorMsg}}</p>
-    </div>
-    <hr>
-    <form name="capabilities_form" novalidate>
-        <div class="input-append" labeled="input_label" name-for="addCapabilities"  text="{{'Load WMS'|i18n}}">
-            <input type="url" required name="capabilities_url" ng-model="capabilities.url" id="addCapabilities" unique="{{wms_urls}}">
-            <button class="btn" ng-click="addCapabilities()" ng-disabled="!capabilities_form.$valid">{{'Add'|i18n}}</button>
-        </div>
-        <div>
-          <span class="text-success" id="capabilities_add_ok" ng-show="false">
-            <i class="icon-ok"></i>
-            <strong>{{'Add WMS successfully'|i18n}}</strong>
-          </span>
-        </div>
-        <div>
-          <span class="text-error" id="capabilities_service_error" ng-show="false">
-            <i class="icon-thumbs-down"></i>
-            <strong>{{'An error occured'|i18n}}</strong>
-            <p>{{treeErrorMsg}}</p>
-          </span>
-        </div>
-    </form>
+          </div>
+      </div>
+  </div>
+  <div ng-show="false" id="capabilities_refresh_ok" class="text-success">
+      <i class="icon-ok"></i>
+      <strong>{{refresh_msg}}</strong>
+  </div>
+  <div ng-show="false" id="capabilities_refresh_error" class="text-error">
+      <i class="icon-thumbs-down"></i>
+      <strong>{{'An error occured'|i18n}}</strong>
+      <p>{{treeErrorMsg}}</p>
+  </div>
+  <hr>
+  <form name="capabilities_form" novalidate>
+      <div class="input-append" labeled="input_label" name-for="addCapabilities"  text="{{'Load WMS'|i18n}}">
+          <input type="url" required name="capabilities_url" ng-model="capabilities.url" id="addCapabilities" unique="{{wms_urls}}">
+          <button class="btn" ng-click="addCapabilities()" ng-disabled="!capabilities_form.$valid">{{'Add'|i18n}}</button>
+      </div>
+      <div>
+        <span class="text-success" id="capabilities_add_ok" ng-show="false">
+          <i class="icon-ok"></i>
+          <strong>{{'Add WMS successfully'|i18n}}</strong>
+        </span>
+      </div>
+      <div>
+        <span class="text-error" id="capabilities_service_error" ng-show="false">
+          <i class="icon-thumbs-down"></i>
+          <strong>{{'An error occured'|i18n}}</strong>
+          <p>{{treeErrorMsg}}</p>
+        </span>
+      </div>
+  </form>
+  <div olmap class="ol_map" style="position:absolute; top:50px; left: 50px;" map-width="450px" map-height="450px" map-hidden="true" map-layer-switcher="true"></div>
 </div>
   %end
 %rebase base_config leftblock=leftblock, rightblock=rightblock, middleblock=middleblock,  project=get('project'),  active='sources'

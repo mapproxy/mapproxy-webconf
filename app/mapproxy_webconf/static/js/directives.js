@@ -707,9 +707,29 @@ directive('olmap', function() {
     return {
         restrict: 'A',
         controller: function($scope, $element, $attrs) {
-            $scope.initMap = function(mapId) {
-                $scope.mapId = mapId;
-                $scope.map = new OpenLayers.Map(mapId, {
+            var show = function() {
+                $($element).show();
+            };
+            var hide = function() {
+                $($element).hide();
+            };
+            var createMap = function(proj, extent, layers) {
+                if($scope.map instanceof OpenLayers.Map) {
+                    $scope.map.destroy();
+                    delete $scope.map;
+                }
+                if(!(proj instanceof OpenLayers.Projection)) {
+                    proj = new OpenLayers.Projection(proj);
+                }
+                if(!(extent instanceof OpenLayers.Bounds)) {
+                    extent = new OpenLayers.Bounds(extent).transform(new OpenLayers.Projection('EPSG:4326'), proj);
+                }
+
+                $scope.map = new OpenLayers.Map($scope.mapId, {
+                    projection: proj,
+                    allOverlays: true,
+                    maxExtent: extent,
+                    units: proj.units,
                     controls: [
                         new OpenLayers.Control.Navigation({
                             documentDrag: true,
@@ -719,33 +739,24 @@ directive('olmap', function() {
                             }
                         }),
                         new OpenLayers.Control.PanZoomBar({autoActivate: true})
-                    ]
+                    ],
+                    layers: layers
                 });
-                $scope.map.show = function() {
-                    if($attrs.mapImageBaselayer) {
-                        $scope.map.addLayer(new OpenLayers.Layer.Image('background',
-                            OpenLayers.ImgPath+'/blank.gif',
-                            $scope.map.maxExtent,
-                            new OpenLayers.Size(500, 500), {
-                                maxResolution: $scope.map.maxResolution,
-                                displayInLayerSwitcher: false,
-                                isBaseLayer: true
-                        }));
-                    }
-                    $($element).show();
-                };
-                $scope.map.hide = function() {
-                    $($element).hide();
-                };
-
+                console.log($scope)
+                //$scope.map.addLayers(layers);
                 if($attrs.mapLayerSwitcher) {
                     var layerswitcher = new OpenLayers.Control.LayerSwitcher({roundedCorner: true});
                     $scope.map.addControl(layerswitcher);
                     layerswitcher.maximizeControl();
                 }
-                $scope.$root.$broadcast('olmap.ready', $scope.map);
-                return $scope.map;
+                $scope.map.zoomToMaxExtent();
             };
+
+            $scope.$parent._olMap = {
+                show: show,
+                hide: hide,
+                createMap: createMap
+            }
         },
         link: function(scope, element, attrs) {
             var map_width = attrs.mapWidth;
@@ -762,8 +773,7 @@ directive('olmap', function() {
             if(attrs.mapHidden) {
                 $(element).hide();
             }
-
-            scope.initMap(mapId);
+            scope.$parent.mapId = mapId;
         }
     }
 });

@@ -31,20 +31,23 @@ function TreeCtrl($scope, localize, WMSSources) {
     };
     $scope.showMap = function(event, wms) {
         event.stopPropagation();
-
         var layers = [];
+        var srs = wms.layer.srs[0];
+        var extent = wms.layer.llbbox;
+
         angular.forEach(wms.layer.layers, function(layer) {
             layers.push(new OpenLayers.Layer.WMS(layer.title, wms.url, {
                 layers: [layer.name],
+                srs: srs,
                 transparent: !layer.opaque
+            }, {
+              singleTile: true,
+              ratio: 1.0
             }));
         });
-        $scope.map.show();
-        $scope.map.setOptions({
-            maxExtent: new OpenLayers.Bounds(wms.layer.llbbox)
-        });
-        $scope.map.addLayers(layers)
-        $scope.map.setCenter(new OpenLayers.LonLat(8, 52).transform(new OpenLayers.Projection('epsg:4326'), $scope.map.getProjectionObject()))
+
+        $scope._olMap.createMap(srs, extent, layers);
+        $scope._olMap.show();
     }
 
     $scope.$on('wms_capabilities.load_complete', refreshTree);
