@@ -440,6 +440,10 @@
     {
         "key": "Project defaults",
         "value": "Defaultwerte des Projekts"
+    },
+    {
+        "key": "OK",
+        "value": "OK"
     }
 
 ]

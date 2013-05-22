@@ -26,7 +26,7 @@
           <i ng-show="layer._manual" class="icon-pencil"></i>
           {{layer.name}} ({{layer.title}})
           <i class="icon-remove"
-            ask-dialog
+            dialog="ask"
             dialog-title="{{'Confirm!'|i18n}}"
             dialog-text="{{'Really remove layer:'|i18n}} {{layer.title}} ({{layer.name}})?"
             callback="removeLayer(layer)"></i>
@@ -49,7 +49,7 @@
           <i ng-show="layer._manual" class="icon-pencil"></i>
           {{layer.title}} ({{layer.name}})
           <i class="icon-remove pull-right"
-            ask-dialog
+            dialog="ask"
             dialog-title="{{'Confirm!'|i18n}}"
             dialog-text="{{'Really remove layer:'|i18n}} {{layer.title}} ({{layer.name}})?"
             callback="removeLayer(layer)"></i>

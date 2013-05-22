@@ -313,7 +313,7 @@ directive('toggleElement', function() {
     }
 }).
 
-directive('askDialog', function($parse, localize) {
+directive('dialog', function($parse, localize) {
     return {
         restrict: 'A',
         scope: 'element',
@@ -321,19 +321,28 @@ directive('askDialog', function($parse, localize) {
             scope.openDialog = function(event) {
                 event.stopPropagation();
                 var buttons = {};
-                buttons[localize.getLocalizedString('Yes')] = function() {
-                    $(this).dialog("close");
-                    scope.callback(scope);
-                };
-                buttons[localize.getLocalizedString('No')] = function() {
-                    $(this).dialog("close");
-                };
+                switch(attrs.dialog) {
+                    case 'ask':
+                        buttons[localize.getLocalizedString('Yes')] = function() {
+                            $(this).dialog("close");
+                            scope.callback(scope);
+                        };
+                        buttons[localize.getLocalizedString('No')] = function() {
+                            $(this).dialog("close");
+                        };
+                        break;
+                    case 'confirm':
+                        buttons[localize.getLocalizedString('OK')] = function() {
+                            $(this).dialog("close");
+                        }
+                        break;
+                }
                 scope.dialog.attr('title', attrs.dialogTitle);
-                scope.dialog.find('p').text(attrs.dialogText);
+                scope.dialog.find('p').html(attrs.dialogText);
                 scope.dialog.dialog({
                     resizeable: false,
-                    width: 400,
-                    height: 200,
+                    width: attrs.dialogWidth || 400,
+                    height: attrs.dialogHeight || 200,
                     model: true,
                     buttons: buttons
                 });
@@ -341,36 +350,6 @@ directive('askDialog', function($parse, localize) {
             scope.dialog_id = scope.$id;
             scope.callback = $parse(attrs.callback);
             scope.dialog = $('<div style="display:none;" id="dialog_' + scope.dialog_id +'"><p></p></div>');
-            element.after(scope.dialog);
-
-            element.bind('click', scope.openDialog);
-        }
-    };
-}).
-
-directive('confirmDialog', function($parse) {
-    return {
-        restrict: 'A',
-        scope: 'element',
-        link: function(scope, element, attrs) {
-            scope.openDialog = function(event) {
-                event.stopPropagation();
-                scope.dialog.find('p').html(attrs.dialogText)
-                scope.dialog.dialog({
-                    resizeable: false,
-                    width: 600,
-                    height: 300,
-                    model: true,
-                    buttons: {
-                        "Ok": function() {
-                            $(this).dialog("close");
-                        }
-                    }
-                });
-            };
-            scope.dialog_id = scope.$id;
-            scope.callback = $parse(attrs.callback);
-            scope.dialog = $('<div style="display:none;" id="dialog_' + scope.dialog_id + '" title="'+ attrs.dialogTitle +'"><p></p></div>');
             element.after(scope.dialog);
 
             element.bind('click', scope.openDialog);
