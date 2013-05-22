@@ -312,40 +312,6 @@ directive('toggleElement', function() {
     }
 }).
 
-directive('tabs', function() {
-    return {
-        restrict: 'A',
-        transclude: true,
-        scope: {},
-        controller: tabsCtrl,
-        template:
-            '<div class="tabbable">' +
-            '<ul class="nav nav-tabs">' +
-            '<li ng-repeat="pane in panes" ng-class="{active:pane.selected}">'+
-            '<a href="" ng-click="select(pane)">{{pane.header}}</a>' +
-            '</li>' +
-            '</ul>' +
-            '<div class="tab-content" ng-transclude></div>' +
-            '</div>',
-        replace: true
-    };
-}).
-
-directive('pane', function() {
-    return {
-        require: '^tabs',
-        restrict: 'A',
-        transclude: true,
-        scope: { header: '@' },
-        link: function(scope, element, attrs, tabsCtrl) {
-            tabsCtrl.addPane(scope);
-        },
-        template:
-            '<div class="tab-pane" ng-class="{active: selected}" ng-transclude></div>',
-        replace: true
-    };
-}).
-
 directive('askDialog', function($parse, localize) {
     return {
         restrict: 'A',
@@ -731,21 +697,3 @@ var toggleGroupCtrl = function($scope, $element) {
         }
     };
 }
-
-// used by tabs
-var tabsCtrl = function($scope, $element) {
-
-    this.addPane = function(pane) {
-        if (panes.length == 0) $scope.select(pane);
-        panes.push(pane);
-    };
-
-    $scope.select = function(pane) {
-        angular.forEach(panes, function(pane) {
-            pane.selected = false;
-        });
-        pane.selected = true;
-    };
-
-    var panes = $scope.panes = [];
-};
