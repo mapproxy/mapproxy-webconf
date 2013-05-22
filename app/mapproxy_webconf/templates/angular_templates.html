@@ -2,7 +2,7 @@
     <div class="control-group">
         <div class="controls">
             <label class="control-label" for="{{name}}">
-                <span ng-transclude></span> {{text}}
+                <span ng-transclude></span> {{getText()}}
             </label>
             <span ng-show="showWarning()" id="tooltip_{{$id}}" class="icon-warning-sign warning_icon"></span>
         </div>
@@ -12,7 +12,7 @@
 <script type="text/ng-template" id="input_label">
     <div class="control-group">
         <div class="controls">
-            <label class="control-label" for="{{name}}">{{text}}:</label>
+            <label class="control-label" for="{{name}}">{{getText()}}:</label>
             <span ng-transclude></span>
             <span ng-show="showWarning()" id="tooltip_{{$id}}" class="icon-warning-sign warning_icon"></span>
         </div>

@@ -366,40 +366,13 @@ directive('dialog', function($parse, localize) {
     labeled must point to existing template!
     labeled="[template]"
 */
-directive('labeled', function($parse, localize) {
+directive('labeled', function($parse, $templateCache, localize) {
     return {
         restrict: 'A',
         replace: true,
         transclude: true,
-        // can't use templateURL, because $observe won't work with it
-        // wait for https://github.com/angular/angular.js/issues/1941
-        //
-        // templateUrl: function(element, attrs) {
-        //     return attrs.labeled
-        // },
         template: function(element, attrs) {
-            switch(attrs.labeled) {
-                case 'checkbox_label':
-                    return '<div class="control-group">' +
-                             '<div class="controls">' +
-                                 '<label class="control-label" for="{{name}}">' +
-                                     '<span ng-transclude></span> {{getText()}}' +
-                                 '</label>' +
-                                 '<span ng-show="showWarning()" id="tooltip_{{$id}}" class="icon-warning-sign warning_icon"></span>' +
-                             '</div>' +
-                          '</div>';
-                    break;
-                case 'input_label':
-                default:
-                    return '<div class="control-group">' +
-                          '<div class="controls">' +
-                              '<label class="control-label" for="{{name}}">{{getText()}}:</label>' +
-                              '<span ng-transclude></span>'+
-                              '<span ng-show="showWarning()" id="tooltip_{{$id}}" class="icon-warning-sign warning_icon"></span>' +
-                          '</div>' +
-                      '</div>';
-                    break;
-            }
+            return $templateCache.get(attrs.labeled)
         },
         scope: 'element',
         link: function(scope, element, attrs) {
