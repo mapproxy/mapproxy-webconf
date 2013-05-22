@@ -158,14 +158,17 @@ directive('droppable', function($parse) {
                     if(scope.use_key) {
                         item = item[scope.use_key];
                     }
-                    //because angular add a unique $$hashKey to objects
-                    angular.forEach(scope.items, function(scope_item) {
-                        console.log(scope.item)
-                        //angular.forEach doesn't support break
-                        if(!exist) {
-                            exist = angular.equals(scope_item, item);
-                        }
-                    });
+                    if(angular.isObject(scope.items) || angular.isArray(scope.items)) {
+                        //because angular add a unique $$hashKey to objects
+                        angular.forEach(scope.items, function(scope_item) {
+                            //angular.forEach doesn't support break
+                            if(!exist) {
+                                exist = angular.equals(scope_item, item);
+                            }
+                        });
+                    } else {
+                        exist = angular.equals(scope.items, item);
+                    }
                     if(!exist) {
                         scope.to_insert.push(item);
                     }
