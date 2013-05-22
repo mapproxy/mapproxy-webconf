@@ -259,7 +259,7 @@ directive('droppable', function($parse) {
                         scope.insert(scope.$parent, {callback: scope.insertCallback, new_data: scope.new_item});
                     } else {
                         //check for existing items
-                        scope.checkExist(scioe,bew_item);
+                        scope.checkExist(scope.new_item);
                         //look if something to insert
                         if(scope.to_insert.length > 0) {
                             //run change callback if present
