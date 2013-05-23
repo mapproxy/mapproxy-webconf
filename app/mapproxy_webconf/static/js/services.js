@@ -8,11 +8,13 @@ var MapproxyBaseService = function(_section, _dependencies) {
     this._dependencies = _dependencies;
     this._rootScope;
     this._resource;
+    this._messageService;
     this.error;
 
     this._errorHandler = function(error) {
         _this._error_msg = error.data.error;
         _this._rootScope.$broadcast(_this._section + _this._action + '_error');
+        _this._messageService.message(_this._section + '_error', error.data.error);
     };
     this._addDependencies = function(item) {
         item._dependencies = {};
@@ -142,15 +144,16 @@ var MapproxyBaseService = function(_section, _dependencies) {
     this.error = function() {
         return _this._error_msg;
     }
-    this.return_func = function($rootScope, MapproxyResource) {
+    this.return_func = function($rootScope, MapproxyResource, MessageService) {
         _this._inited = true;
         _this._rootScope = $rootScope;
         _this._resource = MapproxyResource;
+        _this._messageService = MessageService;
         _this._rootScope.$on(_this._section + '.load_finished', _this._waitForLoadComplete);
         angular.forEach(_this._dependencies, function(dependency) {
             _this._rootScope.$on(dependency._section + '.load_finished', _this._waitForLoadComplete)
             if(!dependency._inited) {
-              dependency.return_func(_this._rootScope, _this._resource);
+              dependency.return_func(_this._rootScope, _this._resource, _this._messageService);
             }
 
         });
@@ -337,4 +340,14 @@ service('DataShareService', function($rootScope) {
             }
         }
     }
+}).
+
+service('MessageService', function($rootScope) {
+    var service = {};
+
+    service.messages = {};
+    service.message = function(type, msg) {
+        service.messages[type] = msg;
+    };
+    return service;
 });

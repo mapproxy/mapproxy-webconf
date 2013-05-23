@@ -532,6 +532,27 @@ directive('editarea', function($http) {
             }
         }
     };
+}).
+
+directive('messageHandler', function(MessageService) {
+    return {
+        restrict: 'A',
+        scope: "Element",
+        replace: true,
+        transclude: true,
+        template: "<span class='text-error' ng-show='false'>" +
+                  "<i class='icon-thumbs-down'></i>" +
+                  "<strong>{{'An error occured'|i18n}}</strong>" +
+                  "<p>{{msg}}</p>" +
+                  "</span>",
+        link: function(scope, element, attrs) {
+            scope.messageService = MessageService;
+            scope.$watch('messageService.messages.' + attrs.messageType, function(newVal, oldVal) {
+                $(element).find('p').html(newVal);
+                $(element).show().fadeOut(3000);
+            }, true);
+        }
+    };
 });
 
 /* Controller for directives */

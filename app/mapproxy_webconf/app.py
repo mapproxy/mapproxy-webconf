@@ -24,7 +24,9 @@ class RESTBase(object):
         self.section = section
 
     def list(self, project, storage):
-        return storage.get_all(self.section, project, with_id=True, with_manual=True)
+        response.status = 404
+        return {'error': 'testerror'}
+        # return storage.get_all(self.section, project, with_id=True, with_manual=True)
 
     @requires_json
     def add(self, project, storage):

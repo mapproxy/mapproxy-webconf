@@ -7,11 +7,12 @@
     </button>
   </div>
   <h3>{{'Sources'|i18n}}</h3>
-  <span class="text-error" id="sourcelist_service_error" ng-show="false">
+  <!--<span class="text-error" id="sourcelist_service_error" ng-show="false">
     <i class="icon-thumbs-down"></i>
     <strong>{{'An error occured'|i18n}}</strong>
     <p>{{sourcelistErrorMsg}}</p>
-  </span>
+  </span>-->
+  <span message-handler message-type="sources_error"></span>
   <div>
     <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
     <br>

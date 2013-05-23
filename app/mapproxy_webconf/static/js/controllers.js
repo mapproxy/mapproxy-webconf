@@ -57,7 +57,7 @@ function TreeCtrl($scope, localize, WMSSources) {
     $scope.capabilities = {};
 };
 
-function MapproxySourceListCtrl($scope, localize, MapproxySources) {
+function MapproxySourceListCtrl($scope, localize, MapproxySources, MessageService) {
     var DEFAULT_SOURCE = {'data': {"type": "wms", "req": {}, "coverage": {}, "supported_srs": []}};
     var refreshList = function() {
         $scope.mapproxy_sources = MapproxySources.list();
