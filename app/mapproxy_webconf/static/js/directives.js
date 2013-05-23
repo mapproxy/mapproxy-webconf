@@ -420,8 +420,6 @@ directive('editarea', function($http) {
         templateUrl: '/static/angular_templates/editarea.html',
         controller: function($scope, $element, $attrs) {
             //$scope.$parent -> outer scope
-            var minrows = $attrs.minrows || 10;
-            var maxrows = $attrs.maxrows || 30;
             var yamlURL = $attrs.yamlUrl;
             var jsonURL = $attrs.jsonUrl;
             var _editareaElement = $($element).find('#_editarea');
@@ -433,7 +431,7 @@ directive('editarea', function($http) {
             var loadYAML = function() {
                 //clear editarea
                 _editareaElement.val('');
-                _editareaElement.attr('rows', minrows);
+                //_editareaElement.attr('rows', minrows);
                 //need to copy cause we modify the object in called function
                 $scope.editareaValue = angular.fromJson($scope.editareaValue);
                 var json = $scope.editareaValue.data;
@@ -441,9 +439,6 @@ directive('editarea', function($http) {
                 $http.post(yamlURL, json)
                     .success(function(yaml) {
                         if(!isEmpty(yaml)) {
-                            var rows = yaml.match(/[^\n]*\n[^\n]*/gi).length + 1;
-                            rows = (rows < minrows) ? minrows : rows;
-                            _editareaElement.attr('rows', (rows > maxrows) ? maxrows : rows);
                             _editareaElement.val(yaml);
                             _editareaElement.focus();
                         }
@@ -501,6 +496,9 @@ directive('editarea', function($http) {
 
             var tabwidth = attrs.tabwidth || 2;
             var indent = attrs.indent || 'spaces';
+            var rows = attrs.rows || 25;
+
+            _editareaElement.attr('rows', rows);
 
             // replace tabs with spaces or tabs
             _editareaElement.on('keydown', function(e) {
