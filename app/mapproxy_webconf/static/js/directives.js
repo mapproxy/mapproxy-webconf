@@ -445,6 +445,7 @@ directive('editarea', function($http) {
                             rows = (rows < minrows) ? minrows : rows;
                             _editareaElement.attr('rows', (rows > maxrows) ? maxrows : rows);
                             _editareaElement.val(yaml);
+                            _editareaElement.focus();
                         }
                     })
                     .error(errorHandler);
