@@ -988,16 +988,6 @@ function MapproxyGlobalsChooserCtrl($scope, DataShareService) {
         }
         return classes;
     };
-    $scope.filtered = function() {
-        var result = {}
-        angular.forEach($scope.globals, function(value, key) {
-            if(key[0] != '_') {
-                result[key] = value;
-            }
-        });
-        return result;
-    };
-
     $scope.show = function(global) {
         $scope.selected = global;
         DataShareService.data('global', global + '.html');
