@@ -51,7 +51,7 @@
 %def middleblock():
 <div ng-controller="MapproxySourceNoticeCtrl">
   <div ng-controller="MapproxySourceFormCtrl">
-    <form name="source_form" novalidate ng-show="!_editarea.visible">
+    <form name="source_form" novalidate ng-show="!editarea">
       <h3>{{formTitle|i18n}}</h3>
       <fieldset>
         <div toggle-group mode="multiShow">
@@ -141,7 +141,7 @@
         </div>
       </fieldset>
     </form>
-    <div editarea editarea-value="{{prepareForEditarea(source)}}" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
+    <div editarea editarea-value="{{prepareForEditarea(source)}}" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name" visible="{{editarea}}"></div>
   </div>
 </div>
 %end

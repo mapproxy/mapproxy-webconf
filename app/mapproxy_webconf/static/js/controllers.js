@@ -321,6 +321,8 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
     $scope.source = angular.copy(DEFAULT_SOURCE);
     $scope.formTitle = 'New source';
 
+    $scope.editarea = false;
+
     MapproxySources.current(true, $scope.source)
 
     $scope.$on('sources.current', function() {
@@ -337,9 +339,10 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
         $scope.source_form.$setPristine();
 
         if($scope.source._manual) {
-            $scope._editarea.show($scope.prepareForEditarea($scope.source));
+            //$scope._editarea.show($scope.prepareForEditarea($scope.source));
+            $scope.editarea = true;
         } else {
-            $scope._editarea.visible = false;
+            $scope.editarea = false;
         }
     });
     $scope.$on('defaults.load_complete', function() {

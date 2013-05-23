@@ -446,7 +446,7 @@ directive('editarea', function($http) {
                     .error(errorHandler);
             };
             $scope.show = function(editareaValue) {
-                $scope._editarea.visible = true;
+                //$scope._editarea.visible = true;
                 $scope._editarea.dirty = false;
                 $scope.editareaValue = undefined;
                 $scope.editareaErrorMsg = undefined;
@@ -470,7 +470,7 @@ directive('editarea', function($http) {
                     .error(errorHandler);
             };
             $scope.leaveEditarea = function() {
-                $scope._editarea.visible = false;
+                $scope.visible = false;
                 $scope._editarea.dirty = false;
                 $scope.editareaValue = undefined
                 $scope.editareaErrorMsg = undefined;
@@ -480,7 +480,22 @@ directive('editarea', function($http) {
                 $scope.editareaErrorMsg = undefined;
                 loadYAML();
             };
+            //$scope.visible = false;
 
+            $attrs.$observe('editareaValue', function(editareaValue) {
+                $scope.editareaValue = editareaValue;
+                console.log($scope.editareaValue)
+            });
+
+            $attrs.$observe('visible', function(visible) {
+                visible = visible == 'true' ? true : false;
+                $scope.visible = visible;
+                console.log($scope.visible)
+                if($scope.visible) {
+                    $scope.show();
+                }
+            });
+            console.log($scope)
             //register necessary functions and variables in parent scope
             $scope.$parent._editarea = {
                 show: $scope.show,
@@ -523,8 +538,6 @@ directive('editarea', function($http) {
             _editareaElement.on('keyup', function(e) {
                 scope._editarea.dirty = true;
             });
-            scope.$parent.editareaValue = attrs.editareaValue;
-
             var _toggleButtonContainer = $('#_editarea_toggle_button_container');
             if(_toggleButtonContainer) {
                 $(element).find('#_editarea_toggle_button').appendTo(_toggleButtonContainer);
