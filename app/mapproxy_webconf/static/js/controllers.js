@@ -143,7 +143,7 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
         $('#sourceform_service_error').show().fadeOut(3000);
     };
     $scope.prepareForEditarea = function(source) {
-        return $.extend({'data': {'name': ""}}, source);
+        return $.extend(true, {'data': {'name': ""}}, source);
     };
     $scope.loadSRS = function() {
         var result = WMSSources.srs($scope.source.data.req.url);
@@ -493,7 +493,7 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         return cache;
     };
     $scope.prepareForEditarea = function(cache) {
-        return $scope.replaceIdsWithNames($.extend({'data': {'name': ''}}, cache));
+        return $scope.replaceIdsWithNames(true, $.extend({'data': {'name': ''}}, cache));
     };
     $scope.addCache = function(event) {
         if(angular.isDefined(event)) {
@@ -682,7 +682,7 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids) {
         $('#gridform_service_error').show().fadeOut(3000);
     };
     $scope.prepareForEditarea = function(data) {
-        return $.extend({'data': {'name': ""}}, data);
+        return $.extend(true, {'data': {'name': ""}}, data);
     };
     $scope.addGrid = function(event) {
         if(angular.isDefined(event)) {
@@ -869,7 +869,7 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         return layer;
     };
     $scope.prepareForEditarea = function(layer) {
-        layer = $.extend({'data': {'name': ""}}, layer)
+        layer = $.extend(true, {'data': {'name': ""}}, layer)
         return $scope.replaceIdsWithNames(layer);
     };
     $scope.replaceNamesWithIds = function(layer) {
