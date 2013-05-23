@@ -417,7 +417,7 @@ directive('editarea', function($http) {
         restrict: 'A',
         scope: 'element',
         replace: true,
-        templateUrl: 'editarea_tmpl',
+        templateUrl: '/static/angular_templates/editarea.html',
         controller: function($scope, $element, $attrs) {
             //$scope.$parent -> outer scope
             var minrows = $attrs.minrows || 10;
