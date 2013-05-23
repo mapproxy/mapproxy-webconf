@@ -259,7 +259,7 @@ directive('droppable', function($parse) {
                 if(!angular.isUndefined(scope.new_item)) {
                     //run insert callback if present
                     if(angular.isFunction(scope.insert)) {
-                        scope.insert(scope.$parent, {callback: scope.insertCallback, new_data: scope.new_item});
+                        scope.insert(scope, {callback: scope.insertCallback, new_data: scope.new_item});
                     } else {
                         //check for existing items
                         scope.checkExist(scope.new_item);
@@ -267,7 +267,7 @@ directive('droppable', function($parse) {
                         if(scope.to_insert.length > 0) {
                             //run change callback if present
                             if(angular.isFunction(scope.change)) {
-                                scope.change(scope.$parent, {callback: scope.changeCallback, new_data: scope.new_item});
+                                scope.change(scope, {callback: scope.changeCallback, new_data: scope.new_item});
                             } else {
                                 scope.insertItems();
                             }
