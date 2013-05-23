@@ -249,7 +249,8 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
             MapproxySources.add($scope.source);
             $scope.formTitle = 'Edit source';
             $scope.source_form.$setPristine();
-            $scope._editarea.dirty = false;
+            $scope.editareaBinds.dirty = false;
+            $scope.editareaBinds.save = false;
         }
     };
     $scope.addCoverage = function(event) {
@@ -313,6 +314,12 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
     $scope.layerTitle = function(layer) {
         return WMSSources.layerTitle($scope.source.data.req.url, layer);
     };
+    $scope.getEditareaValue = function(value) {
+        $scope.source = value;
+        $scope.addSource();
+    $scope.setEditareaValue = function() {
+        return $scope.prepareForEditarea($scope.source)
+    }
 
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {};
@@ -323,11 +330,25 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
 
     $scope.editarea = false;
 
+    $scope.editareaBinds = {
+        editareaValue: $scope.prepareForEditarea($scope.source),
+        visible: false,
+        dirty: false
+    };
+
+    $scope.$watch('editareaBinds.save', function(save) {
+        if(save) {
+            $scope.source = $scope.editareaBinds.editareaValue;
+            $scope.addSource();
+        }
+    }, true);
+
     MapproxySources.current(true, $scope.source)
 
     $scope.$on('sources.current', function() {
         $scope.source = {};
         $scope.source = MapproxySources.current(true);
+        $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.source);
         if(angular.equals($scope.source, DEFAULT_SOURCE)) {
             $scope.formTitle = 'New source';
             if(angular.isDefined($scope.defaults.data.srs)) {
@@ -339,10 +360,9 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
         $scope.source_form.$setPristine();
 
         if($scope.source._manual) {
-            //$scope._editarea.show($scope.prepareForEditarea($scope.source));
-            $scope.editarea = true;
+            $scope.editareaBinds.visible = true;
         } else {
-            $scope.editarea = false;
+            $scope.editareaBinds.visible = false;
         }
     });
     $scope.$on('defaults.load_complete', function() {
@@ -357,10 +377,10 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
     $scope.$on('sources.add_error', errorHandler);
     $scope.$on('sources.update_error', errorHandler);
 
-    $scope.$on('editarea.save', function(scope, source) {
-        $scope.source = source;
-        $scope.addSource();
-    });
+    $scope.$watch('source', function() {
+            $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.source);
+        }, true
+    );
 
     $scope.$watch('source_form.$valid', function(formValid) {
         if(formValid) {
@@ -371,7 +391,7 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
     });
 
     $(window).on('beforeunload', function() {
-        if($scope.source_form.$dirty || $scope._editarea.dirty) {
+        if($scope.source_form.$dirty || $scope.editareaBinds.dirty) {
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
