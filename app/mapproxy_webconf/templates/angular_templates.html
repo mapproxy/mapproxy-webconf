@@ -27,8 +27,8 @@
             <textarea class='input-xlarge' id='_editarea'></textarea>
             <div class='text-center'>
                 <button
-                    ng-show='!privateAttributes._manual'
-                    ask-dialog dialog-title="{{'Confirm!'|i18n}}"
+                    ng-show='!editareaValue._manual'
+                    dialog="ask" dialog-title="{{'Confirm!'|i18n}}"
                     dialog-text="{{'If you save the manual edition, you wont be able to edit it in the above form again. Realy save the manual edition?'|i18n}}"
                     callback='save()'
                     class='btn btn-small'>
@@ -36,7 +36,7 @@
                 </button>
                 <button
                     ng-click='save()'
-                    ng-show='privateAttributes._manual'
+                    ng-show='editareaValue._manual'
                     class='btn btn-small'>
                     {{'Save'|i18n}}
                 </button>
@@ -47,7 +47,7 @@
                 </button>
                 <button
                     ng-click='leaveEditarea()'
-                    ng-show='!privateAttributes._manual'
+                    ng-show='!editareaValue._manual'
                     class='btn btn-small'>
                     {{'Back to form edit'|i18n}}
                 </button>

@@ -426,20 +426,17 @@ directive('editarea', function($http) {
             var jsonURL = $attrs.jsonUrl;
             var _editareaElement = $($element).find('#_editarea');
 
-            var emptyAttributes = {};
-            $scope.privateAttributes = {};
-
             var errorHandler = function(response) {
                 $scope.editareaErrorMsg = response.error;
                 $('#editarea_error').show().fadeOut(3000)
             };
-
             var loadYAML = function() {
                 //clear editarea
                 _editareaElement.val('');
                 _editareaElement.attr('rows', minrows);
                 //need to copy cause we modify the object in called function
-                var json = prepareEditareaValue(angular.fromJson(angular.copy($scope.editareaValue)));
+                $scope.editareaValue = angular.fromJson($scope.editareaValue);
+                var json = $scope.editareaValue.data;
                 //make url configurateable
                 $http.post(yamlURL, json)
                     .success(function(yaml) {
@@ -452,55 +449,9 @@ directive('editarea', function($http) {
                     })
                     .error(errorHandler);
             };
-
-            var prepareEditareaValue = function(value) {
-                var keepEmptyFields = angular.isDefined($attrs.keepEmptyFields) ? $attrs.keepEmptyFields.split(',') : [];
-
-                angular.forEach(value, function(val, key) {
-                    if($.inArray(key, keepEmptyFields) != -1) {
-                        angular.noop();
-                    } else if(key[0] === '_') {
-                        $scope.privateAttributes[key] = val;
-                    } else if(isEmpty(val)) {
-                        emptyAttributes[key] = val;
-                    } else if(angular.isObject(val)) {
-                        angular.forEach(val, function(_val, _key) {
-                            if(isEmpty(_val)) {
-                                if(angular.isUndefined(emptyAttributes[key])) {
-                                    emptyAttributes[key] = {};
-                                }
-                                emptyAttributes[key][_key] = _val;
-                            }
-                        });
-                    }
-                });
-                angular.forEach($scope.privateAttributes, function(val, key) {
-                    delete value[key];
-                });
-                angular.forEach(emptyAttributes, function(val, key) {
-                    if(angular.isObject(val) && !angular.isArray(val)) {
-                        if(Object.keys(val).length == 0) {
-                            delete value[key];
-                        } else {
-                            angular.forEach(val, function(_val, _key) {
-                                delete value[key][_key];
-                            });
-                        }
-                    } else {
-                        delete value[key];
-                    }
-                });
-
-                return angular.toJson(value, true);
-            };
-
-
             $scope.show = function(editareaValue) {
                 $scope._editarea.visible = true;
-                $scope.privateAttributes = {};
-                emptyAttributes = {};
                 $scope._editarea.dirty = false;
-                //$scope.currentModelValue = undefined;
                 $scope.editareaValue = undefined;
                 $scope.editareaErrorMsg = undefined;
                 //if this function is called from outside of directive, we need to pass the editareaValue,
@@ -516,23 +467,19 @@ directive('editarea', function($http) {
                 var yaml = _editareaElement.val();
                 $http.post(jsonURL, {"yaml": yaml})
                     .success(function(json) {
-                        $scope.editareaValue = $.extend(true, {}, emptyAttributes, json, $scope.privateAttributes);
+                        $scope.editareaValue.data = json;
                         $scope.editareaValue._manual = true;
                         $scope.$root.$broadcast('editarea.save', $scope.editareaValue);
                     })
                     .error(errorHandler);
             };
             $scope.leaveEditarea = function() {
-                $scope.privateAttributes = {};
-                emptyAttributes = {};
                 $scope._editarea.visible = false;
                 $scope._editarea.dirty = false;
                 $scope.editareaValue = undefined
                 $scope.editareaErrorMsg = undefined;
             };
             $scope.reset = function() {
-                $scope.privateAttributes = {};
-                emptyAttributes = {};
                 $scope._editarea.dirty = false;
                 $scope.editareaErrorMsg = undefined;
                 loadYAML();
