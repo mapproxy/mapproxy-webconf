@@ -1005,7 +1005,7 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareSer
     var setGlobals = function() {
         var globals = MapproxyGlobals.list();
         if(globals.length > 0) {
-            $scope.globals = $.extend($scope.globals, globals[0]);
+            $scope.globals = $.extend(true, $scope.globals, globals[0]);
         }
         DataShareService.data('globals', $scope.globals);
         if($scope.globals._manual) {
