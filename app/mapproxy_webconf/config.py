@@ -60,9 +60,9 @@ def validate(mapproxy_conf):
         for name, source in sources_conf.items():
             if source.get('type', False) == 'wms':
                 if source.get('req', False):
-                    if not source.req.get('url', False):
+                    if not source['req'].get('url', False):
                         errors.append('Missing "url" for source %s' % name)
-                    if not source.req.get('layers', False):
+                    if not source['req'].get('layers', False):
                         errors.append('Missing "layers" for source %s' % name)
                 else:
                     errors.append('Missing "req" for source %s' % name)
@@ -117,7 +117,7 @@ def validate(mapproxy_conf):
 def mapproxy_conf_from_storage(storage, project):
     mapproxy_conf = {}
 
-    services = storage.get_all('services', project).values()
+    services = storage.get_all_data('services', project).values()
     if services:
         mapproxy_conf['services'] = {}
         for service, config in services[0].items():
@@ -125,17 +125,17 @@ def mapproxy_conf_from_storage(storage, project):
                 config.pop('active', None)
                 mapproxy_conf['services'][service] = config
 
-    _globals = storage.get_all('globals', project).values()
+    _globals = storage.get_all_data('globals', project).values()
     if _globals:
         mapproxy_conf['globals'] = _globals[0]
 
     used_sources = set()
     used_caches = set()
 
-    sources = storage.get_all('sources', project)
-    caches = storage.get_all('caches', project)
-    layers = storage.get_all('layers', project, [])
-    grids = storage.get_all('grids', project)
+    sources = storage.get_all_data('sources', project)
+    caches = storage.get_all_data('caches', project)
+    layers = storage.get_all_data('layers', project).values()
+    grids = storage.get_all_data('grids', project)
 
     used_caches, used_sources = used_caches_and_sources(layers, caches, sources)
 

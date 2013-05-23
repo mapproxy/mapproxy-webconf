@@ -25,7 +25,7 @@
           <fieldset>
             <div labeled="input_label" name-for="defaults_form.default_srs" text="{{'SRS'|i18n}}">
               <div name="default_form.default_srs" class="well well-small input-xlarge">
-                <span class="badge" ng-repeat="srs in defaults.srs">{{srs}} <i class="icon-remove" ng-click="removeSRS($event, srs)"></i></span>
+                <span class="badge" ng-repeat="srs in defaults.data.srs">{{srs}} <i class="icon-remove" ng-click="removeSRS($event, srs)"></i></span>
               </div>
             </div>
             <div class="input-append" labeled="input_label" name-for="new_srs" text="{{'Add SRS'|i18n}}">

@@ -24,7 +24,7 @@ var MapproxyBaseService = function(_section, _dependencies) {
                 if(item._section == 'caches' && dependencyItem._section == 'layers') {
                     useSection = 'sources';
                 }
-                if($.inArray(item._id, dependencyItem[useSection]) != -1) {
+                if($.inArray(item._id, dependencyItem.data[useSection]) != -1) {
                     item._dependencies[dependency._section].push(dependencyItem);
                 }
             });
@@ -112,7 +112,7 @@ var MapproxyBaseService = function(_section, _dependencies) {
     };
     this.byName = function(_name) {
         for(var id in _this._items) {
-            if(_this._items[id].name == _name) {
+            if(_this._items[id].data.name == _name) {
                 return _this._items[id];
             }
         }
@@ -125,7 +125,7 @@ var MapproxyBaseService = function(_section, _dependencies) {
     };
     this.nameById = function(_id) {
         var item = _this.byId(_id);
-        return item ? item.name : false;
+        return item ? item.data.name : false;
     };
     this.current = function(copy, _item) {
         if(_item) {
@@ -230,7 +230,7 @@ WMSSourceService = function(_section) {
     this._identifySource = function(url) {
         var source = false;
         angular.forEach(_this._items, function(_source) {
-            if(_source.url == url) {
+            if(_source.data.url == url) {
                 source = _source;
             }
         });
@@ -240,7 +240,7 @@ WMSSourceService = function(_section) {
         var layer = false;
         var source = _this._identifySource(url);
         if(source) {
-            angular.forEach(source.layer.layers, function(_layer) {
+            angular.forEach(source.data.layer.layers, function(_layer) {
                 if(_layer.name == layerName) {
                     layer = _layer;
                 }
@@ -260,7 +260,7 @@ WMSSourceService = function(_section) {
     this.coverage = function(url) {
         var source = _this._identifySource(url);
         if(source) {
-            return source.layer.llbbox;
+            return source.data.layer.llbbox;
         }
         return false;
     };
@@ -268,7 +268,7 @@ WMSSourceService = function(_section) {
     this.srs = function(url) {
         var source = _this._identifySource(url);
         if(source) {
-            return source.layer.srs;
+            return source.data.layer.srs;
         }
         return false;
     };

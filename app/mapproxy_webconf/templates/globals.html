@@ -4,7 +4,7 @@
         <ul class="vertical-list">
             <hr>
             <div class="{{getClasses(global)}}"
-                ng-repeat="(global, data) in filtered()"
+                ng-repeat="(global, data) in globals.data"
                 ng-click="show(global)">
                 <li>{{global|i18n}}</li>
                 <hr>
@@ -19,24 +19,24 @@
 <script type="text/ng-template" id="cache.html">
     <h3>{{'cache'|i18n}}</h3>
     <div labeled="input_label" name-for="globals_form.cache_meta_size" text="{{'Meta size'|i18n}}">
-        <input type="number" min=0 ng-model="globals.cache.meta_size[0]" class="input-mini" id="globals_form.cache_meta_size" />
-        <input type="number" min=0 ng-model="globals.cache.meta_size[1]" class="input-mini" id="globals_form.cache_meta_size_1" />
+        <input type="number" min=0 ng-model="globals.data.cache.meta_size[0]" class="input-mini" id="globals_form.cache_meta_size" />
+        <input type="number" min=0 ng-model="globals.data.cache.meta_size[1]" class="input-mini" id="globals_form.cache_meta_size_1" />
     </div>
     <div labeled="input_label" name-for="globals_form.cache_meta_buffer" text="{{'Meta buffer'|i18n}}">
-        <input type="number" min=1 ng-model="globals.cache.meta_buffer" id="globals_form.cache_meta_buffer">
+        <input type="number" min=1 ng-model="globals.data.cache.meta_buffer" id="globals_form.cache_meta_buffer">
     </div>
 </script>
 <script type="text/ng-template" id="image.html">
     <h3>{{'image'|i18n}}</h3>
     <div labeled="input_label" name-for="globals_form.image_resampling_method" text="{{'Resampling method'|i18n}}">
-        <select ng-model="globals.images.resampling_method" id="globals_form.image_resampling_method">
+        <select ng-model="globals.data.images.resampling_method" id="globals_form.image_resampling_method">
             <option value="nearest">Nearest</option>
             <option value="bilinear">Bilinear</option>
             <option value="bicubic">Bicubic</option>
         </select>
     </div>
     <div labeled="checkbox_label" name-for="globals_form.image_paletted" text="{{'Paletted'|i18n}}">
-        <input type="checkbox" ng-model="globals.image.paletted" id="globals_form.image_paletted">
+        <input type="checkbox" ng-model="globals.data.image.paletted" id="globals_form.image_paletted">
     </div>
 </script>
 <div ng-controller="MapproxyGlobalsFormCtrl">

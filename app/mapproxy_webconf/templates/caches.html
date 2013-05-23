@@ -11,21 +11,21 @@
       <p>{{cachelistErrorMsg}}</p>
     </span>
     <div>
-      <input type="text" ng-model="search.name" placeholder="{{'Filter'|i18n}}..."/>
+      <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
       <br>
-      <span ng-show="mapproxy_caches.length - filtered.length" ng-click="search.name=''">{{'Not shown caches'|i18n}}: {{mapproxy_caches.length - filtered.length}}</span>
+      <span ng-show="mapproxy_caches.length - filtered.length" ng-click="search=''">{{'Not shown caches'|i18n}}: {{mapproxy_caches.length - filtered.length}}</span>
     </div>
     <ul class="vertical-list">
       <hr>
-      <div class="{{isSelected(cache)}}" ng-repeat="cache in filtered = (mapproxy_caches | filter: search) | orderBy:'name'"
+      <div class="{{isSelected(cache)}}" ng-repeat="cache in filtered = (mapproxy_caches | filter:{data.name:search}) | orderBy:'name'"
       ng-click="editCache(cache)">
         <li>
           <i ng-show="cache._manual" class="icon-pencil"></i>
-          {{cache.name}}
+          {{cache.data.name}}
           <i ng-show="!hasDependencies(cache)" class="icon-remove"
              dialog="ask"
              dialog-title="{{'Confirm!'|i18n}}"
-             dialog-text="{{'Really remove cache:'|i18n}} {{cache.name}}?"
+             dialog-text="{{'Really remove cache:'|i18n}} {{cache.data.name}}?"
              callback="removeCache(cache)">
           </i>
           <i ng-show="hasDependencies(cache)" class="icon-remove"
@@ -33,7 +33,7 @@
             dialog-width="600"
             dialog-height="300"
             dialog-title="Confirm!"
-            dialog-text="{{'Can not remove cache:'|i18n}} {{cache.name}}<br>{{'Dependencies are:'|i18n}}<br>{{getDependencies(cache)}}">
+            dialog-text="{{'Can not remove cache:'|i18n}} {{cache.data.name}}<br>{{'Dependencies are:'|i18n}}<br>{{getDependencies(cache)}}">
           </i>
         </li>
         <hr>
@@ -49,7 +49,7 @@
     <h3>{{formTitle|i18n}}</h3>
     <!-- name -->
     <div labeled="input_label" name-for="cache_form.cache_name" text="{{'Name'|i18n}}">
-        <input required class="input-xlarge" type="text" ng-model="cache.name" id="cache_form.cache_name"/>
+        <input required class="input-xlarge" type="text" ng-model="cache.data.name" id="cache_form.cache_name"/>
     </div>
     <!-- sources -->
       <!-- change-callback MUST provide parameters callback and new_data -->
@@ -60,18 +60,18 @@
             required
             accepts="mapproxy_source"
             allow-array="true"
-            ng-model="cache.sources"
+            ng-model="cache.data.sources"
             name="cache_form.sources"
             use-key-for-value="_id"
             class="input-xlarge insertable-list uneditable-input">
-            <div ng-repeat="source in cache.sources" class="label">
+            <div ng-repeat="source in cache.data.sources" class="label">
                 <span ng-bind="showName(source)"></span>
                 <i class="icon-remove" ng-click="remove(source)"></i>
             </div>
         </div>
     </div>
     <div labeled="input_label" name-for="cache_form.grids" text="{{'Grids'|i18n}}">
-        <select class="input-xlarge" ng-model="cache.grids" id="cache_form.grids" multiple="multiple" ng-options="value._id as value.name for value in available_grids"/>
+        <select class="input-xlarge" ng-model="cache.data.grids" id="cache_form.grids" multiple="multiple" ng-options="value._id as value.data.name for value in available_grids"/>
         </select>
     </div>
     <div class="text-center">
@@ -101,16 +101,16 @@
 <div ng-controller="MapproxySourceListCtrl">
     <h3>{{'Sources'|i18n}}</h3>
     <div>
-      <input type="text" ng-model="search.name" placeholder="{{'Filter'|i18n}}..."/>
+      <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
       <br>
-      <span ng-show="mapproxy_sources.length - filtered.length" ng-click="search.name=''">{{'Not shown sources'|i18n}}: {{mapproxy_sources.length - filtered.length}}</span>
+      <span ng-show="mapproxy_sources.length - filtered.length" ng-click="search=''">{{'Not shown sources'|i18n}}: {{mapproxy_sources.length - filtered.length}}</span>
     </div>
     <ul class="vertical-list">
       <hr>
-      <div draggable class="mapproxy_source" ng-repeat="source in filtered = (mapproxy_sources | filter: search) | orderBy:'name'"
+      <div draggable class="mapproxy_source" ng-repeat="source in filtered = (mapproxy_sources | filter:{data.name:search}) | orderBy:'name'"
           item-data="{{source}}">
         <li class="droppable_name">
-            {{source.name}}
+            {{source.data.name}}
         </li>
         <hr>
       </div>
