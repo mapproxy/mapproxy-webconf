@@ -147,9 +147,6 @@ directive('droppable', function($parse) {
         require: 'ngModel',
         scope: 'element',
         link: function(scope, element, attrs, ngModelCtrl) {
-            //create a new not isolated scope
-            scope = scope.$new(false)
-
             scope.checkExist = function(item) {
                 if(angular.isArray(item)) {
                     angular.forEach(item, scope.checkExist);
@@ -200,11 +197,12 @@ directive('droppable', function($parse) {
                     ngModelCtrl.$render();
                 });
             };
+
             scope.remove = function(item) {
+                scope.items = ngModelCtrl.$modelValue;
                 if(angular.isUndefined(scope.items) || angular.isUndefined(item)) {
                     return;
                 }
-
                 if(attrs.allowArray) {
                     scope.items.splice(scope.items.indexOf(item), 1);
                     if(scope.items.length == 0) {
@@ -214,12 +212,10 @@ directive('droppable', function($parse) {
                     scope.items = undefined;
                 }
 
-                scope.$apply(function() {
-                    ngModelCtrl.$setViewValue(scope.items);
-                    if(angular.isUndefined(scope.items)) {
-                        ngModelCtrl.$setValidity('required', false);
-                    }
-                });
+                ngModelCtrl.$setViewValue(scope.items);
+                if(angular.isUndefined(scope.items)) {
+                    ngModelCtrl.$setValidity('required', false);
+                }
             };
             scope.insertCallback = function(insert) {
                 if(insert) {
