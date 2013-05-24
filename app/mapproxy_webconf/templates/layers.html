@@ -7,15 +7,12 @@
   <button class="btn btn-small pull-right" id="layer_list_save" ng-click="updateLayerTree()" style="margin-right:1em;" ng-disabled="!listChanged()">{{'Save'|i18n}}</button>
 
   <h3>{{'Layer'|i18n}}</h3>
-  <span class="text-error" id="layerlist_service_error" ng-show="false">
-    <i class="icon-thumbs-down"></i>
-    <strong>{{'An error occured'|i18n}}</strong>
-    <p>{{layerlistErrorMsg}}</p>
-  </span>
+  <span message-handler="success" message-types="layers.delete_success,layers.updateStructur_success"></span>
+  <span message-handler="error" message-types="layers.load_error,layers.delete_error,layers.updateStructur_error"></span>
   <div>
-    <input type="text" ng-model="layerFilter" placeholder="{{'Filter'|i18n}}..."/>
+    <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
     <br>
-    <span ng-show="mapproxy_layers.length - filtered.length" ng-click="layerFilter=''">{{'Not shown layers'|i18n}}: {{mapproxy_layers.length - filtered.length}}</span>
+    <span ng-show="mapproxy_layers.length - filtered.length" ng-click="search=''">{{'Not shown layers'|i18n}}: {{mapproxy_layers.length - filtered.length}}</span>
   </div>
   <script type="text/ng-template"  id="mapproxy_layer_renderer.html">
     <ul sortable ng-model="layer._layers">
@@ -43,15 +40,15 @@
     <ul sortable ng-model="mapproxy_layers" class="vertical-list">
 
       <div class="{{isSelected(layer)}}"
-        ng-repeat="layer in filtered = (mapproxy_layers | filter: nameFilter) | orderBy:'_rank'"
+        ng-repeat="layer in filtered = (mapproxy_layers | filter:{data.title:search}) | orderBy:'_rank'"
         ng-click="editLayer(layer)">
         <li>
           <i ng-show="layer._manual" class="icon-pencil"></i>
-          {{layer.title}} ({{layer.name}})
+          {{layer.data.title}} ({{layer.data.name}})
           <i class="icon-remove pull-right"
             dialog="ask"
             dialog-title="{{'Confirm!'|i18n}}"
-            dialog-text="{{'Really remove layer:'|i18n}} {{layer.title}} ({{layer.name}})?"
+            dialog-text="{{'Really remove layer:'|i18n}} {{layer.data.title}} ({{layer.data.name}})?"
             callback="removeLayer(layer)"></i>
           <!-- <div
                 ng-include="'mapproxy_layer_renderer.html'"
@@ -75,15 +72,15 @@
 
 %def middleblock():
 <div ng-controller="MapproxyLayerFormCtrl">
-  <form name="layer_form" novalidate ng-show="!_editarea.visible">
+  <form name="layer_form" novalidate ng-show="!editareaBinds.visible">
     <h3>{{formTitle|i18n}}</h3>
     <!-- name -->
     <div labeled="input_label" name-for="layer_form.layer_name" text="{{'Name'|i18n}}">
-      <input required type="text" required ng-model="layer.name" class="input-xlarge" id="layer_form.layer_name"/>
+      <input required type="text" required ng-model="layer.data.name" class="input-xlarge" id="layer_form.layer_name"/>
     </div>
     <!-- title -->
     <div labeled="input_label" name-for="layer_form.layer_title" text="{{'Title'|i18n}}">
-      <input required type="text" required ng-model="layer.title" class="input-xlarge" id="layer_form.layer_title"/>
+      <input required type="text" required ng-model="layer.data.title" class="input-xlarge" id="layer_form.layer_title"/>
     </div>
     <!-- sources -->
     <div labeled="input_label" name-for="layer_form.sources" text="{{'Sources'|i18n}}">
@@ -93,11 +90,11 @@
         required
         accepts="mapproxy_source,mapproxy_cache"
         allow-array="true"
-        ng-model="layer.sources"
+        ng-model="layer.data.sources"
         id="layer_sources"
         use-key-for-value="_id"
         class="input-xlarge insertable-list uneditable-input">
-        <div ng-repeat="source in layer.sources" class="label">
+        <div ng-repeat="source in layer.data.sources" class="label">
           <span ng-bind="showName(source)"></span>
           <i class="icon-remove" ng-click="remove(source)"></i>
         </div>
@@ -108,21 +105,12 @@
       <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!layer_form.$valid" id="layer_form_save">{{'Save'|i18n}}</button>
       <button class="btn btn-small" ng-click="resetForm()">{{'Reset'|i18n}}</button>
     </div>
-    <div class="text-center">
-      <span class="text-success save_ok" ng-show="false">
-        <br>
-        <i class="icon-ok"></i>
-        <strong>{{'Saved successfully'|i18n}}</strong>
-      </span>
-      <span class="text-error" id="layerform_service_error" ng-show="false">
-        <br>
-        <i class="icon-thumbs-down"></i>
-        <strong>{{'Saving failed'|i18n}}</strong>
-        <p>{{layerformErrorMsg}}</p>
-      </span>
-    </div>
   </form>
-  <div editarea editarea-value="{{prepareForEditarea(layer)}}" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
+  <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
+  <div class="text-center">
+    <span message-handler="success" message-types="layers.add_success,layers.update_success"></span>
+    <span message-handler="error" message-types="layers.add_error,layers.update_error,layers.form_error"></span>
+  </div>
 </div>
 %end
 
@@ -130,24 +118,20 @@
   <div>
     <span ng-controller="MapproxySourceListCtrl">
       <h3>{{'Sources'|i18n}}</h3>
-      <span class="text-error" id="sourcelist_service_error" ng-show="false">
-        <i class="icon-thumbs-down"></i>
-        <strong>{{'An error occured'|i18n}}</strong>
-        <p>{{sourcelistErrorMsg}}</p>
-      </span>
+      <span message-handler="error" message-types="sources.load_error"></span>
       <div>
-        <input type="text" ng-model="sourceFilter" placeholder="{{'Filter'|i18n}}..."/>
+        <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
         <br>
-        <span ng-show="mapproxy_sources.length - filtered.length" ng-click="sourceFilter=''">{{'Not shown sources'|i18n}}: {{mapproxy_sources.length - filtered.length}}</span>
+        <span ng-show="mapproxy_sources.length - filtered.length" ng-click="search=''">{{'Not shown sources'|i18n}}: {{mapproxy_sources.length - filtered.length}}</span>
       </div>
       <ul class="vertical-list">
           <hr>
           <div
               draggable
               class="mapproxy_source"
-              ng-repeat="source in filtered = (mapproxy_sources |filter: nameFilter) | orderBy:'name'"
+              ng-repeat="source in filtered = (mapproxy_sources |filter:{data.name:search}) | orderBy:'name'"
               item-data="{{source}}">
-              <li class="droppable_name"> {{source.name}}</li>
+              <li class="droppable_name"> {{source.data.name}}</li>
               <hr>
             </div>
       </ul>
@@ -156,24 +140,20 @@
     <hr>
     <span ng-controller="MapproxyCacheListCtrl">
       <h3>{{'Caches'|i18n}}</h3>
-      <span class="text-error" id="cachelist_service_error" ng-show="false">
-        <i class="icon-thumbs-down"></i>
-        <strong>{{'An error occured'|i18n}}</strong>
-        <p>{{cachelistErrorMsg}}</p>
-      </span>
+      <span message-handler="error" message-types="caches.load_error"></span>
       <div>
-        <input type="text" ng-model="cacheFilter" placeholder="{{'Filter'|i18n}}..."/>
+        <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
         <br>
-        <span ng-show="mapproxy_caches.length - filtered.length" ng-click="cacheFilter=''">{{'Not shown caches'|i18n}}: {{mapproxy_caches.length - filtered.length}}</span>
+        <span ng-show="mapproxy_caches.length - filtered.length" ng-click="search=''">{{'Not shown caches'|i18n}}: {{mapproxy_caches.length - filtered.length}}</span>
       </div>
       <ul class="vertical-list">
           <hr>
           <div
               draggable
               class="mapproxy_cache"
-              ng-repeat="cache in filtered = (mapproxy_caches | filter: nameFilter) | orderBy:'name'"
+              ng-repeat="cache in filtered = (mapproxy_caches | filter:{data.name:search}) | orderBy:'name'"
               item-data="{{cache}}">
-              <li class="droppable_name">{{cache.name}}</li>
+              <li class="droppable_name">{{cache.data.name}}</li>
               <hr>
           </div>
       </ul>

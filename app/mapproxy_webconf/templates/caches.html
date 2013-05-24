@@ -5,27 +5,24 @@
       {{'Create new cache'|i18n}}</button>
 
     <h3>{{'Cache'|i18n}}</h3>
-    <span class="text-error" id="cachelist_service_error" ng-show="false">
-      <i class="icon-thumbs-down"></i>
-      <strong>{{'An error occured'|i18n}}</strong>
-      <p>{{cachelistErrorMsg}}</p>
-    </span>
+    <span message-handler="success" message-types="caches.delete_success"></span>
+    <span message-handler="error" message-types="caches.load_error,caches.delete_error"></span>
     <div>
-      <input type="text" ng-model="cacheFilter" placeholder="{{'Filter'|i18n}}..."/>
+      <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
       <br>
-      <span ng-show="mapproxy_caches.length - filtered.length" ng-click="cacheFilter=''">{{'Not shown caches'|i18n}}: {{mapproxy_caches.length - filtered.length}}</span>
+      <span ng-show="mapproxy_caches.length - filtered.length" ng-click="search=''">{{'Not shown caches'|i18n}}: {{mapproxy_caches.length - filtered.length}}</span>
     </div>
     <ul class="vertical-list">
       <hr>
-      <div class="{{isSelected(cache)}}" ng-repeat="cache in filtered = (mapproxy_caches | filter: nameFilter) | orderBy:'name'"
+      <div class="{{isSelected(cache)}}" ng-repeat="cache in filtered = (mapproxy_caches | filter:{data.name:search}) | orderBy:'name'"
       ng-click="editCache(cache)">
         <li>
           <i ng-show="cache._manual" class="icon-pencil"></i>
-          {{cache.name}}
+          {{cache.data.name}}
           <i ng-show="!hasDependencies(cache)" class="icon-remove"
              dialog="ask"
              dialog-title="{{'Confirm!'|i18n}}"
-             dialog-text="{{'Really remove cache:'|i18n}} {{cache.name}}?"
+             dialog-text="{{'Really remove cache:'|i18n}} {{cache.data.name}}?"
              callback="removeCache(cache)">
           </i>
           <i ng-show="hasDependencies(cache)" class="icon-remove"
@@ -33,7 +30,7 @@
             dialog-width="600"
             dialog-height="300"
             dialog-title="Confirm!"
-            dialog-text="{{'Can not remove cache:'|i18n}} {{cache.name}}<br>{{'Dependencies are:'|i18n}}<br>{{getDependencies(cache)}}">
+            dialog-text="{{'Can not remove cache:'|i18n}} {{cache.data.name}}<br>{{'Dependencies are:'|i18n}}<br>{{getDependencies(cache)}}">
           </i>
         </li>
         <hr>
@@ -45,11 +42,11 @@
 
 %def middleblock():
 <div ng-controller="MapproxyCacheFormCtrl">
-  <form name="cache_form" ng-model="cache" ng-show="!_editarea.visible">
+  <form name="cache_form" ng-model="cache" ng-show="!editareaBinds.visible">
     <h3>{{formTitle|i18n}}</h3>
     <!-- name -->
     <div labeled="input_label" name-for="cache_form.cache_name" text="{{'Name'|i18n}}">
-        <input required class="input-xlarge" type="text" ng-model="cache.name" id="cache_form.cache_name"/>
+        <input required class="input-xlarge" type="text" ng-model="cache.data.name" id="cache_form.cache_name"/>
     </div>
     <!-- sources -->
       <!-- change-callback MUST provide parameters callback and new_data -->
@@ -58,69 +55,127 @@
             droppable
             sortable
             required
-            accepts="mapproxy_source"
+            accepts="mapproxy_source,mapproxy_cache"
+            insert-callback="checkName(callback, new_item)"
             allow-array="true"
-            ng-model="cache.sources"
+            ng-model="cache.data.sources"
             name="cache_form.sources"
             use-key-for-value="_id"
             class="input-xlarge insertable-list uneditable-input">
-            <div ng-repeat="source in cache.sources" class="label">
-                <span ng-bind="showName(source)"></span>
-                <i class="icon-remove" ng-click="remove(source)"></i>
+            <div ng-repeat="source in cache.data.sources" class="label">
+              <span ng-bind="showName(source)"></span>
+              <i class="icon-remove" ng-click="remove(source)"></i>
             </div>
         </div>
     </div>
     <div labeled="input_label" name-for="cache_form.grids" text="{{'Grids'|i18n}}">
-        <select class="input-xlarge" ng-model="cache.grids" id="cache_form.grids" multiple="multiple" ng-options="value._id as value.name for value in available_grids"/>
-        </select>
+      <div
+        droppable
+        accepts="mapproxy_grid"
+        ng-model="cache.data.grids"
+        allow-array="true"
+        name="cache_form.grids"
+        use-key-for-value="_id"
+        class="input-xlarge insertable-list uneditable-input">
+        <div ng-repeat="grid in cache.data.grids" class="label">
+          <span ng-bind="showName(grid)">{{grid}}</span>
+          <i class="icon-remove" ng-click="remove(grid)"></i>
+        </div>
+      </div>
+    </div>
+    <div labeled="input_label" name-for="cache_form.format" text="{{'Format'|i18n}}">
+      <select class="input-xlarge" ng-model="cache.data.format" id="cache_form.format">
+        <option value="mixed">Mixed</option>
+        <option value="image/png">Image/PNG</option>
+        <option value="image/jpeg">Image/JPEG</option>
+      </select>
+    </div>
+    <div labeled="input_label" name-for="cache_form.request_format" text="{{'Request format'|i18n}}">
+      <select class="input-xlarge" ng-model="cache.data.request_format" id="cache_form.request_format">
+        <option value="image/png">Image/PNG</option>
+        <option value="image/jpeg">Image/JPEG</option>
+      </select>
     </div>
     <div class="text-center">
       <span id="_editarea_toggle_button_container"></span>
       <button class="btn btn-small" ng-click="addCache($event)" ng-disabled="!cache_form.$valid" id="cache_form_save">{{'Save'|i18n}}</button>
       <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
     </div>
-    <div class="text-center">
-      <span class="text-success save_ok" ng-show="false">
-        <br>
-        <i class="icon-ok"></i>
-         <strong>{{'Saved successfully'|i18n}}</strong>
-      </span>
-      <span class="text-error" id="cacheform_service_error" ng-show="false">
-        <br>
-        <i class="icon-thumbs-down"></i>
-        <strong>{{'An error occured'|i18n}}</strong>
-        <p>{{cacheformErrorMsg}}</p>
-      </span>
-    </div>
   </form>
-  <div editarea editarea-value="{{prepareForEditarea(cache)}}" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
+  <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
+  <div class="text-center">
+    <span message-handler="success" message-types="caches.add_success,caches.update_success"></span>
+    <span message-handler="error" message-types="caches.add_error,caches.update_error,caches.form_error"></span>
+  </div>
 </div>
 %end
 
 %def rightblock():
-<div ng-controller="MapproxySourceListCtrl">
+<div>
+  <span ng-controller="MapproxySourceListCtrl">
     <h3>{{'Sources'|i18n}}</h3>
+    <span message-handler="error" message-types="sources.load_error"></span>
     <div>
-      <input type="text" ng-model="sourceFilter" placeholder="{{'Filter'|i18n}}..."/>
+      <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
       <br>
-      <span ng-show="mapproxy_sources.length - filtered.length" ng-click="sourceFilter=''">{{'Not shown sources'|i18n}}: {{mapproxy_sources.length - filtered.length}}</span>
+      <span ng-show="mapproxy_sources.length - filtered.length" ng-click="search=''">{{'Not shown sources'|i18n}}: {{mapproxy_sources.length - filtered.length}}</span>
     </div>
     <ul class="vertical-list">
       <hr>
-      <div draggable class="mapproxy_source" ng-repeat="source in filtered = (mapproxy_sources | filter: nameFilter) | orderBy:'name'"
+      <div draggable class="mapproxy_source" ng-repeat="source in filtered = (mapproxy_sources | filter:{data.name:search}) | orderBy:'name'"
           item-data="{{source}}">
         <li class="droppable_name">
-            {{source.name}}
+            {{source.data.name}}
         </li>
         <hr>
       </div>
     </ul>
     <span ng-show="false">{{filtered.length}}</span>
-    <span class="text-error" id="sourcelist_service_error" ng-show="false">
-      <i class="icon-thumbs-down"></i>
-      <strong>{{'An error occured'|i18n}}</strong>
-      <p>{{sourcelistErrorMsg}}</p>
-    </span>
+  </span>
+  <hr>
+  <span ng-controller="MapproxyCacheListCtrl">
+    <h3>{{'Caches'|i18n}}</h3>
+    <span message-handler="error" message-types="caches.load_error"></span>
+    <div>
+      <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
+      <br>
+      <span ng-show="mapproxy_caches.length - filtered.length" ng-click="search=''">{{'Not shown caches'|i18n}}: {{mapproxy_caches.length - filtered.length}}</span>
+    </div>
+    <ul class="vertical-list">
+      <hr>
+      <div
+        draggable
+        class="mapproxy_cache"
+        ng-repeat="cache in filtered = (mapproxy_caches | filter:{data.name:search}) | orderBy:'name'"
+        item-data="{{cache}}">
+        <li class="droppable_name">{{cache.data.name}}</li>
+        <hr>
+      </div>
+    </ul>
+    <span ng-show="false">{{filtered.length}}</span>
+  </span>
+  <hr>
+  <div ng-controller="MapproxyGridListCtrl">
+    <h3>{{'Grids'|i18n}}</h3>
+    <span message-handler="error" message-types="grids.load_error"></span>
+    <div>
+      <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
+      <br>
+      <span ng-show="(mapproxy_grids.concat(default_grids)).length - filtered.length" ng-click="search=''">{{'Not shown grids'|i18n}}: {{(mapproxy_grids.concat(default_grids)).length - filtered.length}}</span>
+    </div>
+    <ul class="vertical-list">
+      <hr>
+      <div
+        draggable
+        class="mapproxy_grid"
+        ng-repeat="grid in filtered = (mapproxy_grids.concat(default_grids) | filter: {data.name:search}) | orderBy:'name'"
+        item-data="{{grid}}">
+        <li class="droppable_name">{{grid.data.name}}</li>
+        <hr>
+      </div>
+    </ul>
+    <span ng-show="false">{{filtered.length}}</span>
+  </div>
 </div>
 %end
 

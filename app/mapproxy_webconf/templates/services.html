@@ -4,7 +4,7 @@
         <ul class="vertical-list">
             <hr>
             <div class="{{getClasses(service)}}"
-                ng-repeat="(service, data) in services"
+                ng-repeat="(service, data) in services.data"
                 ng-click="show(service)">
                 <li>{{service|i18n}}</li>
                 <hr>
@@ -17,13 +17,13 @@
     <script type="text/ng-template"  id="wms.html">
         <h3>{{'wms'|i18n}}</h3>
         <div labeled="checkbox_label" name-for="services_form.wms_active" text="{{'Active'|i18n}}">
-            <input type="checkbox" ng-model="services.wms.active" id="services_form.wms_active">
+            <input type="checkbox" ng-model="services.data.wms.active" id="services_form.wms_active">
         </div>
         <div labeled="input_label" name-for="services_form.wms_title" text="{{'Title'|i18n}}">
-            <input type="text" ng-model="services.wms.md.title" id="services_form.wms_title">
+            <input type="text" ng-model="services.data.wms.md.title" id="services_form.wms_title">
         </div>
         <div labeled="input_label" name-for="services_form.wms_srs" text="{{'SRS'|i18n}}">
-             <select id="services_form.wms_srs" multiple="multiple" ng-model="services.wms.srs">
+             <select id="services_form.wms_srs" multiple="multiple" ng-model="services.data.wms.srs">
                  <option value="EPSG:3857">EPSG:3857</option>
                  <option value="EPSG:4326">EPSG:4326</option>
                  <option value="EPSG:900913">EPSG:900913</option>
@@ -33,40 +33,33 @@
     <script type="text/ng-template"  id="tms.html">
         <h3>{{'tms'|i18n}}</h3>
         <div labeled="checkbox_label" name-for="services_form.tms_active" text="{{'Active'|i18n}}">
-            <input type="checkbox" ng-model="services.tms.active" id="services_form.tms_active">
+            <input type="checkbox" ng-model="services.data.tms.active" id="services_form.tms_active">
         </div>
     </script>
     <script type="text/ng-template"  id="wmts.html">
         <h3>{{'wmts'|i18n}}</h3>
         <div labeled="checkbox_label" name-for="services_form.wmts_active" text="{{'Active'|i18n}}">
-            <input type="checkbox" ng-model="services.wmts.active" id="services_form.wmts_active">
+            <input type="checkbox" ng-model="services.data.wmts.active" id="services_form.wmts_active">
         </div>
     </script>
     <script type="text/ng-template"  id="kml.html">
         <h3>{{'kml'|i18n}}</h3>
         <div labeled="checkbox_label" name-for="services_form.kml_active" text="{{'Active'|i18n}}">
-            <input type="checkbox" ng-model="services.kml.active" id="services_form.kml_active">
+            <input type="checkbox" ng-model="services.data.kml.active" id="services_form.kml_active">
         </div>
     </script>
     <script type="text/ng-template"  id="demo.html">
         <h3>{{'demo'|i18n}}</h3>
         <div labeled="checkbox_label" name-for="services_form.demo_active" text="{{'Active'|i18n}}">
-            <input type="checkbox" ng-model="services.demo.active" id="services_form.demo_active">
+            <input type="checkbox" ng-model="services.data.demo.active" id="services_form.demo_active">
         </div>
     </script>
     <div ng-controller="MapproxyServicesCtrl">
         <form name="services_form">
             <div ng-include src="template"></div>
             <button class="btn btn-small" ng-click="save($event)" ng-disabled="!services_form.$valid" id="services_form_save">{{'Save'|i18n}}</button>
-            <span class="text-success save_ok" ng-show="false">
-                <i class="icon-ok"></i>
-                <strong>{{'Saved successfully'|i18n}}</strong>
-            </span>
-            <span class="text-error" id="services_service_error" ng-show="false">
-                <i class="icon-thumbs-down"></i>
-                <strong>{{'An error occured'|i18n}}</strong>
-                <p>{{errorMsg}}</p>
-            </span>
+            <span message-handler="success" message-types="services.add_success,services.update_success"></span>
+            <span message-handler="error" message-types="services.form_error,services.load_error,services.update_error,services.add_error"></span>
         </form>
     </div>
 %end

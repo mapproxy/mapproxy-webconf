@@ -72,12 +72,13 @@ class RESTWMSCapabilities(RESTBase):
 
     @requires_json
     def add(self, project, storage):
-        url = request.json.get('url')
+        url = request.json.get('data', {}).get('url')
+        cap = {}
         if not url:
             response.status = 400
             return {'error': 'missing URL'}
         try:
-            cap = parse_capabilities_url(url)
+            cap['data'] = parse_capabilities_url(url)
         except ParseError:
             response.status = 400
             return {'error': 'no capabilities document found'}
@@ -86,7 +87,7 @@ class RESTWMSCapabilities(RESTBase):
             # TODO
             return {'error': 'invalid URL'}
 
-        search = """%%"url": "%s"%%""" % cap['url']
+        search = """%%"url": "%s"%%""" % cap['data']['url']
         id = storage.exists_in_data(self.section, project, search)
         if id:
             return self.update(project, id, storage)
@@ -98,12 +99,12 @@ class RESTWMSCapabilities(RESTBase):
 
     @requires_json
     def update(self, project, id, storage):
-        url = request.json.get('url')
+        url = request.json.get('data', {}).get('url')
         if not url:
             response.status = 400
             return {'error': 'missing URL'}
-
-        cap = parse_capabilities_url(url)
+        cap = {}
+        cap['data'] = parse_capabilities_url(url)
         storage.update(id, self.section, project, cap)
         response.status = 200
         cap['_id'] = id
@@ -132,8 +133,8 @@ class RESTGrids(RESTBase):
 
     def list(self, project, storage):
         default_grids = {
-            'GLOBAL_MERCATOR': {'_id': 'GLOBAL_MERCATOR', 'name': 'GLOBAL_MERCATOR', 'default': True},
-            'GLOBAL_GEODETIC': {'_id': 'GLOBAL_GEODETIC', 'name': 'GLOBAL_GEODETIC', 'default': True}
+            'GLOBAL_MERCATOR': {'_id': 'GLOBAL_MERCATOR', 'data': {'name': 'GLOBAL_MERCATOR'}, 'default': True},
+            'GLOBAL_GEODETIC': {'_id': 'GLOBAL_GEODETIC', 'data': {'name': 'GLOBAL_GEODETIC'}, 'default': True}
         }
         default_grids.update(storage.get_all(self.section, project, with_id=True, with_manual=True))
         return default_grids

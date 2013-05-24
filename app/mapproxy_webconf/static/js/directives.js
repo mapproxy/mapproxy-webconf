@@ -147,16 +147,16 @@ directive('droppable', function($parse) {
         require: 'ngModel',
         scope: 'element',
         link: function(scope, element, attrs, ngModelCtrl) {
-            //create a new not isolated scope
-            scope = scope.$new(false)
-
             scope.checkExist = function(item) {
                 if(angular.isArray(item)) {
                     angular.forEach(item, scope.checkExist);
                 } else {
                     var exist = false;
                     if(scope.use_key) {
-                        item = item[scope.use_key];
+                        var keys = scope.use_key.split('.');
+                        angular.forEach(keys, function(key) {
+                            item = item[key];
+                        });
                     }
                     if(angular.isObject(scope.items) || angular.isArray(scope.items)) {
                         //because angular add a unique $$hashKey to objects
@@ -197,11 +197,12 @@ directive('droppable', function($parse) {
                     ngModelCtrl.$render();
                 });
             };
+
             scope.remove = function(item) {
+                scope.items = ngModelCtrl.$modelValue;
                 if(angular.isUndefined(scope.items) || angular.isUndefined(item)) {
                     return;
                 }
-
                 if(attrs.allowArray) {
                     scope.items.splice(scope.items.indexOf(item), 1);
                     if(scope.items.length == 0) {
@@ -211,12 +212,10 @@ directive('droppable', function($parse) {
                     scope.items = undefined;
                 }
 
-                scope.$apply(function() {
-                    ngModelCtrl.$setViewValue(scope.items);
-                    if(angular.isUndefined(scope.items)) {
-                        ngModelCtrl.$setValidity('required', false);
-                    }
-                });
+                ngModelCtrl.$setViewValue(scope.items);
+                if(angular.isUndefined(scope.items)) {
+                    ngModelCtrl.$setValidity('required', false);
+                }
             };
             scope.insertCallback = function(insert) {
                 if(insert) {
@@ -256,7 +255,7 @@ directive('droppable', function($parse) {
                 if(!angular.isUndefined(scope.new_item)) {
                     //run insert callback if present
                     if(angular.isFunction(scope.insert)) {
-                        scope.insert(scope.$parent, {callback: scope.insertCallback, new_data: scope.new_item});
+                        scope.insert(scope, {callback: scope.insertCallback, new_data: scope.new_item});
                     } else {
                         //check for existing items
                         scope.checkExist(scope.new_item);
@@ -264,7 +263,7 @@ directive('droppable', function($parse) {
                         if(scope.to_insert.length > 0) {
                             //run change callback if present
                             if(angular.isFunction(scope.change)) {
-                                scope.change(scope.$parent, {callback: scope.changeCallback, new_data: scope.new_item});
+                                scope.change(scope, {callback: scope.changeCallback, new_data: scope.new_item});
                             } else {
                                 scope.insertItems();
                             }
@@ -366,40 +365,13 @@ directive('dialog', function($parse, localize) {
     labeled must point to existing template!
     labeled="[template]"
 */
-directive('labeled', function($parse, localize) {
+directive('labeled', function($parse, $templateCache, localize) {
     return {
         restrict: 'A',
         replace: true,
         transclude: true,
-        // can't use templateURL, because $observe won't work with it
-        // wait for https://github.com/angular/angular.js/issues/1941
-        //
-        // templateUrl: function(element, attrs) {
-        //     return attrs.labeled
-        // },
         template: function(element, attrs) {
-            switch(attrs.labeled) {
-                case 'checkbox_label':
-                    return '<div class="control-group">' +
-                             '<div class="controls">' +
-                                 '<label class="control-label" for="{{name}}">' +
-                                     '<span ng-transclude></span> {{getText()}}' +
-                                 '</label>' +
-                                 '<span ng-show="showWarning()" id="tooltip_{{$id}}" class="icon-warning-sign warning_icon"></span>' +
-                             '</div>' +
-                          '</div>';
-                    break;
-                case 'input_label':
-                default:
-                    return '<div class="control-group">' +
-                          '<div class="controls">' +
-                              '<label class="control-label" for="{{name}}">{{getText()}}:</label>' +
-                              '<span ng-transclude></span>'+
-                              '<span ng-show="showWarning()" id="tooltip_{{$id}}" class="icon-warning-sign warning_icon"></span>' +
-                          '</div>' +
-                      '</div>';
-                    break;
-            }
+            return $templateCache.get(attrs.labeled)
         },
         scope: 'element',
         link: function(scope, element, attrs) {
@@ -436,147 +408,64 @@ directive('labeled', function($parse, localize) {
     };
 }).
 
-directive('editarea', function($http) {
+directive('editarea', function($http, MessageService) {
     return {
         restrict: 'A',
-        scope: 'element',
-        replace: true,
-        templateUrl: 'editarea_tmpl',
-        controller: function($scope, $element, $attrs) {
-            //$scope.$parent -> outer scope
-            var minrows = $attrs.minrows || 10;
-            var maxrows = $attrs.maxrows || 30;
-            var yamlURL = $attrs.yamlUrl;
-            var jsonURL = $attrs.jsonUrl;
-            var _editareaElement = $($element).find('#_editarea');
-
-            var emptyAttributes = {};
-            $scope.privateAttributes = {};
-
-            var errorHandler = function(response) {
-                $scope.editareaErrorMsg = response.error;
-                $('#editarea_error').show().fadeOut(3000)
-            };
-
-            var loadYAML = function() {
-                //clear editarea
-                _editareaElement.val('');
-                _editareaElement.attr('rows', minrows);
-                //need to copy cause we modify the object in called function
-                var json = prepareEditareaValue(angular.fromJson(angular.copy($scope.editareaValue)));
-                //make url configurateable
-                $http.post(yamlURL, json)
-                    .success(function(yaml) {
-                        if(!isEmpty(yaml)) {
-                            var rows = yaml.match(/[^\n]*\n[^\n]*/gi).length + 1;
-                            rows = (rows < minrows) ? minrows : rows;
-                            _editareaElement.attr('rows', (rows > maxrows) ? maxrows : rows);
-                            _editareaElement.val(yaml);
-                        }
-                    })
-                    .error(errorHandler);
-            };
-
-            var prepareEditareaValue = function(value) {
-                var keepEmptyFields = angular.isDefined($attrs.keepEmptyFields) ? $attrs.keepEmptyFields.split(',') : [];
-
-                angular.forEach(value, function(val, key) {
-                    if($.inArray(key, keepEmptyFields) != -1) {
-                        angular.noop();
-                    } else if(key[0] === '_') {
-                        $scope.privateAttributes[key] = val;
-                    } else if(isEmpty(val)) {
-                        emptyAttributes[key] = val;
-                    } else if(angular.isObject(val)) {
-                        angular.forEach(val, function(_val, _key) {
-                            if(isEmpty(_val)) {
-                                if(angular.isUndefined(emptyAttributes[key])) {
-                                    emptyAttributes[key] = {};
-                                }
-                                emptyAttributes[key][_key] = _val;
-                            }
-                        });
-                    }
-                });
-                angular.forEach($scope.privateAttributes, function(val, key) {
-                    delete value[key];
-                });
-                angular.forEach(emptyAttributes, function(val, key) {
-                    if(angular.isObject(val) && !angular.isArray(val)) {
-                        if(Object.keys(val).length == 0) {
-                            delete value[key];
-                        } else {
-                            angular.forEach(val, function(_val, _key) {
-                                delete value[key][_key];
-                            });
-                        }
-                    } else {
-                        delete value[key];
-                    }
-                });
-
-                return angular.toJson(value, true);
-            };
-
-
-            $scope.show = function(editareaValue) {
-                $scope._editarea.visible = true;
-                $scope.privateAttributes = {};
-                emptyAttributes = {};
-                $scope._editarea.dirty = false;
-                //$scope.currentModelValue = undefined;
-                $scope.editareaValue = undefined;
-                $scope.editareaErrorMsg = undefined;
-                //if this function is called from outside of directive, we need to pass the editareaValue,
-                //cause $attrs.editareaValue is not up-to-date in that case
-                $scope.editareaValue = (angular.isDefined(editareaValue)) ? editareaValue : $attrs.editareaValue;
-                loadYAML();
-            };
-            $scope.showErrorMsg = function(errorMsg) {
-                $scope.editareaErrorMsg = errorMsg;
-                $('#editarea_error').show().fadeOut(3000)
-            };
-            $scope.save = function() {
-                var yaml = _editareaElement.val();
-                $http.post(jsonURL, {"yaml": yaml})
-                    .success(function(json) {
-                        $scope.editareaValue = $.extend(true, {}, emptyAttributes, json, $scope.privateAttributes);
-                        $scope.editareaValue._manual = true;
-                        $scope.$root.$broadcast('editarea.save', $scope.editareaValue);
-                    })
-                    .error(errorHandler);
-            };
-            $scope.leaveEditarea = function() {
-                $scope.privateAttributes = {};
-                emptyAttributes = {};
-                $scope._editarea.visible = false;
-                $scope._editarea.dirty = false;
-                $scope.editareaValue = undefined
-                $scope.editareaErrorMsg = undefined;
-            };
-            $scope.reset = function() {
-                $scope.privateAttributes = {};
-                emptyAttributes = {};
-                $scope._editarea.dirty = false;
-                $scope.editareaErrorMsg = undefined;
-                loadYAML();
-            };
-
-            //register necessary functions and variables in parent scope
-            $scope.$parent._editarea = {
-                show: $scope.show,
-                showErrorMsg: $scope.showErrorMsg,
-                visible: false,
-                dirty: false
-            };
+        scope: {
+            editareaBinds: "=editarea"
         },
+        replace: true,
+        transclude: true,
+        templateUrl: '/static/angular_templates/editarea.html',
         link: function(scope, element, attrs) {
-            //scope.$parent -> directive controller scope
-            scope = scope.$new(false);
             var _editareaElement = $(element).find('#_editarea');
 
             var tabwidth = attrs.tabwidth || 2;
             var indent = attrs.indent || 'spaces';
+            var rows = attrs.rows || 25;
+            var yamlURL = attrs.yamlUrl;
+            var jsonURL = attrs.jsonUrl;
+
+            var errorHandler = function(response) {
+                MessageService.message('editarea', 'error', response.error)
+            };
+            scope.showErrorMsg = function(errorMsg) {
+                scope.editareaErrorMsg = errorMsg;
+                $('#editarea_error').show().fadeOut(3000)
+            };
+            var loadYAML = function() {
+                //clear editarea
+                _editareaElement.val('');
+                var json = scope.editareaBinds.editareaValue.data;
+                $http.post(yamlURL, json)
+                    .success(function(yaml) {
+                        if(!isEmpty(yaml)) {
+                            _editareaElement.val(yaml);
+                            _editareaElement.focus();
+                        }
+                    })
+                    .error(errorHandler);
+            };
+            scope.save = function() {
+                var yaml = _editareaElement.val();
+                $http.post(jsonURL, {"yaml": yaml})
+                    .success(function(json) {
+                        scope.editareaBinds.editareaValue.data = json;
+                        scope.editareaBinds.save = true;
+                    })
+                    .error(errorHandler);
+            };
+            scope.leaveEditarea = function() {
+                scope.editareaBinds.visible = false;
+                scope.editareaBinds.dirty = false;
+                scope.editareaErrorMsg = undefined;
+            };
+            scope.reset = function() {
+                scope.editareaBinds.dirty = false;
+                scope.editareaErrorMsg = undefined;
+                loadYAML();
+            };
+            _editareaElement.attr('rows', rows);
 
             // replace tabs with spaces or tabs
             _editareaElement.on('keydown', function(e) {
@@ -599,10 +488,18 @@ directive('editarea', function($http) {
                 }
             });
             _editareaElement.on('keyup', function(e) {
-                scope._editarea.dirty = true;
+                scope.editareaBinds.dirty = true;
             });
-            scope.$parent.editareaValue = attrs.editareaValue;
 
+            scope.$watch('editareaBinds.visible', function(visible) {
+                if(visible) {
+                    scope.editareaBinds.dirty = false;
+                    scope.editareaErrorMsg = undefined;
+                    loadYAML();
+                }
+            }, true);
+
+            //move the editarea togglebutton
             var _toggleButtonContainer = $('#_editarea_toggle_button_container');
             if(_toggleButtonContainer) {
                 $(element).find('#_editarea_toggle_button').appendTo(_toggleButtonContainer);
@@ -682,6 +579,33 @@ directive('olmap', function() {
             scope.$parent.mapId = mapId;
         }
     }
+}).
+
+directive('messageHandler', function($templateCache, MessageService) {
+    return {
+        restrict: 'A',
+        scope: 'Element',
+        replace: true,
+        transclude: true,
+        template: function(element, attrs) {
+            return $templateCache.get(attrs.messageHandler);
+        },
+        link: function(scope, element, attrs) {
+            scope.messageService = MessageService;
+
+            var messageTypes = attrs.messageTypes.split(',');
+
+            angular.forEach(messageTypes, function(messageType) {
+                scope.$watch('messageService.messages.' + messageType, function(messageObject) {
+                    if(angular.isDefined(messageObject)) {
+                        scope.message = messageObject.message;
+                        scope.messageService.removeMessage(messageObject.section, messageObject.action);
+                        $(element).show().fadeOut(3000);
+                    }
+                } , true);
+            });
+        }
+    };
 });
 
 /* Controller for directives */

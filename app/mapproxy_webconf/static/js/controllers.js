@@ -1,13 +1,10 @@
 var PAGE_LEAVE_MSG = "You have unsaved changes in this form. Realy leave the page and disgard unsaved changes?";
 
-function TreeCtrl($scope, localize, WMSSources) {
+function TreeCtrl($scope, localize, WMSSources, MessageService) {
+
     var refreshTree = function() {
         $scope.wms_list = WMSSources.list();
         $scope.wms_urls = WMSSources.allURLs();
-    };
-    var errorHandler = function() {
-        $scope.treeErrorMsg = WMSSources.error();
-        $('#capabilities_service_error').show().fadeOut(3000);
     };
     $scope.prepareLayer = function(layer, sourceURL) {
         if(!layer.name) {
@@ -20,7 +17,7 @@ function TreeCtrl($scope, localize, WMSSources) {
         return layer;
     };
     $scope.addCapabilities = function() {
-        WMSSources.add({url: $scope.capabilities.url});
+        WMSSources.add({data: {url: $scope.capabilities.url}});
     };
     $scope.refreshCapabilities = function(event, wms) {
         event.stopPropagation();
@@ -32,11 +29,11 @@ function TreeCtrl($scope, localize, WMSSources) {
     $scope.showMap = function(event, wms) {
         event.stopPropagation();
         var layers = [];
-        var srs = wms.layer.srs[0];
-        var extent = wms.layer.llbbox;
+        var srs = wms.data.layer.srs[0];
+        var extent = wms.data.layer.llbbox;
 
-        angular.forEach(wms.layer.layers, function(layer) {
-            layers.push(new OpenLayers.Layer.WMS(layer.title, wms.url, {
+        angular.forEach(wms.data.layer.layers, function(layer) {
+            layers.push(new OpenLayers.Layer.WMS(layer.title, wms.data.url, {
                 layers: [layer.name],
                 srs: srs,
                 transparent: !layer.opaque
@@ -50,28 +47,11 @@ function TreeCtrl($scope, localize, WMSSources) {
         $scope._olMap.show();
     }
 
-    $scope.$on('wms_capabilities.load_complete', refreshTree);
-    $scope.$on('wms_capabilities.deleted', refreshTree);
-    $scope.$on('wms_capabilities.added', function() {
-        $('#capabilities_add_ok').show().fadeOut(3000);
-        refreshTree();
-    });
-    $scope.$on('wms_capabilities.updated', function() {
-        $scope.refresh_msg = WMSSources.last().title + ' ' + localize.getLocalizedString('refreshed');
-        refreshTree();
-        $('#capabilities_refresh_ok').show().fadeOut(3000);
-    });
-
-    $scope.$on('wms_capabilities.update_error', function() {
-        $scope.treeErrorMsg = WMSSources.error();
-        $('#capabilities_refresh_error').show().fadeOut(3000);
-    });
-    $scope.$on('wms_capabilities.delete_error', function() {
-        $scope.treeErrorMsg = WMSSources.error();
-        $('#capabilities_refresh_error').show().fadeOut(3000);
-    });
-    $scope.$on('wms_capabilities.load_error', errorHandler);
-    $scope.$on('wms_capabilities.add_error', errorHandler);
+    $scope._messageService = MessageService;
+    $scope.$watch('_messageService.messages.wms_capabilities.load_success', refreshTree, true);
+    $scope.$watch('_messageService.messages.wms_capabilities.delete_success', refreshTree, true);
+    $scope.$watch('_messageService.messages.wms_capabilities.add_success', refreshTree, true);
+    $scope.$watch('_messageService.messages.wms_capabilities.update_success', refreshTree, true);
 
     $scope.$on('olmap.ready', function(scope, map) {
         $scope.map = map;
@@ -80,18 +60,11 @@ function TreeCtrl($scope, localize, WMSSources) {
     $scope.capabilities = {};
 };
 
-function MapproxySourceListCtrl($scope, localize, MapproxySources) {
-    var DEFAULT_SOURCE = {"type": "wms", "req": {}, "coverage": {}, "supported_srs": []};
+function MapproxySourceListCtrl($scope, localize, MapproxySources, MessageService) {
+    var DEFAULT_SOURCE = {'data': {"type": "wms", "req": {}, "coverage": {}, "supported_srs": []}};
     var refreshList = function() {
         $scope.mapproxy_sources = MapproxySources.list();
     };
-    var errorHandler = function() {
-        $scope.sourcelistErrorMsg = MapproxySources.error();
-        $('#sourcelist_service_error').show().fadeOut(3000);
-    };
-    $scope.nameFilter = function(item) {
-        return item.name.search($scope.sourceFilter) != -1;
-    }
     $scope.isSelected = function(source) {
         var class_;
         if(angular.equals($scope.selected, source)) {
@@ -127,11 +100,11 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources) {
                 result += '<li>' + name[0].toUpperCase() + name.slice(1) +'<ul>';
                 if(name == 'layers') {
                     angular.forEach(_dependencies, function(dependency) {
-                        result += '<li>' + dependency.title + '(' + dependency.name + ')</li>';
+                        result += '<li>' + dependency.data.title + '(' + dependency.data.name + ')</li>';
                     });
                 } else {
                     angular.forEach(_dependencies, function(dependency) {
-                        result += '<li>' + dependency.name + '</li>';
+                        result += '<li>' + dependency.data.name + '</li>';
                     });
                 }
                 result += '</ul>';
@@ -141,57 +114,53 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources) {
         return result;
     };
 
-    $scope.$on('sources.load_complete', refreshList);
-    $scope.$on('sources.added', function() {
-        $('.save_ok').show().fadeOut(3000);
+    $scope._messageService = MessageService;
+    $scope.$watch('_messageService.messages.sources.load_success', refreshList, true);
+    $scope.$watch('_messageService.messages.sources.add_success', function() {
         $scope.selected = MapproxySources.last();
         refreshList();
-    });
-    $scope.$on('sources.updated', function() {
-        $('.save_ok').show().fadeOut(3000);
+    }, true);
+    $scope.$watch('_messageService.messages.sources.update_success', function() {
         $scope.selected = MapproxySources.last();
         refreshList();
-    });
-    $scope.$on('sources.deleted', function() {
+    }, true);
+    $scope.$watch('_messageService.messages.sources.delete_success', function() {
         refreshList();
         MapproxySources.current(true, DEFAULT_SOURCE);
-    });
-
-    $scope.$on('sources.load_error', errorHandler);
-    $scope.$on('sources.delete_error', errorHandler);
+    }, true);
 };
 
-function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, ProjectDefaults) {
-    var DEFAULT_SOURCE = {"type": "wms", "req": {}, "coverage": {}, "supported_srs": []};
+function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, ProjectDefaults, MessageService) {
+    var DEFAULT_SOURCE = {"data": {"type": "wms", "req": {}, "coverage": {}}};
 
-    var errorHandler = function() {
-        $scope.sourceformErrorMsg = MapproxySources.error();
-        $('#sourceform_service_error').show().fadeOut(3000);
-    };
-    $scope.prepareForEditarea = function(data) {
-        return $.extend({'name': ""}, data);
+    $scope.prepareForEditarea = function(source) {
+        return $.extend(true, {'data': {'name': ""}}, source);
     };
     $scope.loadSRS = function() {
-        var result = WMSSources.srs($scope.source.req.url);
+        var result = WMSSources.srs($scope.source.data.req.url);
         if(result) {
             angular.forEach(result, function(srs) {
-                if($.inArray(srs, $scope.source.supported_srs) === -1) {
-                    $scope.source.supported_srs.push(srs);
+                if($.inArray(srs, $scope.source.data.supported_srs) === -1) {
+                    if(angular.isUndefined($scope.source.data.supported_srs)) {
+                        $scope.source.data.supported_srs = [srs];
+                    } else {
+                        $scope.source.data.supported_srs.push(srs);
+                    }
                 }
             });
         }
     };
     $scope.openDialog = function(callback, new_data) {
-        if(angular.isUndefined($scope.source.req) ||
-           angular.isUndefined($scope.source.req.url) ||
-           angular.isUndefined($scope.source.req.layers) ||
-           $scope.source.req.layers.length == 0) {
+        if(angular.isUndefined($scope.source.data.req) ||
+           angular.isUndefined($scope.source.data.req.url) ||
+           angular.isUndefined($scope.source.data.req.layers) ||
+           $scope.source.data.req.layers.length == 0) {
             callback(true);
         } else  {
             var buttons = {};
             buttons[localize.getLocalizedString('Change URL')] = function() {
                 $(this).dialog("close");
-                $scope.source.req.layers = undefined;
+                $scope.source.data.req.layers = undefined;
                 $scope.$apply();
                 callback(true);
             };
@@ -212,11 +181,11 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
     $scope.checkURL = function(callback, new_data) {
         var addLayer = false;
         var urlReplaceAsk = false;
-        if(angular.isUndefined($scope.source.req.url)) {
-            $scope.source.req.url = new_data.sourceURL;
+        if(angular.isUndefined($scope.source.data.req.url)) {
+            $scope.source.data.req.url = new_data.sourceURL;
             addLayer = true;
         } else {
-            if(angular.equals($scope.source.req.url, new_data.sourceURL)) {
+            if(angular.equals($scope.source.data.req.url, new_data.sourceURL)) {
                 addLayer = true;
             } else {
                 urlReplaceAsk = true;
@@ -226,8 +195,8 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
             var buttons = {};
             buttons[localize.getLocalizedString("Change url and insert layer")] = function() {
                 $(this).dialog("close");
-                $scope.source.req.url = new_data.sourceURL;
-                $scope.source.req.layers = undefined;
+                $scope.source.data.req.url = new_data.sourceURL;
+                $scope.source.data.req.layers = undefined;
                 $scope.$apply();
                 callback(true);
             };
@@ -255,30 +224,31 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
         $scope.source = clearData($scope.source)
 
         var errorMsg = false;
-        if(angular.isUndefined($scope.source.name)) {
+        if(angular.isUndefined($scope.source.data.name)) {
             errorMsg = localize.getLocalizedString("Name required.");
-        } else if($scope.exist($scope.source.name, $scope.source._id)) {
+        } else if($scope.exist($scope.source.data.name, $scope.source._id)) {
             errorMsg = localize.getLocalizedString("Name already exists.");
         }
         if(errorMsg) {
-            if($scope._editarea.visible) {
-                $scope._editarea.showErrorMsg(errorMsg);
-            } else {
-                $scope.sourceformErrorMsg = errorMsg;
-                $('#sourceform_service_error').show().fadeOut(3000);
-            }
+            MessageService.message('sources', 'form_error', errorMsg);
         } else {
+            $scope.source._manual = $scope.editareaBinds.visible;
             MapproxySources.add($scope.source);
             $scope.formTitle = 'Edit source';
             $scope.source_form.$setPristine();
-            $scope._editarea.dirty = false;
+            $scope.editareaBinds.dirty = false;
+            $scope.editareaBinds.save = false;
         }
     };
     $scope.addCoverage = function(event) {
         event.preventDefault();
-        var bbox = WMSSources.coverage($scope.source.req.url);
+        var bbox = WMSSources.coverage($scope.source.data.req.url);
         if(bbox) {
-            $scope.source.coverage.bbox = bbox;
+            if(angular.isUndefined($scope.source.data.coverage)) {
+                $scope.source.data.coverage = {'bbox': bbox};
+            } else {
+                $scope.source.data.coverage.bbox = bbox;
+            }
         }
     };
     $scope.resetForm = function(event) {
@@ -292,27 +262,31 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
         event.preventDefault();
         var new_layer = $scope.custom.layer_manual;
         if(angular.isDefined(new_layer)) {
-            if(!angular.isArray($scope.source.req.layers)) {
-                $scope.source.req.layers = [new_layer];
+            if(!angular.isArray($scope.source.data.req.layers)) {
+                $scope.source.data.req.layers = [new_layer];
             } else {
-                $scope.source.req.layers.push(new_layer);
+                $scope.source.data.req.layers.push(new_layer);
             }
             $scope.custom.layer_manual = undefined;
         }
     };
     $scope.addSRSManual = function(event) {
         event.preventDefault();
-        if($.inArray($scope.custom.srs_manual, $scope.source.supported_srs) === -1) {
-            $scope.source.supported_srs.push($scope.custom.srs_manual);
+        if($.inArray($scope.custom.srs_manual, $scope.source.data.supported_srs) === -1) {
+            if(angular.isUndefined($scope.source.data.supported_srs)) {
+                $scope.source.data.supported_srs = [$scope.custom.srs_manual];
+            } else {
+                $scope.source.data.supported_srs.push($scope.custom.srs_manual);
+            }
             $scope.custom.srs_manual = undefined;
         }
     };
     $scope.removeSRS = function(event, srs) {
         event.preventDefault();
         event.stopPropagation();
-        var supportedSRSID = $.inArray(srs, $scope.source.supported_srs);
+        var supportedSRSID = $.inArray(srs, $scope.source.data.supported_srs);
         if(supportedSRSID !== -1) {
-            $scope.source.supported_srs.splice(supportedSRSID, 1);
+            $scope.source.data.supported_srs.splice(supportedSRSID, 1);
         }
     };
     $scope.exist = function(name, id) {
@@ -325,7 +299,7 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
         return true;
     };
     $scope.layerTitle = function(layer) {
-        return WMSSources.layerTitle($scope.source.req.url, layer);
+        return WMSSources.layerTitle($scope.source.data.req.url, layer);
     };
 
     //must defined here if this controller should own all subelements of custom/source
@@ -335,15 +309,29 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
     $scope.source = angular.copy(DEFAULT_SOURCE);
     $scope.formTitle = 'New source';
 
-    MapproxySources.current(true, $scope.source)
+    $scope.editareaBinds = {
+        editareaValue: $scope.prepareForEditarea($scope.source),
+        visible: false,
+        dirty: false
+    };
+
+    $scope.$watch('editareaBinds.save', function(save) {
+        if(save) {
+            $scope.source = $scope.editareaBinds.editareaValue;
+            $scope.addSource();
+        }
+    }, true);
+
+    MapproxySources.current(true, $scope.source);
 
     $scope.$on('sources.current', function() {
         $scope.source = {};
         $scope.source = MapproxySources.current(true);
+        $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.source);
         if(angular.equals($scope.source, DEFAULT_SOURCE)) {
             $scope.formTitle = 'New source';
-            if(angular.isDefined($scope.defaults.srs)) {
-                $scope.source.supported_srs = angular.copy($scope.defaults.srs);
+            if(angular.isDefined($scope.defaults.data.srs)) {
+                $scope.source.data.supported_srs = angular.copy($scope.defaults.data.srs);
             }
         } else {
             $scope.formTitle = 'Edit source';
@@ -351,27 +339,27 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
         $scope.source_form.$setPristine();
 
         if($scope.source._manual) {
-            $scope._editarea.show($scope.prepareForEditarea($scope.source));
+            $scope.editareaBinds.visible = true;
         } else {
-            $scope._editarea.visible = false;
+            $scope.editareaBinds.visible = false;
         }
     });
-    $scope.$on('defaults.load_complete', function() {
+
+    $scope._messageService = MessageService;
+    $scope.$watch('_messageService.messages.defaults.load_success', function() {
         var defaults = ProjectDefaults.list();
         if(defaults.length > 0) {
             $scope.defaults = defaults[0];
             if(angular.equals($scope.source, DEFAULT_SOURCE)) {
-                $scope.source.supported_srs = angular.copy($scope.defaults.srs);
+                $scope.source.data.supported_srs = angular.copy($scope.defaults.data.srs);
             }
         }
     });
-    $scope.$on('sources.add_error', errorHandler);
-    $scope.$on('sources.update_error', errorHandler);
 
-    $scope.$on('editarea.save', function(scope, source) {
-        $scope.source = source;
-        $scope.addSource();
-    });
+    $scope.$watch('source', function() {
+            $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.source);
+        }, true
+    );
 
     $scope.$watch('source_form.$valid', function(formValid) {
         if(formValid) {
@@ -382,24 +370,17 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
     });
 
     $(window).on('beforeunload', function() {
-        if($scope.source_form.$dirty || $scope._editarea.dirty) {
+        if($scope.source_form.$dirty || $scope.editareaBinds.dirty) {
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
 };
 
-function MapproxyCacheListCtrl($scope, MapproxyCaches) {
-    var DEFAULT_CACHE = {'meta_size': [null, null]}
+function MapproxyCacheListCtrl($scope, MapproxyCaches, MessageService) {
+    var DEFAULT_CACHE = {'data': {'meta_size': [null, null]}};
     var refreshList = function() {
         $scope.mapproxy_caches = MapproxyCaches.list();
     };
-    var errorHandler = function() {
-        $scope.cachelistErrorMsg = MapproxyCaches.error();
-        $('#cachelist_service_error').show().fadeOut(3000);
-    };
-    $scope.nameFilter = function(item) {
-        return item.name.search($scope.cacheFilter) != -1;
-    }
     $scope.isSelected = function(cache) {
         var class_;
         if(angular.equals($scope.selected, cache)) {
@@ -435,11 +416,11 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches) {
                 result += '<li>' + name[0].toUpperCase() + name.slice(1) +'<ul>';
                 if(name == 'layers') {
                     angular.forEach(_dependencies, function(dependency) {
-                        result += '<li>' + dependency.title + '(' + dependency.name + ')</li>';
+                        result += '<li>' + dependency.data.title + '(' + dependency.data.name + ')</li>';
                     });
                 } else {
                     angular.forEach(_dependencies, function(dependency) {
-                        result += '<li>' + dependency.name + '</li>';
+                        result += '<li>' + dependency.data.name + '</li>';
                     });
                 }
                 result += '</ul>';
@@ -449,68 +430,62 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches) {
         return result;
     };
 
-    $scope.$on('caches.load_complete', refreshList);
-    $scope.$on('caches.added', function() {
-        $('.save_ok').show().fadeOut(3000);
+    $scope._messageService = MessageService;
+    $scope.$watch('_messageService.messages.caches.load_success', refreshList);
+    $scope.$watch('_messageService.messages.caches.add_success', function() {
         $scope.selected = MapproxyCaches.last();
         refreshList();
     });
-    $scope.$on('caches.updated', function() {
-        $('.save_ok').show().fadeOut(3000);
-        refreshList();
-    });
-    $scope.$on('caches.deleted', function() {
+    $scope.$watch('_messageService.messages.caches.update_success', refreshList);
+    $scope.$watch('_messageService.messages.caches.delete_success', function() {
         refreshList();
         MapproxyCaches.current(true, DEFAULT_CACHE);
     });
-    $scope.$on('caches.load_error', errorHandler);
-    $scope.$on('caches.update_error', errorHandler);
-    $scope.$on('caches.delete_error', errorHandler);
 };
 
-function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches, MapproxyGrids) {
-    var DEFAULT_CACHE = {'meta_size': [null, null]}
+function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches, MapproxyGrids, MessageService) {
+    var DEFAULT_CACHE = {'data': {'meta_size': [null, null]}};
     var refreshGrids = function() {
         $scope.available_grids = MapproxyGrids.list();
     };
-    var errorHandler = function() {
-        $scope.cacheformErrorMsg = MapproxyCaches.error();
-        $('#cacheform_service_error').show().fadeOut(3000);
-    };
-    $scope.replaceIdsWithNames = function(data) {
-        data = angular.copy(data);
+
+    $scope.replaceIdsWithNames = function(cache) {
+        cache = angular.copy(cache);
         var named = [];
-        angular.forEach(data.sources, function(id) {
-            var sourceName = MapproxySources.nameById(id);
+        angular.forEach(cache.data.sources, function(id) {
+            var sourceName = MapproxySources.nameById(id) || MapproxyCaches.nameById(id);
             named.push(sourceName ? sourceName : id);
         });
-        data.sources = named;
+        cache.data.sources = named;
         named = [];
-        angular.forEach(data.grids, function(id) {
+        angular.forEach(cache.data.grids, function(id) {
             var gridName = MapproxyGrids.nameById(id);
             named.push(gridName ? gridName : id);
         });
-        data.grids = named;
-        return data;
+        cache.data.grids = named;
+        return cache;
     };
-    $scope.replaceNamesWithIds = function(data) {
-        data = angular.copy(data);
+    $scope.replaceNamesWithIds = function(cache) {
+        cache = angular.copy(cache);
         var ids = [];
-        angular.forEach(data.sources, function(name) {
+        angular.forEach(cache.data.sources, function(name) {
             var sourceId = MapproxySources.idByName(name);
             ids.push(sourceId ? sourceId : name);
         });
-        data.sources = ids;
+        cache.data.sources = ids;
         ids = [];
-        angular.forEach(data.grids, function(name) {
-            var gridId = MapproxyGrids.idByName(name);
+        angular.forEach(cache.data.grids, function(name) {
+            var gridId = MapproxyGrids.idByName(name) || MapproxyCaches.idByName(name);
             ids.push(gridId ? gridId : name);
         });
-        data.grids = ids;
-        return data;
+        cache.data.grids = ids;
+        return cache;
     };
-    $scope.prepareForEditarea = function(data) {
-        return $scope.replaceIdsWithNames($.extend({'name': ''}, data));
+    $scope.prepareForEditarea = function(cache) {
+        return $scope.replaceIdsWithNames($.extend(true, {'data': {'name': ''}}, cache));
+    };
+    $scope.checkName = function(callback, new_item) {
+        callback($scope.cache.data.name !== new_item.data.name)
     };
     $scope.addCache = function(event) {
         if(angular.isDefined(event)) {
@@ -520,23 +495,20 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         $scope.cache = clearData($scope.cache);
 
         var errorMsg = false;
-        if(angular.isUndefined($scope.cache.name)) {
+        if(angular.isUndefined($scope.cache.data.name)) {
             errorMsg = localize.getLocalizedString("Name required.");
-        } else if($scope.exist($scope.cache.name, $scope.cache._id)) {
+        } else if($scope.exist($scope.cache.data.name, $scope.cache._id)) {
             errorMsg = localize.getLocalizedString("Name already exists.");
         }
         if(errorMsg) {
-            if($scope._editarea.visible) {
-                $scope._editarea.showErrorMsg(errorMsg);
-            } else {
-                $scope.cacheformErrorMsg = errorMsg;
-                $('#cacheform_service_error').show().fadeOut(3000);
-            }
+            MessageService.message('caches', 'form_error', errorMsg);
         } else {
+            $scope.cache._manual = $scope.editareaBinds.visible;
             MapproxyCaches.add($scope.cache);
             $scope.formTitle = 'Edit cache';
             $scope.cache_form.$setPristine();
-            $scope._editarea.dirty = false;
+            $scope.editareaBinds.dirty = false;
+            $scope.editareaBinds.save = false;
         }
     };
     $scope.resetForm = function(event) {
@@ -547,7 +519,7 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         $scope.cache_form.$setPristine();
     };
     $scope.showName = function(_id) {
-        var name = MapproxySources.nameById(_id);
+        var name = MapproxySources.nameById(_id) || MapproxyCaches.nameById(_id) || MapproxyGrids.nameById(_id);
         return name ? name : _id;
     };
     $scope.exist = function(name, id) {
@@ -561,36 +533,42 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
     }
     $scope.cache = angular.copy(DEFAULT_CACHE);
     $scope.formTitle = 'New cache';
+
+    $scope.editareaBinds = {
+        editareaValue: $scope.prepareForEditarea($scope.cache),
+        visible: false,
+        dirty: false
+    };
+
     MapproxyCaches.current(true, $scope.cache);
 
     $scope.$on('caches.current', function() {
+        $scope.cache = {};
         $scope.cache = MapproxyCaches.current(true);
-        if(angular.isUndefined($scope.cache.meta_size)) {
-            $scope.cache.meta_size = [null, null];
+        $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.cache);
+        if(angular.isUndefined($scope.cache.data.meta_size)) {
+            $scope.cache.data.meta_size = [null, null];
         }
         $scope.formTitle = angular.equals($scope.cache, DEFAULT_CACHE) ? 'New cache' : 'Edit cache';
         $scope.cache_form.$setPristine();
 
         if($scope.cache._manual) {
-            $scope._editarea.show($scope.replaceIdsWithNames($scope.cache));
+            $scope.editareaBinds.visible = true;
         } else {
-            $scope._editarea.visible = false;
+            $scope.editareaBinds.visible = false;
         }
     });
 
-    $scope.$on('grids.load_complete', refreshGrids);
+    $scope._messageService = MessageService;
 
-    $scope.$on('caches.add_error', errorHandler);
-    $scope.$on('caches.update_error', errorHandler);
-    $scope.$on('grids.load_error', function() {
-        $scope.cacheformErrorMsg = MapproxyGrids.error();
-        $('#cacheform_service_error').show().fadeOut(3000);
-    });
+    $scope.$watch('_messageService.messages.grids.load_success', refreshGrids);
 
-    $scope.$on('editarea.save', function(scope, cache) {
-        $scope.cache = $scope.prepareForEditarea(cache);
-        $scope.addCache();
-    });
+    $scope.$watch('editareaBinds.save', function(save) {
+        if(save) {
+            $scope.cache = $scope.editareaBinds.editareaValue;
+            $scope.addCache();
+        }
+    }, true);
 
     $scope.$watch('cache_form.$valid', function(formValid) {
         if(formValid) {
@@ -600,16 +578,19 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         }
     });
 
+    $scope.$watch('cache', function() {
+        $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.cache);
+    }, true)
+
     $(window).on('beforeunload', function() {
-        if($scope.cache_form.$dirty || $scope._editarea.dirty) {
+        if($scope.cache_form.$dirty || $scope.editareaBinds.dirty) {
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
-
 };
 
-function MapproxyGridListCtrl($scope, MapproxyGrids) {
-    var DEFAULT_GRID = {'bbox': [null, null, null, null]};
+function MapproxyGridListCtrl($scope, MapproxyGrids, MessageService) {
+    var DEFAULT_GRID = {'data': {'bbox': [null, null, null, null]}};
     var refreshList = function() {
         $scope.default_grids = [];
         $scope.mapproxy_grids = [];
@@ -621,13 +602,6 @@ function MapproxyGridListCtrl($scope, MapproxyGrids) {
             }
         });
     };
-    var errorHandler = function() {
-        $scope.gridlistErrorMsg = MapproxyGrids.error();
-        $('#gridlist_service_error').show().fadeOut(3000);
-    };
-    $scope.nameFilter = function(item) {
-        return item.name.search($scope.gridFilter) != -1;
-    }
     $scope.isSelected = function(grid) {
         var class_;
         if(angular.equals($scope.selected, grid)) {
@@ -664,11 +638,11 @@ function MapproxyGridListCtrl($scope, MapproxyGrids) {
                 result += '<li>' + name[0].toUpperCase() + name.slice(1) +'<ul>';
                 if(name == 'layers') {
                     angular.forEach(_dependencies, function(dependency) {
-                        result += '<li>' + dependency.title + '(' + dependency.name + ')</li>';
+                        result += '<li>' + dependency.data.title + '(' + dependency.data.name + ')</li>';
                     });
                 } else {
                     angular.forEach(_dependencies, function(dependency) {
-                        result += '<li>' + dependency.name + '</li>';
+                        result += '<li>' + dependency.data.name + '</li>';
                     });
                 }
                 result += '</ul>';
@@ -678,31 +652,26 @@ function MapproxyGridListCtrl($scope, MapproxyGrids) {
         return result;
     };
 
-    $scope.$on('grids.load_complete', refreshList);
-    $scope.$on('grids.added', function() {
+    $scope._messageService = MessageService
+    $scope.$watch('_messageService.messages.grids.load_success', refreshList);
+    $scope.$watch('_messageService.messages.grids.add_success', function() {
         $scope.selected = MapproxyGrids.last();
         refreshList();
     });
-    $scope.$on('grids.updated', function() {
+    $scope.$watch('_messageService.messages.grids.update_success', function() {
         $scope.selected = MapproxyGrids.last();
         refreshList();
     });
-    $scope.$on('grids.deleted', function() {
+    $scope.$watch('_messageService.messages.grids.delete_success', function() {
         refreshList();
         MapproxyGrids.current(true, DEFAULT_GRID);
     });
-    $scope.$on('grids.load_error', errorHandler);
-    $scope.$on('grids.delete_error', errorHandler);
 };
 
-function MapproxyGridFormCtrl($scope, localize, MapproxyGrids) {
-    var DEFAULT_GRID = {'bbox': [null, null, null, null]};
-    var errorHandler = function() {
-        $scope.gridformErrorMsg = MapproxyGrids.error();
-        $('#gridform_service_error').show().fadeOut(3000);
-    };
+function MapproxyGridFormCtrl($scope, localize, MapproxyGrids, MessageService) {
+    var DEFAULT_GRID = {'data': {'bbox': [null, null, null, null]}};
     $scope.prepareForEditarea = function(data) {
-        return $.extend({'name': ""}, data);
+        return $.extend(true, {'data': {'name': ""}}, data);
     };
     $scope.addGrid = function(event) {
         if(angular.isDefined(event)) {
@@ -712,23 +681,20 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids) {
         $scope.grid = clearData($scope.grid);
 
         var errorMsg = false;
-        if(angular.isUndefined($scope.grid.name)) {
+        if(angular.isUndefined($scope.grid.data.name)) {
             errorMsg = localize.getLocalizedString("Name required.");
-        } else if($scope.exist($scope.grid.name, $scope.grid._id)) {
+        } else if($scope.exist($scope.grid.data.name, $scope.grid._id)) {
             errorMsg = localize.getLocalizedString("Name already exists.");
         }
         if(errorMsg) {
-            if($scope._editarea.visible) {
-                $scope._editarea.showErrorMsg(errorMsg);
-            } else {
-                $scope.gridformErrorMsg = errorMsg;
-                $('#gridform_service_error').show().fadeOut(3000);
-            }
+            MessageService.message('grids', 'form_error', errorMsg);
         } else {
+            $scope.grid._manual = $scope.editareaBinds.visible;
             MapproxyGrids.add($scope.grid);
             $scope.formTitle = 'Edit grid';
             $scope.grid_form.$setPristine();
-            $scope._editarea.dirty = false;
+            $scope.editareaBinds.dirty = false;
+            $scope.editareaBinds.save = false;
         }
     };
     $scope.resetForm = function(event) {
@@ -748,13 +714,21 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids) {
         return true;
     };
     $scope.grid = angular.copy(DEFAULT_GRID);
-    $scope.formTitle = 'New grid'
+    $scope.formTitle = 'New grid';
+
+    $scope.editareaBinds = {
+        editareaValue: $scope.prepareForEditarea($scope.grid),
+        visible: false,
+        dirty: false
+    };
+
     MapproxyGrids.current(true, $scope.grid);
 
     $scope.$on('grids.current', function() {
         $scope.grid = MapproxyGrids.current(true);
-        if(angular.isUndefined($scope.grid.bbox)) {
-            $scope.grid.bbox = [null, null, null, null];
+        $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.grid);
+        if(angular.isUndefined($scope.grid.data.bbox)) {
+            $scope.grid.data.bbox = [null, null, null, null];
         }
         $scope.formTitle = angular.equals($scope.grid, DEFAULT_GRID) ? 'New grid' : 'Edit grid';
         if($scope.grid.default) {
@@ -763,26 +737,19 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids) {
         } else {
             $scope.grid_form.$setPristine();
             if($scope.grid._manual) {
-                $scope._editarea.show($scope.prepareForEditarea($scope.grid));
+                $scope.editareaBinds.visible = true;
             } else {
-                $scope._editarea.visible = false;
+                $scope.editareaBinds.visible = false;
             }
         }
     });
 
-    $scope.$on('grids.added', function() {
-       $('.save_ok').show().fadeOut(3000);
-    });
-    $scope.$on('grids.updated', function() {
-       $('.save_ok').show().fadeOut(3000);
-    });
-    $scope.$on('grids.add_error', errorHandler);
-    $scope.$on('grids.update_error', errorHandler);
-
-    $scope.$on('editarea.save', function(scope, grid) {
-        $scope.grid = grid;
-        $scope.addGrid();
-    });
+    $scope.$watch('editareaBinds.save', function(save) {
+        if(save) {
+            $scope.grid = $scope.editareaBinds.editareaValue;
+            $scope.addGrid();
+        }
+    }, true);
 
     $scope.$watch('grid_form.$valid', function(formValid) {
         if(formValid) {
@@ -792,26 +759,23 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids) {
         }
     });
 
+    $scope.$watch('grid', function() {
+            $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.grid);
+        }, true
+    );
+
     $(window).on('beforeunload', function() {
-        if($scope.grid_form.$dirty || $scope._editarea.dirty) {
+        if($scope.grid_form.$dirty || $scope.editareaBinds.dirty) {
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
-
 };
 
-function MapproxyLayerListCtrl($scope, localize, MapproxyLayers) {
-    var DEFAULT_LAYER = {};
+function MapproxyLayerListCtrl($scope, localize, MapproxyLayers, MessageService) {
+    var DEFAULT_LAYER = {'data': {}};
     var refreshTree = function() {
         $scope.mapproxy_layers = MapproxyLayers.tree();
     };
-    var errorHandler = function() {
-        $scope.layerlistErrorMsg = MapproxyLayers.error();
-        $('#layerlist_service_error').show().fadeOut(3000);
-    };
-    $scope.nameFilter = function(item) {
-        return item.name.search($scope.layerFilter) != -1;
-    }
     $scope.isSelected = function(layer) {
         var class_;
         if(angular.equals($scope.selected, layer)) {
@@ -840,25 +804,21 @@ function MapproxyLayerListCtrl($scope, localize, MapproxyLayers) {
         return $scope._listChanged;
     }
 
-    $scope.$on('layers.load_complete', refreshTree);
-    $scope.$on('layers.added', function() {
+    $scope._messageService = MessageService;
+
+    $scope.$watch('_messageService.messages.layers.load_success', refreshTree);
+    $scope.$watch('_messageService.messages.layers.add_success', function() {
         $scope.selected = MapproxyLayers.last();
         refreshTree();
     });
-    $scope.$on('layers.updated', function() {
+    $scope.$watch('_messageService.messages.layers.update_success', function() {
         $scope.selected = MapproxyLayers.last();
         refreshTree();
     });
-    $scope.$on('layers.deleted', function() {
+    $scope.$watch('_messageService.messages.delete_success', function() {
         MapproxyLayers.refresh();
         MapproxyLayers.current(true, DEFAULT_LAYER);
     });
-    $scope.$on('layers.updatedStructure', function() {
-        $('.list_save_ok').show().fadeOut(3000);
-    });
-    $scope.$on('layers.load_error', errorHandler);
-    $scope.$on('layers.delete_error', errorHandler);
-    $scope.$on('layers.updateStructure_error', errorHandler);
 
     $scope.$watch('_listChanged', function(changed) {
         if(changed) {
@@ -875,35 +835,32 @@ function MapproxyLayerListCtrl($scope, localize, MapproxyLayers) {
     });
 };
 
-function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches, MapproxyLayers) {
-    var DEFAULT_LAYER = {};
-    var errorHandler = function() {
-        $scope.layerformErrorMsg = MapproxyLayers.error();
-        $('#layerform_service_error').show().fadeOut(3000);
-    };
-    $scope.replaceIdsWithNames = function(data) {
-        data = angular.copy(data);
+function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches, MapproxyLayers, MessageService) {
+    var DEFAULT_LAYER = {'data': {}};
+
+    $scope.replaceIdsWithNames = function(layer) {
+        layer = angular.copy(layer);
         var names = [];
-        angular.forEach(data.sources, function(id) {
+        angular.forEach(layer.data.sources, function(id) {
             var sourceName = MapproxySources.nameById(id) || MapproxyCaches.nameById(id);
             names.push(sourceName ? sourceName : id);
         });
-        data.sources = names;
-        return data;
+        layer.data.sources = names;
+        return layer;
     };
-    $scope.prepareForEditarea = function(data) {
-        data = $.extend({'name': ""}, data)
-        return $scope.replaceIdsWithNames(data);
+    $scope.prepareForEditarea = function(layer) {
+        layer = $.extend(true, {'data': {'name': ""}}, layer)
+        return $scope.replaceIdsWithNames(layer);
     };
-    $scope.replaceNamesWithIds = function(data) {
-        data = angular.copy(data);
+    $scope.replaceNamesWithIds = function(layer) {
+        layer = angular.copy(layer);
         var ids = [];
-        angular.forEach(data.sources, function(name) {
+        angular.forEach(layer.data.sources, function(name) {
             var sourceId = MapproxySources.idByName(name) || MapproxyCaches.idByName(name);
             ids.push(sourceId ? sourceId : name);
         });
-        data.sources = ids;
-        return data;
+        layer.data.sources = ids;
+        return layer;
     };
     $scope.addLayer = function(event) {
         if(angular.isDefined(event)) {
@@ -913,23 +870,20 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         $scope.layer = clearData($scope.layer)
 
         var errorMsg = false;
-        if(angular.isUndefined($scope.layer.name)) {
+        if(angular.isUndefined($scope.layer.data.name)) {
             errorMsg = localize.getLocalizedString("Name required.");
-        } else if($scope.exist($scope.layer.name, $scope.layer._id)) {
+        } else if($scope.exist($scope.layer.data.name, $scope.layer._id)) {
             errorMsg = localize.getLocalizedString("Name already exists.");
         }
         if(errorMsg) {
-            if($scope._editarea.visible) {
-                $scope._editarea.showErrorMsg(errorMsg);
-            } else {
-                $scope.layerformErrorMsg = errorMsg;
-                $('#layerform_service_error').show().fadeOut(3000);
-            }
+            MessageService.message('layers', 'form_error', errorMsg);
         } else {
+            $scope.layer._manual = $scope.editareaBinds.visible;
             MapproxyLayers.add($scope.layer);
             $scope.formTitle = 'Edit layer';
             $scope.layer_form.$setPristine();
-            $scope._editarea.dirty = false;
+            $scope.editareaBinds.dirty = false;
+            $scope.editareaBinds.save = false;
         }
     };
     $scope.resetForm = function() {
@@ -960,31 +914,31 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
     MapproxyLayers.current(true, $scope.layer);
     $scope.formTitle = 'New layer';
 
+    $scope.editareaBinds = {
+        editareaValue: $scope.prepareForEditarea($scope.layer),
+        visible: false,
+        dirty: false
+    };
+
     $scope.$on('layers.current', function() {
         $scope.layer = MapproxyLayers.current(true);
+        $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.layer);
         $scope.formTitle = angular.equals($scope.layer, DEFAULT_LAYER) ? 'New layer' : 'Edit layer';
         $scope.layer_form.$setPristine();
 
         if($scope.layer._manual) {
-            $scope._editarea.show($scope.prepareForEditarea($scope.layer));
+            $scope.editareaBinds.visible = true;
         } else {
-            $scope._editarea.visible = false;
+            $scope.editareaBinds.visible = false;
         }
     });
 
-    $scope.$on('layers.added', function() {
-        $('.save_ok').show().fadeOut(3000);
-    });
-    $scope.$on('layers.updated', function() {
-        $('.save_ok').show().fadeOut(3000);
-    });
-    $scope.$on('editarea.save', function(scope, layer) {
-        $scope.layer = $scope.replaceNamesWithIds(layer);
-        $scope.addLayer();
-    });
-    $scope.$on('layers.add_error', errorHandler);
-    $scope.$on('layers.update_error', errorHandler);
-
+    $scope.$watch('editareaBinds.save', function(save) {
+        if(save) {
+            $scope.layer = $scope.editareaBinds.editareaValue;
+            $scope.addLayer();
+        }
+    }, true);
     $scope.$watch('layer_form.$valid', function(formValid) {
         if(formValid) {
             $('#layer_form_save').addClass('btn-success');
@@ -992,9 +946,13 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
             $('#layer_form_save').removeClass('btn-success');
         }
     });
+    $scope.$watch('layer', function() {
+            $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.layer);
+        }, true
+    );
 
     $(window).on('beforeunload', function() {
-        if($scope.layer_form.$dirty || $scope._editarea.dirty) {
+        if($scope.layer_form.$dirty || $scope.editareaBinds.dirty) {
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
@@ -1006,21 +964,11 @@ function MapproxyGlobalsChooserCtrl($scope, DataShareService) {
         if(global == $scope.selected) {
             classes += 'selected';
         }
-        if(angular.isDefined($scope.globals[global].active) && $scope.globals[global].active) {
+        if(angular.isDefined($scope.globals.data[global].active) && $scope.globals.data[global].active) {
             classes += ' active';
         }
         return classes;
     };
-    $scope.filtered = function() {
-        var result = {}
-        angular.forEach($scope.globals, function(value, key) {
-            if(key[0] != '_') {
-                result[key] = value;
-            }
-        });
-        return result;
-    };
-
     $scope.show = function(global) {
         $scope.selected = global;
         DataShareService.data('global', global + '.html');
@@ -1036,63 +984,69 @@ function MapproxyGlobalsChooserCtrl($scope, DataShareService) {
     $scope._editarea_visible = false;
 };
 
-function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareService) {
+function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareService, MessageService) {
     var setGlobals = function() {
         var globals = MapproxyGlobals.list();
         if(globals.length > 0) {
-            $scope.globals = $.extend($scope.globals, globals[0]);
+            $scope.globals = $.extend(true, $scope.globals, globals[0]);
         }
         DataShareService.data('globals', $scope.globals);
+        $scope.editareaBinds.editareaValue = $scope.globals;
         if($scope.globals._manual) {
-            DataShareService.data('_editarea_visible', true);
-            $scope._editarea.show($scope.globals)
+            $scope.editareaBinds.visible = true;
         }
     };
     var setTemplate = function() {
         $scope.template = DataShareService.data('global');
     };
-    var errorHandler = function() {
-        $scope.errorMsg = MapproxyGlobals.error();
-        $('#globals_service_error').show().fadeOut(3000);
-    };
     $scope.save = function(event) {
         if(angular.isDefined(event)) {
             event.preventDefault();
         }
-        $scope.globals = clearData($scope.globals);
+        $scope.globals._manual = $scope.editareaBinds.visible;
         MapproxyGlobals.add($scope.globals);
         $scope.globals_form.$setPristine();
+        $scope.editareaBinds.dirty = false;
+        $scope.editareaBinds.save = false;
     };
 
     $scope.globals = {
-        'cache': {
-            'meta_size': [null, null]
-        },
-        'image': {}
+        'data': {
+            'cache': {
+                'meta_size': [null, null]
+            },
+            'image': {}
+        }
     };
 
     DataShareService.data('globals', $scope.globals);
 
+    $scope.editareaBinds = {
+        editareaValue: $scope.globals,
+        visible: false,
+        dirty: false
+    };
+
     $scope.template = "cache.html";
 
-    $scope.$on('globals.load_complete', setGlobals);
-    $scope.$on('globals.added', function() {
-        $('.save_ok').show().fadeOut(3000);
-        setGlobals();
-    });
-    $scope.$on('globals.updated', function() {
-        $('.save_ok').show().fadeOut(3000);
-        setGlobals();
-    });
-    $scope.$on('dss.global', setTemplate);
-    $scope.$on('globals.load_error', errorHandler);
-    $scope.$on('globals.add_error', errorHandler);
-    $scope.$on('globals.update_error', errorHandler);
+    $scope._messageService = MessageService;
 
-    $scope.$on('editarea.save', function(scope, globals) {
-        $scope.globals = globals;
-        MapproxyGlobals.add($scope.globals);
-    });
+    $scope.$watch('_messageService.messages.globals.load_success', setGlobals);
+    $scope.$watch('_messageService.messages.globals.add_success', setGlobals);
+    $scope.$watch('_messageService.messages.globals.update_success', setGlobals);
+    $scope.$on('dss.global', setTemplate);
+
+    $scope.$watch('editareaBinds.save', function(save) {
+        if(save) {
+            $scope.globals = $scope.editareaBinds.editareaValue;
+            $scope.save();
+        }
+    }, true);
+
+    $scope.$watch('globals', function() {
+            $scope.editareaBinds.editareaValue = $scope.globals;
+        }, true
+    );
 
     $scope.$watch('globals_form.$valid', function(formValid) {
         if(formValid) {
@@ -1102,12 +1056,8 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareSer
         }
     });
 
-    $scope.$watch('_editarea.visible', function(visible, b) {
-        DataShareService.data('_editarea_visible', visible);
-    });
-
     $(window).on('beforeunload', function() {
-        if($scope.globals_form.$dirty || $scope._editarea.dirty) {
+        if($scope.globals_form.$dirty || $scope.editareaBinds.dirty) {
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
@@ -1119,7 +1069,7 @@ function MapproxyServicesChooserCtrl($scope, DataShareService) {
         if(service == $scope.selected) {
             classes += 'selected';
         }
-        if(angular.isDefined($scope.services[service].active) && $scope.services[service].active) {
+        if(angular.isDefined($scope.services.data[service].active) && $scope.services.data[service].active) {
             classes += ' active';
         }
         return classes;
@@ -1136,13 +1086,11 @@ function MapproxyServicesChooserCtrl($scope, DataShareService) {
     $scope.selected = 'wms';
 };
 
-function MapproxyServicesCtrl($scope, localize, MapproxyServices, DataShareService) {
+function MapproxyServicesCtrl($scope, localize, MapproxyServices, DataShareService, MessageService) {
     var setServices = function() {
         var services = MapproxyServices.list();
         if(services.length > 0) {
-            angular.forEach($scope.services, function(service, key) {
-                $scope.services[key] = services[0][key];
-            })
+            $scope.services = services[0]
             DataShareService.data('services', $scope.services)
         }
     };
@@ -1150,10 +1098,7 @@ function MapproxyServicesCtrl($scope, localize, MapproxyServices, DataShareServi
     var setTemplate = function() {
         $scope.template = DataShareService.data('service');
     };
-    var errorHandler = function() {
-        $scope.errorMsg = MapproxyServices.error();
-        $('#services_service_error').show().fadeOut(3000);
-    };
+
     $scope.save = function(event) {
         if(angular.isDefined(event)) {
             event.preventDefault();
@@ -1161,33 +1106,30 @@ function MapproxyServicesCtrl($scope, localize, MapproxyServices, DataShareServi
         MapproxyServices.add($scope.services);
     };
 
-    $scope.services = {
+    $scope.services = {'data': {
         'wms': {},
         'wmts': {},
         'tms': {},
         'kml': {},
         'demo': {}
-    };
+    }};
 
     DataShareService.data('services', $scope.services);
 
     $scope.template = 'wms.html'
 
-    $scope.$on('services.load_complete', setServices);
-    $scope.$on('services.added', function() {
-        $('.save_ok').show().fadeOut(3000);
+    $scope._messageService = MessageService
+
+    $scope.$watch('_messageService.messages.services.load_success', setServices);
+    $scope.$watch('_messageService.messages.services.add_success', function() {
         $scope.services_form.$setPristine();
         setServices();
     });
-    $scope.$on('services.updated', function() {
-        $('.save_ok').show().fadeOut(3000);
+    $scope.$watch('_messageService.messages.services.update_success', function() {
         $scope.services_form.$setPristine();
         setServices();
     });
     $scope.$on('dss.service', setTemplate);
-    $scope.$on('services.load_error', errorHandler);
-    $scope.$on('services.add_error', errorHandler);
-    $scope.$on('services.update_error', errorHandler);
 
     $scope.$watch('services_form.$valid', function(formValid) {
         if(formValid) {
@@ -1211,12 +1153,13 @@ function MapproxySourceNoticeCtrl($scope, localize, MapproxySources) {
 
     var checkImageSettings = function(newVal, oldVal, scope) {
         //ensure all variables to check for are defined!
-        if(angular.isDefined($scope.watch_source.req) &&
-           angular.isDefined($scope.watch_source.supported_formats) &&
-           $scope.watch_source.req.transparent == true) {
+        if(angular.isDefined($scope.watch_source) &&
+            angular.isDefined($scope.watch_source.data.req) &&
+           angular.isDefined($scope.watch_source.data.supported_formats) &&
+           $scope.watch_source.data.req.transparent == true) {
             var found = false;
             var non_transparent_formats = ['JPEG', 'GIF'];
-            angular.forEach($scope.watch_source.supported_formats, function(format) {
+            angular.forEach($scope.watch_source.data.supported_formats, function(format) {
                 if (!found) {
                     found = -1 != non_transparent_formats.indexOf(format);
                 }
@@ -1228,17 +1171,18 @@ function MapproxySourceNoticeCtrl($scope, localize, MapproxySources) {
     };
 
     var checkConcurrentRequests = function(newVal, oldVal, scope) {
-        if(angular.isDefined($scope.watch_source.concurrent_requests) &&
-           $scope.watch_source.concurrent_requests > 4) {
+        if(angular.isDefined($scope.watch_source) &&
+            angular.isDefined($scope.watch_source.data.concurrent_requests) &&
+           $scope.watch_source.data.concurrent_requests > 4) {
             $scope.high_number_of_concurrent_requests = true;
         } else {
             $scope.high_number_of_concurrent_requests = false;
         }
     }
 
-    $scope.$watch('watch_source.supported_formats', checkImageSettings)
-    $scope.$watch('watch_source.req.transparent', checkImageSettings)
-    $scope.$watch('watch_source.concurrent_requests', checkConcurrentRequests)
+    $scope.$watch('watch_source.data.supported_formats', checkImageSettings)
+    $scope.$watch('watch_source.data.req.transparent', checkImageSettings)
+    $scope.$watch('watch_source.data.concurrent_requests', checkConcurrentRequests)
 
     $scope.$on('sources.current', function() {
         $scope.watch_source = MapproxySources.current();
@@ -1256,16 +1200,12 @@ function MapproxyConfigCtrl($scope, $http) {
     });
 };
 
-function ProjectDefaultsCtrl($scope, ProjectDefaults) {
+function ProjectDefaultsCtrl($scope, ProjectDefaults, MessageService) {
     var setDefaults = function() {
         var defaults = ProjectDefaults.list();
         if(defaults.length > 0) {
             $scope.defaults = $.extend($scope.defaults, defaults[0]);
         }
-    };
-    var errorHandler = function() {
-        $scope.errorMsg = ProjectDefaults.error();
-        $('defaultsform_service_error').show().fadeOut(3000);
     };
     $scope.save = function(event) {
         if(angular.isDefined(event)) {
@@ -1279,34 +1219,25 @@ function ProjectDefaultsCtrl($scope, ProjectDefaults) {
         if(angular.isDefined(event)) {
             event.preventDefault();
         }
-        console.log($scope.custom.newSRS)
-        $scope.defaults.srs.push($scope.custom.newSRS);
+        $scope.defaults.data.srs.push($scope.custom.newSRS);
         $scope.custom.newSRS = undefined;
     };
     $scope.removeSRS = function(event, srs) {
-        var srsID = $.inArray(srs, $scope.defaults.srs);
+        var srsID = $.inArray(srs, $scope.defaults.data.srs);
         if(srsID !== -1) {
-            $scope.defaults.srs.splice(srsID, 1);
+            $scope.defaults.data.srs.splice(srsID, 1);
         }
     }
 
-    $scope.defaults = {'srs': []};
+    $scope._messageService = MessageService;
+
+    $scope.defaults = {'data': {'srs': []}};
     $scope.custom = {};
     $scope.custom.newSRS;
 
-    $scope.$on('defaults.load_error', errorHandler);
-    $scope.$on('defaults.add_error', errorHandler);
-    $scope.$on('defaults.update_error', errorHandler);
-
-    $scope.$on('defaults.load_complete', setDefaults);
-    $scope.$on('defaults.added', function() {
-        $('.save_ok').show().fadeOut(3000);
-        setDefaults();
-    });
-    $scope.$on('defaults.updated', function() {
-        $('.save_ok').show().fadeOut(3000);
-        setDefaults();
-    });
+    $scope.$watch('_messageService.messages.defaults.load_success', setDefaults);
+    $scope.$watch('_messageService.messages.defaults.add_success', setDefaults);
+    $scope.$watch('_messageService.messages.defaults.update_success', setDefaults);
 
     $(window).on('beforeunload', function() {
         if($scope.defaults_form.$dirty) {

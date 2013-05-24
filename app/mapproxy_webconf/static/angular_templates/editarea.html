@@ -1,0 +1,37 @@
+<div>
+    <button class='btn btn-small' ng-show="!editareaBinds.visible" ng-click='editareaBinds.visible=true;' id='_editarea_toggle_button'>{{'Edit manual'|i18n}}</button>
+    <div ng-show='editareaBinds.visible'>
+        <h3>{{'Edit manual'|i18n}}</h3>
+        <textarea class='input-xlarge' id='_editarea'></textarea>
+        <div class='text-center'>
+            <button
+                ng-show='!editareaBinds.editareaValue._manual'
+                dialog="ask" dialog-title="{{'Confirm!'|i18n}}"
+                dialog-text="{{'If you save the manual edition, you wont be able to edit it in the above form again. Realy save the manual edition?'|i18n}}"
+                callback='save()'
+                class='btn btn-small'>
+                {{'Save'|i18n}}
+            </button>
+            <button
+                ng-click='save()'
+                ng-show='editareaBinds.editareaValue._manual'
+                class='btn btn-small'>
+                {{'Save'|i18n}}
+            </button>
+            <button
+                ng-click='reset()'
+                class='btn btn-small'>
+                {{'Reset'|i18n}}
+            </button>
+            <button
+                ng-click='leaveEditarea()'
+                ng-show='!editareaBinds.editareaValue._manual'
+                class='btn btn-small'>
+                {{'Back to form edit'|i18n}}
+            </button>
+        </div>
+        <div class='text-center'>
+            <span message-handler="error" message-types="editarea.error"></span>
+        </div>
+    </div>
+</div>

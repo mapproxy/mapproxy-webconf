@@ -2,7 +2,7 @@
     <div class="control-group">
         <div class="controls">
             <label class="control-label" for="{{name}}">
-                <span ng-transclude></span> {{text}}
+                <span ng-transclude></span> {{getText()}}
             </label>
             <span ng-show="showWarning()" id="tooltip_{{$id}}" class="icon-warning-sign warning_icon"></span>
         </div>
@@ -12,58 +12,25 @@
 <script type="text/ng-template" id="input_label">
     <div class="control-group">
         <div class="controls">
-            <label class="control-label" for="{{name}}">{{text}}:</label>
+            <label class="control-label" for="{{name}}">{{getText()}}:</label>
             <span ng-transclude></span>
             <span ng-show="showWarning()" id="tooltip_{{$id}}" class="icon-warning-sign warning_icon"></span>
         </div>
     </div>
 </script>
 
-<script type="text/ng-template" id="editarea_tmpl">
-    <div>
-        <button class='btn btn-small' ng-show='!_editarea.visible' ng-click='show()' id='_editarea_toggle_button'>{{'Edit manual'|i18n}}</button>
-        <div ng-show='_editarea.visible'>
-            <h3>{{'Edit manual'|i18n}}</h3>
-            <textarea class='input-xlarge' id='_editarea'></textarea>
-            <div class='text-center'>
-                <button
-                    ng-show='!privateAttributes._manual'
-                    ask-dialog dialog-title="{{'Confirm!'|i18n}}"
-                    dialog-text="{{'If you save the manual edition, you wont be able to edit it in the above form again. Realy save the manual edition?'|i18n}}"
-                    callback='save()'
-                    class='btn btn-small'>
-                    {{'Save'|i18n}}
-                </button>
-                <button
-                    ng-click='save()'
-                    ng-show='privateAttributes._manual'
-                    class='btn btn-small'>
-                    {{'Save'|i18n}}
-                </button>
-                <button
-                    ng-click='reset()'
-                    class='btn btn-small'>
-                    {{'Reset'|i18n}}
-                </button>
-                <button
-                    ng-click='leaveEditarea()'
-                    ng-show='!privateAttributes._manual'
-                    class='btn btn-small'>
-                    {{'Back to form edit'|i18n}}
-                </button>
-            </div>
-            <div class='text-center'>
-                <span class='text-success save_ok' ng-show='false'>
-                    <br>
-                    <i class='icon-ok'></i>
-                    <strong>{{'Saved successfully'|i18n}}</strong>
-                </span>
-                <span class='text-error' id='editarea_error' ng-show='false'>
-                    <br>
-                    <i class='icon-thumbs-down'></i>
-                    {{editareaErrorMsg}}
-                </span>
-            </div>
-        </div>
-    </div>
+<script type="text/ng-template" id="success">
+    <span class='text-success save_ok' ng-show='false'>
+        <br>
+        <i class='icon-ok'></i>
+        <strong>{{message}}</strong>
+    </span>
+</script>
+
+<script type="text/ng-template" id="error">
+    <span class='text-error' ng-show='false'>
+        <i class='icon-thumbs-down'></i>
+        <strong>{{'An error occured'|i18n}}</strong>
+        <p>{{message}}</p>
+    </span>
 </script>

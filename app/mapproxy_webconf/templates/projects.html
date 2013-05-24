@@ -3,7 +3,7 @@
     %for name, data in projects.items():
       <div>
         <h3>${name}</h3>
-        <a href="${ get_url('configuration', project='base') }">{{'To configuration'|i18n}}</a>
+        <a href="${ get_url('project_index', project='base') }">{{'To configuration'|i18n}}</a>
         <br><br>
         %if data['valid']:
           <span class="label label-success"><h5><i class="icon-thumbs-up"></i> {{'The mapproxy configuration of this project is valid'|i18n}}</h5></span>
@@ -20,37 +20,6 @@
             </ul>
           </div>
         %end
-        <h3>{{'Project defaults'|i18n}}</h3>
-        <form ng-controller="ProjectDefaultsCtrl" name="defaults_form">
-          <fieldset>
-            <div labeled="input_label" name-for="defaults_form.default_srs" text="{{'SRS'|i18n}}">
-              <div name="default_form.default_srs" class="well well-small input-xlarge">
-                <span class="badge" ng-repeat="srs in defaults.srs">{{srs}} <i class="icon-remove" ng-click="removeSRS($event, srs)"></i></span>
-              </div>
-            </div>
-            <div class="input-append" labeled="input_label" name-for="new_srs" text="{{'Add SRS'|i18n}}">
-              <input type="text" id="new_srs" name="new_srs" class="input-xlarge" ng-model="custom.newSRS">
-              <button class="btn" ng-click="addSRS($event)" ng-disabled="!custom.newSRS">{{'Add'|i18n}}</button>
-            </div>
-            <hr>
-            <div class="text-center">
-              <button class="btn btn-small" ng-click="save($event)">{{'Save'|i18n}}</button>
-            </div>
-          </fieldset>
-          <div class="text-center">
-            <span class="text-success save_ok" ng-show="false">
-              <br>
-              <i class="icon-ok"></i>
-              <strong>{{'Saved successfully'|i18n}}</strong>
-            </span>
-            <span class="text-error" id="defaultsform_service_error" ng-show="false">
-              <br>
-              <i class="icon-thumbs-down"></i>
-              <strong>{{'Saving failed'|i18n}}</strong>
-              {{sourceformErrorMsg}}
-            </span>
-          </div>
-        </form>
       </div>
     %end
   </div>

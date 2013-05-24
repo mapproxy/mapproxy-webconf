@@ -154,7 +154,8 @@ class SQLiteStore(object):
         cur.execute("SELECT id, data, parent, rank, manual FROM store WHERE section = ? AND project = ?",
             (section, project))
         for row in cur.fetchall():
-            data = json.loads(row['data'])
+            data = {}
+            data['data'] = json.loads(row['data'])
             if with_manual:
                 data['_manual'] = row['manual']
             if with_id:
@@ -169,13 +170,20 @@ class SQLiteStore(object):
                 result[row['id']] = data
         return result
 
+    def get_all_data(self, section, project, default=DEFAULT_VALUE):
+        data = self.get_all(section, project, default)
+        for i, _data in data.items():
+            data[i] = _data['data']
+        return data
+
     def get(self, id, section, project):
         cur = self.db.cursor()
         cur.execute("SELECT data, parent, rank, manual FROM store WHERE id = ? AND section = ? AND project = ?",
             (id, section, project))
         row = cur.fetchone()
         if row:
-            data = json.loads(row[0])
+            data = {}
+            data['data'] = json.loads(row[0])
             if row[1] is not None:
                 data['_parent'] = row[1]
             if row[2] is not None:
@@ -191,7 +199,7 @@ class SQLiteStore(object):
         data.pop('_id', None)
 
 
-        data = json.dumps(data)
+        data = json.dumps(data['data'])
 
         cur = self.db.cursor()
         cur.execute("INSERT INTO store (section, project, data, parent, rank, manual) VALUES (?, ?, ?, ?, ?, ?)",
@@ -206,7 +214,7 @@ class SQLiteStore(object):
         data.pop('_id', None)
         data.pop('_layers', None)
 
-        data = json.dumps(data)
+        data = json.dumps(data['data'])
 
         cur = self.db.cursor()
         cur.execute("UPDATE store SET data = ?, parent = ?, rank = ?, manual = ? WHERE id = ? AND SECTION = ? AND project = ?",

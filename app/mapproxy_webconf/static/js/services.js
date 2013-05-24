@@ -8,11 +8,15 @@ var MapproxyBaseService = function(_section, _dependencies) {
     this._dependencies = _dependencies;
     this._rootScope;
     this._resource;
+    this._messageService;
     this.error;
 
-    this._errorHandler = function(error) {
-        _this._error_msg = error.data.error;
-        _this._rootScope.$broadcast(_this._section + _this._action + '_error');
+    this._errorMessageHandler = function(error) {
+        _this._rootScope.$broadcast(_this._section + '.' + _this._action + '_error');
+        _this._messageService.message(_this._section, _this._action + '_error', error.data.error);
+    };
+    this._successMessageHandler = function(msg) {
+        _this._messageService.message(_this._section, _this._action + '_success', msg);
     };
     this._addDependencies = function(item) {
         item._dependencies = {};
@@ -24,7 +28,7 @@ var MapproxyBaseService = function(_section, _dependencies) {
                 if(item._section == 'caches' && dependencyItem._section == 'layers') {
                     useSection = 'sources';
                 }
-                if($.inArray(item._id, dependencyItem[useSection]) != -1) {
+                if($.inArray(item._id, dependencyItem.data[useSection]) != -1) {
                     item._dependencies[dependency._section].push(dependencyItem);
                 }
             });
@@ -40,13 +44,13 @@ var MapproxyBaseService = function(_section, _dependencies) {
         });
         if(loadComplete) {
             angular.forEach(_this._items, _this._addDependencies);
-            _this._rootScope.$broadcast(_this._section + '.load_complete');
+            _this._successMessageHandler(_this._localize.getLocalizedString('Load complete'));
         }
     };
     this.load = function() {
         _this._items = {};
         _this._loaded = false;
-        _this._action = '.load';
+        _this._action = 'load';
         _this._resource.query({action: _this._section}, function(result) {
             if(result) {
                 angular.forEach(result, function(item) {
@@ -57,48 +61,46 @@ var MapproxyBaseService = function(_section, _dependencies) {
                 if(angular.isDefined(_this._rootScope))
                     _this._rootScope.$broadcast(_this._section + '.load_finished');
             }
-        }, _this._errorHandler);
+        }, _this._errorMessageHandler);
     };
     this.add = function(_item) {
         var item = new _this._resource(_item);
         delete item._dependencies;
         delete item._section;
         if(angular.isUndefined(item._id)) {
-            _this._action = '.add';
+            _this._action = 'add';
             item.$save({action: _this._section},
                 function(result) {
                     result._section = _this._section;
                     _this._addDependencies(result);
                     _this._items[result._id] = result;
+                    _this._successMessageHandler(_this._localize.getLocalizedString('Successful added'));
                     if(angular.isDefined(_this._rootScope)) {
                         _this._last = result;
-                        _this._rootScope.$broadcast(_this._section + '.added');
                         _this.current(true, result);
-
                     }
-                }, _this._errorHandler);
+                }, _this._errorMessageHandler);
         } else {
-            _this._action = '.update';
+            _this._action = 'update';
             item.$update({action: _this._section, id: item._id}, function(result) {
                 result._section = _this._section;
                 _this._addDependencies(result);
                 _this._items[result._id] = result;
+                _this._successMessageHandler(_this._localize.getLocalizedString('Successful updated'));
                 if(angular.isDefined(_this._rootScope)) {
                     _this._last = result;
-                    _this._rootScope.$broadcast(_this._section + '.updated');
                     _this.current(true, result);
                 }
-            }, _this._errorHandler);
+            }, _this._errorMessageHandler);
         }
     };
     this.remove = function(_item) {
         var item = new _this._resource(_item)
-        _this._action = '.delete';
+        _this._action = 'delete';
         item.$delete({action: _this._section, id: item._id}, function(result) {
             delete(_this._items[result._id]);
-            if(angular.isDefined(_this._rootScope))
-                _this._rootScope.$broadcast(_this._section + '.deleted');
-        }, _this._errorHandler);
+            _this._successMessageHandler(_this._localize.getLocalizedString('Successful deleted'));
+        }, _this._errorMessageHandler);
     };
     this.list = function() {
         var result = [];
@@ -112,7 +114,7 @@ var MapproxyBaseService = function(_section, _dependencies) {
     };
     this.byName = function(_name) {
         for(var id in _this._items) {
-            if(_this._items[id].name == _name) {
+            if(_this._items[id].data.name == _name) {
                 return _this._items[id];
             }
         }
@@ -125,7 +127,7 @@ var MapproxyBaseService = function(_section, _dependencies) {
     };
     this.nameById = function(_id) {
         var item = _this.byId(_id);
-        return item ? item.name : false;
+        return item ? item.data.name : false;
     };
     this.current = function(copy, _item) {
         if(_item) {
@@ -142,15 +144,17 @@ var MapproxyBaseService = function(_section, _dependencies) {
     this.error = function() {
         return _this._error_msg;
     }
-    this.return_func = function($rootScope, MapproxyResource) {
+    this.return_func = function($rootScope, MapproxyResource, MessageService, localize) {
         _this._inited = true;
         _this._rootScope = $rootScope;
         _this._resource = MapproxyResource;
+        _this._messageService = MessageService;
+        _this._localize = localize;
         _this._rootScope.$on(_this._section + '.load_finished', _this._waitForLoadComplete);
         angular.forEach(_this._dependencies, function(dependency) {
             _this._rootScope.$on(dependency._section + '.load_finished', _this._waitForLoadComplete)
             if(!dependency._inited) {
-              dependency.return_func(_this._rootScope, _this._resource);
+                dependency.return_func(_this._rootScope, _this._resource, _this._messageService, _this._localize);
             }
 
         });
@@ -209,14 +213,14 @@ var MapproxyLayerService = function(_section) {
 
     this.updateStructure = function(tree) {
         var to_update = [];
-        _this._action = '.updateStructure';
+        _this._action = 'updateStructure';
         angular.forEach(tree, function(layer, idx) {
             _this.prepareLayer(to_update, layer, idx);
         });
         to_update = new _this._resource({'tree': to_update});
         to_update.$update({action: _this._section}, function(result) {
-            _this._rootScope.$broadcast(_this._section + '.updatedStructure');
-        }, _this._errorHandler);
+            _this._successMessageHandler(_this._localize.getLocalizedString('Structure successful updated'));
+        }, _this._errorMessageHandler);
     };
 
     this.return_dict['tree'] = _this.tree;
@@ -230,7 +234,7 @@ WMSSourceService = function(_section) {
     this._identifySource = function(url) {
         var source = false;
         angular.forEach(_this._items, function(_source) {
-            if(_source.url == url) {
+            if(_source.data.url == url) {
                 source = _source;
             }
         });
@@ -240,7 +244,7 @@ WMSSourceService = function(_section) {
         var layer = false;
         var source = _this._identifySource(url);
         if(source) {
-            angular.forEach(source.layer.layers, function(_layer) {
+            angular.forEach(source.data.layer.layers, function(_layer) {
                 if(_layer.name == layerName) {
                     layer = _layer;
                 }
@@ -260,7 +264,7 @@ WMSSourceService = function(_section) {
     this.coverage = function(url) {
         var source = _this._identifySource(url);
         if(source) {
-            return source.layer.llbbox;
+            return source.data.layer.llbbox;
         }
         return false;
     };
@@ -268,20 +272,19 @@ WMSSourceService = function(_section) {
     this.srs = function(url) {
         var source = _this._identifySource(url);
         if(source) {
-            return source.layer.srs;
+            return source.data.layer.srs;
         }
         return false;
     };
 
     this.refresh = function(_item) {
         var item = new _this._resource(_item);
-        _this._action = '.update';
+        _this._action = 'update';
         item.$update({action: _this._section, id: item._id}, function(result) {
             _this._items[result._id] = result;
             _this._last = result;
-            if(angular.isDefined(_this._rootScope))
-                _this._rootScope.$broadcast(_this._section + '.updated');
-        }, _this._errorHandler);
+            _this._successMessageHandler(_this._localize.getLocalizedString('Successful updated'));
+        }, _this._errorMessageHandler);
     };
 
     this.allURLs = function() {
@@ -337,4 +340,23 @@ service('DataShareService', function($rootScope) {
             }
         }
     }
+}).
+
+service('MessageService', function($rootScope) {
+    var service = {};
+
+    service.messages = {};
+    service.message = function(section, action, message) {
+        service.messages[section] = service.messages[section] || {};
+        service.messages[section][action] = {
+            'section': section,
+            'action': action,
+            'message': message
+        }
+    };
+
+    service.removeMessage = function(section, action) {
+        delete service.messages[section][action];
+    }
+    return service;
 });
