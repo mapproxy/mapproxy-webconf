@@ -44,7 +44,7 @@ var MapproxyBaseService = function(_section, _dependencies) {
         });
         if(loadComplete) {
             angular.forEach(_this._items, _this._addDependencies);
-            _this._successMessageHandler('Load complete');
+            _this._successMessageHandler(_this._localize.getLocalizedString('Load complete'));
         }
     };
     this.load = function() {
@@ -74,7 +74,7 @@ var MapproxyBaseService = function(_section, _dependencies) {
                     result._section = _this._section;
                     _this._addDependencies(result);
                     _this._items[result._id] = result;
-                    _this._successMessageHandler('Added');
+                    _this._successMessageHandler(_this._localize.getLocalizedString('Successful added'));
                     if(angular.isDefined(_this._rootScope)) {
                         _this._last = result;
                         _this.current(true, result);
@@ -86,7 +86,7 @@ var MapproxyBaseService = function(_section, _dependencies) {
                 result._section = _this._section;
                 _this._addDependencies(result);
                 _this._items[result._id] = result;
-                _this._successMessageHandler('Updated');
+                _this._successMessageHandler(_this._localize.getLocalizedString('Successful updated'));
                 if(angular.isDefined(_this._rootScope)) {
                     _this._last = result;
                     _this.current(true, result);
@@ -99,7 +99,7 @@ var MapproxyBaseService = function(_section, _dependencies) {
         _this._action = 'delete';
         item.$delete({action: _this._section, id: item._id}, function(result) {
             delete(_this._items[result._id]);
-            _this._successMessageHandler('Deleted');
+            _this._successMessageHandler(_this._localize.getLocalizedString('Successful deleted'));
         }, _this._errorMessageHandler);
     };
     this.list = function() {
@@ -144,16 +144,17 @@ var MapproxyBaseService = function(_section, _dependencies) {
     this.error = function() {
         return _this._error_msg;
     }
-    this.return_func = function($rootScope, MapproxyResource, MessageService) {
+    this.return_func = function($rootScope, MapproxyResource, MessageService, localize) {
         _this._inited = true;
         _this._rootScope = $rootScope;
         _this._resource = MapproxyResource;
         _this._messageService = MessageService;
+        _this._localize = localize;
         _this._rootScope.$on(_this._section + '.load_finished', _this._waitForLoadComplete);
         angular.forEach(_this._dependencies, function(dependency) {
             _this._rootScope.$on(dependency._section + '.load_finished', _this._waitForLoadComplete)
             if(!dependency._inited) {
-              dependency.return_func(_this._rootScope, _this._resource, _this._messageService);
+                dependency.return_func(_this._rootScope, _this._resource, _this._messageService, _this._localize);
             }
 
         });
@@ -218,7 +219,7 @@ var MapproxyLayerService = function(_section) {
         });
         to_update = new _this._resource({'tree': to_update});
         to_update.$update({action: _this._section}, function(result) {
-            _this._successMessageHandler('Structure updated');
+            _this._successMessageHandler(_this._localize.getLocalizedString('Structure successful updated'));
         }, _this._errorMessageHandler);
     };
 
@@ -282,7 +283,7 @@ WMSSourceService = function(_section) {
         item.$update({action: _this._section, id: item._id}, function(result) {
             _this._items[result._id] = result;
             _this._last = result;
-            _this._successMessageHandler('Updated');
+            _this._successMessageHandler(_this._localize.getLocalizedString('Successful updated'));
         }, _this._errorMessageHandler);
     };
 

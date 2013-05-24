@@ -452,6 +452,26 @@
     {
         "key": "Keep url and reject layer",
         "value": "URL behalten und Layer nicht einfügen"
+    },
+    {
+        "key": "Load complete",
+        "value": "Laden erfolgreich"
+    },
+    {
+        "key": "Successful added",
+        "value": "Erfolgreich hinzugefügt"
+    },
+    {
+        "key": "Successful updated",
+        "value": "Erfolgreich aktualisiert"
+    },
+    {
+        "key": "Successful deleted",
+        "value": "Erfolgreich gelöscht"
+    },
+    {
+        "key": "Structure successful updated",
+        "value": "Struktur erfolgreich aktualisiert"
     }
 
 ]
