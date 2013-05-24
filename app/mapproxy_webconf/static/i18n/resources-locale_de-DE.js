@@ -472,6 +472,10 @@
     {
         "key": "Structure successful updated",
         "value": "Struktur erfolgreich aktualisiert"
+    },
+    {
+        "key": "DPI",
+        "value": "DPI"
     }
 
 ]
