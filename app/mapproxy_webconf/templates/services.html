@@ -58,11 +58,8 @@
         <form name="services_form">
             <div ng-include src="template"></div>
             <button class="btn btn-small" ng-click="save($event)" ng-disabled="!services_form.$valid" id="services_form_save">{{'Save'|i18n}}</button>
-            <span class="text-success save_ok" ng-show="false">
-                <i class="icon-ok"></i>
-                <strong>{{'Saved successfully'|i18n}}</strong>
-            </span>
-            <span message-handler message-types="services.form_error"></span>
+            <span message-handler="success" message-types="services.add_success,services.update_success"></span>
+            <span message-handler="error" message-types="services.form_error,services.load_error,services.update_error,services.add_error"></span>
         </form>
     </div>
 %end

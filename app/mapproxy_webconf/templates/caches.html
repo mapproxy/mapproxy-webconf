@@ -5,7 +5,8 @@
       {{'Create new cache'|i18n}}</button>
 
     <h3>{{'Cache'|i18n}}</h3>
-    <span message-handler message-types="caches.load_error,chaches.delete_error"></span>
+    <span message-handler="success" message-types="caches.delete_success"></span>
+    <span message-handler="error" message-types="caches.load_error,caches.delete_error"></span>
     <div>
       <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
       <br>
@@ -75,16 +76,12 @@
       <button class="btn btn-small" ng-click="addCache($event)" ng-disabled="!cache_form.$valid" id="cache_form_save">{{'Save'|i18n}}</button>
       <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
     </div>
-    <div class="text-center">
-      <span class="text-success save_ok" ng-show="false">
-        <br>
-        <i class="icon-ok"></i>
-         <strong>{{'Saved successfully'|i18n}}</strong>
-      </span>
-      <span message-handler message-types="caches.add_error,caches.update_error,caches.form_error"></span>
-    </div>
   </form>
   <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
+  <div class="text-center">
+    <span message-handler="success" message-types="caches.add_success,caches.update_success"></span>
+    <span message-handler="error" message-types="caches.add_error,caches.update_error,caches.form_error"></span>
+  </div>
 </div>
 %end
 
@@ -107,7 +104,7 @@
       </div>
     </ul>
     <span ng-show="false">{{filtered.length}}</span>
-    <span message-handler message-types="sources.load_error"></span>
+    <span message-handler="error" message-types="sources.load_error"></span>
 </div>
 %end
 

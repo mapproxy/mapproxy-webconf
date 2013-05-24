@@ -45,14 +45,13 @@
         <div ng-include src="template"></div>
 
         <button class="btn btn-small" ng-click="save($event)" ng-disabled="!globals_form.$valid" id="globals_form_save">{{'Save'|i18n}}</button>
-        <span class="text-success save_ok" ng-show="false">
-            <i class="icon-ok"></i>
-            <strong>{{'Saved successfully'|i18n}}</strong>
-        </span>
-        <span message-handler message-types="globals.load_error,globals.add_error,globals.update_error,globals.form_error"></span>
     </form>
     <hr ng-show="!editareaBinds.visible">
     <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json"></div>
+    <div class="text-center">
+        <span message-handler="success" message-types="globals.add_success,globals.update_success"></span>
+        <span message-handler="error" message-types="globals.load_error,globals.add_error,globals.update_error,globals.form_error"></span>
+    </div>
 </div>
 %end
 

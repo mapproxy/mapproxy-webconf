@@ -2,11 +2,8 @@
   <div ng-controller="MapproxyGridListCtrl">
 
     <h3>{{'Default grids'|i18n}}</h3>
-    <span class="text-error" id="gridlist_service_error" ng-show="false">
-      <i class="icon-thumbs-down"></i>
-      <strong>{{'An error occured'|i18n}}</strong>
-      <p>{{gridlistErrorMsg}}</p>
-    </span>
+    <span message-handler="success" message-types="grids.delete_success"></span>
+    <span message-handler="error" message-types="grids.load_error,grids.delete_error"></span>
      <ul class="vertical-list">
       <hr>
        <div class="{{isSelected(grid)}}" ng-repeat="grid in default_grids | orderBy:'name'"
@@ -22,7 +19,7 @@
       {{'Create new grid'|i18n}}</button>
 
     <h3>{{'User defined grids'|i18n}}</h3>
-    <span message-handler message-types="grids.load_error,grids.delete_error"></span>
+    <span message-handler="error" message-types="grids.load_error,grids.delete_error"></span>
     <div>
       <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
       <br>
@@ -62,52 +59,44 @@
     <h3>{{formTitle|i18n}}</h3>
     <form name="grid_form" id="grid_form" ng-show="!grid.default" novalidate>
       <!-- name -->
-        <div labeled="input_label" name-for="grid_form.name" text="{{'Name'|i18n}}">
-            <input required type="text" ng-model="grid.data.name" id="grid_form.name" />
-        </div>
-    <!-- SRS -->
-        <div labeled="input_label" name-for="grid_form.srs" text="{{'SRS'|i18n}}">
-             <select ng-model="grid.data.srs" id="grid_form.srs">
-                <option value="EPSG:3857">EPSG:3857</option>
-                <option value="EPSG:4326">EPSG:4326</option>
-                <option value="EPSG:900913">EPSG:900913</option>
-            </select>
-        </div>
-    <!-- BBox -->
-        <div labeled="input_label" name-for="grid_form.bbox_0" text="{{'BBox'|i18n}}">
-            <input type="number" ng-model="grid.data.bbox[0]" class="input-mini" id="grid_form.bbox_0" />
-            <input type="number" ng-model="grid.data.bbox[1]" class="input-mini" id="grid_form.bbox_1" />
-            <input type="number" ng-model="grid.data.bbox[2]" class="input-mini" id="grid_form.bbox_2" />
-            <input type="number" ng-model="grid.data.bbox[3]" class="input-mini" id="grid_form.bbox_3" />
-        </div>
-    <!-- BBox SRS -->
-        <div labeled="input_label" name-for="grid_form.bbox_srs" text="{{'BBox SRS'|i18n}}">
-            <select ng-model="grid.data.bbox_srs" id="grid_form.bbox_srs">
-                <option value="EPSG:3857">EPSG:3857</option>
-                <option value="EPSG:4326">EPSG:4326</option>
-                <option value="EPSG:900913">EPSG:900913</option>
-            </select>
-        </div>
-    <!-- origin -->
-        <div labeled="input_label" name-for="grid_form.origin" text="{{'Origin'|i18n}}">
-            <select ng-model="grid.data.origin" id="grid_form.origin">
-                <option value="sw">SW / LL</option>
-                <option value="nw">NW / UL</option>
-            </select>
-        </div>
-        <div class="text-center">
-          <span id="_editarea_toggle_button_container"></span>
-          <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="!grid_form.$valid" id="grid_form_save">{{'Save'|i18n}}</button>
-          <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
-        </div>
-        <div class="text-center">
-          <span class="text-success save_ok" ng-show="false">
-            <br>
-            <i class="icon-ok"></i>
-            <strong>{{'Saved successfully'|i18n}}</strong>
-          </span>
-          <span message-handler message-types="grids.add_error,grid.update_error,grids.form_error"></span>
-        </div>
+      <div labeled="input_label" name-for="grid_form.name" text="{{'Name'|i18n}}">
+          <input required type="text" ng-model="grid.data.name" id="grid_form.name" />
+      </div>
+      <!-- SRS -->
+      <div labeled="input_label" name-for="grid_form.srs" text="{{'SRS'|i18n}}">
+           <select ng-model="grid.data.srs" id="grid_form.srs">
+              <option value="EPSG:3857">EPSG:3857</option>
+              <option value="EPSG:4326">EPSG:4326</option>
+              <option value="EPSG:900913">EPSG:900913</option>
+          </select>
+      </div>
+      <!-- BBox -->
+      <div labeled="input_label" name-for="grid_form.bbox_0" text="{{'BBox'|i18n}}">
+          <input type="number" ng-model="grid.data.bbox[0]" class="input-mini" id="grid_form.bbox_0" />
+          <input type="number" ng-model="grid.data.bbox[1]" class="input-mini" id="grid_form.bbox_1" />
+          <input type="number" ng-model="grid.data.bbox[2]" class="input-mini" id="grid_form.bbox_2" />
+          <input type="number" ng-model="grid.data.bbox[3]" class="input-mini" id="grid_form.bbox_3" />
+      </div>
+      <!-- BBox SRS -->
+      <div labeled="input_label" name-for="grid_form.bbox_srs" text="{{'BBox SRS'|i18n}}">
+          <select ng-model="grid.data.bbox_srs" id="grid_form.bbox_srs">
+              <option value="EPSG:3857">EPSG:3857</option>
+              <option value="EPSG:4326">EPSG:4326</option>
+              <option value="EPSG:900913">EPSG:900913</option>
+          </select>
+      </div>
+      <!-- origin -->
+      <div labeled="input_label" name-for="grid_form.origin" text="{{'Origin'|i18n}}">
+          <select ng-model="grid.data.origin" id="grid_form.origin">
+              <option value="sw">SW / LL</option>
+              <option value="nw">NW / UL</option>
+          </select>
+      </div>
+      <div class="text-center">
+        <span id="_editarea_toggle_button_container"></span>
+        <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="!grid_form.$valid" id="grid_form_save">{{'Save'|i18n}}</button>
+        <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
+      </div>
     </form>
   </div>
   <div ng-show="grid.default">
@@ -116,6 +105,10 @@
     </div>
   </div>
   <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
+  <div class="text-center">
+    <span message-handler="success" message-types="grids.add_success,grid.update_success"></span>
+    <span message-handler="error" message-types="grids.add_error,grid.update_error,grids.form_error"></span>
+  </div>
 </div>
 %end
 

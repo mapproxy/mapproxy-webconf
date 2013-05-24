@@ -412,7 +412,7 @@ directive('labeled', function($parse, $templateCache, localize) {
     };
 }).
 
-directive('editarea', function($http) {
+directive('editarea', function($http, MessageService) {
     return {
         restrict: 'A',
         scope: {
@@ -431,8 +431,7 @@ directive('editarea', function($http) {
             var jsonURL = attrs.jsonUrl;
 
             var errorHandler = function(response) {
-                scope.editareaErrorMsg = response.error;
-                $('#editarea_error').show().fadeOut(3000)
+                MessageService.message('editarea', 'error', response.error)
             };
             scope.showErrorMsg = function(errorMsg) {
                 scope.editareaErrorMsg = errorMsg;
@@ -513,17 +512,15 @@ directive('editarea', function($http) {
     };
 }).
 
-directive('messageHandler', function(MessageService) {
+directive('messageHandler', function($templateCache, MessageService) {
     return {
         restrict: 'A',
         scope: 'Element',
         replace: true,
         transclude: true,
-        template: "<span class='text-error' ng-show='false'>" +
-                  "<i class='icon-thumbs-down'></i>" +
-                  "<strong>{{'An error occured'|i18n}}</strong>" +
-                  "<p>{{message}}</p>" +
-                  "</span>",
+        template: function(element, attrs) {
+            return $templateCache.get(attrs.messageHandler);
+        },
         link: function(scope, element, attrs) {
             scope.messageService = MessageService;
 

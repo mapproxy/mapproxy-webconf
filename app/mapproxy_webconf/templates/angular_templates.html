@@ -18,3 +18,19 @@
         </div>
     </div>
 </script>
+
+<script type="text/ng-template" id="success">
+    <span class='text-success save_ok' ng-show='false'>
+        <br>
+        <i class='icon-ok'></i>
+        <strong>{{message}}</strong>
+    </span>
+</script>
+
+<script type="text/ng-template" id="error">
+    <span class='text-error' ng-show='false'>
+        <i class='icon-thumbs-down'></i>
+        <strong>{{'An error occured'|i18n}}</strong>
+        <p>{{message}}</p>
+    </span>
+</script>

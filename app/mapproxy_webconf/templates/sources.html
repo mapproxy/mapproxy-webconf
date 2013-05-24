@@ -7,12 +7,8 @@
     </button>
   </div>
   <h3>{{'Sources'|i18n}}</h3>
-  <!--<span class="text-error" id="sourcelist_service_error" ng-show="false">
-    <i class="icon-thumbs-down"></i>
-    <strong>{{'An error occured'|i18n}}</strong>
-    <p>{{sourcelistErrorMsg}}</p>
-  </span>-->
-  <span message-handler message-types="sources.load_error,sources.delete_error"></span>
+  <span message-handler="success" message-types="sources.delete_success"></span>
+  <span message-handler="error" message-types="sources.load_error,sources.delete_error"></span>
   <div>
     <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
     <br>
@@ -127,17 +123,13 @@
           <button class="btn btn-small" ng-click="addSource($event)" ng-disabled="!source_form.$valid" id="source_form_save">{{'Save'|i18n}}</button>
           <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
         </div>
-        <div class="text-center">
-          <span class="text-success save_ok" ng-show="false">
-            <br>
-            <i class="icon-ok"></i>
-            <strong>{{'Saved successfully'|i18n}}</strong>
-          </span>
-          <span message-handler message-types="sources.add_error,sources.update_error,sources.form_error"></span>
-        </div>
       </fieldset>
     </form>
     <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
+    <div class="text-center">
+      <span message-handler="success" message-types="sources.add_success,sources.update_success"></span>
+      <span message-handler="error" message-types="sources.add_error,sources.update_error,sources.form_error"></span>
+    </div>
   </div>
 </div>
 %end
@@ -184,30 +176,16 @@
             </div>
         </div>
     </div>
-    <div ng-show="false" id="capabilities_refresh_ok" class="text-success">
-        <i class="icon-ok"></i>
-        <strong>{{refresh_msg}}</strong>
-    </div>
-    <div ng-show="false" id="capabilities_refresh_error" class="text-error">
-        <i class="icon-thumbs-down"></i>
-        <strong>{{'An error occured'|i18n}}</strong>
-        <p>{{treeErrorMsg}}</p>
-    </div>
+    <div message-handler="success" message-types="wms_capabilites.delete_success,wms_capabilities.update_success"></div>
+    <div message-handler="error" message-types="wms_capabilities.load_error,wms_capabilities.delete_error,wms_capabilities.update_error"></div>
     <hr>
     <form name="capabilities_form" novalidate>
         <div class="input-append" labeled="input_label" name-for="addCapabilities"  text="{{'Load WMS'|i18n}}">
             <input type="url" required name="capabilities_url" ng-model="capabilities.url" id="addCapabilities" unique="{{wms_urls}}">
             <button class="btn" ng-click="addCapabilities()" ng-disabled="!capabilities_form.$valid">{{'Add'|i18n}}</button>
         </div>
-        <div>
-          <span class="text-success" id="capabilities_add_ok" ng-show="false">
-            <i class="icon-ok"></i>
-            <strong>{{'Add WMS successfully'|i18n}}</strong>
-          </span>
-        </div>
-        <div>
-          <span message-handler message-types="wms_capabilities.load_error,wms_capabilities.add_error,wms_capabilities.update_error,wms_capabilities.delete_error"></span>
-        </div>
+        <div message-handler="success" message-types="wms_capabilites.add_success"></div>
+        <div message-handler="error" message-types="wms_capabilities.add_error"></div>
     </form>
 </div>
   %end

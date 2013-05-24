@@ -7,7 +7,8 @@
   <button class="btn btn-small pull-right" id="layer_list_save" ng-click="updateLayerTree()" style="margin-right:1em;" ng-disabled="!listChanged()">{{'Save'|i18n}}</button>
 
   <h3>{{'Layer'|i18n}}</h3>
-  <span message-handler message-types="layers.load_error,layers.delete_error"></span>
+  <span message-handler="success" message-types="layers.delete_success,layers.updateStructur_success"></span>
+  <span message-handler="error" message-types="layers.load_error,layers.delete_error,layers.updateStructur_error"></span>
   <div>
     <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
     <br>
@@ -104,16 +105,12 @@
       <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!layer_form.$valid" id="layer_form_save">{{'Save'|i18n}}</button>
       <button class="btn btn-small" ng-click="resetForm()">{{'Reset'|i18n}}</button>
     </div>
-    <div class="text-center">
-      <span class="text-success save_ok" ng-show="false">
-        <br>
-        <i class="icon-ok"></i>
-        <strong>{{'Saved successfully'|i18n}}</strong>
-      </span>
-      <span message-handler message-types="layers.add_error,layers.update_error,layers.form_error"></span>
-    </div>
   </form>
   <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
+  <div class="text-center">
+    <span message-handler="success" message-types="layers.add_success,layers.update_success"></span>
+    <span message-handler="error" message-types="layers.add_error,layers.update_error,layers.form_error"></span>
+  </div>
 </div>
 %end
 
@@ -121,7 +118,7 @@
   <div>
     <span ng-controller="MapproxySourceListCtrl">
       <h3>{{'Sources'|i18n}}</h3>
-      <span message-handler message-types="sources_error"></span>
+      <span message-handler="error" message-types="sources.load_error"></span>
       <div>
         <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
         <br>
@@ -143,7 +140,7 @@
     <hr>
     <span ng-controller="MapproxyCacheListCtrl">
       <h3>{{'Caches'|i18n}}</h3>
-      <span message-handler message-types="caches_error"></span>
+      <span message-handler="error" message-types="caches.load_error"></span>
       <div>
         <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
         <br>
