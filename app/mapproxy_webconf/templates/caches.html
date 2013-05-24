@@ -63,14 +63,25 @@
             use-key-for-value="_id"
             class="input-xlarge insertable-list uneditable-input">
             <div ng-repeat="source in cache.data.sources" class="label">
-                <span ng-bind="showName(source)"></span>
-                <i class="icon-remove" ng-click="remove(source)"></i>
+              <span ng-bind="showName(source)"></span>
+              <i class="icon-remove" ng-click="remove(source)"></i>
             </div>
         </div>
     </div>
     <div labeled="input_label" name-for="cache_form.grids" text="{{'Grids'|i18n}}">
-      <select class="input-xlarge" ng-model="cache.data.grids" id="cache_form.grids" multiple="multiple" ng-options="value._id as value.data.name for value in available_grids"/>
-      </select>
+      <div
+        droppable
+        accepts="mapproxy_grid"
+        ng-model="cache.data.grids"
+        allow-array="true"
+        name="cache_form.grids"
+        use-key-for-value="_id"
+        class="input-xlarge insertable-list uneditable-input">
+        <div ng-repeat="grid in cache.data.grids" class="label">
+          <span ng-bind="showName(grid)">{{grid}}</span>
+          <i class="icon-remove" ng-click="remove(grid)"></i>
+        </div>
+      </div>
     </div>
     <div labeled="input_label" name-for="cache_form.format" text="{{'Format'|i18n}}">
       <select class="input-xlarge" ng-model="cache.data.format" id="cache_form.format">
@@ -143,6 +154,28 @@
     </ul>
     <span ng-show="false">{{filtered.length}}</span>
   </span>
+  <hr>
+  <div ng-controller="MapproxyGridListCtrl">
+    <h3>{{'Grids'|i18n}}</h3>
+    <span message-handler="error" message-types="grids.load_error"></span>
+    <div>
+      <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
+      <br>
+      <span ng-show="(mapproxy_grids.concat(default_grids)).length - filtered.length" ng-click="search=''">{{'Not shown grids'|i18n}}: {{(mapproxy_grids.concat(default_grids)).length - filtered.length}}</span>
+    </div>
+    <ul class="vertical-list">
+      <hr>
+      <div
+        draggable
+        class="mapproxy_grid"
+        ng-repeat="grid in filtered = (mapproxy_grids.concat(default_grids) | filter: {data.name:search}) | orderBy:'name'"
+        item-data="{{grid}}">
+        <li class="droppable_name">{{grid.data.name}}</li>
+        <hr>
+      </div>
+    </ul>
+    <span ng-show="false">{{filtered.length}}</span>
+  </div>
 </div>
 %end
 

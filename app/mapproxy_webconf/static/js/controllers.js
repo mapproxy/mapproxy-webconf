@@ -495,7 +495,7 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         $scope.cache_form.$setPristine();
     };
     $scope.showName = function(_id) {
-        var name = MapproxySources.nameById(_id) || MapproxyCaches.nameById(_id);
+        var name = MapproxySources.nameById(_id) || MapproxyCaches.nameById(_id) || MapproxyGrids.nameById(_id);
         return name ? name : _id;
     };
     $scope.exist = function(name, id) {
