@@ -979,7 +979,6 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareSer
         if(angular.isDefined(event)) {
             event.preventDefault();
         }
-        $scope.globals = clearData($scope.globals);
         $scope.globals._manual = $scope.editareaBinds.visible;
         MapproxyGlobals.add($scope.globals);
         $scope.globals_form.$setPristine();
