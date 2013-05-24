@@ -11,10 +11,9 @@ var MapproxyBaseService = function(_section, _dependencies) {
     this._messageService;
     this.error;
 
-    this._errorHandler = function(error) {
-        _this._error_msg = error.data.error;
-        _this._rootScope.$broadcast(_this._section + _this._action + '_error');
-        _this._messageService.message(_this._section + '_error', error.data.error);
+    this._errorMessageHandler = function(error) {
+        _this._rootScope.$broadcast(_this._section + '.' + _this._action + '_error');
+        _this._messageService.message(_this._section, _this._action + '_error', error.data.error);
     };
     this._addDependencies = function(item) {
         item._dependencies = {};
@@ -48,7 +47,7 @@ var MapproxyBaseService = function(_section, _dependencies) {
     this.load = function() {
         _this._items = {};
         _this._loaded = false;
-        _this._action = '.load';
+        _this._action = 'load';
         _this._resource.query({action: _this._section}, function(result) {
             if(result) {
                 angular.forEach(result, function(item) {
@@ -59,14 +58,14 @@ var MapproxyBaseService = function(_section, _dependencies) {
                 if(angular.isDefined(_this._rootScope))
                     _this._rootScope.$broadcast(_this._section + '.load_finished');
             }
-        }, _this._errorHandler);
+        }, _this._errorMessageHandler);
     };
     this.add = function(_item) {
         var item = new _this._resource(_item);
         delete item._dependencies;
         delete item._section;
         if(angular.isUndefined(item._id)) {
-            _this._action = '.add';
+            _this._action = 'add';
             item.$save({action: _this._section},
                 function(result) {
                     result._section = _this._section;
@@ -78,9 +77,9 @@ var MapproxyBaseService = function(_section, _dependencies) {
                         _this.current(true, result);
 
                     }
-                }, _this._errorHandler);
+                }, _this._errorMessageHandler);
         } else {
-            _this._action = '.update';
+            _this._action = 'update';
             item.$update({action: _this._section, id: item._id}, function(result) {
                 result._section = _this._section;
                 _this._addDependencies(result);
@@ -90,17 +89,17 @@ var MapproxyBaseService = function(_section, _dependencies) {
                     _this._rootScope.$broadcast(_this._section + '.updated');
                     _this.current(true, result);
                 }
-            }, _this._errorHandler);
+            }, _this._errorMessageHandler);
         }
     };
     this.remove = function(_item) {
         var item = new _this._resource(_item)
-        _this._action = '.delete';
+        _this._action = 'delete';
         item.$delete({action: _this._section, id: item._id}, function(result) {
             delete(_this._items[result._id]);
             if(angular.isDefined(_this._rootScope))
                 _this._rootScope.$broadcast(_this._section + '.deleted');
-        }, _this._errorHandler);
+        }, _this._errorMessageHandler);
     };
     this.list = function() {
         var result = [];
@@ -212,14 +211,14 @@ var MapproxyLayerService = function(_section) {
 
     this.updateStructure = function(tree) {
         var to_update = [];
-        _this._action = '.updateStructure';
+        _this._action = 'updateStructure';
         angular.forEach(tree, function(layer, idx) {
             _this.prepareLayer(to_update, layer, idx);
         });
         to_update = new _this._resource({'tree': to_update});
         to_update.$update({action: _this._section}, function(result) {
             _this._rootScope.$broadcast(_this._section + '.updatedStructure');
-        }, _this._errorHandler);
+        }, _this._errorMessageHandler);
     };
 
     this.return_dict['tree'] = _this.tree;
@@ -278,13 +277,13 @@ WMSSourceService = function(_section) {
 
     this.refresh = function(_item) {
         var item = new _this._resource(_item);
-        _this._action = '.update';
+        _this._action = 'update';
         item.$update({action: _this._section, id: item._id}, function(result) {
             _this._items[result._id] = result;
             _this._last = result;
             if(angular.isDefined(_this._rootScope))
                 _this._rootScope.$broadcast(_this._section + '.updated');
-        }, _this._errorHandler);
+        }, _this._errorMessageHandler);
     };
 
     this.allURLs = function() {
@@ -346,8 +345,17 @@ service('MessageService', function($rootScope) {
     var service = {};
 
     service.messages = {};
-    service.message = function(type, msg) {
-        service.messages[type] = msg;
+    service.message = function(section, action, message) {
+        service.messages[section] = service.messages[section] || {};
+        service.messages[section][action] = {
+            'section': section,
+            'action': action,
+            'message': message
+        }
     };
+
+    service.removeMessage = function(section, action) {
+        delete service.messages[section][action];
+    }
     return service;
 });
