@@ -208,9 +208,7 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
         if(errorMsg) {
             MessageService.message('sources', 'form_error', errorMsg);
         } else {
-            if($scope.editareaBinds.visible) {
-                $scope.source._manual = true;
-            }
+            $scope.source._manual = $scope.editareaBinds.visible;
             MapproxySources.add($scope.source);
             $scope.formTitle = 'Edit source';
             $scope.source_form.$setPristine();
@@ -478,9 +476,7 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         if(errorMsg) {
             MessageService.message('caches', 'form_error', errorMsg);
         } else {
-            if($scope.editareaBinds.visible) {
-                $scope.cache._manual = true;
-            }
+            $scope.cache._manual = $scope.editareaBinds.visible;
             MapproxyCaches.add($scope.cache);
             $scope.formTitle = 'Edit cache';
             $scope.cache_form.$setPristine();
@@ -666,9 +662,7 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids, MessageService) {
         if(errorMsg) {
             MessageService.message('grids', 'form_error', errorMsg);
         } else {
-            if($scope.editareaBinds.visible) {
-                $scope.grid._manual = true;
-            }
+            $scope.grid._manual = $scope.editareaBinds.visible;
             MapproxyGrids.add($scope.grid);
             $scope.formTitle = 'Edit grid';
             $scope.grid_form.$setPristine();
@@ -857,9 +851,7 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         if(errorMsg) {
             MessageService.message('layers', 'form_error', errorMsg);
         } else {
-            if($scope.editareaBinds.visible) {
-                $scope.layer._manual = true;
-            }
+            $scope.layer._manual = $scope.editareaBinds.visible;
             MapproxyLayers.add($scope.layer);
             $scope.formTitle = 'Edit layer';
             $scope.layer_form.$setPristine();
@@ -985,9 +977,7 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareSer
             event.preventDefault();
         }
         $scope.globals = clearData($scope.globals);
-        if($scope.editareaBinds.visible) {
-            $scope.global._manual = true;
-        }
+        $scope.globals._manual = $scope.editareaBinds.visible;
         MapproxyGlobals.add($scope.globals);
         $scope.globals_form.$setPristine();
         $scope.editareaBinds.dirty = false;
