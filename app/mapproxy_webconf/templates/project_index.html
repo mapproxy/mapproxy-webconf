@@ -1,5 +1,27 @@
 %def leftblock():
-  {{'Start the configruation'|i18n}}
+    <h3>{{'Start the configruation'|i18n}}</h3>
+    <h4>{{'Project defaults'|i18n}}</h4>
+    <form ng-controller="ProjectDefaultsCtrl" name="defaults_form">
+      <fieldset>
+        <div labeled="input_label" name-for="defaults_form.default_srs" text="{{'SRS'|i18n}}">
+          <div name="default_form.default_srs" class="well well-small input-xlarge">
+            <span class="badge" ng-repeat="srs in defaults.data.srs">{{srs}} <i class="icon-remove" ng-click="removeSRS($event, srs)"></i></span>
+          </div>
+        </div>
+        <div class="input-append" labeled="input_label" name-for="new_srs" text="{{'Add SRS'|i18n}}">
+          <input type="text" id="new_srs" name="new_srs" class="input-xlarge" ng-model="custom.newSRS">
+          <button class="btn" ng-click="addSRS($event)" ng-disabled="!custom.newSRS">{{'Add'|i18n}}</button>
+        </div>
+        <hr>
+        <div class="text-center">
+          <button class="btn btn-small" ng-click="save($event)">{{'Save'|i18n}}</button>
+        </div>
+      </fieldset>
+      <div class="text-center">
+        <span message-handler="success" message-types="defaults.add_success,defaults.update_success"></span>
+        <span message-handler="error" message-types="defaults.load_error,defaults.add_error,defaults.update_error,defaults.form_error"></span>
+      </div>
+    </form>
 %end
 
 
