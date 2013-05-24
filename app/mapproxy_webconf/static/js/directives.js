@@ -441,7 +441,6 @@ directive('editarea', function($http) {
             var loadYAML = function() {
                 //clear editarea
                 _editareaElement.val('');
-                console.log(scope.editareaBinds.editareaValue)
                 var json = scope.editareaBinds.editareaValue.data;
                 $http.post(yamlURL, json)
                     .success(function(yaml) {
@@ -469,7 +468,7 @@ directive('editarea', function($http) {
             };
             scope.reset = function() {
                 scope.editareaBinds.dirty = false;
-                $scope.editareaErrorMsg = undefined;
+                scope.editareaErrorMsg = undefined;
                 loadYAML();
             };
             _editareaElement.attr('rows', rows);

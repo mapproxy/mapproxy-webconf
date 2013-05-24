@@ -75,7 +75,7 @@
 
 %def middleblock():
 <div ng-controller="MapproxyLayerFormCtrl">
-  <form name="layer_form" novalidate ng-show="!_editarea.visible">
+  <form name="layer_form" novalidate ng-show="!editareaBinds.visible">
     <h3>{{formTitle|i18n}}</h3>
     <!-- name -->
     <div labeled="input_label" name-for="layer_form.layer_name" text="{{'Name'|i18n}}">
@@ -122,7 +122,7 @@
       </span>
     </div>
   </form>
-  <div editarea editarea-value="{{prepareForEditarea(layer)}}" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
+  <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
 </div>
 %end
 

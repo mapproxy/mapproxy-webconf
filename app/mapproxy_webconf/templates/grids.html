@@ -62,7 +62,7 @@
 
 %def middleblock():
 <div ng-controller="MapproxyGridFormCtrl">
-  <div ng-show="!_editarea.visible">
+  <div ng-show="!editareaBinds.visible">
     <h3>{{formTitle|i18n}}</h3>
     <form name="grid_form" id="grid_form" ng-show="!grid.default" novalidate>
       <!-- name -->
@@ -124,7 +124,7 @@
       <div class="input-xlarge" id="default_grid.name">{{grid.data.name}}</div>
     </div>
   </div>
-  <div ng-show="!grid.default" editarea editarea-value="{{prepareForEditarea(grid)}}" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
+  <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
 </div>
 %end
 

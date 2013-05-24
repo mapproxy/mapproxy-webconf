@@ -45,7 +45,7 @@
 
 %def middleblock():
 <div ng-controller="MapproxyCacheFormCtrl">
-  <form name="cache_form" ng-model="cache" ng-show="!_editarea.visible">
+  <form name="cache_form" ng-model="cache" ng-show="!editareaBinds.visible">
     <h3>{{formTitle|i18n}}</h3>
     <!-- name -->
     <div labeled="input_label" name-for="cache_form.cache_name" text="{{'Name'|i18n}}">
@@ -93,7 +93,7 @@
       </span>
     </div>
   </form>
-  <div editarea editarea-value="{{prepareForEditarea(cache)}}" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
+  <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
 </div>
 %end
 

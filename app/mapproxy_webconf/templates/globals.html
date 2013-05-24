@@ -29,7 +29,7 @@
 <script type="text/ng-template" id="image.html">
     <h3>{{'image'|i18n}}</h3>
     <div labeled="input_label" name-for="globals_form.image_resampling_method" text="{{'Resampling method'|i18n}}">
-        <select ng-model="globals.data.images.resampling_method" id="globals_form.image_resampling_method">
+        <select ng-model="globals.data.image.resampling_method" id="globals_form.image_resampling_method">
             <option value="nearest">Nearest</option>
             <option value="bilinear">Bilinear</option>
             <option value="bicubic">Bicubic</option>
@@ -40,8 +40,8 @@
     </div>
 </script>
 <div ng-controller="MapproxyGlobalsFormCtrl">
-    <h3 ng-show="globals._manual || _editarea.visible">{{'Globals'|i18n}}</h3>
-    <form name="globals_form" novalidate ng-show="!_editarea.visible">
+    <h3 ng-show="globals._manual || editareaBinds.visible">{{'Globals'|i18n}}</h3>
+    <form name="globals_form" novalidate ng-show="!editareaBinds.visible">
         <div ng-include src="template"></div>
 
         <button class="btn btn-small" ng-click="save($event)" ng-disabled="!globals_form.$valid" id="globals_form_save">{{'Save'|i18n}}</button>
@@ -55,8 +55,8 @@
             <p>{{errorMsg}}</p>
         </span>
     </form>
-    <hr ng-show="!_editarea.visible">
-    <div editarea editarea-value="{{globals}}" yaml-URL="/yaml" json-URL="/json"></div>
+    <hr ng-show="!editareaBinds.visible">
+    <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json"></div>
 </div>
 %end
 
