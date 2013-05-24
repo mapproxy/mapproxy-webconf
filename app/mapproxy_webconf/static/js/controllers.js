@@ -429,7 +429,7 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         cache = angular.copy(cache);
         var named = [];
         angular.forEach(cache.data.sources, function(id) {
-            var sourceName = MapproxySources.nameById(id);
+            var sourceName = MapproxySources.nameById(id) || MapproxyCaches.nameById(id);
             named.push(sourceName ? sourceName : id);
         });
         cache.data.sources = named;
@@ -451,7 +451,7 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         cache.data.sources = ids;
         ids = [];
         angular.forEach(cache.data.grids, function(name) {
-            var gridId = MapproxyGrids.idByName(name);
+            var gridId = MapproxyGrids.idByName(name) || MapproxyCaches.idByName(name);
             ids.push(gridId ? gridId : name);
         });
         cache.data.grids = ids;
@@ -459,6 +459,9 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
     };
     $scope.prepareForEditarea = function(cache) {
         return $scope.replaceIdsWithNames($.extend(true, {'data': {'name': ''}}, cache));
+    };
+    $scope.checkName = function(callback, new_item) {
+        callback($scope.cache.data.name !== new_item.data.name)
     };
     $scope.addCache = function(event) {
         if(angular.isDefined(event)) {
@@ -492,7 +495,7 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         $scope.cache_form.$setPristine();
     };
     $scope.showName = function(_id) {
-        var name = MapproxySources.nameById(_id);
+        var name = MapproxySources.nameById(_id) || MapproxyCaches.nameById(_id);
         return name ? name : _id;
     };
     $scope.exist = function(name, id) {

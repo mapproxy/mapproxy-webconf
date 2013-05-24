@@ -55,7 +55,8 @@
             droppable
             sortable
             required
-            accepts="mapproxy_source"
+            accepts="mapproxy_source,mapproxy_cache"
+            insert-callback="checkName(callback, new_item)"
             allow-array="true"
             ng-model="cache.data.sources"
             name="cache_form.sources"
@@ -99,8 +100,10 @@
 %end
 
 %def rightblock():
-<div ng-controller="MapproxySourceListCtrl">
+<div>
+  <span ng-controller="MapproxySourceListCtrl">
     <h3>{{'Sources'|i18n}}</h3>
+    <span message-handler="error" message-types="sources.load_error"></span>
     <div>
       <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
       <br>
@@ -117,7 +120,29 @@
       </div>
     </ul>
     <span ng-show="false">{{filtered.length}}</span>
-    <span message-handler="error" message-types="sources.load_error"></span>
+  </span>
+  <hr>
+  <span ng-controller="MapproxyCacheListCtrl">
+    <h3>{{'Caches'|i18n}}</h3>
+    <span message-handler="error" message-types="caches.load_error"></span>
+    <div>
+      <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
+      <br>
+      <span ng-show="mapproxy_caches.length - filtered.length" ng-click="search=''">{{'Not shown caches'|i18n}}: {{mapproxy_caches.length - filtered.length}}</span>
+    </div>
+    <ul class="vertical-list">
+      <hr>
+      <div
+        draggable
+        class="mapproxy_cache"
+        ng-repeat="cache in filtered = (mapproxy_caches | filter:{data.name:search}) | orderBy:'name'"
+        item-data="{{cache}}">
+        <li class="droppable_name">{{cache.data.name}}</li>
+        <hr>
+      </div>
+    </ul>
+    <span ng-show="false">{{filtered.length}}</span>
+  </span>
 </div>
 %end
 
