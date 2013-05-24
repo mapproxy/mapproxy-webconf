@@ -36,11 +36,7 @@
                 <i class='icon-ok'></i>
                 <strong>{{'Saved successfully'|i18n}}</strong>
             </span>
-            <span class='text-error' id='editarea_error' ng-show='false'>
-                <br>
-                <i class='icon-thumbs-down'></i>
-                {{editareaErrorMsg}}
-            </span>
+            <span message-handler message-types="editarea.error"></span>
         </div>
     </div>
 </div>

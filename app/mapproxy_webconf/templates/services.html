@@ -62,11 +62,7 @@
                 <i class="icon-ok"></i>
                 <strong>{{'Saved successfully'|i18n}}</strong>
             </span>
-            <span class="text-error" id="services_service_error" ng-show="false">
-                <i class="icon-thumbs-down"></i>
-                <strong>{{'An error occured'|i18n}}</strong>
-                <p>{{errorMsg}}</p>
-            </span>
+            <span message-handler message-types="services.form_error"></span>
         </form>
     </div>
 %end

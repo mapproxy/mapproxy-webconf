@@ -5,11 +5,7 @@
       {{'Create new cache'|i18n}}</button>
 
     <h3>{{'Cache'|i18n}}</h3>
-    <span class="text-error" id="cachelist_service_error" ng-show="false">
-      <i class="icon-thumbs-down"></i>
-      <strong>{{'An error occured'|i18n}}</strong>
-      <p>{{cachelistErrorMsg}}</p>
-    </span>
+    <span message-handler message-types="caches.load_error,chaches.delete_error"></span>
     <div>
       <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
       <br>
@@ -85,12 +81,7 @@
         <i class="icon-ok"></i>
          <strong>{{'Saved successfully'|i18n}}</strong>
       </span>
-      <span class="text-error" id="cacheform_service_error" ng-show="false">
-        <br>
-        <i class="icon-thumbs-down"></i>
-        <strong>{{'An error occured'|i18n}}</strong>
-        <p>{{cacheformErrorMsg}}</p>
-      </span>
+      <span message-handler message-types="caches.add_error,caches.update_error,caches.form_error"></span>
     </div>
   </form>
   <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
@@ -116,11 +107,7 @@
       </div>
     </ul>
     <span ng-show="false">{{filtered.length}}</span>
-    <span class="text-error" id="sourcelist_service_error" ng-show="false">
-      <i class="icon-thumbs-down"></i>
-      <strong>{{'An error occured'|i18n}}</strong>
-      <p>{{sourcelistErrorMsg}}</p>
-    </span>
+    <span message-handler message-types="sources.load_error"></span>
 </div>
 %end
 

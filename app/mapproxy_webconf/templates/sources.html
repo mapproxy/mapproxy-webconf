@@ -12,7 +12,7 @@
     <strong>{{'An error occured'|i18n}}</strong>
     <p>{{sourcelistErrorMsg}}</p>
   </span>-->
-  <span message-handler message-type="sources_error"></span>
+  <span message-handler message-types="sources.load_error,sources.delete_error"></span>
   <div>
     <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
     <br>
@@ -133,12 +133,7 @@
             <i class="icon-ok"></i>
             <strong>{{'Saved successfully'|i18n}}</strong>
           </span>
-          <span class="text-error" id="sourceform_service_error" ng-show="false">
-            <br>
-            <i class="icon-thumbs-down"></i>
-            <strong>{{'Saving failed'|i18n}}</strong>
-            {{sourceformErrorMsg}}
-          </span>
+          <span message-handler message-types="sources.add_error,sources.update_error,sources.form_error"></span>
         </div>
       </fieldset>
     </form>
@@ -211,11 +206,7 @@
           </span>
         </div>
         <div>
-          <span class="text-error" id="capabilities_service_error" ng-show="false">
-            <i class="icon-thumbs-down"></i>
-            <strong>{{'An error occured'|i18n}}</strong>
-            <p>{{treeErrorMsg}}</p>
-          </span>
+          <span message-handler message-types="wms_capabilities.load_error,wms_capabilities.add_error,wms_capabilities.update_error,wms_capabilities.delete_error"></span>
         </div>
     </form>
 </div>

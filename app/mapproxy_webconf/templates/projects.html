@@ -43,12 +43,7 @@
               <i class="icon-ok"></i>
               <strong>{{'Saved successfully'|i18n}}</strong>
             </span>
-            <span class="text-error" id="defaultsform_service_error" ng-show="false">
-              <br>
-              <i class="icon-thumbs-down"></i>
-              <strong>{{'Saving failed'|i18n}}</strong>
-              {{sourceformErrorMsg}}
-            </span>
+            <span message-handler message-types="defaults.load_error,defaults.add_error,defaults.update_error,defaults.form_error"></span>
           </div>
         </form>
       </div>

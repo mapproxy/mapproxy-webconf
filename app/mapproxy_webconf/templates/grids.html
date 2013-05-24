@@ -22,11 +22,7 @@
       {{'Create new grid'|i18n}}</button>
 
     <h3>{{'User defined grids'|i18n}}</h3>
-    <span class="text-error" id="gridlist_service_error" ng-show="false">
-      <i class="icon-thumbs-down"></i>
-      <strong>{{'An error occured'|i18n}}</strong>
-      <p>{{gridlistErrorMsg}}</p>
-    </span>
+    <span message-handler message-types="grids.load_error,grids.delete_error"></span>
     <div>
       <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
       <br>
@@ -110,12 +106,7 @@
             <i class="icon-ok"></i>
             <strong>{{'Saved successfully'|i18n}}</strong>
           </span>
-          <span class="text-error" id="gridform_service_error" ng-show="false">
-            <br>
-            <i class="icon-thumbs-down"></i>
-            <strong>{{'Saving failed'|i18n}}</strong>
-            <p>{{gridformErrorMsg}}</p>
-          </span>
+          <span message-handler message-types="grids.add_error,grid.update_error,grids.form_error"></span>
         </div>
     </form>
   </div>

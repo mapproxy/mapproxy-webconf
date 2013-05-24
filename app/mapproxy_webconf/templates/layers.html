@@ -7,11 +7,7 @@
   <button class="btn btn-small pull-right" id="layer_list_save" ng-click="updateLayerTree()" style="margin-right:1em;" ng-disabled="!listChanged()">{{'Save'|i18n}}</button>
 
   <h3>{{'Layer'|i18n}}</h3>
-  <span class="text-error" id="layerlist_service_error" ng-show="false">
-    <i class="icon-thumbs-down"></i>
-    <strong>{{'An error occured'|i18n}}</strong>
-    <p>{{layerlistErrorMsg}}</p>
-  </span>
+  <span message-handler message-types="layers.load_error,layers.delete_error"></span>
   <div>
     <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
     <br>
@@ -114,12 +110,7 @@
         <i class="icon-ok"></i>
         <strong>{{'Saved successfully'|i18n}}</strong>
       </span>
-      <span class="text-error" id="layerform_service_error" ng-show="false">
-        <br>
-        <i class="icon-thumbs-down"></i>
-        <strong>{{'Saving failed'|i18n}}</strong>
-        <p>{{layerformErrorMsg}}</p>
-      </span>
+      <span message-handler message-types="layers.add_error,layers.update_error,layers.form_error"></span>
     </div>
   </form>
   <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
@@ -130,11 +121,7 @@
   <div>
     <span ng-controller="MapproxySourceListCtrl">
       <h3>{{'Sources'|i18n}}</h3>
-      <span class="text-error" id="sourcelist_service_error" ng-show="false">
-        <i class="icon-thumbs-down"></i>
-        <strong>{{'An error occured'|i18n}}</strong>
-        <p>{{sourcelistErrorMsg}}</p>
-      </span>
+      <span message-handler message-types="sources_error"></span>
       <div>
         <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
         <br>
@@ -156,11 +143,7 @@
     <hr>
     <span ng-controller="MapproxyCacheListCtrl">
       <h3>{{'Caches'|i18n}}</h3>
-      <span class="text-error" id="cachelist_service_error" ng-show="false">
-        <i class="icon-thumbs-down"></i>
-        <strong>{{'An error occured'|i18n}}</strong>
-        <p>{{cachelistErrorMsg}}</p>
-      </span>
+      <span message-handler message-types="caches_error"></span>
       <div>
         <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
         <br>

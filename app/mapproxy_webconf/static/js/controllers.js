@@ -57,7 +57,7 @@ function TreeCtrl($scope, localize, WMSSources) {
     $scope.capabilities = {};
 };
 
-function MapproxySourceListCtrl($scope, localize, MapproxySources, MessageService) {
+function MapproxySourceListCtrl($scope, localize, MapproxySources) {
     var DEFAULT_SOURCE = {'data': {"type": "wms", "req": {}, "coverage": {}, "supported_srs": []}};
     var refreshList = function() {
         $scope.mapproxy_sources = MapproxySources.list();
@@ -135,13 +135,9 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources, MessageServic
     $scope.$on('sources.delete_error', errorHandler);
 };
 
-function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, ProjectDefaults) {
+function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, ProjectDefaults, MessageService) {
     var DEFAULT_SOURCE = {"data": {"type": "wms", "req": {}, "coverage": {}}};
 
-    var errorHandler = function() {
-        $scope.sourceformErrorMsg = MapproxySources.error();
-        $('#sourceform_service_error').show().fadeOut(3000);
-    };
     $scope.prepareForEditarea = function(source) {
         return $.extend(true, {'data': {'name': ""}}, source);
     };
@@ -239,11 +235,11 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
             errorMsg = localize.getLocalizedString("Name already exists.");
         }
         if(errorMsg) {
-            if($scope._editarea.visible) {
-                $scope._editarea.showErrorMsg(errorMsg);
+            if($scope.editareaBinds.visible) {
+                MessageService.message('editarea', 'error', errorMsg);
+                $scope.editareaBinds.save = false;
             } else {
-                $scope.sourceformErrorMsg = errorMsg;
-                $('#sourceform_service_error').show().fadeOut(3000);
+                MessageService.message('sources', 'form_error', errorMsg);
             }
         } else {
             if($scope.editareaBinds.visible) {
@@ -369,8 +365,6 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
             }
         }
     });
-    $scope.$on('sources.add_error', errorHandler);
-    $scope.$on('sources.update_error', errorHandler);
 
     $scope.$watch('source', function() {
             $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.source);
@@ -396,10 +390,6 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches) {
     var DEFAULT_CACHE = {'data': {'meta_size': [null, null]}};
     var refreshList = function() {
         $scope.mapproxy_caches = MapproxyCaches.list();
-    };
-    var errorHandler = function() {
-        $scope.cachelistErrorMsg = MapproxyCaches.error();
-        $('#cachelist_service_error').show().fadeOut(3000);
     };
     $scope.isSelected = function(cache) {
         var class_;
@@ -464,20 +454,14 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches) {
         refreshList();
         MapproxyCaches.current(true, DEFAULT_CACHE);
     });
-    $scope.$on('caches.load_error', errorHandler);
-    $scope.$on('caches.update_error', errorHandler);
-    $scope.$on('caches.delete_error', errorHandler);
 };
 
-function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches, MapproxyGrids) {
+function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches, MapproxyGrids, MessageService) {
     var DEFAULT_CACHE = {'data': {'meta_size': [null, null]}};
     var refreshGrids = function() {
         $scope.available_grids = MapproxyGrids.list();
     };
-    var errorHandler = function() {
-        $scope.cacheformErrorMsg = MapproxyCaches.error();
-        $('#cacheform_service_error').show().fadeOut(3000);
-    };
+
     $scope.replaceIdsWithNames = function(cache) {
         cache = angular.copy(cache);
         var named = [];
@@ -527,11 +511,11 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
             errorMsg = localize.getLocalizedString("Name already exists.");
         }
         if(errorMsg) {
-            if($scope._editarea.visible) {
-                $scope._editarea.showErrorMsg(errorMsg);
+            if($scope.editareaBinds.visible) {
+                MessageService.message('editarea', 'error', errorMsg);
+                $scope.editareaBinds.save = false;
             } else {
-                $scope.cacheformErrorMsg = errorMsg;
-                $('#cacheform_service_error').show().fadeOut(3000);
+                MessageService.message('caches', 'form_error', errorMsg);
             }
         } else {
             if($scope.editareaBinds.visible) {
@@ -594,18 +578,6 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
 
     $scope.$on('grids.load_complete', refreshGrids);
 
-    $scope.$on('caches.add_error', errorHandler);
-    $scope.$on('caches.update_error', errorHandler);
-    $scope.$on('grids.load_error', function() {
-        $scope.cacheformErrorMsg = MapproxyGrids.error();
-        $('#cacheform_service_error').show().fadeOut(3000);
-    });
-
-    $scope.$on('editarea.save', function(scope, cache) {
-        $scope.cache = $scope.prepareForEditarea(cache);
-        $scope.addCache();
-    });
-
     $scope.$watch('editareaBinds.save', function(save) {
         if(save) {
             $scope.cache = $scope.editareaBinds.editareaValue;
@@ -645,10 +617,6 @@ function MapproxyGridListCtrl($scope, MapproxyGrids) {
                 $scope.mapproxy_grids.push(grid);
             }
         });
-    };
-    var errorHandler = function() {
-        $scope.gridlistErrorMsg = MapproxyGrids.error();
-        $('#gridlist_service_error').show().fadeOut(3000);
     };
     $scope.isSelected = function(grid) {
         var class_;
@@ -713,16 +681,10 @@ function MapproxyGridListCtrl($scope, MapproxyGrids) {
         refreshList();
         MapproxyGrids.current(true, DEFAULT_GRID);
     });
-    $scope.$on('grids.load_error', errorHandler);
-    $scope.$on('grids.delete_error', errorHandler);
 };
 
-function MapproxyGridFormCtrl($scope, localize, MapproxyGrids) {
+function MapproxyGridFormCtrl($scope, localize, MapproxyGrids, MessageService) {
     var DEFAULT_GRID = {'data': {'bbox': [null, null, null, null]}};
-    var errorHandler = function() {
-        $scope.gridformErrorMsg = MapproxyGrids.error();
-        $('#gridform_service_error').show().fadeOut(3000);
-    };
     $scope.prepareForEditarea = function(data) {
         return $.extend(true, {'data': {'name': ""}}, data);
     };
@@ -740,11 +702,11 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids) {
             errorMsg = localize.getLocalizedString("Name already exists.");
         }
         if(errorMsg) {
-            if($scope._editarea.visible) {
-                $scope._editarea.showErrorMsg(errorMsg);
+            if($scope.editareaBinds.visible) {
+                MessageService.message('editarea', 'error', errorMsg);
+                $scope.editareaBinds.save = false;
             } else {
-                $scope.gridformErrorMsg = errorMsg;
-                $('#gridform_service_error').show().fadeOut(3000);
+                MessageService.message('grids', 'form_error', errorMsg);
             }
         } else {
             if($scope.editareaBinds.visible) {
@@ -810,8 +772,6 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids) {
     $scope.$on('grids.updated', function() {
        $('.save_ok').show().fadeOut(3000);
     });
-    $scope.$on('grids.add_error', errorHandler);
-    $scope.$on('grids.update_error', errorHandler);
 
     $scope.$watch('editareaBinds.save', function(save) {
         if(save) {
@@ -845,10 +805,6 @@ function MapproxyLayerListCtrl($scope, localize, MapproxyLayers) {
     var DEFAULT_LAYER = {'data': {}};
     var refreshTree = function() {
         $scope.mapproxy_layers = MapproxyLayers.tree();
-    };
-    var errorHandler = function() {
-        $scope.layerlistErrorMsg = MapproxyLayers.error();
-        $('#layerlist_service_error').show().fadeOut(3000);
     };
     $scope.isSelected = function(layer) {
         var class_;
@@ -894,9 +850,6 @@ function MapproxyLayerListCtrl($scope, localize, MapproxyLayers) {
     $scope.$on('layers.updatedStructure', function() {
         $('.list_save_ok').show().fadeOut(3000);
     });
-    $scope.$on('layers.load_error', errorHandler);
-    $scope.$on('layers.delete_error', errorHandler);
-    $scope.$on('layers.updateStructure_error', errorHandler);
 
     $scope.$watch('_listChanged', function(changed) {
         if(changed) {
@@ -913,12 +866,9 @@ function MapproxyLayerListCtrl($scope, localize, MapproxyLayers) {
     });
 };
 
-function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches, MapproxyLayers) {
+function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches, MapproxyLayers, MessageService) {
     var DEFAULT_LAYER = {'data': {}};
-    var errorHandler = function() {
-        $scope.layerformErrorMsg = MapproxyLayers.error();
-        $('#layerform_service_error').show().fadeOut(3000);
-    };
+
     $scope.replaceIdsWithNames = function(layer) {
         layer = angular.copy(layer);
         var names = [];
@@ -957,11 +907,11 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
             errorMsg = localize.getLocalizedString("Name already exists.");
         }
         if(errorMsg) {
-            if($scope._editarea.visible) {
-                $scope._editarea.showErrorMsg(errorMsg);
+            if($scope.editareaBinds.visible) {
+                MessageService.message('editarea', 'error', errorMsg);
+                $scope.editareaBinds.save = false;
             } else {
-                $scope.layerformErrorMsg = errorMsg;
-                $('#layerform_service_error').show().fadeOut(3000);
+                MessageService.message('layers', 'form_error', errorMsg);
             }
         } else {
             if($scope.editareaBinds.visible) {
@@ -1027,8 +977,6 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
     $scope.$on('layers.updated', function() {
         $('.save_ok').show().fadeOut(3000);
     });
-    $scope.$on('layers.add_error', errorHandler);
-    $scope.$on('layers.update_error', errorHandler);
 
     $scope.$watch('editareaBinds.save', function(save) {
         if(save) {
@@ -1096,15 +1044,14 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareSer
     var setTemplate = function() {
         $scope.template = DataShareService.data('global');
     };
-    var errorHandler = function() {
-        $scope.errorMsg = MapproxyGlobals.error();
-        $('#globals_service_error').show().fadeOut(3000);
-    };
     $scope.save = function(event) {
         if(angular.isDefined(event)) {
             event.preventDefault();
         }
         $scope.globals = clearData($scope.globals);
+        if($scope.editareaBinds.visible) {
+            $scope.global._manual = true;
+        }
         MapproxyGlobals.add($scope.globals);
         $scope.globals_form.$setPristine();
         $scope.editareaBinds.dirty = false;
@@ -1140,9 +1087,6 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareSer
         setGlobals();
     });
     $scope.$on('dss.global', setTemplate);
-    $scope.$on('globals.load_error', errorHandler);
-    $scope.$on('globals.add_error', errorHandler);
-    $scope.$on('globals.update_error', errorHandler);
 
     $scope.$watch('editareaBinds.save', function(save) {
         if(save) {
@@ -1206,10 +1150,7 @@ function MapproxyServicesCtrl($scope, localize, MapproxyServices, DataShareServi
     var setTemplate = function() {
         $scope.template = DataShareService.data('service');
     };
-    var errorHandler = function() {
-        $scope.errorMsg = MapproxyServices.error();
-        $('#services_service_error').show().fadeOut(3000);
-    };
+
     $scope.save = function(event) {
         if(angular.isDefined(event)) {
             event.preventDefault();
@@ -1241,9 +1182,6 @@ function MapproxyServicesCtrl($scope, localize, MapproxyServices, DataShareServi
         setServices();
     });
     $scope.$on('dss.service', setTemplate);
-    $scope.$on('services.load_error', errorHandler);
-    $scope.$on('services.add_error', errorHandler);
-    $scope.$on('services.update_error', errorHandler);
 
     $scope.$watch('services_form.$valid', function(formValid) {
         if(formValid) {
@@ -1321,10 +1259,6 @@ function ProjectDefaultsCtrl($scope, ProjectDefaults) {
             $scope.defaults = $.extend($scope.defaults, defaults[0]);
         }
     };
-    var errorHandler = function() {
-        $scope.errorMsg = ProjectDefaults.error();
-        $('defaultsform_service_error').show().fadeOut(3000);
-    };
     $scope.save = function(event) {
         if(angular.isDefined(event)) {
             event.preventDefault();
@@ -1350,10 +1284,6 @@ function ProjectDefaultsCtrl($scope, ProjectDefaults) {
     $scope.defaults = {'data': {'srs': []}};
     $scope.custom = {};
     $scope.custom.newSRS;
-
-    $scope.$on('defaults.load_error', errorHandler);
-    $scope.$on('defaults.add_error', errorHandler);
-    $scope.$on('defaults.update_error', errorHandler);
 
     $scope.$on('defaults.load_complete', setDefaults);
     $scope.$on('defaults.added', function() {
