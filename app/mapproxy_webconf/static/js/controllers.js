@@ -246,6 +246,9 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
                 $('#sourceform_service_error').show().fadeOut(3000);
             }
         } else {
+            if($scope.editareaBinds.visible) {
+                $scope.source._manual = true;
+            }
             MapproxySources.add($scope.source);
             $scope.formTitle = 'Edit source';
             $scope.source_form.$setPristine();
@@ -531,6 +534,9 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
                 $('#cacheform_service_error').show().fadeOut(3000);
             }
         } else {
+            if($scope.editareaBinds.visible) {
+                $scope.cache._manual = true;
+            }
             MapproxyCaches.add($scope.cache);
             $scope.formTitle = 'Edit cache';
             $scope.cache_form.$setPristine();
@@ -741,6 +747,9 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids) {
                 $('#gridform_service_error').show().fadeOut(3000);
             }
         } else {
+            if($scope.editareaBinds.visible) {
+                $scope.grid._manual = true;
+            }
             MapproxyGrids.add($scope.grid);
             $scope.formTitle = 'Edit grid';
             $scope.grid_form.$setPristine();
@@ -955,6 +964,9 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
                 $('#layerform_service_error').show().fadeOut(3000);
             }
         } else {
+            if($scope.editareaBinds.visible) {
+                $scope.layer._manual = true;
+            }
             MapproxyLayers.add($scope.layer);
             $scope.formTitle = 'Edit layer';
             $scope.layer_form.$setPristine();

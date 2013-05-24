@@ -456,7 +456,6 @@ directive('editarea', function($http) {
                 $http.post(jsonURL, {"yaml": yaml})
                     .success(function(json) {
                         scope.editareaBinds.editareaValue.data = json;
-                        scope.editareaBinds.editareaValue._manual = true;
                         scope.editareaBinds.save = true;
                     })
                     .error(errorHandler);
