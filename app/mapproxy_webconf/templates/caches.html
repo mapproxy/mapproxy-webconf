@@ -68,8 +68,21 @@
         </div>
     </div>
     <div labeled="input_label" name-for="cache_form.grids" text="{{'Grids'|i18n}}">
-        <select class="input-xlarge" ng-model="cache.data.grids" id="cache_form.grids" multiple="multiple" ng-options="value._id as value.data.name for value in available_grids"/>
-        </select>
+      <select class="input-xlarge" ng-model="cache.data.grids" id="cache_form.grids" multiple="multiple" ng-options="value._id as value.data.name for value in available_grids"/>
+      </select>
+    </div>
+    <div labeled="input_label" name-for="cache_form.format" text="{{'Format'|i18n}}">
+      <select class="input-xlarge" ng-model="cache.data.format" id="cache_form.format">
+        <option value="mixed">Mixed</option>
+        <option value="image/png">Image/PNG</option>
+        <option value="image/jpeg">Image/JPEG</option>
+      </select>
+    </div>
+    <div labeled="input_label" name-for="cache_form.request_format" text="{{'Request format'|i18n}}">
+      <select class="input-xlarge" ng-model="cache.data.request_format" id="cache_form.request_format">
+        <option value="image/png">Image/PNG</option>
+        <option value="image/jpeg">Image/JPEG</option>
+      </select>
     </div>
     <div class="text-center">
       <span id="_editarea_toggle_button_container"></span>

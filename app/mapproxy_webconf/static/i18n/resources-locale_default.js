@@ -476,6 +476,13 @@
     {
         "key": "DPI",
         "value": "DPI"
+    },
+    {
+        "key": "Format",
+        "value": "Format"
+    },
+    {
+        "key": "Request format",
+        "value": "Request Format"
     }
-
 ]
