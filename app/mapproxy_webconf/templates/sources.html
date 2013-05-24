@@ -176,7 +176,7 @@
             </div>
         </div>
     </div>
-    <div message-handler="success" message-types="wms_capabilites.delete_success,wms_capabilities.update_success"></div>
+    <div message-handler="success" message-types="wms_capabilities.delete_success,wms_capabilities.update_success"></div>
     <div message-handler="error" message-types="wms_capabilities.load_error,wms_capabilities.delete_error,wms_capabilities.update_error"></div>
     <hr>
     <form name="capabilities_form" novalidate>
@@ -184,7 +184,7 @@
             <input type="url" required name="capabilities_url" ng-model="capabilities.url" id="addCapabilities" unique="{{wms_urls}}">
             <button class="btn" ng-click="addCapabilities()" ng-disabled="!capabilities_form.$valid">{{'Add'|i18n}}</button>
         </div>
-        <div message-handler="success" message-types="wms_capabilites.add_success"></div>
+        <div message-handler="success" message-types="wms_capabilities.add_success"></div>
         <div message-handler="error" message-types="wms_capabilities.add_error"></div>
     </form>
 </div>

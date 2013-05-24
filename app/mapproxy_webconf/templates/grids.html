@@ -2,8 +2,6 @@
   <div ng-controller="MapproxyGridListCtrl">
 
     <h3>{{'Default grids'|i18n}}</h3>
-    <span message-handler="success" message-types="grids.delete_success"></span>
-    <span message-handler="error" message-types="grids.load_error,grids.delete_error"></span>
      <ul class="vertical-list">
       <hr>
        <div class="{{isSelected(grid)}}" ng-repeat="grid in default_grids | orderBy:'name'"
@@ -19,6 +17,7 @@
       {{'Create new grid'|i18n}}</button>
 
     <h3>{{'User defined grids'|i18n}}</h3>
+    <span message-handler="success" message-types="grids.delete_success"></span>
     <span message-handler="error" message-types="grids.load_error,grids.delete_error"></span>
     <div>
       <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
@@ -106,8 +105,8 @@
   </div>
   <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
   <div class="text-center">
-    <span message-handler="success" message-types="grids.add_success,grid.update_success"></span>
-    <span message-handler="error" message-types="grids.add_error,grid.update_error,grids.form_error"></span>
+    <span message-handler="success" message-types="grids.add_success,grids.update_success"></span>
+    <span message-handler="error" message-types="grids.add_error,grids.update_error,grids.form_error"></span>
   </div>
 </div>
 %end
