@@ -31,6 +31,10 @@ textarea {
     color: white;
 }
 
+textarea.input-xlarge {
+    width: 97%;
+}
+
 /* boostrap 2 has not the possiblity to change the height of input fields - this feature comes in bootstrap 3 */
 input[type="text"],
 input[type="password"],
@@ -224,9 +228,15 @@ input.droppable-active, div.droppable-active {
     border: 1px solid red;
 }
 
-.ol_map {
-    background-color: #fff;
+.badge .icon-remove {
+    cursor: pointer;
+    opacity: 0.5;
 }
+.badge .icon-remove:hover {
+    opacity: 0.9;
+}
+
+/* map */
 
 .map-icon-remove {
     position: absolute;
