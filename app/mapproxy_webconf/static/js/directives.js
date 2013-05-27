@@ -311,7 +311,7 @@ directive('toggleElement', function() {
         link: function(scope, element, attrs, toggleGroupCTRL) {
             toggleGroupCTRL.addElement(element);
             $(element).click(function() {
-                toggleGroupCTRL.getToggleFunc()(element);
+                toggleGroupCTRL.getToggleFunc()(element, scope.$index);
             });
         }
     }
@@ -637,7 +637,7 @@ directive('messageHandler', function($templateCache, MessageService) {
 // used by toggleGroup
 var toggleGroupCtrl = function($scope, $element) {
     var toggle_elements = [];
-
+    var openElements = [];
     var toToggle = function(element) {
         switch(element.attr('toggle-element')) {
             case 'next':
@@ -655,13 +655,21 @@ var toggleGroupCtrl = function($scope, $element) {
         return toggle_elements.length;
     };
 
-    this.multiShow = function(element) {
-        toToggle(element).toggle();
+    this.multiShow = function(element, index) {
+        if(toToggle(element).toggle().css('display') != 'none') {
+            openElements.push(index);
+        } else {
+            var idx = $.inArray(index, openElements);
+            if(idx != -1) {
+                openElements.splice(idx, 1);
+            }
+        }
     };
-    this.hideOther = function(element) {
+    this.hideOther = function(element, index) {
         angular.forEach(toggle_elements, function(t_element) {
             if (t_element == element) {
                 toToggle(t_element).show();
+                openElements = [index];
             } else {
                 toToggle(t_element).hide();
             }
@@ -675,6 +683,13 @@ var toggleGroupCtrl = function($scope, $element) {
             case 'hideOther':
             default:
                 return this.hideOther;
+        }
+    };
+    $scope.isOpen = function() {
+        if(openElements.length == 0) {
+            return this.$first;
+        } else {
+            return ($.inArray(this.$index, openElements) != -1)
         }
     };
 }

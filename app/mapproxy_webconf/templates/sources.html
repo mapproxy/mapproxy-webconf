@@ -170,7 +170,7 @@
         <i class="icon-refresh"  ng-click="refreshCapabilities($event, wms)"></i>
         <i class="icon-remove" dialog="ask" dialog-title="{{'Confirm!'|i18n}}" dialog-text="{{'Really remove WMS:'|i18n}} {{wms.data.title}}?" callback="removeCapabilities(wms)"></i>
       </div>
-      <div class="accordion-body" ng-show="$first">
+      <div class="accordion-body" ng-show="isOpen()">
         <div class="accordion-inner">
           <h6>{{'Infos'|i18n}}</h6>
           <div class="accordion_wms_source wms_source" draggable item-data="{{wms}}">
