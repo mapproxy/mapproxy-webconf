@@ -25,4 +25,10 @@
   </div>
 % end
 
-%rebase base content=content, projects=get('projects')
+%def site_navbar():
+  <h2 class="pull-left tab-menu-header">
+    {{'Projects'|i18n}}
+  </h2>
+% end
+
+%rebase base content=content, site_navbar=site_navbar, projects=get('projects')
