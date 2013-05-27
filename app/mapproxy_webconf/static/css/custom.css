@@ -131,10 +131,6 @@ ul.vertical-list div.selected li i.icon-remove {
     opacity: 0.9;
 }
 
-/*ul.vertical-list div.mapproxy_source, ul.vertical-list div.mapproxy_cache  {
-    width: 300px;
-}*/
-
 .insertable-list {
     min-height:10em;
     cursor: default;
