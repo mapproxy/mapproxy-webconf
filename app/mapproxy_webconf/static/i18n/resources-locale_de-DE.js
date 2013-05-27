@@ -316,8 +316,16 @@
         "value": "Speichern fehlgeschlagen"
     },
     {
-        "key": "Name already exists.",
-        "value": "Der angegebene Name existiert bereits."
+        "key": "Name already exists in sources",
+        "value": "Für den angegebenen Namen existiert bereits eine Source"
+    },
+    {
+        "key": "Name already exists in caches",
+        "value": "Für den angegebenen Namen existiert bereits ein Cache"
+    },
+    {
+        "key": "Name already exists in grids",
+        "value": "Für den angegebenen Namen existiert bereits ein Grid"
     },
     {
         "key": "Coverage BBOX",

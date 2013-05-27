@@ -134,7 +134,7 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources, MessageServic
     }, true);
 };
 
-function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, ProjectDefaults, MessageService) {
+function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, ProjectDefaults, MessageService, MapproxyCaches, MapproxyGrids, MapproxyLayers) {
     var DEFAULT_SOURCE = {"data": {"type": "wms", "req": {}, "coverage": {}}};
 
     $scope.prepareForEditarea = function(source) {
@@ -230,8 +230,16 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
         var errorMsg = false;
         if(angular.isUndefined($scope.source.data.name)) {
             errorMsg = localize.getLocalizedString("Name required.");
-        } else if($scope.exist($scope.source.data.name, $scope.source._id)) {
-            errorMsg = localize.getLocalizedString("Name already exists.");
+        } else {
+            //found is the section of element with $scope.source.data.name if found
+            var found = nameExistInService(
+                $scope.source.data.name,
+                $scope.source._id,
+                MapproxySources,
+                [MapproxySources, MapproxyCaches, MapproxyGrids, MapproxyLayers]);
+            if(found) {
+                errorMsg = localize.getLocalizedString('Name already exists in ' + found)
+            }
         }
         if(errorMsg) {
             MessageService.message('sources', 'form_error', errorMsg);
@@ -296,15 +304,6 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
         if(supportedSRSID !== -1) {
             $scope.source.data.supported_srs.splice(supportedSRSID, 1);
         }
-    };
-    $scope.exist = function(name, id) {
-        var source = MapproxySources.byName(name);
-        if(source == false) {
-            return false;
-        } else if(source._id == id) {
-            return false;
-        }
-        return true;
     };
     $scope.layerTitle = function(layer) {
         return WMSSources.layerTitle($scope.source.data.req.url, layer);
@@ -451,7 +450,7 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches, MessageService) {
     });
 };
 
-function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches, MapproxyGrids, MessageService) {
+function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches, MapproxyGrids, MessageService, MapproxyLayers) {
     var DEFAULT_CACHE = {'data': {'meta_size': [null, null]}};
     var refreshGrids = function() {
         $scope.available_grids = MapproxyGrids.list();
@@ -505,8 +504,16 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         var errorMsg = false;
         if(angular.isUndefined($scope.cache.data.name)) {
             errorMsg = localize.getLocalizedString("Name required.");
-        } else if($scope.exist($scope.cache.data.name, $scope.cache._id)) {
-            errorMsg = localize.getLocalizedString("Name already exists.");
+        } else {
+            //found is the section of element with $scope.cache.data.name if found
+            var found = nameExistInService(
+                $scope.cache.data.name,
+                $scope.cache._id,
+                MapproxyCaches,
+                [MapproxySources, MapproxyCaches, MapproxyGrids, MapproxyLayers]);
+            if(found) {
+                errorMsg = localize.getLocalizedString('Name already exists in ' + found)
+            }
         }
         if(errorMsg) {
             MessageService.message('caches', 'form_error', errorMsg);
@@ -530,15 +537,6 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         var name = MapproxySources.nameById(_id) || MapproxyCaches.nameById(_id) || MapproxyGrids.nameById(_id);
         return name ? name : _id;
     };
-    $scope.exist = function(name, id) {
-        var cache = MapproxyCaches.byName(name);
-        if(cache == false) {
-            return false;
-        } else if(cache._id == id) {
-            return false;
-        }
-        return true;
-    }
     $scope.cache = angular.copy(DEFAULT_CACHE);
     $scope.formTitle = 'New cache';
 
@@ -676,7 +674,7 @@ function MapproxyGridListCtrl($scope, MapproxyGrids, MessageService) {
     });
 };
 
-function MapproxyGridFormCtrl($scope, localize, MapproxyGrids, MessageService) {
+function MapproxyGridFormCtrl($scope, localize, MapproxyGrids, MapproxyCaches, MapproxySources, MapproxyLayers, MessageService) {
     var DEFAULT_GRID = {'data': {'bbox': [null, null, null, null]}};
     $scope.prepareForEditarea = function(data) {
         return $.extend(true, {'data': {'name': ""}}, data);
@@ -691,8 +689,16 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids, MessageService) {
         var errorMsg = false;
         if(angular.isUndefined($scope.grid.data.name)) {
             errorMsg = localize.getLocalizedString("Name required.");
-        } else if($scope.exist($scope.grid.data.name, $scope.grid._id)) {
-            errorMsg = localize.getLocalizedString("Name already exists.");
+        } else {
+            //found is the section of element with $scope.grid.data.name if found
+            var found = nameExistInService(
+                $scope.grid.data.name,
+                $scope.grid._id,
+                MapproxyGrids,
+                [MapproxySources, MapproxyCaches, MapproxyGrids, MapproxyLayers]);
+            if(found) {
+                errorMsg = localize.getLocalizedString('Name already exists in ' + found)
+            }
         }
         if(errorMsg) {
             MessageService.message('grids', 'form_error', errorMsg);
@@ -711,15 +717,6 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids, MessageService) {
         }
         $scope.grid = MapproxyGrids.current(true);
         $scope.grid_form.$setPristine();
-    };
-    $scope.exist = function(name, id) {
-        var grid = MapproxyGrids.byName(name);
-        if(grid == false) {
-            return false;
-        } else if(grid._id == id) {
-            return false;
-        }
-        return true;
     };
     $scope.grid = angular.copy(DEFAULT_GRID);
     $scope.formTitle = 'New grid';
@@ -843,7 +840,7 @@ function MapproxyLayerListCtrl($scope, localize, MapproxyLayers, MessageService)
     });
 };
 
-function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches, MapproxyLayers, MessageService) {
+function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches, MapproxyLayers, MessageService, MapproxyGrids) {
     var DEFAULT_LAYER = {'data': {}};
 
     $scope.replaceIdsWithNames = function(layer) {
@@ -880,8 +877,16 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         var errorMsg = false;
         if(angular.isUndefined($scope.layer.data.name)) {
             errorMsg = localize.getLocalizedString("Name required.");
-        } else if($scope.exist($scope.layer.data.name, $scope.layer._id)) {
-            errorMsg = localize.getLocalizedString("Name already exists.");
+        } else {
+            //found is the section of element with $scope.layer.data.name if found
+            var found = nameExistInService(
+                $scope.layer.data.name,
+                $scope.layer._id,
+                MapproxyLayers,
+                [MapproxySources, MapproxyCaches, MapproxyGrids, MapproxyLayers]);
+            if(found) {
+                errorMsg = localize.getLocalizedString('Name already exists in ' + found)
+            }
         }
         if(errorMsg) {
             MessageService.message('layers', 'form_error', errorMsg);
@@ -907,15 +912,6 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
     $scope.showName = function(_id) {
         var name = MapproxySources.nameById(_id) || MapproxyCaches.nameById(_id);
         return name ? name : _id;
-    };
-    $scope.exist = function(name, id) {
-        var layer = MapproxyLayers.byName(name);
-        if(layer == false) {
-            return false;
-        } else if(layer._id == id) {
-            return false;
-        }
-        return true;
     };
 
     $scope.layer = angular.copy(DEFAULT_LAYER);

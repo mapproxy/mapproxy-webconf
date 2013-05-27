@@ -43,3 +43,15 @@ var isEmpty = function(item) {
         return item == undefined || item == [] || item == {} || item == null || item == '';
     }
 };
+
+var nameExistInService = function(name, id, service, services) {
+    var found = false;
+    angular.forEach(services, function(_service) {
+        found = found || _service.byName(name);
+    });
+    if(found && (found._section != service.section || found._id != id)) {
+        return found._section;
+    } else {
+        return false;
+    }
+};

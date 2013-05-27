@@ -173,7 +173,8 @@ var MapproxyBaseService = function(_section, _dependencies) {
         nameById: _this.nameById,
         current: _this.current,
         last: _this.last,
-        error: _this.error
+        error: _this.error,
+        section: _this._section
     }
 };
 
