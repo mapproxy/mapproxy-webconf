@@ -260,6 +260,16 @@ div.blockMsg {
     top: 40%;
 }
 
+.olControlLayerSwitcher {
+    width: 27em;
+}
+
+.olControlLayerSwitcher .layersDiv .baseLayersDiv,
+.olControlLayerSwitcher .layersDiv .dataLayersDiv {
+    max-height: 200px;
+    overflow: auto;
+}
+
 
 /* Bootstrap overrides for normal OpenLayers look */
 img.olTileImage,
