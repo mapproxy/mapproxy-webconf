@@ -356,9 +356,6 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
         var defaults = ProjectDefaults.list();
         if(defaults.length > 0) {
             $scope.defaults = defaults[0];
-            if(angular.equals($scope.source, DEFAULT_SOURCE)) {
-                $scope.source.data.supported_srs = angular.copy($scope.defaults.data.srs);
-            }
         }
     });
 
@@ -673,7 +670,7 @@ function MapproxyGridListCtrl($scope, MapproxyGrids, MessageService) {
     });
 };
 
-function MapproxyGridFormCtrl($scope, localize, MapproxyGrids, MapproxyCaches, MapproxySources, MapproxyLayers, MessageService) {
+function MapproxyGridFormCtrl($scope, localize, MapproxyGrids, MapproxyCaches, MapproxySources, MapproxyLayers, MessageService, ProjectDefaults) {
     var DEFAULT_GRID = {'data': {'bbox': [null, null, null, null]}};
     $scope.prepareForEditarea = function(data) {
         return $.extend(true, {'data': {'name': ""}}, data);
@@ -767,6 +764,15 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids, MapproxyCaches, M
             $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.grid);
         }, true
     );
+
+    $scope._messageService = MessageService;
+
+    $scope.$watch('_messageService.messages.defaults.load_success', function() {
+        var defaults = ProjectDefaults.list();
+        if(defaults.length > 0) {
+            $scope.defaults = defaults[0];
+        }
+    });
 
     $(window).on('beforeunload', function() {
         if($scope.grid_form.$dirty || $scope.editareaBinds.dirty) {
@@ -1089,7 +1095,7 @@ function MapproxyServicesChooserCtrl($scope, DataShareService) {
     $scope.selected = 'wms';
 };
 
-function MapproxyServicesCtrl($scope, localize, MapproxyServices, DataShareService, MessageService) {
+function MapproxyServicesCtrl($scope, localize, MapproxyServices, DataShareService, MessageService, ProjectDefaults) {
     var setServices = function() {
         var services = MapproxyServices.list();
         if(services.length > 0) {
@@ -1131,6 +1137,12 @@ function MapproxyServicesCtrl($scope, localize, MapproxyServices, DataShareServi
     $scope.$watch('_messageService.messages.services.update_success', function() {
         $scope.services_form.$setPristine();
         setServices();
+    });
+    $scope.$watch('_messageService.messages.defaults.load_success', function() {
+        var defaults = ProjectDefaults.list();
+        if(defaults.length > 0) {
+            $scope.defaults = defaults[0];
+        }
     });
     $scope.$on('dss.service', setTemplate);
 

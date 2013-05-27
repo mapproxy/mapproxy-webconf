@@ -57,10 +57,7 @@
       </div>
       <!-- SRS -->
       <div labeled="input_label" name-for="grid_form.srs" text="{{'SRS'|i18n}}">
-           <select ng-model="grid.data.srs" id="grid_form.srs">
-              <option value="EPSG:3857">EPSG:3857</option>
-              <option value="EPSG:4326">EPSG:4326</option>
-              <option value="EPSG:900913">EPSG:900913</option>
+           <select ng-model="grid.data.srs" id="grid_form.srs" ng-options="srs for srs in defaults.data.srs">
           </select>
       </div>
       <!-- BBox -->
@@ -72,10 +69,7 @@
       </div>
       <!-- BBox SRS -->
       <div labeled="input_label" name-for="grid_form.bbox_srs" text="{{'BBox SRS'|i18n}}">
-          <select ng-model="grid.data.bbox_srs" id="grid_form.bbox_srs">
-              <option value="EPSG:3857">EPSG:3857</option>
-              <option value="EPSG:4326">EPSG:4326</option>
-              <option value="EPSG:900913">EPSG:900913</option>
+          <select ng-model="grid.data.bbox_srs" id="grid_form.bbox_srs" ng-options="srs for srs in defaults.data.srs">
           </select>
       </div>
       <!-- origin -->
