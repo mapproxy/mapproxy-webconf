@@ -1,7 +1,4 @@
 /*overwrite boostrap */
-.input-xlarge {
-  width: 95%;
-}
 
 input[type="radio"], input[type="checkbox"] {
     margin:0em;
@@ -29,6 +26,30 @@ h6 {
     margin: 0;
 }
 
+textarea {
+    background-color: #5b5b5b;
+    color: white;
+}
+
+/* boostrap 2 has not the possiblity to change the height of input fields - this feature comes in bootstrap 3 */
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"]
+{
+    height: 16px;
+}
+
 /* page options */
 
 .middleblock {
@@ -50,6 +71,9 @@ h6 {
     color: #333333;
 }
 
+hr.formLine {
+    margin: 10px 0;
+}
 
 
 /* list options */
@@ -151,6 +175,7 @@ ul.vertical-list div.selected li i.icon-remove {
 .accordion .label {
     cursor: pointer;
     width: 100%;
+    background-color: #999999;
 }
 
 .accordion_wms_source {

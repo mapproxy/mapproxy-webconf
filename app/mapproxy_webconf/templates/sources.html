@@ -92,27 +92,37 @@
               </div>
             </div>
             <div class="input-append" labeled="input_label" name-for="add_layer_manual" text="{{'Manual add layer'|i18n}}">
-              <input type="text" id="add_layer_manual" name="add_layer_manual" ng-model="custom.layer_manual" class="input-xlarge" unique="{{source.data.req.layers}}">
-              <button class="btn" ng-click="addLayerManual($event)" ng-disabled="!custom.layer_manual">{{'Add'|i18n}}</button>
+              <input type="text" id="add_layer_manual" name="add_layer_manual" ng-model="custom.layer_manual" class="input-medium" unique="{{source.data.req.layers}}">
+              <button class="btn btn-small" ng-click="addLayerManual($event)" ng-disabled="!custom.layer_manual">{{'Add'|i18n}}</button>
             </div>
 
+            <hr class="formLine">
+            <div class="input-append" labeled='input_label' name-for="source_form.coverage_bbox" text="{{'Coverage BBOX'|i18n}}">
+              <input type="text" ng-model="source.data.coverage.bbox" id="source_form.coverage_bbox" class="input-medium">
+              <button class="btn btn-small" ng-disabled="!source.data.req.url" ng-click="addCoverage($event)" id="source_form_load_coverage">{{'Use coverage from WMS'|i18n}}</button>
+            </div>
+
+            <hr class="formLine">
+            <div labeled="input_label" name-for="source_form.supported_srs" text="{{'Supported SRS'|i18n}}">
+              <button class="btn btn-small pull-right" ng-click="loadSRS($event)" ng-disabled="!source.data.req.url">
+                {{'Add SRS from WMS'|i18n}}
+              </button>
+              <div name="source_form.supported_srs" class="well well-small input-large">
+                <span class="badge" ng-repeat="srs in source.data.supported_srs">
+                  {{srs}}<i class="icon-remove" ng-click="removeSRS($event, srs)"></i>
+                </span>
+              </div>
+            </div>
+            <div class="input-append" labeled="input_label" name-for="add_srs_manual" text="{{'Manual add SRS'|i18n}}">
+              <input type="text" id="add_srs_manual" name="add_srs_manual" ng-model="custom.srs_manual" class="input-medium">
+              <button class="btn btn-small" ng-click="addSRSManual($event)" ng-disabled="!custom.srs_manual">{{'Add'|i18n}}</button>
+            </div>
+
+            <hr class="formLine">
             <div labeled='checkbox_label' name-for="source_form.req_transparent" text="{{'Transparency'|i18n}}" warning="{{invalid_image_settings}}" warning-msg="{{'Selectet image format(s) not support transparency.'|i18n}}">
               <input type="checkbox" ng-model="source.data.req.transparent" id="source_form.req_transparent">
             </div>
-            <div class="input-append" labeled='input_label' name-for="source_form.coverage_bbox" text="{{'Coverage BBOX'|i18n}}">
-              <input type="text" ng-model="source.data.coverage.bbox" id="source_form.coverage_bbox" class="input-xlarge">
-              <button class="btn" ng-disabled="!source.data.req.url" ng-click="addCoverage($event)" id="source_form_load_coverage">{{'Use coverage from WMS'|i18n}}</button>
-            </div>
-            <div labeled="input_label" name-for="source_form.supported_srs" text="{{'Supported SRS'|i18n}}">
-              <div name="source_form.supported_srs" class="well well-small input-xlarge">
-                <span class="badge" ng-repeat="srs in source.data.supported_srs">{{srs}}<i class="icon-remove" ng-click="removeSRS($event, srs)"></i></span>
-              </div>
-              <button class="btn btn-small" ng-click="loadSRS($event)" ng-disabled="!source.data.req.url">{{'Add SRS from WMS'|i18n}}</button>
-            </div>
-            <div class="input-append" labeled="input_label" name-for="add_srs_manual" text="{{'Manual add SRS'|i18n}}">
-              <input type="text" id="add_srs_manual" name="add_srs_manual" ng-model="custom.srs_manual" class="input-xlarge">
-              <button class="btn" ng-click="addSRSManual($event)" ng-disabled="!custom.srs_manual">{{'Add'|i18n}}</button>
-            </div>
+
           </div>
         </div>
         <hr>
