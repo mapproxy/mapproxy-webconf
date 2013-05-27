@@ -228,6 +228,14 @@ input.droppable-active, div.droppable-active {
     background-color: #fff;
 }
 
+.map-icon-remove {
+    position: absolute;
+    cursor: pointer;
+    top: 5px;
+    right: 5px;
+    z-index: 1500;
+}
+
 /* Bootstrap overrides for normal OpenLayers look */
 img.olTileImage,
 .olPopup img {

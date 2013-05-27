@@ -567,23 +567,15 @@ directive('olMap', function($compile) {
                 layers: undefined
             };
 
-            var map_width = attrs.mapWidth;
-            var map_height = attrs.mapHeight;
             scope.mapId = 'ol_map_' + scope.$id;
-
             //setup map element and add to element
-            var mapElement = $('<div></div>');
-            mapElement.attr('id', scope.mapId);
-            mapElement.css('width', map_width);
-            mapElement.css('height', map_height);
+            var mapElement = $('<div></div>')
+                .attr('id', scope.mapId)
+                .css('width', attrs.mapWidth)
+                .css('height', attrs.mapHeight);
 
-            var closeButton = angular.element('<i ng-click="destroyMap()"></i>');
-            closeButton.addClass('icon-remove');
-            closeButton.css('position', 'absolute');
-            closeButton.css('right', '5px');
-            closeButton.css('top', '5px');
-            closeButton.css('z-index', '1500');
-
+            var closeButton = angular.element('<i ng-click="destroyMap()"></i>')
+                .addClass('icon-remove map-icon-remove');
             $compile(closeButton)(scope);
 
             mapElement.append(closeButton);
