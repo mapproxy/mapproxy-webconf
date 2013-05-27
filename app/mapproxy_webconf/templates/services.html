@@ -2,12 +2,10 @@
     <h3>{{'Services'|i18n}}</h3>
     <div ng-controller="MapproxyServicesChooserCtrl">
         <ul class="vertical-list">
-            <hr>
             <div class="{{getClasses(service)}}"
                 ng-repeat="(service, data) in services.data"
                 ng-click="show(service)">
                 <li>{{service|i18n}}</li>
-                <hr>
             </div>
         </ul>
     </div>

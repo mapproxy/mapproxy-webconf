@@ -2,12 +2,10 @@
     <div ng-controller="MapproxyGlobalsChooserCtrl" ng-show="!_editarea_visible">
         <h3>{{'Globals'|i18n}}</h3>
         <ul class="vertical-list">
-            <hr>
             <div class="{{getClasses(global)}}"
                 ng-repeat="(global, data) in globals.data"
                 ng-click="show(global)">
                 <li>{{global|i18n}}</li>
-                <hr>
             </div>
         </ul>
     </div>

@@ -17,7 +17,6 @@
     </span>
   </div>
   <ul class="vertical-list">
-    <hr>
     <div class="{{isSelected(source)}}" ng-repeat="source in filtered = (mapproxy_sources | filter: {data.name:search})"
     ng-click="editSource(source)">
     <li>
@@ -37,7 +36,6 @@
         dialog-text="{{'Can not remove source:'|i18n}} {{source.data.name}}<br>{{'Dependencies are:'|i18n}}<br>{{getDependencies(source)}}">
        </i>
      </li>
-     <hr>
     </div>
   </ul>
   <!-- need to updated filtered after ng-repeat is finished -->
