@@ -29,7 +29,8 @@ function TreeCtrl($scope, localize, WMSSources, MessageService) {
     $scope.showMap = function(event, wms) {
         event.stopPropagation();
         var layers = [];
-        var srs = wms.data.layer.srs[0];
+        var srs = ($.inArray('EPSG:4326', wms.data.layer.srs) != -1 || $.inArray('epsg:4326', wms.data.layer.srs) != -1) ?
+            'EPSG:4326' : wms.data.layer.srs[0];
         var extent = wms.data.layer.llbbox;
 
         angular.forEach(wms.data.layer.layers, function(layer) {
