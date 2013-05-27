@@ -102,9 +102,7 @@
               <button class="btn btn-small" ng-disabled="!source.data.req.url" ng-click="addCoverage($event)" id="source_form_load_coverage">{{'Use coverage from WMS'|i18n}}</button>
             </div>
             <div labeled="input_label" name-for="source_form.coverage_srs" text="{{'Coverage SRS'|i18n}}">
-              <select class="input-xlarge" ng-model="source.data.coverage.srs" id="source_form.coverage_srs">
-                <option value="EPSG:4326">EPSG:4326</option>
-                <option value="EPSG:3857">EPSG:3857</option>
+              <select class="input-xlarge" ng-model="source.data.coverage.srs" id="source_form.coverage_srs" ng-options="srs for srs in defaults.data.srs">
               </select>
             </div>
             <hr class="formLine">
