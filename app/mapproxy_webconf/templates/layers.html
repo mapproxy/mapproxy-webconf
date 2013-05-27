@@ -100,14 +100,14 @@
         </div>
       </div>
     </div>
-    <div class="text-center">
-      <span id="_editarea_toggle_button_container"></span>
+    <div class="pull-left">
       <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!layer_form.$valid" id="layer_form_save">{{'Save'|i18n}}</button>
       <button class="btn btn-small" ng-click="resetForm()">{{'Reset'|i18n}}</button>
     </div>
+    <div id="_editarea_toggle_button_container" class="pull-right"></div>
   </form>
   <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
-  <div class="text-center">
+  <div class="clear">
     <span message-handler="success" message-types="layers.add_success,layers.update_success"></span>
     <span message-handler="error" message-types="layers.add_error,layers.update_error,layers.form_error"></span>
   </div>

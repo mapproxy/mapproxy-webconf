@@ -94,14 +94,15 @@
         <option value="image/jpeg">Image/JPEG</option>
       </select>
     </div>
-    <div class="text-center">
-      <span id="_editarea_toggle_button_container"></span>
+    <div class="pull-left">
       <button class="btn btn-small" ng-click="addCache($event)" ng-disabled="!cache_form.$valid" id="cache_form_save">{{'Save'|i18n}}</button>
       <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
     </div>
+    <div id="_editarea_toggle_button_container" class="pull-right"></div>
+
   </form>
   <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
-  <div class="text-center">
+  <div class="clear">
     <span message-handler="success" message-types="caches.add_success,caches.update_success"></span>
     <span message-handler="error" message-types="caches.add_error,caches.update_error,caches.form_error"></span>
   </div>
