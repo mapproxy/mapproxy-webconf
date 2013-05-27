@@ -508,7 +508,7 @@ directive('editarea', function($http, MessageService) {
     };
 }).
 
-directive('olMap', function() {
+directive('olMap', function($compile) {
     return {
         restrict: 'A',
         scope: {
@@ -551,6 +551,15 @@ directive('olMap', function() {
                 }
                 scope.map.zoomToMaxExtent();
             };
+
+            scope.destroyMap = function() {
+                if(scope.map instanceof OpenLayers.Map) {
+                    scope.map.destroy();
+                    delete scope.map;
+                }
+                scope.olmapBinds.visible = false;
+            };
+
             scope.olmapBinds = {
                 visible: attrs.MapHidden || false,
                 extent: undefined,
@@ -564,9 +573,20 @@ directive('olMap', function() {
 
             //setup map element and add to element
             var mapElement = $('<div></div>');
-            mapElement.attr('id', scope.mapId)
-            mapElement.css('width', map_width)
-            mapElement.css('height', map_height)
+            mapElement.attr('id', scope.mapId);
+            mapElement.css('width', map_width);
+            mapElement.css('height', map_height);
+
+            var closeButton = angular.element('<i ng-click="destroyMap()"></i>');
+            closeButton.addClass('icon-remove');
+            closeButton.css('position', 'absolute');
+            closeButton.css('right', '5px');
+            closeButton.css('top', '5px');
+            closeButton.css('z-index', '1500');
+
+            $compile(closeButton)(scope);
+
+            mapElement.append(closeButton);
             element.append(mapElement);
 
             if(!scope.olmapBinds.visible) {
