@@ -1,6 +1,52 @@
-/*overwrite boostrap */
+/* site options */
+body {
+    background-color: #EEEEEE;
+    color: #3A3740;
+}
 
-input[type="radio"], input[type="checkbox"] {
+#wrapper {
+    width: 1260px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    margin: 30px auto;
+    background-color: #FFFFFF;
+}
+
+.navbar {
+    border-top: 3px solid #2AA4B5;
+    background-image: 0;
+}
+
+.sitebar-wrapper {
+    background-color: #2AA4B5;
+}
+
+.shadow {
+    background-image: url("../img/shadow-bottom.png");
+    background-position: center top;
+    background-repeat: no-repeat;
+    height: 42px;
+    top: 0;
+    width: 100%;
+    z-index: 40;
+}
+
+.content {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+
+footer {
+    background-color: #3A3740;
+    color: #65676B;
+    padding: 10px 0;
+    text-align: center;
+    width: 100%;
+}
+
+/*overwrite boostrap */
+input[type="radio"],
+input[type="checkbox"] {
     margin:0em;
     margin-top: -0.2em;
     margin-right: 0.3em;
@@ -27,7 +73,7 @@ h6 {
 }
 
 textarea {
-    background-color: #5b5b5b;
+    background-color: #3A3740;
     color: white;
 }
 
@@ -54,25 +100,153 @@ input[type="color"]
     height: 16px;
 }
 
-/* page options */
+img.olTileImage, .olPopup img {
+    max-width: none;
+}
 
+
+
+.btn-add {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #5CCBDA;
+  *background-color: #2AA4B5;
+  background-image: -moz-linear-gradient(top, #5CCBDA, #2AA4B5);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#5CCBDA), to(#2AA4B5));
+  background-image: -webkit-linear-gradient(top, #5CCBDA, #2AA4B5);
+  background-image: -o-linear-gradient(top, #5CCBDA, #2AA4B5);
+  background-image: linear-gradient(to bottom, #5CCBDA, #2AA4B5);
+  background-repeat: repeat-x;
+  border-color: #2AA4B5 #2AA4B5 #3A7E88;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff7ECFDA', endColorstr='#ff2AA4B5', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+.btn-add:hover,
+.btn-add:focus,
+.btn-add:active,
+.btn-add.active,
+.btn-add.disabled,
+.btn-add[disabled] {
+  color: #ffffff;
+  background-color: #2AA4B5;
+  *background-color: #2a85a0;
+}
+
+.btn-add:active,
+.btn-add.active {
+  background-color: #24748c \9;
+}
+
+.btn-success {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #419E51;
+  *background-color: #419E51;
+  background-image: -moz-linear-gradient(top, #85E996, #419E51); #helle
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#85E996), to(#419E51));
+  background-image: -webkit-linear-gradient(top, #85E996, #419E51);
+  background-image: -o-linear-gradient(top, #85E996, #419E51);
+  background-image: linear-gradient(to bottom, #85E996, #419E51);
+  background-repeat: repeat-x;
+  border-color: #419E51 #419E51 #0F8924; #ganz dunekl
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff85E996', endColorstr='#ff2ED24A', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.btn-success.active,
+.btn-success.disabled,
+.btn-success[disabled] {
+  color: #ffffff;
+  background-color: #419E51;
+  *background-color: #419E51;
+}
+
+
+input:focus:invalid,
+textarea:focus:invalid,
+select:focus:invalid {
+  color: #A61D12;
+  border-color: #BF574F;
+}
+
+input:focus:invalid:focus,
+textarea:focus:invalid:focus,
+select:focus:invalid:focus {
+  border-color: #A61D12;
+  -webkit-box-shadow: 0 0 6px #f8b9b7;
+     -moz-box-shadow: 0 0 6px #f8b9b7;
+          box-shadow: 0 0 6px #f8b9b7;
+}
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus {
+  border-color: rgba(42, 164, 181, 1)
+  outline: 0;
+  outline: thin dotted \9;
+  /* IE6-9 */
+
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(42, 164, 181, 0.5);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(42, 164, 181, 0.5);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(42, 164, 181, 0.5);
+    }
+
+
+/* config page options */
 .middleblock {
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
     padding-left: 1em;
     padding-right: 1em;
     min-height: 300px !important;
-    background-color: #f2f2f2;
 }
 
-.tab-menu {
+.nav.tab-menu {
     margin-top: 1.7em;
     margin-left: 1em;
+    margin-bottom: 0;
+    border: 0;
+}
+
+
+.nav.tab-menu > li > a {
+    color: white;
+}
+
+.nav > li > a:hover,
+.nav > li > a:focus {
+  text-decoration: none;
+  background-color: white;
+  border-bottom: 0;
+}
+
+.nav.tab-menu > li.active > a,
+.nav.tab-menu > li a:hover {
+    color: #3A3740;
 }
 
 .tab-menu-header {
     margin-right: 1em;
-    color: #333333;
+    color: white;
 }
 
 hr.formLine {
@@ -84,12 +258,19 @@ hr.formLine {
 ul.vertical-list {
     list-style: none;
     margin: 0;
+    max-height: 600px;
+    overflow: auto;
+}
+
+ul.vertical-list.small {
+    max-height: 300px;
 }
 
 ul.vertical-list div {
   border-bottom: 1px solid #ccc;
 }
-ul.vertical-list div:first-child  {
+
+ul.vertical-list > div:first-child  {
   border-top: 1px solid #ccc;
 }
 
@@ -102,7 +283,7 @@ ul.vertical-list div:focus
 
 ul.vertical-list div.selected.active,
 ul.vertical-list div.selected {
-  background-color: #3A87AD;
+  background-color: #FF9738;
   color: white;
 }
 
@@ -209,6 +390,10 @@ ul.vertical-list div.selected li i.icon-remove {
     opacity: 0.9;
 }
 
+.accordion-inner {
+    overflow: auto;
+    max-height: 300px;
+}
 
 input.droppable-active, div.droppable-active {
     border: 1px solid #F89406;
@@ -257,12 +442,9 @@ div.blockOverlay {
 div.blockMsg {
     background-color: #fff;
     border: 1px solid black;
-    top: 40%;
+    top: 20%;
 }
 
-
-/* Bootstrap overrides for normal OpenLayers look */
-img.olTileImage,
-.olPopup img {
-    max-width: none;
+.clear {
+    clear: both;
 }
