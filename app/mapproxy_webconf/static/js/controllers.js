@@ -42,9 +42,12 @@ function TreeCtrl($scope, localize, WMSSources, MessageService) {
               ratio: 1.0
             }));
         });
-
-        $scope._olMap.createMap(srs, extent, layers);
-        $scope._olMap.show();
+        $scope.olmapBinds = {
+            visible: true,
+            proj: srs,
+            extent: extent,
+            layers: layers
+        }
     }
 
     $scope._messageService = MessageService;

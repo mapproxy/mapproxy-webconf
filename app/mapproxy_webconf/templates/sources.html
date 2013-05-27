@@ -188,7 +188,7 @@
     <div message-handler="success" message-types="wms_capabilities.add_success"></div>
     <div message-handler="error" message-types="wms_capabilities.add_error"></div>
   </form>
-  <div olmap class="ol_map" style="position:absolute; top:50px; left: 150px;" map-width="800px" map-height="600px" map-hidden="true" map-layer-switcher="true"></div>
+  <div ol-map="olmapBinds" class="ol_map" style="position:absolute; top:50px; left: 150px;" map-width="800px" map-height="600px" map-hidden="true" map-layer-switcher="true"></div>
 </div>
 %end
 %rebase base_config leftblock=leftblock, rightblock=rightblock, middleblock=middleblock,  project=get('project'),  active='sources'

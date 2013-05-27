@@ -508,33 +508,30 @@ directive('editarea', function($http, MessageService) {
     };
 }).
 
-directive('olmap', function() {
+directive('olMap', function() {
     return {
         restrict: 'A',
-        controller: function($scope, $element, $attrs) {
-            var show = function() {
-                $($element).show();
-            };
-            var hide = function() {
-                $($element).hide();
-            };
-            var createMap = function(proj, extent, layers) {
-                if($scope.map instanceof OpenLayers.Map) {
-                    $scope.map.destroy();
-                    delete $scope.map;
+        scope: {
+            olmapBinds: '=olMap'
+        },
+        transclude: true,
+        link: function(scope, element, attrs) {
+            var createMap = function() {
+                if(scope.map instanceof OpenLayers.Map) {
+                    scope.map.destroy();
+                    delete scope.map;
                 }
-                if(!(proj instanceof OpenLayers.Projection)) {
-                    proj = new OpenLayers.Projection(proj);
+                if(!(scope.olmapBinds.proj instanceof OpenLayers.Projection)) {
+                    scope.olmapBinds.proj = new OpenLayers.Projection(scope.olmapBinds.proj);
                 }
-                if(!(extent instanceof OpenLayers.Bounds)) {
-                    extent = new OpenLayers.Bounds(extent).transform(new OpenLayers.Projection('EPSG:4326'), proj);
+                if(!(scope.olmapBinds.extent instanceof OpenLayers.Bounds)) {
+                    scope.olmapBinds.extent = new OpenLayers.Bounds(scope.olmapBinds.extent).transform(new OpenLayers.Projection('EPSG:4326'), scope.olmapBinds.proj);
                 }
-
-                $scope.map = new OpenLayers.Map($scope.mapId, {
-                    projection: proj,
+                scope.map = new OpenLayers.Map(scope.mapId, {
+                    projection: scope.olmapBinds.proj,
                     allOverlays: true,
-                    maxExtent: extent,
-                    units: proj.units,
+                    maxExtent: scope.olmapBinds.extent,
+                    units: scope.olmapBinds.proj.units,
                     controls: [
                         new OpenLayers.Control.Navigation({
                             documentDrag: true,
@@ -545,38 +542,45 @@ directive('olmap', function() {
                         }),
                         new OpenLayers.Control.PanZoomBar({autoActivate: true})
                     ],
-                    layers: layers
+                    layers: scope.olmapBinds.layers
                 });
-                if($attrs.mapLayerSwitcher) {
+                if(attrs.mapLayerSwitcher) {
                     var layerswitcher = new OpenLayers.Control.LayerSwitcher({roundedCorner: true});
-                    $scope.map.addControl(layerswitcher);
+                    scope.map.addControl(layerswitcher);
                     layerswitcher.maximizeControl();
                 }
-                $scope.map.zoomToMaxExtent();
+                scope.map.zoomToMaxExtent();
+            };
+            scope.olmapBinds = {
+                visible: attrs.MapHidden || false,
+                extent: undefined,
+                proj: undefined,
+                layers: undefined
             };
 
-            $scope.$parent._olMap = {
-                show: show,
-                hide: hide,
-                createMap: createMap
-            }
-        },
-        link: function(scope, element, attrs) {
             var map_width = attrs.mapWidth;
             var map_height = attrs.mapHeight;
-            var mapId = 'ol_map_' + scope.$id;
+            scope.mapId = 'ol_map_' + scope.$id;
 
             //setup map element and add to element
             var mapElement = $('<div></div>');
-            mapElement.attr('id', mapId)
+            mapElement.attr('id', scope.mapId)
             mapElement.css('width', map_width)
             mapElement.css('height', map_height)
             element.append(mapElement);
 
-            if(attrs.mapHidden) {
+            if(!scope.olmapBinds.visible) {
                 $(element).hide();
             }
-            scope.$parent.mapId = mapId;
+
+            scope.$watch('olmapBinds.visible', function(visible) {
+                if(visible) {
+                    createMap();
+                    $(element).show();
+                } else {
+                    $(element).hide();
+                }
+            }, true);
         }
     }
 }).
