@@ -1,5 +1,4 @@
 %def site_navbar():
-  <div class="container-fluid ">
     <a href="${ get_url('configuration', project='base') }">
       <h2 class="pull-left tab-menu-header">
         {{'Configuration'|i18n}}
@@ -13,7 +12,6 @@
       %navigation("services", "{{'Services'|i18n}}" )
       %navigation("globals", "{{'Globals'|i18n}}")
     </ul>
-  </div>
 % end
 
 %def content():
