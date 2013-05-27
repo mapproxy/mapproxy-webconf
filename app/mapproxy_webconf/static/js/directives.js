@@ -557,6 +557,7 @@ directive('olMap', function($compile) {
                     scope.map.destroy();
                     delete scope.map;
                 }
+                $.unblockUI();
                 scope.olmapBinds.visible = false;
             };
 
@@ -588,9 +589,14 @@ directive('olMap', function($compile) {
             scope.$watch('olmapBinds.visible', function(visible) {
                 if(visible) {
                     createMap();
-                    $(element).show();
-                } else {
-                    $(element).hide();
+                    $.blockUI({
+                        message: $(element),
+                        css: {
+                            top:  ($(window).height() - attrs.mapHeight) /2 + 'px',
+                            left: ($(window).width() - attrs.mapWidth) /2 + 'px',
+                            width: attrs.mapWidth
+                        }
+                    });
                 }
             }, true);
         }

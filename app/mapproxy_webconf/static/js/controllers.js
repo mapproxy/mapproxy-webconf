@@ -32,7 +32,6 @@ function TreeCtrl($scope, localize, WMSSources, MessageService) {
         var srs = ($.inArray('EPSG:4326', wms.data.layer.srs) != -1 || $.inArray('epsg:4326', wms.data.layer.srs) != -1) ?
             'EPSG:4326' : wms.data.layer.srs[0];
         var extent = wms.data.layer.llbbox;
-
         angular.forEach(wms.data.layer.layers, function(layer) {
             layers.push(new OpenLayers.Layer.WMS(layer.title, wms.data.url, {
                 layers: [layer.name],

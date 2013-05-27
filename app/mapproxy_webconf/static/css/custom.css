@@ -236,6 +236,21 @@ input.droppable-active, div.droppable-active {
     z-index: 1500;
 }
 
+div.blockOverlay {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
+    -moz-opacity:.60;
+    opacity:.60;
+    background-color: #000;
+}
+
+div.blockMsg {
+    background-color: #fff;
+    border: 1px solid black;
+    top: 40%;
+}
+
+
 /* Bootstrap overrides for normal OpenLayers look */
 img.olTileImage,
 .olPopup img {
