@@ -249,9 +249,13 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
         var bbox = WMSSources.coverage($scope.source.data.req.url);
         if(bbox) {
             if(angular.isUndefined($scope.source.data.coverage)) {
-                $scope.source.data.coverage = {'bbox': bbox};
+                $scope.source.data.coverage = {
+                    'bbox': bbox,
+                    'srs': 'EPSG:4326'
+                };
             } else {
                 $scope.source.data.coverage.bbox = bbox;
+                $scope.source.data.coverage.srs = 'EPSG:4326';
             }
         }
     };
