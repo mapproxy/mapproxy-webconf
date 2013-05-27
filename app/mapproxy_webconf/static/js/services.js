@@ -51,6 +51,7 @@ var MapproxyBaseService = function(_section, _dependencies) {
         _this._items = {};
         _this._loaded = false;
         _this._action = 'load';
+        _this._loadingInProgress = true;
         _this._resource.query({action: _this._section}, function(result) {
             if(result) {
                 angular.forEach(result, function(item) {
@@ -58,6 +59,7 @@ var MapproxyBaseService = function(_section, _dependencies) {
                     _this._items[item._id] = item;
                 });
                 _this._loaded = true;
+                _this._loadingInProgress = false;
                 if(angular.isDefined(_this._rootScope))
                     _this._rootScope.$broadcast(_this._section + '.load_finished');
             }
@@ -145,7 +147,6 @@ var MapproxyBaseService = function(_section, _dependencies) {
         return _this._error_msg;
     }
     this.return_func = function($rootScope, MapproxyResource, MessageService, localize) {
-        _this._inited = true;
         _this._rootScope = $rootScope;
         _this._resource = MapproxyResource;
         _this._messageService = MessageService;
@@ -153,12 +154,11 @@ var MapproxyBaseService = function(_section, _dependencies) {
         _this._rootScope.$on(_this._section + '.load_finished', _this._waitForLoadComplete);
         angular.forEach(_this._dependencies, function(dependency) {
             _this._rootScope.$on(dependency._section + '.load_finished', _this._waitForLoadComplete)
-            if(!dependency._inited) {
-                dependency.return_func(_this._rootScope, _this._resource, _this._messageService, _this._localize);
-            }
-
+            dependency.return_func(_this._rootScope, _this._resource, _this._messageService, _this._localize);
         });
-        _this.load();
+        if(!_this._loadingInProgress && !_this._loaded) {
+            _this.load();
+        }
         return _this.return_dict;
     };
 
