@@ -13,7 +13,6 @@
       <span ng-show="mapproxy_caches.length - filtered.length" ng-click="search=''">{{'Not shown caches'|i18n}}: {{mapproxy_caches.length - filtered.length}}</span>
     </div>
     <ul class="vertical-list">
-      <hr>
       <div class="{{isSelected(cache)}}" ng-repeat="cache in filtered = (mapproxy_caches | filter:{data.name:search}) | orderBy:'name'"
       ng-click="editCache(cache)">
         <li>
@@ -33,7 +32,6 @@
             dialog-text="{{'Can not remove cache:'|i18n}} {{cache.data.name}}<br>{{'Dependencies are:'|i18n}}<br>{{getDependencies(cache)}}">
           </i>
         </li>
-        <hr>
       </div>
     </ul>
     <span ng-show="false">{{mapproxy_caches.length - filtered.length}}</span>
@@ -121,13 +119,11 @@
       <span ng-show="mapproxy_sources.length - filtered.length" ng-click="search=''">{{'Not shown sources'|i18n}}: {{mapproxy_sources.length - filtered.length}}</span>
     </div>
     <ul class="vertical-list">
-      <hr>
       <div draggable class="mapproxy_source" ng-repeat="source in filtered = (mapproxy_sources | filter:{data.name:search}) | orderBy:'name'"
           item-data="{{source}}">
         <li class="droppable_name">
             {{source.data.name}}
         </li>
-        <hr>
       </div>
     </ul>
     <span ng-show="false">{{filtered.length}}</span>
@@ -142,14 +138,12 @@
       <span ng-show="mapproxy_caches.length - filtered.length" ng-click="search=''">{{'Not shown caches'|i18n}}: {{mapproxy_caches.length - filtered.length}}</span>
     </div>
     <ul class="vertical-list">
-      <hr>
       <div
         draggable
         class="mapproxy_cache"
         ng-repeat="cache in filtered = (mapproxy_caches | filter:{data.name:search}) | orderBy:'name'"
         item-data="{{cache}}">
         <li class="droppable_name">{{cache.data.name}}</li>
-        <hr>
       </div>
     </ul>
     <span ng-show="false">{{filtered.length}}</span>
@@ -164,14 +158,12 @@
       <span ng-show="(mapproxy_grids.concat(default_grids)).length - filtered.length" ng-click="search=''">{{'Not shown grids'|i18n}}: {{(mapproxy_grids.concat(default_grids)).length - filtered.length}}</span>
     </div>
     <ul class="vertical-list">
-      <hr>
       <div
         draggable
         class="mapproxy_grid"
         ng-repeat="grid in filtered = (mapproxy_grids.concat(default_grids) | filter: {data.name:search}) | orderBy:'name'"
         item-data="{{grid}}">
         <li class="droppable_name">{{grid.data.name}}</li>
-        <hr>
       </div>
     </ul>
     <span ng-show="false">{{filtered.length}}</span>

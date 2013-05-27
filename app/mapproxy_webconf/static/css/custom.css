@@ -57,6 +57,13 @@ ul.vertical-list {
     margin: 0;
 }
 
+ul.vertical-list div {
+  border-bottom: 1px solid #ccc;
+}
+ul.vertical-list div:first-child  {
+  border-top: 1px solid #ccc;
+}
+
 ul.vertical-list div:hover,
 ul.vertical-list div:focus
 /*ul.vertical-list div:hover li i.icon-remove*/
@@ -79,12 +86,6 @@ ul.vertical-list li {
     cursor: pointer;
     white-space: normal;
     padding: 0.5em;
-}
-
-ul.vertical-list hr {
-    margin: 0;
-    border: 0px;
-    border-bottom: 1px solid #ccc;
 }
 
 ul.vertical-list li i.icon-remove {
@@ -185,7 +186,7 @@ input.droppable-active, div.droppable-active {
 
 .draggable-active {
     width: 300px;
-    border: 1px solid #F89406;
+    border: 1px solid #F89406 !important;
     padding: 0.5em;
     background-color: #eee;
 }

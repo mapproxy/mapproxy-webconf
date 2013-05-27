@@ -36,7 +36,8 @@
     </ul>
   </script>
   <div>
-    <ul class="vertical-list"><hr></ul>
+    <ul class="vertical-list">
+    </ul>
     <ul sortable ng-model="mapproxy_layers" class="vertical-list">
 
       <div class="{{isSelected(layer)}}"
@@ -58,7 +59,6 @@
               >
           </div> -->
         </li>
-        <hr>
       </div>
     </ul>
     <span ng-show="false">{{filtered.length}}</span>
@@ -125,15 +125,13 @@
         <span ng-show="mapproxy_sources.length - filtered.length" ng-click="search=''">{{'Not shown sources'|i18n}}: {{mapproxy_sources.length - filtered.length}}</span>
       </div>
       <ul class="vertical-list">
-          <hr>
           <div
               draggable
               class="mapproxy_source"
               ng-repeat="source in filtered = (mapproxy_sources |filter:{data.name:search}) | orderBy:'name'"
               item-data="{{source}}">
               <li class="droppable_name"> {{source.data.name}}</li>
-              <hr>
-            </div>
+          </div>
       </ul>
       <span ng-show="false">{{filtered.length}}</span>
     </span>
@@ -147,14 +145,12 @@
         <span ng-show="mapproxy_caches.length - filtered.length" ng-click="search=''">{{'Not shown caches'|i18n}}: {{mapproxy_caches.length - filtered.length}}</span>
       </div>
       <ul class="vertical-list">
-          <hr>
           <div
               draggable
               class="mapproxy_cache"
               ng-repeat="cache in filtered = (mapproxy_caches | filter:{data.name:search}) | orderBy:'name'"
               item-data="{{cache}}">
               <li class="droppable_name">{{cache.data.name}}</li>
-              <hr>
           </div>
       </ul>
       <span ng-show="false">{{filtered.length}}</span>
