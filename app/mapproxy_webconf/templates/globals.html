@@ -10,7 +10,7 @@
         </ul>
     </div>
     <hr>
-    <div id="_editarea_toggle_button_container" class="text-center"></div>
+    <div id="_editarea_toggle_button_container"></div>
 %end
 
 %def middleblock():
@@ -46,7 +46,7 @@
     </form>
     <hr ng-show="!editareaBinds.visible">
     <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json"></div>
-    <div class="text-center">
+    <div>
         <span message-handler="success" message-types="globals.add_success,globals.update_success"></span>
         <span message-handler="error" message-types="globals.load_error,globals.add_error,globals.update_error,globals.form_error"></span>
     </div>
