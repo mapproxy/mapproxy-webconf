@@ -316,6 +316,10 @@
         "value": "Speichern fehlgeschlagen"
     },
     {
+        "key": "Name already exists.",
+        "value": "Der angegebene Name existiert bereits."
+    },
+    {
         "key": "Name already exists in sources",
         "value": "Für den angegebenen Namen existiert bereits eine Source"
     },
