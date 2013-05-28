@@ -494,8 +494,8 @@
         "value": "Request Format"
     },
     {
-        "key": "Save and lock",
-        "value": "Speichern und abschließen"
+        "key": "Lock",
+        "value": "Bearbeitung abschließen"
     },
     {
         "key": "Really lock the grid",

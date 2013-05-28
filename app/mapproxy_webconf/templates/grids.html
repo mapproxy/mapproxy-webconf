@@ -98,15 +98,6 @@
       </div>
       <div class="pull-left">
         <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="!grid_form.$valid" id="grid_form_save">{{'Save'|i18n}}</button>
-        <button
-          class="btn btn-small"
-          dialog="ask"
-          dialog-title="{{'Really lock the grid'|i18n}}: {{grid.data.name}}?"
-          dialog-text="{{'If you lock the grid, you won\'t be able to edit it again'|i18n}}"
-          callback="lockGrid()"
-          ng-disabled="!grid_form.$valid"
-          id="grid_form_lock">{{'Save and lock'|i18n}}
-        </button>
         <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
       </div>
       <div id="_editarea_toggle_button_container" class="pull-right"></div>
@@ -141,6 +132,15 @@
     yaml-URL="${get_url('json_to_yaml')}"
     json-URL="${get_url('yaml_to_json')}"
     keep-empty-fields="name"></div>
+  <button
+    class="btn btn-small"
+    dialog="ask"
+    dialog-title="{{'Really lock the grid'|i18n}}: {{grid.data.name}}?"
+    dialog-text="{{'If you lock the grid, you won\'t be able to edit it again'|i18n}}"
+    callback="lockGrid()"
+    ng-disabled="grid_form.$dirty||editareaBinds.dirty"
+    id="grid_form_lock">{{'Lock'|i18n}}
+  </button>
   <div class="clear">
     <span message-handler="success" message-types="grids.add_success,grids.update_success"></span>
     <span message-handler="error" message-types="grids.add_error,grids.update_error,grids.form_error"></span>
