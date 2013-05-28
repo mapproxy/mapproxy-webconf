@@ -492,5 +492,21 @@
     {
         "key": "Request format",
         "value": "Request Format"
+    },
+    {
+        "key": "Save and lock",
+        "value": "Speichern und abschließen"
+    },
+    {
+        "key": "Really lock the grid",
+        "value": "Abschließen des Bearbeitens für Grid"
+    },
+    {
+        "key": "If you lock the grid, you won't be able to edit it again",
+        "value": "Wenn das Bearbeiten dieses Grids abgeschlossen wird, ist kein weiteres Bearbeiten dieses Grids möglich"
+    },
+    {
+        "key": "Locked grids",
+        "value": "Abgeschlossene Grids"
     }
 ]

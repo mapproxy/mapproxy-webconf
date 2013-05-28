@@ -130,6 +130,7 @@ class SQLiteStore(object):
                 rank INTEGER,
                 parent INTEGER,
                 manual BOOLEAN,
+                locked BOOLEAN,
                 FOREIGN KEY(parent) REFERENCES store(id) ON DELETE CASCADE
             )
         """)
@@ -140,7 +141,7 @@ class SQLiteStore(object):
         for row in cur.fetchall():
             yield row['project']
 
-    def get_all(self, section, project, default=DEFAULT_VALUE, with_rank=False, with_id=False, with_manual=False):
+    def get_all(self, section, project, default=DEFAULT_VALUE, with_rank=False, with_id=False, with_manual=False, with_locked=False):
         if default is DEFAULT_VALUE:
             default = {}
 
@@ -151,7 +152,7 @@ class SQLiteStore(object):
             append_data = False
 
         cur = self.db.cursor()
-        cur.execute("SELECT id, data, parent, rank, manual FROM store WHERE section = ? AND project = ?",
+        cur.execute("SELECT id, data, parent, rank, manual, locked FROM store WHERE section = ? AND project = ?",
             (section, project))
         for row in cur.fetchall():
             data = {}
@@ -163,6 +164,8 @@ class SQLiteStore(object):
             if with_rank:
                 data['_parent'] = row['parent']
                 data['_rank'] = row['rank']
+            if with_locked:
+                data['_locked'] = row['locked']
 
             if append_data:
                 result.append(data)
@@ -178,7 +181,7 @@ class SQLiteStore(object):
 
     def get(self, id, section, project):
         cur = self.db.cursor()
-        cur.execute("SELECT data, parent, rank, manual FROM store WHERE id = ? AND section = ? AND project = ?",
+        cur.execute("SELECT data, parent, rank, manual, locked FROM store WHERE id = ? AND section = ? AND project = ?",
             (id, section, project))
         row = cur.fetchone()
         if row:
@@ -190,20 +193,23 @@ class SQLiteStore(object):
                 data['_rank'] = row[2]
             if row[3] is not None:
                 data['_manual'] = row[3]
+            if row[4] is not None:
+                data['_locked'] = row[4]
             return data
 
     def add(self, section, project, data):
         rank = data.pop('_rank', None)
         parent = data.pop('_parent', None)
         manual = data.pop('_manual', False)
+        locked = data.pop('_locked', False)
         data.pop('_id', None)
 
 
         data = json.dumps(data['data'])
 
         cur = self.db.cursor()
-        cur.execute("INSERT INTO store (section, project, data, parent, rank, manual) VALUES (?, ?, ?, ?, ?, ?)",
-            (section, project, data, parent, rank, manual))
+        cur.execute("INSERT INTO store (section, project, data, parent, rank, manual, locked) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (section, project, data, parent, rank, manual, locked))
         self.db.commit()
         return cur.lastrowid
 
@@ -211,21 +217,22 @@ class SQLiteStore(object):
         rank = data.pop('_rank', None)
         parent = data.pop('_parent', None)
         manual = data.pop('_manual', False)
+        locked = data.pop('_locked', False)
         data.pop('_id', None)
         data.pop('_layers', None)
 
         data = json.dumps(data['data'])
 
         cur = self.db.cursor()
-        cur.execute("UPDATE store SET data = ?, parent = ?, rank = ?, manual = ? WHERE id = ? AND SECTION = ? AND project = ?",
-            (data, parent, rank, manual, id, section, project))
+        cur.execute("UPDATE store SET data = ?, parent = ?, rank = ?, manual = ?, locked = ? WHERE id = ? AND SECTION = ? AND project = ?",
+            (data, parent, rank, manual, locked, id, section, project))
         self.db.commit()
 
     def updates(self, section, project, data):
         #ensure all needed values are present or None
-        data = [{'id': d['_id'], 'rank': d['_rank'] if '_rank' in d else None, 'parent': d['_parent'] if '_parent' in d else None, 'manual': d['_manual'] if '_manual' in d else False} for d in data if '_id' in d]
+        data = [{'id': d['_id'], 'rank': d['_rank'] if '_rank' in d else None, 'parent': d['_parent'] if '_parent' in d else None, 'manual': d['_manual'] if '_manual' in d else False, 'locked': d['_locked'] if '_locked' in d else False} for d in data if '_id' in d]
         cur = self.db.cursor()
-        cur.executemany("UPDATE store SET parent = :parent, rank = :rank WHERE id = :id", data)
+        cur.executemany("UPDATE store SET parent = :parent, rank = :rank, manual = :manual, locked = :locked WHERE id = :id", data)
         self.db.commit()
 
     def delete(self, id, section, project):

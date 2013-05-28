@@ -34,6 +34,23 @@
         </li>
       </div>
     </ul>
+    <h3>{{'Locked grids'|i18n}}</h3>
+    <div>
+      <input type="text" ng-model="search_locked" placeholder="{{'Filter'|i18n}}..."/>
+      <br>
+      <span ng-show="locked_grids.length - filtered_locked.length" ng-click="search_locked=''">{{'Not shown grids'|i18n}}: {{locked_grids.length - filtered_locked.length}}</span>
+    </div>
+    <ul class="vertical-list">
+       <div class="{{isSelected(grid)}}" ng-repeat="grid in filtered_locked = (locked_grids | filter: {data.name:search_locked}) | orderBy:'name'"
+        ng-click="editGrid(grid)">
+         <li>
+          <i ng-show="grid._manual" class="icon-pencil"></i>
+          {{grid.data.name}}
+        </li>
+      </div>
+    </ul>
+
+
     <h3>{{'Default grids'|i18n}}</h3>
      <ul class="vertical-list">
        <div class="{{isSelected(grid)}}" ng-repeat="grid in default_grids | orderBy:'name'"
@@ -50,7 +67,7 @@
 <div ng-controller="MapproxyGridFormCtrl">
   <div ng-show="!editareaBinds.visible">
     <h3>{{formTitle|i18n}}</h3>
-    <form name="grid_form" id="grid_form" ng-show="!grid.default" novalidate>
+    <form name="grid_form" id="grid_form" ng-show="!grid.default&&!grid._locked" novalidate>
       <!-- name -->
       <div labeled="input_label" name-for="grid_form.name" text="{{'Name'|i18n}}">
           <input required type="text" ng-model="grid.data.name" id="grid_form.name" />
@@ -82,9 +99,38 @@
       <div class="text-center">
         <span id="_editarea_toggle_button_container"></span>
         <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="!grid_form.$valid" id="grid_form_save">{{'Save'|i18n}}</button>
+        <button
+          class="btn btn-small"
+          dialog="ask"
+          dialog-title="{{'Really lock the grid'|i18n}}: {{grid.data.name}}?"
+          dialog-text="{{'If you lock the grid, you won\'t be able to edit it again'|i18n}}"
+          callback="lockGrid()"
+          ng-disabled="!grid_form.$valid"
+          id="grid_form_lock">{{'Save and lock'|i18n}}
+        </button>
         <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
       </div>
     </form>
+  </div>
+  <div ng-show="grid._locked">
+    <div labeled="input_label" name-for="locked_grid.name" text="{{'Name'|i18n}}">
+      <div class="input-xlarge" id="locked_grid.name">{{grid.data.name}}</div>
+    </div>
+    <div labeled="input_label" name-for="locked_grid.srs" text="{{'SRS'|i18n}}">
+      <div class="input-xlarge" id="locked_grid.srs">{{grid.data.srs}}</div>
+    </div>
+    <div labeled="input_label" name-for="locked_grid.bbox" text="{{'BBox'|i18n}}">
+      <div class="input-xlarge" id="locked_grid.bbox">{{grid.data.bbox[0]}}</div>
+      <div class="input-xlarge" id="locked_grid.bbox">{{grid.data.bbox[1]}}</div>
+      <div class="input-xlarge" id="locked_grid.bbox">{{grid.data.bbox[2]}}</div>
+      <div class="input-xlarge" id="locked_grid.bbox">{{grid.data.bbox[3]}}</div>
+    </div>
+    <div labeled="input_label" name-for="locked_grid.bbox_srs" text="{{'BBox SRS'|i18n}}">
+      <div class="input-xlarge" id="locked_grid.bbox_srs">{{grid.data.bbox_srs}}</div>
+    </div>
+    <div labeled="input_label" name-for="locked_grid.origin" text="{{'Origin'|i18n}}">
+      <div class="input-xlarge" id="locked_grid.origin">{{grid.data.origin}}</div>
+    </div>
   </div>
   <div ng-show="grid.default">
     <div labeled="input_label" name-for="default_grid.name" text="{{'Name'|i18n}}">

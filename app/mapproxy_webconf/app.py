@@ -24,16 +24,18 @@ class RESTBase(object):
         self.section = section
 
     def list(self, project, storage):
-        return storage.get_all(self.section, project, with_id=True, with_manual=True)
+        return storage.get_all(self.section, project, with_id=True, with_manual=True, with_locked=True)
 
     @requires_json
     def add(self, project, storage):
         data = request.json
         manual = data.get('_manual', False)
+        locked = data.get('_locked', False)
         id = storage.add(self.section, project, data)
         response.status = 201
         data['_id'] = id
         data['_manual'] = manual
+        data['_locked'] = locked
         return data
 
     def get(self, project, id, storage):
@@ -47,10 +49,12 @@ class RESTBase(object):
     def update(self, project, id, storage):
         data = request.json
         manual = data.get('_manual', False)
+        locked = data.get('_locked', False)
         # used deepcopy cause storage.update modifies data
         storage.update(id, self.section, project, deepcopy(data))
         response.status = 200
         data['_manual'] = manual
+        data['_locked'] = locked
         return data
 
     def delete(self, project, id, storage):
@@ -115,7 +119,7 @@ class RESTLayers(RESTBase):
         RESTBase.__init__(self, 'layers')
 
     def list(self, project, storage):
-        return storage.get_all(self.section, project, with_rank=True, with_id=True, with_manual=True)
+        return storage.get_all(self.section, project, with_rank=True, with_id=True, with_manual=True, with_locked=True)
 
     @requires_json
     def update_tree(self, project, storage):
@@ -136,7 +140,7 @@ class RESTGrids(RESTBase):
             'GLOBAL_MERCATOR': {'_id': 'GLOBAL_MERCATOR', 'data': {'name': 'GLOBAL_MERCATOR'}, 'default': True},
             'GLOBAL_GEODETIC': {'_id': 'GLOBAL_GEODETIC', 'data': {'name': 'GLOBAL_GEODETIC'}, 'default': True}
         }
-        default_grids.update(storage.get_all(self.section, project, with_id=True, with_manual=True))
+        default_grids.update(storage.get_all(self.section, project, with_id=True, with_manual=True, with_locked=True))
         return default_grids
 
 RESTBase('sources').setup_routing(app)

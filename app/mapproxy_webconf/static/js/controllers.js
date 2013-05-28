@@ -595,11 +595,14 @@ function MapproxyGridListCtrl($scope, MapproxyGrids, MessageService) {
     var DEFAULT_GRID = {'data': {'bbox': [null, null, null, null]}};
     var refreshList = function() {
         $scope.default_grids = [];
+        $scope.locked_grids = [];
         $scope.mapproxy_grids = [];
         angular.forEach(MapproxyGrids.list(), function(grid) {
             if(grid.default) {
                 $scope.default_grids.push(grid);
-            } else {
+            } else if(grid._locked) {
+                $scope.locked_grids.push(grid);
+            }else {
                 $scope.mapproxy_grids.push(grid);
             }
         });
@@ -707,6 +710,14 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids, MapproxyCaches, M
             $scope.editareaBinds.save = false;
         }
     };
+    $scope.lockGrid = function(event) {
+        if(angular.isDefined(event)) {
+            event.preventDefault();
+        }
+
+        $scope.grid._locked = true;
+        $scope.addGrid();
+    }
     $scope.resetForm = function(event) {
         if(angular.isDefined(event)) {
             event.preventDefault();
@@ -734,7 +745,7 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids, MapproxyCaches, M
         $scope.formTitle = angular.equals($scope.grid, DEFAULT_GRID) ? 'New grid' : 'Edit grid';
         if($scope.grid.default) {
             $scope.formTitle = 'Default grid';
-            $scope._editarea.visible = false;
+            $scope.editareaBinds.visible = false;
         } else {
             $scope.grid_form.$setPristine();
             if($scope.grid._manual) {
