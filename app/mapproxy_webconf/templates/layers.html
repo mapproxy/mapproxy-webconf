@@ -1,6 +1,6 @@
 %def leftblock():
 <div ng-controller="MapproxyLayerListCtrl">
-  <button class="btn btn-small btn-info pull-right" ng-click="newLayer()">
+  <button class="btn btn-small btn-add pull-right" ng-click="newLayer()">
     <span class="icon-plus-sign icon-white" ></span>
     {{'Create new layer'|i18n}}
   </button>
@@ -100,14 +100,17 @@
         </div>
       </div>
     </div>
-    <div class="text-center">
-      <span id="_editarea_toggle_button_container"></span>
+    <div class="pull-left">
       <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!layer_form.$valid" id="layer_form_save">{{'Save'|i18n}}</button>
       <button class="btn btn-small" ng-click="resetForm()">{{'Reset'|i18n}}</button>
     </div>
+    <div id="_editarea_toggle_button_container" class="pull-right"></div>
   </form>
-  <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
-  <div class="text-center">
+  <div editarea="editareaBinds"
+    yaml-URL="${get_url('json_to_yaml')}"
+    json-URL="${get_url('yaml_to_json')}"
+    keep-empty-fields="name"></div>
+  <div class="clear">
     <span message-handler="success" message-types="layers.add_success,layers.update_success"></span>
     <span message-handler="error" message-types="layers.add_error,layers.update_error,layers.form_error"></span>
   </div>
@@ -124,7 +127,7 @@
         <br>
         <span ng-show="mapproxy_sources.length - filtered.length" ng-click="search=''">{{'Not shown sources'|i18n}}: {{mapproxy_sources.length - filtered.length}}</span>
       </div>
-      <ul class="vertical-list">
+      <ul class="vertical-list small">
           <div
               draggable
               class="mapproxy_source"
@@ -144,7 +147,7 @@
         <br>
         <span ng-show="mapproxy_caches.length - filtered.length" ng-click="search=''">{{'Not shown caches'|i18n}}: {{mapproxy_caches.length - filtered.length}}</span>
       </div>
-      <ul class="vertical-list">
+      <ul class="vertical-list small">
           <div
               draggable
               class="mapproxy_cache"

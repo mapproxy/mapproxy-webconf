@@ -359,7 +359,7 @@
     },
     {
         "key": "User defined grids",
-        "value": "Benutzerdefinierte Grids"
+        "value": "Grids"
     },
     {
         "key": "Default grid",

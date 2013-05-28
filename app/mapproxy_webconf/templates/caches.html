@@ -1,6 +1,6 @@
 %def leftblock():
 <div ng-controller="MapproxyCacheListCtrl">
-    <button class="btn btn-small btn-info pull-right" ng-click="newCache()">
+    <button class="btn btn-small btn-add pull-right" ng-click="newCache()">
       <span class="icon-plus-sign icon-white" ></span>
       {{'Create new cache'|i18n}}</button>
 
@@ -94,14 +94,19 @@
         <option value="image/jpeg">Image/JPEG</option>
       </select>
     </div>
-    <div class="text-center">
-      <span id="_editarea_toggle_button_container"></span>
+    <div class="pull-left">
       <button class="btn btn-small" ng-click="addCache($event)" ng-disabled="!cache_form.$valid" id="cache_form_save">{{'Save'|i18n}}</button>
       <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
     </div>
+    <div id="_editarea_toggle_button_container" class="pull-right"></div>
+
   </form>
-  <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
-  <div class="text-center">
+  <div editarea="editareaBinds"
+    yaml-URL="${get_url('json_to_yaml')}"
+    json-URL="${get_url('yaml_to_json')}"
+    keep-empty-fields="name">
+  </div>
+  <div class="clear">
     <span message-handler="success" message-types="caches.add_success,caches.update_success"></span>
     <span message-handler="error" message-types="caches.add_error,caches.update_error,caches.form_error"></span>
   </div>
@@ -118,7 +123,7 @@
       <br>
       <span ng-show="mapproxy_sources.length - filtered.length" ng-click="search=''">{{'Not shown sources'|i18n}}: {{mapproxy_sources.length - filtered.length}}</span>
     </div>
-    <ul class="vertical-list">
+    <ul class="vertical-list small">
       <div draggable class="mapproxy_source" ng-repeat="source in filtered = (mapproxy_sources | filter:{data.name:search}) | orderBy:'name'"
           item-data="{{source}}">
         <li class="droppable_name">
@@ -137,7 +142,7 @@
       <br>
       <span ng-show="mapproxy_caches.length - filtered.length" ng-click="search=''">{{'Not shown caches'|i18n}}: {{mapproxy_caches.length - filtered.length}}</span>
     </div>
-    <ul class="vertical-list">
+    <ul class="vertical-list small">
       <div
         draggable
         class="mapproxy_cache"
@@ -157,7 +162,7 @@
       <br>
       <span ng-show="(mapproxy_grids.concat(locked_grids).concat(default_grids)).length - filtered.length" ng-click="search=''">{{'Not shown grids'|i18n}}: {{(mapproxy_grids.concat(locked_grids).concat(default_grids)).length - filtered.length}}</span>
     </div>
-    <ul class="vertical-list">
+    <ul class="vertical-list small">
       <div
         draggable
         class="mapproxy_grid"
