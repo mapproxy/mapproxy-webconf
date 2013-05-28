@@ -502,6 +502,10 @@
         "value": "Bearbeitung abschließen"
     },
     {
+        "key": "Unlock",
+        "value": "Bearbeitung wieder aufnehmen"
+    },
+    {
         "key": "Really lock the grid",
         "value": "Abschließen des Bearbeitens für Grid"
     },
@@ -512,5 +516,9 @@
     {
         "key": "Locked grids",
         "value": "Abgeschlossene Grids"
+    },
+    {
+        "key": "If you unlock this grid it you need to check settings of all caches you use this grid and delete all affacted caches from disk",
+        "value": "Wenn Sie die Bearbeitung des Grids wieder aufnehmen müssen Sie die Einstellungen aller Caches überprüfen, die dieses Grid verwenden. Weiterhin ist es nötig, alle bereits gecachten Daten dieser Caches zu löschen"
     }
 ]

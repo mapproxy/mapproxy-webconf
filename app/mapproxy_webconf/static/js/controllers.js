@@ -714,7 +714,14 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids, MessageService, P
 
         $scope.grid._locked = true;
         $scope.addGrid();
-    }
+    };
+    $scope.unlockGrid = function(event) {
+        if(angular.isDefined(event)) {
+            event.preventDefault();
+        }
+        $scope.grid._locked = false;
+        $scope.addGrid();
+    };
     $scope.resetForm = function(event) {
         if(angular.isDefined(event)) {
             event.preventDefault();

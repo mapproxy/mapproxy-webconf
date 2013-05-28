@@ -122,6 +122,13 @@
     <div labeled="input_label" name-for="locked_grid.origin" text="{{'Origin'|i18n}}">
       <div class="input-xlarge" id="locked_grid.origin">{{grid.data.origin}}</div>
     </div>
+    <button
+      class="btn btn-small"
+      dialog="ask"
+      dialog-title="{{'Unlock'|i18n}}?"
+      dialog-text="{{'If you unlock this grid it you need to check settings of all caches you use this grid and delete all affacted caches from disk'|i18n}}"
+      callback="unlockGrid()">{{'Unlock'|i18n}}
+    </button>
   </div>
   <div ng-show="grid.default">
     <div labeled="input_label" name-for="default_grid.name" text="{{'Name'|i18n}}">
@@ -139,6 +146,7 @@
     dialog-text="{{'If you lock the grid, you won\'t be able to edit it again'|i18n}}"
     callback="lockGrid()"
     ng-disabled="grid_form.$dirty||editareaBinds.dirty"
+    ng-show="!grid._locked"
     id="grid_form_lock">{{'Lock'|i18n}}
   </button>
   <div class="clear">
