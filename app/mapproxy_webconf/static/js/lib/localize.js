@@ -14,7 +14,7 @@ angular.module('localization', [])
     .factory('localize', ['$http', '$rootScope', '$window', '$filter', function ($http, $rootScope, $window, $filter) {
         var localize = {
             // use the $window service to get the language of the user's browser
-            language:$window.navigator.userLanguage || $window.navigator.language,
+            language: app.LANGUAGE,
             // array to hold the localized resource string entries
             dictionary:[],
             // flag to indicate if the service hs loaded the resource file
@@ -40,7 +40,7 @@ angular.module('localization', [])
             initLocalizedResources:function () {
                 // build the url to retrieve the localized resource file
                 // use ISO 639-1 language codes
-                var url = '/i18n/resources-locale_' + localize.language.slice(0, 2).toLowerCase() + '.js';
+                var url = '/i18n/resources-locale_' + localize.language + '.js';
                 // request the resource file
                 $http({ method:"GET", url:url, cache:false }).success(localize.successCallback).error(function () {
                     // the request failed set the url to the default resource file
@@ -71,7 +71,6 @@ angular.module('localization', [])
                 return result;
             }
         };
-
         // force the load of the resource file
         localize.initLocalizedResources();
 

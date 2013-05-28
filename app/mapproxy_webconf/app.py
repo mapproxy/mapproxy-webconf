@@ -14,6 +14,7 @@ from .utils import requires_json
 from .capabilities import parse_capabilities_url
 
 configuration = config.ConfigParser.from_file('./config.ini')
+LANGUAGE = configuration.get('app', 'language')
 
 app = bottle.Bottle()
 bottle.TEMPLATE_PATH = [os.path.join(os.path.dirname(__file__), 'templates')]
@@ -160,7 +161,7 @@ def services_list(project, storage):
 
 @app.route('/', name='index')
 def index():
-    return template('index')
+    return template('index', language=LANGUAGE)
 
 @app.route('/projects', name='projects')
 def projects(storage):
@@ -172,39 +173,39 @@ def projects(storage):
             'valid': informal_only,
             'errors': errors
         }
-    return template('projects', projects=projects)
+    return template('projects', projects=projects, language=LANGUAGE)
 
 @app.route('/project/<project>/conf', name='configuration')
 def conf_index(project):
-    return template('config_index', project=project)
+    return template('config_index', project=project, language=LANGUAGE)
 
 @app.route('/project/<project>', name='project_index')
 def project_index(project):
-    return template('project_index', project=project)
+    return template('project_index', project=project, language=LANGUAGE)
 
 @app.route('/project/<project>/conf/sources', name='sources')
 def sources(project):
-    return template('sources', project=project)
+    return template('sources', project=project, language=LANGUAGE)
 
 @app.route('/project/<project>/conf/grids', name='grids')
 def grids(project):
-    return template('grids', project=project)
+    return template('grids', project=project, language=LANGUAGE)
 
 @app.route('/project/<project>/conf/caches', name='caches')
 def caches(project):
-    return template('caches', project=project)
+    return template('caches', project=project, language=LANGUAGE)
 
 @app.route('/project/<project>/conf/layers', name='layers')
 def layers(project):
-    return template('layers', project=project)
+    return template('layers', project=project, language=LANGUAGE)
 
 @app.route('/project/<project>/conf/globals', name='globals')
 def globals(project):
-    return template('globals', project=project)
+    return template('globals', project=project, language=LANGUAGE)
 
 @app.route('/project/<project>/conf/services', name='services')
 def services(project):
-    return template('services', project=project)
+    return template('services', project=project, language=LANGUAGE)
 
 @app.route('/project/<project>/conf/yaml', name='yaml')
 def yaml_page(project):
