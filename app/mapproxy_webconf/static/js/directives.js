@@ -223,10 +223,11 @@ directive('droppable', function($parse) {
                     scope.checkExist(scope.new_item);
                     if(scope.to_insert.length > 0) {
                         scope.insertItems();
+                        return;
                     }
-                } else {
-                    scope.j_ui.draggable('option', 'revert', true);
                 }
+                scope.j_ui.draggable('option', 'revert', true);
+
             };
             scope.changeCallback = function(change) {
                 if(change) {
@@ -268,7 +269,6 @@ directive('droppable', function($parse) {
                                 scope.insertItems();
                             }
                         } else {
-
                             scope.j_ui.draggable('option', 'revert', true);
                         }
                     }
