@@ -116,6 +116,7 @@ class SQLiteStore(object):
         self.db = sqlite3.connect(filename)
         self.db.row_factory = sqlite3.Row
         self._init_db()
+        self._init_project('base')
 
     def _init_db(self):
         self.db.execute("""
@@ -134,6 +135,38 @@ class SQLiteStore(object):
                 FOREIGN KEY(parent) REFERENCES store(id) ON DELETE CASCADE
             )
         """)
+
+    def _init_project(self, project):
+        defaults_data = json.dumps({
+            "srs": [
+                "EPSG:4326",
+                "EPSG:3857",
+                "EPSG:900913"
+            ]
+        })
+        services_data = json.dumps({
+            "demo": {
+                "active": True
+            },
+            "wms": {
+                "active": True,
+                "md": {
+                    "title": "Default WMS"
+                },
+                "srs": ["EPSG:4326"]
+        }})
+
+        cur = self.db.cursor()
+
+        cur.execute("SELECT * FROM store WHERE section ='defaults' AND project=?", (project,))
+        if not len(cur.fetchall()):
+            cur.execute("INSERT INTO store (section, project, data) VALUES (?, ?, ?)", ('defaults', project, defaults_data))
+
+        cur.execute("SELECT * FROM store WHERE section ='services' AND project=?", (project,))
+        if not len(cur.fetchall()):
+            cur.execute("INSERT INTO store (section, project, data) VALUES (?, ?, ?)", ('services', project, services_data))
+
+        self.db.commit()
 
     def get_projects(self):
         cur = self.db.cursor()

@@ -1111,8 +1111,8 @@ function MapproxyServicesCtrl($scope, localize, MapproxyServices, DataShareServi
     var setServices = function() {
         var services = MapproxyServices.list();
         if(services.length > 0) {
-            $scope.services = services[0]
-            DataShareService.data('services', $scope.services)
+            $scope.services = $.extend(true, $scope.services, services[0]);
+            DataShareService.data('services', $scope.services);
         }
     };
 
