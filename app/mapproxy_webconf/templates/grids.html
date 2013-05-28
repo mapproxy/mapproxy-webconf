@@ -91,7 +91,10 @@
       <div class="input-xlarge" id="default_grid.name">{{grid.data.name}}</div>
     </div>
   </div>
-  <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
+  <div editarea="editareaBinds"
+    yaml-URL="${get_url('json_to_yaml')}"
+    json-URL="${get_url('yaml_to_json')}"
+    keep-empty-fields="name"></div>
   <div class="clear">
     <span message-handler="success" message-types="grids.add_success,grids.update_success"></span>
     <span message-handler="error" message-types="grids.add_error,grids.update_error,grids.form_error"></span>

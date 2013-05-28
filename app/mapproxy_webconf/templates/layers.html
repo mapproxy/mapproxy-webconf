@@ -106,7 +106,10 @@
     </div>
     <div id="_editarea_toggle_button_container" class="pull-right"></div>
   </form>
-  <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
+  <div editarea="editareaBinds"
+    yaml-URL="${get_url('json_to_yaml')}"
+    json-URL="${get_url('yaml_to_json')}"
+    keep-empty-fields="name"></div>
   <div class="clear">
     <span message-handler="success" message-types="layers.add_success,layers.update_success"></span>
     <span message-handler="error" message-types="layers.add_error,layers.update_error,layers.form_error"></span>

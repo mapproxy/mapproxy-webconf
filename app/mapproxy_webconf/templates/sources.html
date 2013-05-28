@@ -137,7 +137,10 @@
         </div>
       </fieldset>
     </form>
-    <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json" keep-empty-fields="name"></div>
+    <div editarea="editareaBinds"
+        yaml-URL="${get_url('json_to_yaml')}"
+        json-URL="${get_url('yaml_to_json')}"
+        keep-empty-fields="name"></div>
     <div message-handler="success" message-types="sources.add_success,sources.update_success"></div>
     <div message-handler="error" message-types="sources.add_error,sources.update_error,sources.form_error"></div>
   </div>

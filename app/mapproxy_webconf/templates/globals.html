@@ -45,7 +45,10 @@
         <button class="btn btn-small" ng-click="save($event)" ng-disabled="!globals_form.$valid" id="globals_form_save">{{'Save'|i18n}}</button>
     </form>
     <hr ng-show="!editareaBinds.visible">
-    <div editarea="editareaBinds" yaml-URL="/yaml" json-URL="/json"></div>
+    <div editarea="editareaBinds"
+        yaml-URL="${get_url('json_to_yaml')}"
+        json-URL="${get_url('yaml_to_json')}">
+    </div>
     <div>
         <span message-handler="success" message-types="globals.add_success,globals.update_success"></span>
         <span message-handler="error" message-types="globals.load_error,globals.add_error,globals.update_error,globals.form_error"></span>

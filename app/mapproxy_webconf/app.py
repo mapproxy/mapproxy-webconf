@@ -219,7 +219,7 @@ def write_config(project, storage):
     mapproxy_conf = config.mapproxy_conf_from_storage(storage, project)
     return config.write_mapproxy_yaml(mapproxy_conf, os.path.join(configuration.get('app', 'output_path'), project + '.yaml'))
 
-@app.route('/yaml', 'POST')
+@app.route('/yaml', 'POST', name='json_to_yaml')
 def create_yaml():
     data = request.json
     try:
@@ -228,7 +228,7 @@ def create_yaml():
         response.status = 400
         return {'error': 'creating yaml failed'}
 
-@app.route('/json', 'POST')
+@app.route('/json', 'POST', name='yaml_to_json')
 def create_json():
     data = request.json
     try:
