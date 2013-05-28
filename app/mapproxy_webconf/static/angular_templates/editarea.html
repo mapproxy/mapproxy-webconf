@@ -29,6 +29,15 @@
                 class='btn btn-small'>
                 {{'Back to form edit'|i18n}}
             </button>
+            <button
+                ng-show='editareaBinds.editareaValue._manual'
+                class='btn btn-small'
+                dialog="ask"
+                dialog-title="{{'Really go back to form editing'|i18n}}?"
+                dialog-text="{{'If you go back to form editing, you will loose all configurations which are not represented by form fields'|i18n}}"
+                callback="leaveEditarea(true)">
+                {{'Back to form edit'|i18n}}
+            </button>
         </div>
         <div class='text-center'>
             <span message-handler="error" message-types="editarea.error"></span>

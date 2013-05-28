@@ -455,10 +455,13 @@ directive('editarea', function($http, MessageService) {
                     })
                     .error(errorHandler);
             };
-            scope.leaveEditarea = function() {
+            scope.leaveEditarea = function(unmanual) {
                 scope.editareaBinds.visible = false;
                 scope.editareaBinds.dirty = false;
                 scope.editareaErrorMsg = undefined;
+                if(unmanual) {
+                    scope.$apply();
+                }
             };
             scope.reset = function() {
                 scope.editareaBinds.dirty = false;

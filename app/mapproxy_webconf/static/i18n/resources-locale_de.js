@@ -520,5 +520,13 @@
     {
         "key": "If you unlock this grid it you need to check settings of all caches you use this grid and delete all affacted caches from disk",
         "value": "Wenn Sie die Bearbeitung des Grids wieder aufnehmen müssen Sie die Einstellungen aller Caches überprüfen, die dieses Grid verwenden. Weiterhin ist es nötig, alle bereits gecachten Daten dieser Caches zu löschen"
+    },
+    {
+        "key": "Really go back to form editing",
+        "value": "Wirklich zum formularbasierten Editieren zurückkehren"
+    },
+    {
+        "key": "If you go back to form editing, you will loose all configurations which are not represented by form fields",
+        "value": "Wenn Sie zum formularbasierten Editieren zurückkehren verlieren Sie alle nicht durch ein Formularfeld representierten Konfigurationen"
     }
 ]
