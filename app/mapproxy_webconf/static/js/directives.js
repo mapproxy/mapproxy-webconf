@@ -488,7 +488,9 @@ directive('editarea', function($http, MessageService) {
                 }
             });
             _editareaElement.on('keyup', function(e) {
-                scope.editareaBinds.dirty = true;
+                scope.$apply(function() {
+                    scope.editareaBinds.dirty = true;
+                });
             });
 
             scope.$watch('editareaBinds.visible', function(visible) {
