@@ -158,14 +158,17 @@ class SQLiteStore(object):
 
         cur = self.db.cursor()
 
+        inserts = []
+
         cur.execute("SELECT * FROM store WHERE section ='defaults' AND project=?", (project,))
         if not len(cur.fetchall()):
-            cur.execute("INSERT INTO store (section, project, data) VALUES (?, ?, ?)", ('defaults', project, defaults_data))
+            inserts.append({'section': 'defaults', 'project': project, 'data': defaults_data})
 
         cur.execute("SELECT * FROM store WHERE section ='services' AND project=?", (project,))
         if not len(cur.fetchall()):
-            cur.execute("INSERT INTO store (section, project, data) VALUES (?, ?, ?)", ('services', project, services_data))
+            inserts.append({'section': 'services', 'project': project, 'data': services_data})
 
+        cur.executemany("INSERT INTO store (section, project, data) VALUES (:section, :project, :data)", inserts)
         self.db.commit()
 
     def get_projects(self):
