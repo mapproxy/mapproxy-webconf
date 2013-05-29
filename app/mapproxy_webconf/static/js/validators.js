@@ -11,7 +11,7 @@ directive('integer', function() {
                 if (!viewValue || INTEGER_REGEXP.test(viewValue)) {
                     // it is valid
                     ctrl.$setValidity('integer', true);
-                    return viewValue;
+                    return parseInt(viewValue);
                 } else {
                     // it is invalid, return undefined (no model update)
                     ctrl.$setValidity('integer', false);
