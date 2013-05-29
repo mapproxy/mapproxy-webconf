@@ -96,6 +96,13 @@
               <option value="nw">NW / UL</option>
           </select>
       </div>
+      <!-- res / scales -->
+      <div class="btn-group" data-toggle="buttons-radio">
+        <button type="button" class="btn btn-small active" ng-click="showResolutions()">{{'Resolutions'|i18n}}</button>
+        <button type="button" class="btn btn-small" ng-click="showScales()">{{'Scales'|i18n}}</button>
+      </div>
+      <div extendable-input-list="custom.res_scales"></div>
+      <!-- buttons -->
       <div class="pull-left">
         <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="!grid_form.$valid" id="grid_form_save">{{'Save'|i18n}}</button>
         <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>

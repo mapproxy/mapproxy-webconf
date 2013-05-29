@@ -722,6 +722,12 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids, MessageService, P
         $scope.grid._locked = false;
         $scope.addGrid();
     };
+    $scope.showResolutions = function() {
+        angular.noop();
+    };
+    $scope.showScales = function() {
+        angular.noop();
+    };
     $scope.resetForm = function(event) {
         if(angular.isDefined(event)) {
             event.preventDefault();
@@ -729,6 +735,7 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids, MessageService, P
         $scope.grid = MapproxyGrids.current(true);
         $scope.grid_form.$setPristine();
     };
+    $scope.custom = {'res_scales': []};
     $scope.grid = angular.copy(DEFAULT_GRID);
     $scope.formTitle = 'New grid';
 

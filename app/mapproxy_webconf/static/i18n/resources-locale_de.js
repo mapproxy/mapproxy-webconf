@@ -528,5 +528,13 @@
     {
         "key": "If you go back to form editing, you will loose all configurations which are not represented by form fields",
         "value": "Wenn Sie zum formularbasierten Editieren zurückkehren verlieren Sie alle nicht durch ein Formularfeld representierten Konfigurationen"
+    },
+    {
+        "key": "Resolutions",
+        "value": "Resolutions"
+    },
+    {
+        "key": "Scales",
+        "value": "Scales"
     }
 ]
