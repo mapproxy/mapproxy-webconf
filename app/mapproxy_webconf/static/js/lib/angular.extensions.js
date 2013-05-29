@@ -6,9 +6,12 @@ angular.module('angular.extensions', [])
   return function(scope, element, attr) {
     var fn = $parse(attr['ngFocus']);
     element.bind('focus', function(event) {
-      scope.$apply(function() {
-        fn(scope, {$event:event});
-      });
+      fn(scope, {$event:event});
+      //prevent error if $apply already in progress
+      //found at http://stackoverflow.com/questions/12729122/prevent-error-digest-already-in-progress-when-calling-scope-apply
+      if(!scope.$$phase) {
+        scope.$apply();
+      }
     });
   }
 }])
@@ -17,9 +20,10 @@ angular.module('angular.extensions', [])
   return function(scope, element, attr) {
     var fn = $parse(attr['ngBlur']);
     element.bind('blur', function(event) {
-      scope.$apply(function() {
-        fn(scope, {$event:event});
-      });
+      fn(scope, {$event:event});
+      if(!scope.$$phase) {
+        scope.$apply();
+      }
     });
   }
 }]);

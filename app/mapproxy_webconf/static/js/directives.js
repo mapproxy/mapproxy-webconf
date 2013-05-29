@@ -450,7 +450,9 @@ directive('extendableInputList', function() {
                     } else {
                         $(element).find('#_extendableInputListNewInput').focus();
                     }
-                    scope.$apply();
+                    if(scope.$$phase) {
+                        scope.$apply();
+                    }
                 }
             };
         }
