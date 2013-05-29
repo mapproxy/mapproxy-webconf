@@ -408,6 +408,55 @@ directive('labeled', function($parse, $templateCache, localize) {
     };
 }).
 
+directive('extendableInputList', function() {
+    return {
+        restrict: 'A',
+        scope: {
+            extendableInputListBinds: '=extendableInputList'
+        },
+        replace: true,
+        transclude: true,
+        template: '<ul>' +
+                  '<div ng-repeat="item in extendableInputListBinds">' +
+                  '<li>Level {{$index}}: <input float ng-blur="update()" ng-click="focusOn(this)" ng-model="items[$index]"></li>' +
+                  '</div>' +
+                  '<div><li>Level {{extendableInputListBinds.length}}: <input id="_extendableInputListNewInput" float ng-blur="blured=true" ng-change="showNext=true" ng-model="items[extendableInputListBinds.length]"></li></div>' +
+                  '<div ng-show="showNext"><li>Level {{extendableInputListBinds.length + 1}}: <input float ng-focus="update()" ng-model="items[extendableInputListBinds.length + 1]"></li></div>',
+        link: function(scope, element, attrs) {
+            var focusElement = false;
+            scope.items = [];
+            scope.showNext = false;
+            scope.blured = false;
+
+            scope.focusOn = function(_element) {
+                focusElement = _element;
+                if(scope.blured) {
+                    scope.blured = false;
+                    scope.update();
+                }
+            };
+            scope.update = function() {
+                //added function to sort to sort numbers
+                //found at http://www.w3schools.com/jsref/jsref_sort.asp
+                if($.inArray(undefined, scope.items) == -1) {
+                    scope.extendableInputListBinds = angular.copy(scope.items.sort(
+                        function(a, b) {
+                            return a-b;
+                    }).reverse());
+                    scope.showNext = false;
+                    if(focusElement) {
+                        $(focusElement).focus();
+                        focusElement = false;
+                    } else {
+                        $(element).find('#_extendableInputListNewInput').focus();
+                    }
+                    scope.$apply();
+                }
+            };
+        }
+    };
+}).
+
 directive('editarea', function($http, MessageService) {
     return {
         restrict: 'A',
