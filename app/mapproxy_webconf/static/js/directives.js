@@ -438,7 +438,7 @@ directive('extendableInputList', function() {
             scope.update = function() {
                 //added function to sort to sort numbers
                 //found at http://www.w3schools.com/jsref/jsref_sort.asp
-                if($.inArray(undefined, scope.items) == -1) {
+                if($.inArray(undefined, scope.items) == -1 && !angular.equals(scope.items, scope.extendableInputListBinds)) {
                     scope.extendableInputListBinds = angular.copy(scope.items.sort(
                         function(a, b) {
                             return a-b;
