@@ -408,7 +408,7 @@ directive('labeled', function($parse, $templateCache, localize) {
     };
 }).
 
-directive('extendableInputList', function() {
+directive('extendableInputList', function($timeout) {
     return {
         restrict: 'A',
         scope: {
@@ -418,15 +418,23 @@ directive('extendableInputList', function() {
         transclude: true,
         template: '<ul>' +
                   '<div ng-repeat="item in extendableInputListBinds">' +
-                  '<li>Level {{$index}}: <input float ng-blur="update()" ng-click="focusOn(this)" ng-model="items[$index]"></li>' +
+                  '<li>Level {{$index}}: <input class="_extendableInputListItem" float ng-blur="update()" ng-click="focusOn(this)" ng-model="items[$index]"></li>' +
                   '</div>' +
-                  '<div><li>Level {{extendableInputListBinds.length}}: <input id="_extendableInputListNewInput" float ng-blur="blured=true" ng-change="showNext=true" ng-model="items[extendableInputListBinds.length]"></li></div>' +
-                  '<div ng-show="showNext"><li>Level {{extendableInputListBinds.length + 1}}: <input float ng-focus="update()" ng-model="items[extendableInputListBinds.length + 1]"></li></div>',
+                  '<div><li>Level {{extendableInputListBinds.length}}: <input class="_extendableInputListItem" id="_extendableInputListNewInput" float ng-blur="blured=true;waitForFocus();" ng-change="showNext=true" ng-model="items[extendableInputListBinds.length]"></li></div>' +
+                  '<div ng-show="showNext"><li>Level {{extendableInputListBinds.length + 1}}: <input class="_extendableInputListItem" float ng-focus="update()" ng-model="items[extendableInputListBinds.length + 1]"></li></div>',
         link: function(scope, element, attrs) {
             var focusElement = false;
             scope.items = [];
             scope.showNext = false;
             scope.blured = false;
+
+            scope.waitForFocus = function() {
+                $timeout(function() {
+                    if(!$(':focus').hasClass('_extendableInputListItem')) {
+                        scope.update(true);
+                    }
+                });
+            }
 
             scope.focusOn = function(_element) {
                 focusElement = _element;
@@ -435,7 +443,7 @@ directive('extendableInputList', function() {
                     scope.update();
                 }
             };
-            scope.update = function() {
+            scope.update = function(updateOnly) {
                 //added function to sort to sort numbers
                 //found at http://www.w3schools.com/jsref/jsref_sort.asp
                 if($.inArray(undefined, scope.items) == -1 && !angular.equals(scope.items, scope.extendableInputListBinds)) {
@@ -444,7 +452,7 @@ directive('extendableInputList', function() {
                             return a-b;
                     }).reverse());
                     scope.showNext = false;
-                    if(focusElement) {
+                    if(focusElement && !updateOnly) {
                         $(focusElement).focus();
                         focusElement = false;
                     } else {
