@@ -19,6 +19,7 @@
 
     <!-- libs -->
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/angular.js') }"></script>
+    <script type="text/javascript" src="${ get_url('static', filepath='js/lib/angular.extensions.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/angular-resource.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/localize.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/jquery-1.9.1.min.js') }"></script>
@@ -45,7 +46,7 @@
         OpenLayers.ImgPath = "${ get_url('static', filepath='img/') }";
 
       /* add directives and services*/
-        var app = angular.module('mapproxy_gui', ['localization', 'mapproxy_gui.directives', 'mapproxy_gui.services', 'mapproxy_gui.validators']);
+        var app = angular.module('mapproxy_gui', ['angular.extensions', 'localization', 'mapproxy_gui.directives', 'mapproxy_gui.services', 'mapproxy_gui.validators', 'mapproxy_gui.filters']);
       /* Set language */
         app.LANGUAGE = '${ language }';
 
