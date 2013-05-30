@@ -704,8 +704,9 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         if(angular.isDefined(event)) {
             event.preventDefault();
         }
-
-        addScalesResToGrid();
+        if(!$scope.editareaBinds.save) {
+            addScalesResToGrid();
+        }
 
         $scope.grid = clearData($scope.grid);
 
@@ -824,6 +825,13 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         }
     }, true);
 
+    $scope.$watch('editareaBinds.visible', function(visible) {
+        if(visible) {
+            addScalesResToGrid();
+            $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.grid);
+        }
+    }, true);
+
     $scope.$watch('grid_form.$valid', function(formValid) {
         if(formValid) {
             $('#grid_form_save').addClass('btn-success');
@@ -831,11 +839,6 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
             $('#grid_form_save').removeClass('btn-success');
         }
     });
-
-    $scope.$watch('grid', function() {
-            $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.grid);
-        }, true
-    );
 
     $scope._messageService = MessageService;
 
