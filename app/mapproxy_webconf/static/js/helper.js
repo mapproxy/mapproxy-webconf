@@ -55,3 +55,11 @@ var nameExistInService = function(name, id, service, services) {
         return false;
     }
 };
+
+//prevent error if $apply already in progress
+//found at http://stackoverflow.com/questions/12729122/prevent-error-digest-already-in-progress-when-calling-scope-apply
+var saveApply = function(scope) {
+    if(!scope.$$phase) {
+        scope.$apply();
+    }
+}

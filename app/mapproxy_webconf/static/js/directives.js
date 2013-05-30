@@ -458,9 +458,7 @@ directive('extendableInputList', function($timeout) {
                     } else {
                         $(element).find('#_extendableInputListNewInput').focus();
                     }
-                    if(scope.$$phase) {
-                        scope.$apply();
-                    }
+                    saveApply(scope);
                 }
             };
             scope.$watch('extendableInputListBinds', function(newVal) {
