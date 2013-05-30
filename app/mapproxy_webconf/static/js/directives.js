@@ -418,10 +418,10 @@ directive('extendableInputList', function($timeout) {
         transclude: true,
         template: '<ul>' +
                   '<div ng-repeat="item in extendableInputListBinds">' +
-                  '<li>Level {{$index}}: <input class="_extendableInputListItem" float ng-blur="update()" ng-click="focusOn(this)" ng-model="items[$index]"></li>' +
+                  '<li>{{listPrefix}}{{$index}}: <input class="_extendableInputListItem" float ng-blur="update()" ng-click="focusOn(this)" ng-model="items[$index]"></li>' +
                   '</div>' +
-                  '<div><li>Level {{extendableInputListBinds.length}}: <input class="_extendableInputListItem" id="_extendableInputListNewInput" float ng-blur="blured=true;waitForFocus();" ng-change="showNext=true" ng-model="items[extendableInputListBinds.length]"></li></div>' +
-                  '<div ng-show="showNext"><li>Level {{extendableInputListBinds.length + 1}}: <input class="_extendableInputListItem" float ng-focus="update()" ng-model="items[extendableInputListBinds.length + 1]"></li></div>',
+                  '<div><li>{{listPrefix}}{{extendableInputListBinds.length}}: <input class="_extendableInputListItem" id="_extendableInputListNewInput" float ng-blur="blured=true;waitForFocus();" ng-change="showNext=true" ng-model="items[extendableInputListBinds.length]"></li></div>' +
+                  '<div ng-show="showNext"><li>{{listPrefix}}{{extendableInputListBinds.length + 1}}: <input class="_extendableInputListItem" float ng-focus="update()" ng-model="items[extendableInputListBinds.length + 1]"></li></div>',
         link: function(scope, element, attrs) {
             var focusElement = false;
             scope.items = [];
@@ -434,8 +434,7 @@ directive('extendableInputList', function($timeout) {
                         scope.update(true);
                     }
                 });
-            }
-
+            };
             scope.focusOn = function(_element) {
                 focusElement = _element;
                 if(scope.blured) {
@@ -465,7 +464,13 @@ directive('extendableInputList', function($timeout) {
                 if(!angular.equals(newVal, scope.items)) {
                     scope.items = angular.copy(scope.extendableInputListBinds);
                 }
-            })
+            });
+            //need to use observe, cause i18n
+            attrs.$observe('listPrefix', function(val) {
+                if(angular.isDefined(val)) {
+                    scope.listPrefix = val + ' ';
+                }
+            });
         }
     };
 }).
