@@ -732,13 +732,13 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         $scope.grid._locked = false;
         $scope.addGrid();
     };
-    $scope.getResolutions = function(url) {
+    $scope.showResolutions = function(url) {
         if(!$scope.custom.resSelected) {
             $scope.custom.resSelected = true;
             convertResScales(url, 'scales');
         }
     };
-    $scope.getScales = function(url) {
+    $scope.showScales = function(url) {
         if($scope.custom.resSelected) {
             $scope.custom.resSelected = false;
             convertResScales(url, 'res');

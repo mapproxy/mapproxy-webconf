@@ -259,6 +259,7 @@ def convert_res_scales():
     result = []
     for i, d in enumerate(data):
         result.append(convert(d, dpi, unit))
+    return {'result': result}
 
 def init_app(storage_dir):
     app.install(storage.SQLiteStorePlugin(os.path.join(configuration.get('app', 'storage_path'), configuration.get('app', 'sqlite_db'))))
