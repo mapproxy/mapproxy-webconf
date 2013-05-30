@@ -168,7 +168,11 @@
         class="mapproxy_grid"
         ng-repeat="grid in filtered = (mapproxy_grids.concat(locked_grids).concat(default_grids) | filter: {data.name:search}) | orderBy:'name'"
         item-data="{{grid}}">
-        <li class="droppable_name" ng-class="{'locked-grid': grid._locked}">{{grid.data.name}}</li>
+        <li class="droppable_name" ng-class="{'locked-grid': grid._locked}">
+          <i ng-show="grid._locked || grid.default" class="icon-ok"></i>
+          <i ng-show="!grid._locked && !grid.default" class="icon-warning-sign"></i>
+          {{grid.data.name}}
+        </li>
       </div>
     </ul>
     <span ng-show="false">{{filtered.length}}</span>
