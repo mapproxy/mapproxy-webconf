@@ -146,11 +146,17 @@ def mapproxy_conf_from_storage(storage, project):
         dpi = defaults.values()[0].get('dpi', (2.54/(0.00028 * 100)))
         for grid in grids.items():
             if 'scales' in grid[1].keys():
+                units = grid[1].get('units', 'm')
+                units = 1 if units == 'm' else 111319.4907932736
                 try:
-                    grid[1]['res'] = [scale_to_res(float(scale), dpi, 1) for scale in grid[1]['scales']]
+                    grid[1]['res'] = [scale_to_res(float(scale), dpi, units) for scale in grid[1]['scales']]
                 except ValueError:
                     raise ConfigError('grid %s contains invalid value in scales section' % grid[1].get('name', ''))
                 del grid[1]['scales']
+            try:
+                del grid[1]['units']
+            except KeyError:
+                pass
 
     used_caches, used_sources = used_caches_and_sources(layers, caches, sources)
 

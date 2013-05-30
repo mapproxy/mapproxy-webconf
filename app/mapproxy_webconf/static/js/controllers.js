@@ -677,6 +677,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
             $http.post(url, {
                 "data": $scope.custom.res_scales,
                 "dpi": $scope.defaults.data.dpi,
+                "units": $scope.grid.data.units,
                 "mode": mode
             }).success(function(response) {
                 $scope.custom.res_scales = response.result;

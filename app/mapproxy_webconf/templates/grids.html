@@ -79,6 +79,13 @@
               <option value="nw">NW / UL</option>
           </select>
       </div>
+      <div labeled="input_label" name-for="grid_form.units" text="{{'Map units'|i18n}}">
+        <div class="btn-group" ng-model="grid.data.units" data-toggle-name="is_private" data-toggle="buttons-radio" >
+          <button type="button" ng-click="grid.data.units='m'" class="btn btn-small" ng-class="{'active': grid.data.units=='m'}" data-toggle="button">{{'Meters'|i18n}}</button>
+          <button type="button" ng-click="grid.data.units='d'" class="btn btn-small" ng-class="{'active': grid.data.units=='d'}" data-toggle="button">{{'Degrees'|i18n}}</button>
+        </div>
+      </div>
+
       <!-- res / scales -->
       <div class="btn-group" data-toggle="buttons-radio">
         <button type="button" class="btn btn-small" ng-class="{'active': custom.resSelected}" ng-click="getResolutions('${get_url('scales_to_res')}')">{{'Resolutions'|i18n}}</button>

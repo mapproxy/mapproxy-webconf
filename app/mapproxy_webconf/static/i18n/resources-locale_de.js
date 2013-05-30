@@ -568,5 +568,17 @@
     {
         "key": "Level",
         "value": "Level"
+    },
+    {
+        "key": "Map units",
+        "value": "Karteneinheit"
+    },
+    {
+        "key": "Meters",
+        "value": "Meter"
+    },
+    {
+        "key": "Degrees",
+        "value": "Grad"
     }
 ]
