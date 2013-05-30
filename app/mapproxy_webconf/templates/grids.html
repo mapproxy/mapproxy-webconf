@@ -98,8 +98,8 @@
       </div>
       <!-- res / scales -->
       <div class="btn-group" data-toggle="buttons-radio">
-        <button type="button" class="btn btn-small active" ng-click="showResolutions('${get_url('scales_to_res')}')">{{'Resolutions'|i18n}}</button>
-        <button type="button" class="btn btn-small" ng-click="showScales('${get_url('res_to_scales')}')">{{'Scales'|i18n}}</button>
+        <button type="button" class="btn btn-small" ng-class="{'active': custom.resSelected}" ng-click="getResolutions('${get_url('scales_to_res')}')">{{'Resolutions'|i18n}}</button>
+        <button type="button" class="btn btn-small" ng-class="{'active': !custom.resSelected}" ng-click="getScales('${get_url('res_to_scales')}')">{{'Scales'|i18n}}</button>
       </div>
       <div extendable-input-list="custom.res_scales"></div>
       <!-- buttons -->
