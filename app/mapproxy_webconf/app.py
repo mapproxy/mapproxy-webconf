@@ -242,6 +242,24 @@ def create_json():
         response.status = 400
         return {'error': 'parsing yaml failed'}
 
+@app.route('/res', 'POST', name='scales_to_res')
+@app.route('/scales', 'POST', name='res_to_scales')
+def convert_res_scales():
+    from mapproxy.script.scales import scale_to_res, res_to_scale
+
+    data = request.json.get('data', [])
+    mode = request.json.get('mode', 'res')
+    dpi = request.json.get('dpi', (2.54/(0.00028 * 100)))
+    unit = request.json.get('unit', 'm')
+
+    data = map(float, data)
+    unit = 1 if unit == 'm' else 111319.4907932736
+    convert = res_to_scale if mode == 'res' else scale_to_res
+
+    result = []
+    for i, d in enumerate(data):
+        result.append(convert(d, dpi, unit))
+
 def init_app(storage_dir):
     app.install(storage.SQLiteStorePlugin(os.path.join(configuration.get('app', 'storage_path'), configuration.get('app', 'sqlite_db'))))
     return app

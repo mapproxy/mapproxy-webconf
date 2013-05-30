@@ -673,8 +673,20 @@ function MapproxyGridListCtrl($scope, MapproxyGrids, MessageService) {
     });
 };
 
-function MapproxyGridFormCtrl($scope, localize, MapproxyGrids, MessageService, ProjectDefaults) {
+function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageService, ProjectDefaults) {
     var DEFAULT_GRID = {'data': {'bbox': [null, null, null, null]}};
+    var convertResScales = function(url, mode) {
+        $http.post(url, {
+            "data": $scope.custom.res_scales,
+            "dpi": $scope.defaults.data.dpi,
+            "mode": mode
+        }).success(function(response) {
+            $scope.custom.res_scales = response.result;
+        });
+    }
+    $scope.isActive = function(element) {
+        return $(element).hasClass('active');
+    }
     $scope.prepareForEditarea = function(data) {
         return $.extend(true, {'data': {'name': ""}}, data);
     };
@@ -722,11 +734,11 @@ function MapproxyGridFormCtrl($scope, localize, MapproxyGrids, MessageService, P
         $scope.grid._locked = false;
         $scope.addGrid();
     };
-    $scope.showResolutions = function() {
-        angular.noop();
+    $scope.showResolutions = function(url) {
+        convertResScales(url, 'scales');
     };
-    $scope.showScales = function() {
-        angular.noop();
+    $scope.showScales = function(url) {
+        convertResScales(url, 'res');
     };
     $scope.resetForm = function(event) {
         if(angular.isDefined(event)) {

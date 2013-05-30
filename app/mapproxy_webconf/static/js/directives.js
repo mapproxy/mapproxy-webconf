@@ -463,6 +463,11 @@ directive('extendableInputList', function($timeout) {
                     }
                 }
             };
+            scope.$watch('extendableInputListBinds', function(newVal) {
+                if(!angular.equals(newVal, scope.items)) {
+                    scope.items = angular.copy(scope.extendableInputListBinds);
+                }
+            })
         }
     };
 }).
