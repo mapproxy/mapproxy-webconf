@@ -685,6 +685,18 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         });
     };
 
+    var addScalesResToGrid = function() {
+        if($scope.custom.res_scales.length > 0) {
+            if($scope.custom.resSelected) {
+                delete $scope.grid.data.scales;
+                $scope.grid.data.res = $scope.custom.res_scales;
+            } else {
+                delete $scope.grid.data.res;
+                $scope.grid.data.scales = $scope.custom.res_scales
+            }
+        }
+    }
+
     $scope.prepareForEditarea = function(data) {
         return $.extend(true, {'data': {'name': ""}}, data);
     };
@@ -692,6 +704,8 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         if(angular.isDefined(event)) {
             event.preventDefault();
         }
+
+        addScalesResToGrid();
 
         $scope.grid = clearData($scope.grid);
 
@@ -732,13 +746,13 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         $scope.grid._locked = false;
         $scope.addGrid();
     };
-    $scope.showResolutions = function(url) {
+    $scope.getResolutions = function(url) {
         if(!$scope.custom.resSelected) {
             $scope.custom.resSelected = true;
             convertResScales(url, 'scales');
         }
     };
-    $scope.showScales = function(url) {
+    $scope.getScales = function(url) {
         if($scope.custom.resSelected) {
             $scope.custom.resSelected = false;
             convertResScales(url, 'res');
@@ -768,11 +782,26 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
 
     $scope.$on('grids.current', function() {
         $scope.grid = MapproxyGrids.current(true);
+
+        if(angular.isDefined($scope.grid.data.scales)) {
+            $scope.custom.res_scales = angular.copy($scope.grid.data.scales);
+            $scope.custom.resSelected = false;
+        } else if(angular.isDefined($scope.grid.data.res)) {
+            $scope.custom.res_scales = angular.copy($scope.grid.data.res);
+            $scope.custom.resSelected = true;
+        } else {
+            $scope.custom.res_scales = [];
+            $scope.custom.resSelected = true
+        }
+
         $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.grid);
+
         if(angular.isUndefined($scope.grid.data.bbox)) {
             $scope.grid.data.bbox = [null, null, null, null];
         }
+
         $scope.formTitle = angular.equals($scope.grid, DEFAULT_GRID) ? 'New grid' : 'Edit grid';
+
         if($scope.grid.default) {
             $scope.formTitle = 'Default grid';
             $scope.editareaBinds.visible = false;
