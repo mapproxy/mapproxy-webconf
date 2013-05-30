@@ -683,10 +683,8 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         }).success(function(response) {
             $scope.custom.res_scales = response.result;
         });
-    }
-    $scope.isActive = function(element) {
-        return $(element).hasClass('active');
-    }
+    };
+
     $scope.prepareForEditarea = function(data) {
         return $.extend(true, {'data': {'name': ""}}, data);
     };
@@ -735,10 +733,16 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         $scope.addGrid();
     };
     $scope.showResolutions = function(url) {
-        convertResScales(url, 'scales');
+        if(!$scope.custom.resSelected) {
+            $scope.custom.resSelected = true;
+            convertResScales(url, 'scales');
+        }
     };
     $scope.showScales = function(url) {
-        convertResScales(url, 'res');
+        if($scope.custom.resSelected) {
+            $scope.custom.resSelected = false;
+            convertResScales(url, 'res');
+        }
     };
     $scope.resetForm = function(event) {
         if(angular.isDefined(event)) {
@@ -747,7 +751,10 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         $scope.grid = MapproxyGrids.current(true);
         $scope.grid_form.$setPristine();
     };
-    $scope.custom = {'res_scales': []};
+    $scope.custom = {
+        'res_scales': [],
+        'resSelected': true
+    };
     $scope.grid = angular.copy(DEFAULT_GRID);
     $scope.formTitle = 'New grid';
 
