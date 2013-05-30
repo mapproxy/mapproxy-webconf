@@ -276,10 +276,6 @@
         "value": "Titel"
     },
     {
-        "key": "Start the configruation",
-        "value": "Starten der Konfiguration"
-    },
-    {
         "key": "Active",
         "value": "Aktiv"
     },
@@ -452,6 +448,10 @@
     {
         "key": "Project defaults",
         "value": "Defaultwerte des Projekts"
+    },
+    {
+        "key": "infotext_default_settings",
+        "value": "TODO: Infotexte Default Settings"
     },
     {
         "key": "OK",
