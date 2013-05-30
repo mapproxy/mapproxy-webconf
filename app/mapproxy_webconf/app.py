@@ -5,6 +5,7 @@ from copy import deepcopy
 from xml.etree.ElementTree import ParseError
 
 from mapproxy.client import http
+from mapproxy.script.scales import scale_to_res, res_to_scale
 
 from . import bottle
 from . import config
@@ -245,8 +246,6 @@ def create_json():
 @app.route('/res', 'POST', name='scales_to_res')
 @app.route('/scales', 'POST', name='res_to_scales')
 def convert_res_scales():
-    from mapproxy.script.scales import scale_to_res, res_to_scale
-
     data = request.json.get('data', [])
     mode = request.json.get('mode', 'res')
     dpi = request.json.get('dpi', (2.54/(0.00028 * 100)))
