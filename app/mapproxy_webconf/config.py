@@ -1,6 +1,7 @@
 import yaml
 import ConfigParser as _ConfigParser
 from mapproxy.config.spec import validate_mapproxy_conf
+from mapproxy.script.scales import scale_to_res
 from mapproxy_webconf import utils
 
 def load_mapproxy_yaml(filename):
@@ -137,6 +138,13 @@ def mapproxy_conf_from_storage(storage, project):
     layers = storage.get_all_data('layers', project).values()
     grids = storage.get_all_data('grids', project)
 
+    if grids:
+        defaults = storage.get_all_data('defaults', project)
+        dpi = defaults.values()[0].get('dpi', (2.54/(0.00028 * 100)))
+        for grid in grids.items():
+            if 'scales' in grid[1].keys():
+                grid[1]['res'] = [scale_to_res(scale, dpi, 1) for scale in grid[1]['scales']]
+                del grid[1]['scales']
     used_caches, used_sources = used_caches_and_sources(layers, caches, sources)
 
     used_grids = find_cache_grids(caches).union(find_source_grids(sources))
