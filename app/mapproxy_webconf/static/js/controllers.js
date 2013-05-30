@@ -676,13 +676,15 @@ function MapproxyGridListCtrl($scope, MapproxyGrids, MessageService) {
 function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageService, ProjectDefaults) {
     var DEFAULT_GRID = {'data': {'bbox': [null, null, null, null]}};
     var convertResScales = function(url, mode) {
-        $http.post(url, {
-            "data": $scope.custom.res_scales,
-            "dpi": $scope.defaults.data.dpi,
-            "mode": mode
-        }).success(function(response) {
-            $scope.custom.res_scales = response.result;
-        });
+        if($scope.custom.res_scales.length > 0) {
+            $http.post(url, {
+                "data": $scope.custom.res_scales,
+                "dpi": $scope.defaults.data.dpi,
+                "mode": mode
+            }).success(function(response) {
+                $scope.custom.res_scales = response.result;
+            });
+        }
     };
 
     var addScalesResToGrid = function() {
@@ -695,7 +697,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
                 $scope.grid.data.scales = $scope.custom.res_scales
             }
         }
-    }
+    };
 
     $scope.prepareForEditarea = function(data) {
         return $.extend(true, {'data': {'name': ""}}, data);
