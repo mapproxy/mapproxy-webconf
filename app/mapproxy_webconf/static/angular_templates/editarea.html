@@ -3,7 +3,7 @@
     <div ng-show='editareaBinds.visible'>
         <h3>{{'Edit manual'|i18n}}</h3>
         <textarea class='input-xlarge' id='_editarea'></textarea>
-        <div class='text-center'>
+        <div class="pull-left">
             <button
                 ng-show='!editareaBinds.editareaValue._manual'
                 dialog="ask" dialog-title="{{'Confirm!'|i18n}}"
@@ -23,6 +23,8 @@
                 class='btn btn-small'>
                 {{'Reset'|i18n}}
             </button>
+        </div>
+        <div class="pull-right">
             <button
                 ng-click='leaveEditarea()'
                 ng-show='!editareaBinds.editareaValue._manual'

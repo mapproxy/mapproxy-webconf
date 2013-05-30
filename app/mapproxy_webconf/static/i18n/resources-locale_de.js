@@ -276,10 +276,6 @@
         "value": "Titel"
     },
     {
-        "key": "Start the configruation",
-        "value": "Starten der Konfiguration"
-    },
-    {
         "key": "Active",
         "value": "Aktiv"
     },
@@ -406,16 +402,44 @@
         "value": "Zurück zum formularbasierten Editieren"
     },
     {
+        "key": "project overview",
+        "value": "Projektübersicht"
+    },
+    {
+        "key": "Attention",
+        "value": "Achtung"
+    },
+    {
+        "key": "settings",
+        "value": "Einstellungen"
+    },
+    {
+        "key": "status mapproxy configuration",
+        "value": "Status der MapProxy Konfiguration"
+    },
+    {
         "key": "The mapproxy configuration of this project is valid",
-        "value": "Die MapProxy-Konfiguration dieses Projekts ist lauffähig"
+        "value": "Die MapProxy-Konfiguration für dieses Projekts ist lauffähig"
+    },
+    {
+        "key": "project",
+        "value": "Projekt"
     },
     {
         "key": "The mapproxy configuration of this project is invalid",
-        "value": "Die MapProxy-Konfiguration dieses Projekts ist nicht lauffähig"
+        "value": "Die MapProxy-Konfiguration für dieses Projekts ist nicht lauffähig"
+    },
+    {
+        "key": "following errors are recorded",
+        "value": "Bei der Überprüfung sind folgende Fehler aufgetreten"
     },
     {
         "key": "To configuration",
         "value": "Zur Konfiguration"
+    },
+    {
+        "key": "Goto default settings",
+        "value": "Default Einstellungen bearbeiten"
     },
     {
         "key": "Dependencies are:",
@@ -452,6 +476,10 @@
     {
         "key": "Project defaults",
         "value": "Defaultwerte des Projekts"
+    },
+    {
+        "key": "infotext_default_settings",
+        "value": "TODO: Infotexte Default Settings"
     },
     {
         "key": "OK",
