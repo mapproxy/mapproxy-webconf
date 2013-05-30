@@ -176,7 +176,7 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
                 resizeable: false,
                 width: 400,
                 height: 200,
-                model: true,
+                modal: true,
                 buttons: buttons
             });
         }
@@ -211,7 +211,7 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
                 resizeable: false,
                 width: 600,
                 height: 250,
-                model: true,
+                modal: true,
                 buttons: buttons
             });
         }

@@ -347,7 +347,7 @@ directive('dialog', function($parse, localize) {
                     resizeable: false,
                     width: attrs.dialogWidth || 400,
                     height: attrs.dialogHeight || 200,
-                    model: true,
+                    modal: true,
                     buttons: buttons
                 });
             };
