@@ -815,7 +815,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
             }
         }
 
-        saveApply($scope);
+        safeApply($scope);
     });
 
     $scope.$watch('editareaBinds.save', function(save) {

@@ -57,9 +57,14 @@ var nameExistInService = function(name, id, service, services) {
 };
 
 //prevent error if $apply already in progress
-//found at http://stackoverflow.com/questions/12729122/prevent-error-digest-already-in-progress-when-calling-scope-apply
-var saveApply = function(scope) {
-    if(!scope.$$phase) {
-        scope.$apply();
+//found at https://coderwall.com/p/ngisma
+var safeApply = function(scope, fn) {
+  var phase = scope.$root.$$phase;
+  if(phase == '$apply' || phase == '$digest') {
+    if(fn && (typeof(fn) === 'function')) {
+      fn();
     }
-}
+  } else {
+    scope.$apply(fn);
+  }
+};
