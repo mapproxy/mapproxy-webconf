@@ -595,14 +595,11 @@ function MapproxyGridListCtrl($scope, MapproxyGrids, MessageService) {
     var DEFAULT_GRID = {'data': {'bbox': [null, null, null, null]}};
     var refreshList = function() {
         $scope.default_grids = [];
-        $scope.locked_grids = [];
         $scope.mapproxy_grids = [];
         angular.forEach(MapproxyGrids.list(), function(grid) {
             if(grid.default) {
                 $scope.default_grids.push(grid);
-            } else if(grid._locked) {
-                $scope.locked_grids.push(grid);
-            }else {
+            } else {
                 $scope.mapproxy_grids.push(grid);
             }
         });
