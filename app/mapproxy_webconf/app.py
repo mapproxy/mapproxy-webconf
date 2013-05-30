@@ -168,8 +168,14 @@ def index():
 def projects(storage):
     projects = {}
     for project in storage.get_projects():
-        mapproxy_conf = config.mapproxy_conf_from_storage(storage, project)
-        errors, informal_only = config.validate(mapproxy_conf)
+        try:
+            mapproxy_conf = config.mapproxy_conf_from_storage(storage, project)
+        except config.ConfigError as e:
+            informal_only = False
+            errors = [e]
+            mapproxy_conf = False
+        if mapproxy_conf:
+            errors, informal_only = config.validate(mapproxy_conf)
         projects[project] = {
             'valid': informal_only,
             'errors': errors

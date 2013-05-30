@@ -4,6 +4,9 @@ from mapproxy.config.spec import validate_mapproxy_conf
 from mapproxy.script.scales import scale_to_res
 from mapproxy_webconf import utils
 
+class ConfigError(Exception):
+    pass
+
 def load_mapproxy_yaml(filename):
     with open(filename, 'rb') as f:
         mapproxy_conf = yaml.load(f)
@@ -143,8 +146,12 @@ def mapproxy_conf_from_storage(storage, project):
         dpi = defaults.values()[0].get('dpi', (2.54/(0.00028 * 100)))
         for grid in grids.items():
             if 'scales' in grid[1].keys():
-                grid[1]['res'] = [scale_to_res(scale, dpi, 1) for scale in grid[1]['scales']]
+                try:
+                    grid[1]['res'] = [scale_to_res(float(scale), dpi, 1) for scale in grid[1]['scales']]
+                except ValueError:
+                    raise ConfigError('grid %s contains invalid value in scales section' % grid[1].get('name', ''))
                 del grid[1]['scales']
+
     used_caches, used_sources = used_caches_and_sources(layers, caches, sources)
 
     used_grids = find_cache_grids(caches).union(find_source_grids(sources))
