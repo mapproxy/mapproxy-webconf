@@ -592,7 +592,7 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
 };
 
 function MapproxyGridListCtrl($scope, MapproxyGrids, MessageService) {
-    var DEFAULT_GRID = {'data': {'bbox': [null, null, null, null]}};
+    var DEFAULT_GRID = {'data': {'bbox': [null, null, null, null], 'units': 'm'}};
     var refreshList = function() {
         $scope.default_grids = [];
         $scope.mapproxy_grids = [];
@@ -671,7 +671,7 @@ function MapproxyGridListCtrl($scope, MapproxyGrids, MessageService) {
 };
 
 function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageService, ProjectDefaults) {
-    var DEFAULT_GRID = {'data': {'bbox': [null, null, null, null]}};
+    var DEFAULT_GRID = {'data': {'bbox': [null, null, null, null], 'units': 'm'}};
     var convertResScales = function(url, mode) {
         if($scope.custom.res_scales.length > 0) {
             $http.post(url, {
