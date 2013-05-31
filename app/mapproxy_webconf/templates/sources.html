@@ -1,3 +1,7 @@
+%def jsblock():
+  <script type="text/javascript" src="${ get_url('static', filepath='js/min_max_res_helper.js') }"></script>
+%end
+
 %def leftblock():
 <div ng-controller="MapproxySourceListCtrl">
   <div class="pull-right">
@@ -203,4 +207,4 @@
   <div ol-map="olmapBinds" map-width="1000" map-height="600" map-hidden="true" map-layer-switcher="true"></div>
 </div>
 %end
-%rebase base_config leftblock=leftblock, rightblock=rightblock, middleblock=middleblock,  project=get('project'), language=get('language'),  active='sources'
+%rebase base_config leftblock=leftblock, rightblock=rightblock, middleblock=middleblock, jsblock=jsblock, project=get('project'), language=get('language'),  active='sources'

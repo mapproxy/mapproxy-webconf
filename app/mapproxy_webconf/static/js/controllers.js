@@ -136,23 +136,6 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources, MessageServic
 function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSources, ProjectDefaults, MessageService, MapproxyCaches) {
     var DEFAULT_SOURCE = {"data": {"type": "wms", "req": {}, "coverage": {}}};
 
-    var convertResScales = function(url, mode) {
-        if(angular.isDefined($scope.custom.min_res) || angular.isDefined($scope.custom.max_res)) {
-            data = [
-                $scope.custom.min_res || null,
-                $scope.custom.max_res || null
-            ];
-            $http.post(url, {
-                "data": data,
-                "dpi": $scope.defaults.data.dpi,
-                "units": $scope.custom.units,
-                "mode": mode
-            }).success(function(response) {
-                $scope.custom.min_res = response.result[0];
-                $scope.custom.max_res = response.result[1];
-            });
-        }
-    };
     var setSource = function() {
         $scope.source = {};
         $scope.source = MapproxySources.current(true);
@@ -166,17 +149,7 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
             $scope.formTitle = 'Edit source';
         }
 
-        $scope.custom.min_res = $scope.source.data['min_res'] || $scope.source.data['min_res_scale'];
-        $scope.custom.max_res = $scope.source.data['max_res'] || $scope.source.data['max_res_scale'];
-        $scope.custom.units = $scope.source.data['units'] || 'm';
-        $scope.custom.resSelected = !(angular.isDefined($scope.source.data['min_res_scale']) || angular.isDefined($scope.source.data['max_res_scale']));
-        if($scope.custom.resSelected) {
-            $scope.custom.min_resLabel = 'min_res';
-            $scope.custom.max_resLabel = 'max_res';
-        } else {
-            $scope.custom.min_resLabel = 'min_res_scale';
-            $scope.custom.max_resLabel = 'max_res_scale';
-        }
+        extractMinMaxRes($scope, $scope.source);
 
         $scope.source_form.$setPristine();
 
@@ -296,17 +269,7 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
         } else {
             $scope.source._manual = $scope.editareaBinds.visible;
             if(!$scope.source._manual) {
-                var mode = $scope.custom.resSelected ? '' : '_scale';
-                $scope.source.data['units'] = $scope.custom.units || undefined;
-                $scope.source.data['min_res' + mode] = angular.isDefined($scope.custom.min_res) ? $scope.custom.min_res : undefined;
-                $scope.source.data['max_res' + mode] = angular.isDefined($scope.custom.max_res) ? $scope.custom.max_res : undefined;
-                if(mode == '') {
-                    delete $scope.source.data.min_res_scale;
-                    delete $scope.source.data.max_res_scale;
-                } else {
-                    delete $scope.source.data.min_res;
-                    delete $scope.source.data.max_res;
-                }
+                insertMinMaxRes($scope, $scope.source);
             }
             MapproxySources.add($scope.source);
             $scope.formTitle = 'Edit source';
@@ -375,7 +338,7 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
             $scope.custom.resSelected = true;
             $scope.custom.min_resLabel = 'min_res';
             $scope.custom.max_resLabel = 'max_res';
-            convertResScales(custom.scalesToResURL, 'res');
+            convertMinMaxRes($scope, $http, $scope.custom.scalesToResURL, 'res');
             safeApply($scope);
         }
     };
@@ -384,7 +347,7 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
             $scope.custom.resSelected = false;
             $scope.custom.min_resLabel = 'min_res_scale';
             $scope.custom.max_resLabel = 'max_res_scale';
-            convertResScales(custom.resToScalesURL, 'scale');
+            convertMinMaxRes($scope, $http, $scope.custom.resToScalesURL, 'scale');
             safeApply($scope);
         }
     };

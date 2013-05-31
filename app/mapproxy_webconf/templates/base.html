@@ -38,6 +38,9 @@
     <script type="text/javascript" src="${ get_url('static', filepath='js/services.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/directives.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/controllers.js') }"></script>
+    % if defined('jsblock'):
+      %jsblock()
+    %end
     <script type="text/javascript">
       /* overwrite styling from block ui for openlayers map*/
       $.blockUI.defaults.overlayCSS = {};
