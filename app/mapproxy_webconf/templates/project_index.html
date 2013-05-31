@@ -22,7 +22,7 @@
       </div>
       <hr>
       <div class="pull-left">
-        <button class="btn btn-small btn-success" ng-click="save($event)">{{'Save'|i18n}}</button>
+        <button class="btn btn-small" ng-click="save($event)" ng-disabled="!defaults_form.$valid" ng-class="{'btn-success': defaults_form.$valid}">{{'Save'|i18n}}</button>
       </div>
       <div class="pull-right">
        <a href="${ get_url('configuration', project=project) }" class="btn btn-small">{{'To configuration'|i18n}} &rarr;</a>
