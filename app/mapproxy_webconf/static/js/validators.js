@@ -29,7 +29,7 @@ directive('float', function() {
             ctrl.$parsers.unshift(function(viewValue) {
                 if (!viewValue || viewValue.length == 0) {
                     ctrl.$setValidity('float', true);
-                    return undefined;
+                    return viewValue;
                 } else if (FLOAT_REGEXP.test(viewValue)) {
                     ctrl.$setValidity('float', true);
                     //allow . and ,
