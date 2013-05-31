@@ -40,15 +40,15 @@
 
 %def middleblock():
 <div ng-controller="MapproxyCacheFormCtrl">
-  <form name="cache_form" ng-model="cache" ng-show="!editareaBinds.visible">
+  <form name="form" ng-model="cache" ng-show="!editareaBinds.visible">
     <h3>{{formTitle|i18n}}</h3>
     <!-- name -->
-    <div labeled="input_label" name-for="cache_form.cache_name" text="{{'Name'|i18n}}">
-        <input required class="input-xlarge" type="text" ng-model="cache.data.name" id="cache_form.cache_name"/>
+    <div labeled="input_label" name-for="form.cache_name" text="{{'Name'|i18n}}">
+        <input required class="input-xlarge" type="text" ng-model="cache.data.name" id="form.cache_name"/>
     </div>
     <!-- sources -->
       <!-- change-callback MUST provide parameters callback and new_data -->
-    <div labeled="input_label" name-for="cache_form.sources" text="{{'Sources'|i18n}}">
+    <div labeled="input_label" name-for="form.sources" text="{{'Sources'|i18n}}">
         <div
             droppable
             sortable
@@ -57,7 +57,7 @@
             insert-callback="checkName(callback, new_item)"
             allow-array="true"
             ng-model="cache.data.sources"
-            name="cache_form.sources"
+            name="form.sources"
             use-key-for-value="_id"
             class="input-xlarge insertable-list uneditable-input">
             <div ng-repeat="source in cache.data.sources" class="label">
@@ -66,13 +66,13 @@
             </div>
         </div>
     </div>
-    <div labeled="input_label" name-for="cache_form.grids" text="{{'Grids'|i18n}}">
+    <div labeled="input_label" name-for="form.grids" text="{{'Grids'|i18n}}">
       <div
         droppable
         accepts="mapproxy_grid"
         ng-model="cache.data.grids"
         allow-array="true"
-        name="cache_form.grids"
+        name="form.grids"
         use-key-for-value="_id"
         class="input-xlarge insertable-list uneditable-input">
         <div ng-repeat="grid in cache.data.grids" class="label">
@@ -81,21 +81,21 @@
         </div>
       </div>
     </div>
-    <div labeled="input_label" name-for="cache_form.format" text="{{'Format'|i18n}}">
-      <select class="input-xlarge" ng-model="cache.data.format" id="cache_form.format">
+    <div labeled="input_label" name-for="form.format" text="{{'Format'|i18n}}">
+      <select class="input-xlarge" ng-model="cache.data.format" id="form.format">
         <option value="mixed">Mixed</option>
         <option value="image/png">Image/PNG</option>
         <option value="image/jpeg">Image/JPEG</option>
       </select>
     </div>
-    <div labeled="input_label" name-for="cache_form.request_format" text="{{'Request format'|i18n}}">
-      <select class="input-xlarge" ng-model="cache.data.request_format" id="cache_form.request_format">
+    <div labeled="input_label" name-for="form.request_format" text="{{'Request format'|i18n}}">
+      <select class="input-xlarge" ng-model="cache.data.request_format" id="form.request_format">
         <option value="image/png">Image/PNG</option>
         <option value="image/jpeg">Image/JPEG</option>
       </select>
     </div>
     <div class="pull-left">
-      <button class="btn btn-small" ng-click="addCache($event)" ng-disabled="!cache_form.$valid" id="cache_form_save" ng-class="{'btn-success': cache_form.$valid}">{{'Save'|i18n}}</button>
+      <button class="btn btn-small" ng-click="addCache($event)" ng-disabled="!form.$valid" id="form_save" ng-class="{'btn-success': form.$valid}">{{'Save'|i18n}}</button>
       <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
     </div>
     <div id="_editarea_toggle_button_container" class="pull-right"></div>

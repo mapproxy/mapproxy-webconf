@@ -2,13 +2,13 @@
   <h4>{{'Project defaults'|i18n}}</h4>
   <p>{{'infotext_default_settings'|i18n}}</p>
   <hr>
-  <form ng-controller="ProjectDefaultsCtrl" name="defaults_form">
+  <form ng-controller="ProjectDefaultsCtrl" name="form">
     <fieldset>
-      <div labeled="input_label" name-for="defaults_form.dpi" text="{{'DPI'|i18n}}">
+      <div labeled="input_label" name-for="form.dpi" text="{{'DPI'|i18n}}">
         <input float name="default_form.dpi" id="default_form.dpi" class="input-small" ng-model="defaults.data.dpi" type="number">
       </div>
       <hr>
-      <div labeled="input_label" name-for="defaults_form.default_srs" text="{{'SRS'|i18n}}">
+      <div labeled="input_label" name-for="form.default_srs" text="{{'SRS'|i18n}}">
         <div name="default_form.default_srs" class="well well-small">
           <span class="badge" ng-repeat="srs in defaults.data.srs">{{srs}}
             <i class="icon-remove" ng-click="removeSRS($event, srs)"></i>
@@ -22,7 +22,7 @@
       </div>
       <hr>
       <div class="pull-left">
-        <button class="btn btn-small" ng-click="save($event)" ng-disabled="!defaults_form.$valid" ng-class="{'btn-success': defaults_form.$valid}">{{'Save'|i18n}}</button>
+        <button class="btn btn-small" ng-click="save($event)" ng-disabled="!form.$valid" ng-class="{'btn-success': form.$valid}">{{'Save'|i18n}}</button>
       </div>
       <div class="pull-right">
        <a href="${ get_url('configuration', project=project) }" class="btn btn-small">{{'To configuration'|i18n}} &rarr;</a>

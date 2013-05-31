@@ -76,18 +76,18 @@
 
 %def middleblock():
 <div ng-controller="MapproxyLayerFormCtrl" ng-init="custom.scalesToResURL='${get_url('scales_to_res')}';custom.resToScalesURL='${get_url('res_to_scales')}';">
-  <form name="layer_form" novalidate ng-show="!editareaBinds.visible">
+  <form name="form" novalidate ng-show="!editareaBinds.visible">
     <h3>{{formTitle|i18n}}</h3>
     <!-- name -->
-    <div labeled="input_label" name-for="layer_form.layer_name" text="{{'Name'|i18n}}">
-      <input required type="text" required ng-model="layer.data.name" class="input-xlarge" id="layer_form.layer_name"/>
+    <div labeled="input_label" name-for="form.layer_name" text="{{'Name'|i18n}}">
+      <input required type="text" required ng-model="layer.data.name" class="input-xlarge" id="form.layer_name"/>
     </div>
     <!-- title -->
-    <div labeled="input_label" name-for="layer_form.layer_title" text="{{'Title'|i18n}}">
-      <input required type="text" required ng-model="layer.data.title" class="input-xlarge" id="layer_form.layer_title"/>
+    <div labeled="input_label" name-for="form.layer_title" text="{{'Title'|i18n}}">
+      <input required type="text" required ng-model="layer.data.title" class="input-xlarge" id="form.layer_title"/>
     </div>
     <!-- sources -->
-    <div labeled="input_label" name-for="layer_form.sources" text="{{'Sources'|i18n}}">
+    <div labeled="input_label" name-for="form.sources" text="{{'Sources'|i18n}}">
       <div
         droppable
         sortable
@@ -107,7 +107,7 @@
     <div ng-include src="'${ get_url('static', filepath='angular_templates/min_max_res.html') }'"></div>
 
     <div class="pull-left">
-      <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!layer_form.$valid" id="layer_form_save" ng-class="{'btn-success': layer_form.$valid}">{{'Save'|i18n}}</button>
+      <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!form.$valid" id="form_save" ng-class="{'btn-success': form.$valid}">{{'Save'|i18n}}</button>
       <button class="btn btn-small" ng-click="resetForm()">{{'Reset'|i18n}}</button>
     </div>
     <div id="_editarea_toggle_button_container" class="pull-right"></div>

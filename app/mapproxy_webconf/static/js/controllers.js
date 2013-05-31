@@ -540,7 +540,7 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
             $scope.cache._manual = $scope.editareaBinds.visible;
             MapproxyCaches.add($scope.cache);
             $scope.formTitle = 'Edit cache';
-            $scope.cache_form.$setPristine();
+            $scope.form.$setPristine();
             $scope.editareaBinds.dirty = false;
             $scope.editareaBinds.save = false;
         }
@@ -550,7 +550,7 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
             event.preventDefault();
         }
         $scope.cache = MapproxyCaches.current(true);
-        $scope.cache_form.$setPristine();
+        $scope.form.$setPristine();
     };
     $scope.showName = function(_id) {
         var name = MapproxySources.nameById(_id) || MapproxyCaches.nameById(_id) || MapproxyGrids.nameById(_id);
@@ -575,7 +575,7 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
             $scope.cache.data.meta_size = [null, null];
         }
         $scope.formTitle = angular.equals($scope.cache, DEFAULT_CACHE) ? 'New cache' : 'Edit cache';
-        $scope.cache_form.$setPristine();
+        $scope.form.$setPristine();
 
         if($scope.cache._manual) {
             $scope.editareaBinds.visible = true;
@@ -600,7 +600,7 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
     }, true)
 
     $(window).on('beforeunload', function() {
-        if($scope.cache_form.$dirty || $scope.editareaBinds.dirty) {
+        if($scope.form.$dirty || $scope.editareaBinds.dirty) {
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
@@ -738,7 +738,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
             $scope.formTitle = 'Default grid';
             $scope.editareaBinds.visible = false;
         } else {
-            $scope.grid_form.$setPristine();
+            $scope.form.$setPristine();
             if($scope.grid._manual) {
                 $scope.editareaBinds.visible = true;
             } else {
@@ -779,7 +779,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
             $scope.grid._manual = $scope.editareaBinds.visible;
             MapproxyGrids.add($scope.grid);
             $scope.formTitle = 'Edit grid';
-            $scope.grid_form.$setPristine();
+            $scope.form.$setPristine();
             $scope.editareaBinds.dirty = false;
             $scope.editareaBinds.save = false;
         }
@@ -858,7 +858,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
     });
 
     $(window).on('beforeunload', function() {
-        if($scope.grid_form.$dirty || $scope.editareaBinds.dirty) {
+        if($scope.form.$dirty || $scope.editareaBinds.dirty) {
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
@@ -930,7 +930,7 @@ function MapproxyLayerFormCtrl($scope, $http, localize, MapproxySources, Mapprox
 
         extractMinMaxRes($scope, $scope.layer);
 
-        $scope.layer_form.$setPristine();
+        $scope.form.$setPristine();
 
         if($scope.layer._manual) {
             $scope.editareaBinds.visible = true;
@@ -990,7 +990,7 @@ function MapproxyLayerFormCtrl($scope, $http, localize, MapproxySources, Mapprox
             }
             MapproxyLayers.add($scope.layer);
             $scope.formTitle = 'Edit layer';
-            $scope.layer_form.$setPristine();
+            $scope.form.$setPristine();
             $scope.editareaBinds.dirty = false;
             $scope.editareaBinds.save = false;
         }
@@ -1069,7 +1069,7 @@ function MapproxyLayerFormCtrl($scope, $http, localize, MapproxySources, Mapprox
     );
 
     $(window).on('beforeunload', function() {
-        if($scope.layer_form.$dirty || $scope.editareaBinds.dirty) {
+        if($scope.form.$dirty || $scope.editareaBinds.dirty) {
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
@@ -1122,7 +1122,7 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareSer
         }
         $scope.globals._manual = $scope.editareaBinds.visible;
         MapproxyGlobals.add($scope.globals);
-        $scope.globals_form.$setPristine();
+        $scope.form.$setPristine();
         $scope.editareaBinds.dirty = false;
         $scope.editareaBinds.save = false;
     };
@@ -1166,7 +1166,7 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareSer
     );
 
     $(window).on('beforeunload', function() {
-        if($scope.globals_form.$dirty || $scope.editareaBinds.dirty) {
+        if($scope.form.$dirty || $scope.editareaBinds.dirty) {
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
@@ -1231,11 +1231,11 @@ function MapproxyServicesCtrl($scope, localize, MapproxyServices, DataShareServi
 
     $scope.$watch('_messageService.messages.services.load_success', setServices);
     $scope.$watch('_messageService.messages.services.add_success', function() {
-        $scope.services_form.$setPristine();
+        $scope.form.$setPristine();
         setServices();
     });
     $scope.$watch('_messageService.messages.services.update_success', function() {
-        $scope.services_form.$setPristine();
+        $scope.form.$setPristine();
         setServices();
     });
     $scope.$watch('_messageService.messages.defaults.load_success', function() {
@@ -1247,7 +1247,7 @@ function MapproxyServicesCtrl($scope, localize, MapproxyServices, DataShareServi
     $scope.$on('dss.service', setTemplate);
 
     $(window).on('beforeunload', function() {
-        if($scope.services_form.$dirty) {
+        if($scope.form.$dirty) {
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
@@ -1320,7 +1320,7 @@ function ProjectDefaultsCtrl($scope, ProjectDefaults, MessageService) {
         }
         $scope.defaults = clearData($scope.defaults);
         ProjectDefaults.add($scope.defaults);
-        $scope.defaults_form.$setPristine();
+        $scope.form.$setPristine();
     };
     $scope.addSRS = function(event) {
         if(angular.isDefined(event)) {
@@ -1347,7 +1347,7 @@ function ProjectDefaultsCtrl($scope, ProjectDefaults, MessageService) {
     $scope.$watch('_messageService.messages.defaults.update_success', setDefaults);
 
     $(window).on('beforeunload', function() {
-        if($scope.defaults_form.$dirty) {
+        if($scope.form.$dirty) {
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });

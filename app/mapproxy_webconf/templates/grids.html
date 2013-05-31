@@ -51,33 +51,33 @@
 <div ng-controller="MapproxyGridFormCtrl">
   <div ng-show="!editareaBinds.visible">
     <h3>{{formTitle|i18n}}</h3>
-    <form name="grid_form" id="grid_form" ng-show="!grid.default" novalidate>
+    <form name="form" id="form" ng-show="!grid.default" novalidate>
       <!-- name -->
-      <div labeled="input_label" name-for="grid_form.name" text="{{'Name'|i18n}}">
-          <input required type="text" ng-model="grid.data.name" id="grid_form.name" ng-disabled="grid._locked"/>
+      <div labeled="input_label" name-for="form.name" text="{{'Name'|i18n}}">
+          <input required type="text" ng-model="grid.data.name" id="form.name" ng-disabled="grid._locked"/>
       </div>
       <!-- SRS -->
-      <div labeled="input_label" name-for="grid_form.srs" text="{{'SRS'|i18n}}">
-           <select ng-model="grid.data.srs" id="grid_form.srs" ng-options="srs for srs in defaults.data.srs" ng-disabled="grid._locked">
+      <div labeled="input_label" name-for="form.srs" text="{{'SRS'|i18n}}">
+           <select ng-model="grid.data.srs" id="form.srs" ng-options="srs for srs in defaults.data.srs" ng-disabled="grid._locked">
           </select>
       </div>
       <hr>
       <!-- BBox -->
-      <div labeled="input_label" name-for="grid_form.bbox_0" text="{{'BBox'|i18n}}">
-          <input type="number" ng-model="grid.data.bbox[0]" class="input-mini" id="grid_form.bbox_0" ng-disabled="grid._locked" />
-          <input type="number" ng-model="grid.data.bbox[1]" class="input-mini" id="grid_form.bbox_1" ng-disabled="grid._locked" />
-          <input type="number" ng-model="grid.data.bbox[2]" class="input-mini" id="grid_form.bbox_2" ng-disabled="grid._locked" />
-          <input type="number" ng-model="grid.data.bbox[3]" class="input-mini" id="grid_form.bbox_3" ng-disabled="grid._locked" />
+      <div labeled="input_label" name-for="form.bbox_0" text="{{'BBox'|i18n}}">
+          <input type="number" ng-model="grid.data.bbox[0]" class="input-mini" id="form.bbox_0" ng-disabled="grid._locked" />
+          <input type="number" ng-model="grid.data.bbox[1]" class="input-mini" id="form.bbox_1" ng-disabled="grid._locked" />
+          <input type="number" ng-model="grid.data.bbox[2]" class="input-mini" id="form.bbox_2" ng-disabled="grid._locked" />
+          <input type="number" ng-model="grid.data.bbox[3]" class="input-mini" id="form.bbox_3" ng-disabled="grid._locked" />
       </div>
       <!-- BBox SRS -->
-      <div labeled="input_label" name-for="grid_form.bbox_srs" text="{{'BBox SRS'|i18n}}">
-          <select ng-model="grid.data.bbox_srs" id="grid_form.bbox_srs" ng-options="srs for srs in defaults.data.srs" ng-disabled="grid._locked">
+      <div labeled="input_label" name-for="form.bbox_srs" text="{{'BBox SRS'|i18n}}">
+          <select ng-model="grid.data.bbox_srs" id="form.bbox_srs" ng-options="srs for srs in defaults.data.srs" ng-disabled="grid._locked">
           </select>
       </div>
       <hr>
       <!-- origin -->
-      <div labeled="input_label" name-for="grid_form.origin" text="{{'Origin'|i18n}}">
-          <select ng-model="grid.data.origin" id="grid_form.origin" ng-disabled="grid._locked">
+      <div labeled="input_label" name-for="form.origin" text="{{'Origin'|i18n}}">
+          <select ng-model="grid.data.origin" id="form.origin" ng-disabled="grid._locked">
               <option value="sw">SW / LL</option>
               <option value="nw">NW / UL</option>
           </select>
@@ -100,7 +100,7 @@
       <hr>
       <!-- buttons -->
       <div class="pull-left">
-        <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="grid._locked||!grid_form.$valid" id="grid_form_save" ng-class="{'btn-success': grid_form.$valid&&!grid._locked}">{{'Save'|i18n}}</button>
+        <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="grid._locked||!form.$valid" id="form_save" ng-class="{'btn-success': form.$valid&&!grid._locked}">{{'Save'|i18n}}</button>
         <button class="btn btn-small" ng-click="resetForm($event)" ng-disabled="grid._locked">{{'Reset'|i18n}}</button>
       </div>
       <div id="_editarea_toggle_button_container" class="pull-right" ng-show="!grid._locked"></div>
@@ -128,9 +128,9 @@
     dialog-title="{{'Really lock the grid'|i18n}}: {{grid.data.name}}?"
     dialog-text="{{'If you lock the grid, you won\'t be able to edit it again'|i18n}}"
     callback="lockGrid()"
-    ng-disabled="grid_form.$dirty||editareaBinds.dirty"
+    ng-disabled="form.$dirty||editareaBinds.dirty"
     ng-show="!(grid._locked||grid.default)"
-    id="grid_form_lock">{{'Lock'|i18n}}
+    id="form_lock">{{'Lock'|i18n}}
   </button>
     <button
       class="btn btn-small"
