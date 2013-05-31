@@ -5,8 +5,9 @@
             <input type="text" class="_extendableInputListItem inputField input-medium" float
             ng-blur="update()"
             ng-click="focusOn(this)"
-            ng-model="items[$index]">
-            <i class="icon-remove" ng-click="remove($index)"></i>
+            ng-model="items[$index]"
+            ng-disabled="ngDisabled">
+            <i class="icon-remove" ng-click="remove($index)" ng-show="!ngDisabled"></i>
             </label>
 
         </li>
@@ -19,7 +20,8 @@
                 id="_extendableInputListNewInput"
                 ng-blur="blured=true;waitForFocus();"
                 ng-change="showNext=true"
-                ng-model="items[extendableInputListBinds.length]">
+                ng-model="items[extendableInputListBinds.length]"
+                ng-disabled="ngDisabled">
             </label>
         </li>
     </div>
@@ -29,7 +31,8 @@
             <label>{{listPrefix}}{{extendableInputListBinds.length + 1}}:
             <input type="text" class="_extendableInputListItem inputField input-medium" float
                 ng-focus="update()"
-                ng-model="items[extendableInputListBinds.length + 1]">
+                ng-model="items[extendableInputListBinds.length + 1]"
+                ng-disabled="ngDisabled">
             </label>
         </li>
     </div>

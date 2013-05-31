@@ -2,7 +2,7 @@
     <button class='btn btn-small' ng-show="!editareaBinds.visible" ng-click='editareaBinds.visible=true;' id='_editarea_toggle_button'>{{'Edit manual'|i18n}}</button>
     <div ng-show='editareaBinds.visible'>
         <h3>{{'Edit manual'|i18n}}</h3>
-        <textarea class='input-xlarge' id='_editarea'></textarea>
+        <textarea class='input-xlarge' id='_editarea' ng-disabled="ngDisabled"></textarea>
         <div class="pull-left">
             <button
                 ng-show='!editareaBinds.editareaValue._manual'

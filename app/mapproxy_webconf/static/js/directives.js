@@ -412,7 +412,8 @@ directive('extendableInputList', function($timeout) {
     return {
         restrict: 'A',
         scope: {
-            extendableInputListBinds: '=extendableInputList'
+            extendableInputListBinds: '=extendableInputList',
+            ngDisabled: '='
         },
         replace: true,
         transclude: true,
@@ -479,7 +480,8 @@ directive('editarea', function($http, MessageService) {
     return {
         restrict: 'A',
         scope: {
-            editareaBinds: "=editarea"
+            editareaBinds: "=editarea",
+            ngDisabled: '='
         },
         replace: true,
         transclude: true,
