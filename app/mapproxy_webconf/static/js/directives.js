@@ -416,7 +416,7 @@ directive('extendableInputList', function($timeout) {
         },
         replace: true,
         transclude: true,
-        templateUrl: 'extendableInputList',
+        templateUrl: '/static/angular_templates/extendable_input_list.html',
         link: function(scope, element, attrs) {
             var focusElement = false;
             scope.items = [];
@@ -455,6 +455,11 @@ directive('extendableInputList', function($timeout) {
                     safeApply(scope);
                 }
             };
+            scope.remove = function(id) {
+                scope.extendableInputListBinds.splice(id, 1);
+                scope.items.splice(id, 1);
+            };
+
             scope.$watch('extendableInputListBinds', function(newVal) {
                 if(!angular.equals(newVal, scope.items)) {
                     scope.items = angular.copy(scope.extendableInputListBinds);
