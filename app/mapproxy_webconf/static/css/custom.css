@@ -67,6 +67,10 @@ h3 {
   font-weight: normal;
 }
 
+h5.normal {
+  font-weight: normal;
+}
+
 h6 {
     margin-top: 0.5em;
     margin: 0;
@@ -419,6 +423,27 @@ input.droppable-active, div.droppable-active {
 }
 .badge .icon-remove:hover {
     opacity: 0.9;
+}
+
+.switch {
+  margin-bottom: 20px;
+}
+.switch > button {
+  height: 2em;
+}
+
+.extendableInputList {
+  list-style-type: none;
+  margin-right: 0;
+  margin-bottom: 20px;
+}
+
+.extendableInputList li > label {
+  margin-bottom: 0;
+}
+
+.extendableInputList .inputField {
+  margin-bottom: 5px;
 }
 
 /* map */

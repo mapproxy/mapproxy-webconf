@@ -17,6 +17,7 @@
         ng-click="editGrid(grid)">
          <li>
           <i ng-show="grid._manual" class="icon-pencil"></i>
+          <i ng-show="grid._locked || grid.default" class="icon-ok"></i>
           {{grid.data.name}}
           <i ng-show="!hasDependencies(grid)" class="icon-remove"
             dialog="ask"
@@ -60,6 +61,7 @@
            <select ng-model="grid.data.srs" id="grid_form.srs" ng-options="srs for srs in defaults.data.srs">
           </select>
       </div>
+      <hr>
       <!-- BBox -->
       <div labeled="input_label" name-for="grid_form.bbox_0" text="{{'BBox'|i18n}}">
           <input type="number" ng-model="grid.data.bbox[0]" class="input-mini" id="grid_form.bbox_0" />
@@ -72,6 +74,7 @@
           <select ng-model="grid.data.bbox_srs" id="grid_form.bbox_srs" ng-options="srs for srs in defaults.data.srs">
           </select>
       </div>
+      <hr>
       <!-- origin -->
       <div labeled="input_label" name-for="grid_form.origin" text="{{'Origin'|i18n}}">
           <select ng-model="grid.data.origin" id="grid_form.origin">
@@ -79,15 +82,16 @@
               <option value="nw">NW / UL</option>
           </select>
       </div>
-      <div labeled="input_label" name-for="grid_form.units" text="{{'Map units'|i18n}}">
-        <div class="btn-group" ng-model="grid.data.units" data-toggle-name="is_private" data-toggle="buttons-radio" >
+      <hr>
+      <h5 class="normal">{{'Resolutions'|i18n}}:</h5>
+      <!-- units to calculate -->
+      <div class="btn-group switch pull-right" ng-model="grid.data.units" data-toggle-name="is_private" data-toggle="buttons-radio" >
           <button type="button" ng-click="grid.data.units='m'" class="btn btn-small" ng-class="{'active': grid.data.units=='m'}" data-toggle="button">{{'Meters'|i18n}}</button>
           <button type="button" ng-click="grid.data.units='d'" class="btn btn-small" ng-class="{'active': grid.data.units=='d'}" data-toggle="button">{{'Degrees'|i18n}}</button>
-        </div>
       </div>
 
       <!-- res / scales -->
-      <div class="btn-group" data-toggle="buttons-radio">
+      <div class="btn-group switch" data-toggle="buttons-radio">
         <button type="button" class="btn btn-small" ng-class="{'active': custom.resSelected}" ng-click="getResolutions('${get_url('scales_to_res')}')">{{'Resolutions'|i18n}}</button>
         <button type="button" class="btn btn-small" ng-class="{'active': !custom.resSelected}" ng-click="getScales('${get_url('res_to_scales')}')">{{'Scales'|i18n}}</button>
       </div>
@@ -138,8 +142,13 @@
     yaml-URL="${get_url('json_to_yaml')}"
     json-URL="${get_url('yaml_to_json')}"
     keep-empty-fields="name"></div>
-  <button
-    class="btn btn-small"
+  <div class="clear">
+    <span message-handler="success" message-types="grids.add_success,grids.update_success"></span>
+    <span message-handler="error" message-types="grids.add_error,grids.update_error,grids.form_error"></span>
+  </div>
+  <hr>
+    <button
+    class="pull-right btn btn-small btn-warning"
     dialog="ask"
     dialog-title="{{'Really lock the grid'|i18n}}: {{grid.data.name}}?"
     dialog-text="{{'If you lock the grid, you won\'t be able to edit it again'|i18n}}"
@@ -148,10 +157,7 @@
     ng-show="!(grid._locked||grid.default)"
     id="grid_form_lock">{{'Lock'|i18n}}
   </button>
-  <div class="clear">
-    <span message-handler="success" message-types="grids.add_success,grids.update_success"></span>
-    <span message-handler="error" message-types="grids.add_error,grids.update_error,grids.form_error"></span>
-  </div>
+
 </div>
 %end
 
