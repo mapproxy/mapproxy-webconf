@@ -64,7 +64,7 @@ function TreeCtrl($scope, localize, WMSSources, MessageService) {
 };
 
 function MapproxySourceListCtrl($scope, localize, MapproxySources, MessageService) {
-    var DEFAULT_SOURCE = {'data': {"type": "wms", "req": {}, "coverage": {}, "supported_srs": []}};
+    var DEFAULT_SOURCE = {'data': {"type": "wms", "req": {}, "coverage": {}, "supported_srs": [], 'units': 'm'}};
     var refreshList = function() {
         $scope.mapproxy_sources = MapproxySources.list();
     };
@@ -133,8 +133,58 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources, MessageServic
     }, true);
 };
 
-function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, ProjectDefaults, MessageService, MapproxyCaches) {
-    var DEFAULT_SOURCE = {"data": {"type": "wms", "req": {}, "coverage": {}}};
+function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSources, ProjectDefaults, MessageService, MapproxyCaches) {
+    var DEFAULT_SOURCE = {"data": {"type": "wms", "req": {}, "coverage": {}, 'units': 'm'}};
+
+    var convertResScales = function(url, mode) {
+        if(angular.isDefined($scope.custom.min_res) || angular.isDefined($scope.custom.max_res)) {
+            data = [
+                $scope.custom.min_res || null,
+                $scope.custom.max_res || null
+            ];
+            $http.post(url, {
+                "data": data,
+                "dpi": $scope.defaults.data.dpi,
+                "units": $scope.source.data.units,
+                "mode": mode
+            }).success(function(response) {
+                $scope.custom.min_res = response.result[0];
+                $scope.custom.max_res = response.result[1];
+            });
+        }
+    };
+    var setSource = function() {
+        $scope.source = {};
+        $scope.source = MapproxySources.current(true);
+        $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.source);
+        if(angular.equals($scope.source, DEFAULT_SOURCE)) {
+            $scope.formTitle = 'New source';
+            if(angular.isDefined($scope.defaults.data.srs)) {
+                $scope.source.data.supported_srs = angular.copy($scope.defaults.data.srs);
+            }
+        } else {
+            $scope.formTitle = 'Edit source';
+        }
+
+        $scope.custom.min_res = $scope.source.data['min_res'] || $scope.source.data['min_res_scale'];
+        $scope.custom.max_res = $scope.source.data['max_res'] || $scope.source.data['max_res_scale'];
+        $scope.custom.resSelected = !(angular.isDefined($scope.source.data['min_res_scale']) || angular.isDefined($scope.source.data['max_res_scale']));
+        if($scope.custom.resSelected) {
+            $scope.custom.min_resLabel = 'min_res';
+            $scope.custom.max_resLabel = 'max_res';
+        } else {
+            $scope.custom.min_resLabel = 'min_res_scale';
+            $scope.custom.max_resLabel = 'max_res_scale';
+        }
+
+        $scope.source_form.$setPristine();
+
+        if($scope.source._manual) {
+            $scope.editareaBinds.visible = true;
+        } else {
+            $scope.editareaBinds.visible = false;
+        }
+    };
 
     $scope.prepareForEditarea = function(source) {
         return $.extend(true, {'data': {'name': ""}}, source);
@@ -244,6 +294,18 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
             MessageService.message('sources', 'form_error', errorMsg);
         } else {
             $scope.source._manual = $scope.editareaBinds.visible;
+            if(!$scope.source._manual) {
+                var mode = $scope.custom.resSelected ? '' : '_scale';
+                $scope.source.data['min_res' + mode] = angular.isDefined($scope.custom.min_res) ? $scope.custom.min_res : undefined;
+                $scope.source.data['max_res' + mode] = angular.isDefined($scope.custom.max_res) ? $scope.custom.max_res : undefined;
+                if(mode == '') {
+                    delete $scope.source.data.min_res_scale;
+                    delete $scope.source.data.max_res_scale;
+                } else {
+                    delete $scope.source.data.min_res;
+                    delete $scope.source.data.max_res;
+                }
+            }
             MapproxySources.add($scope.source);
             $scope.formTitle = 'Edit source';
             $scope.source_form.$setPristine();
@@ -270,8 +332,7 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
         if(!angular.isUndefined(event)) {
             event.preventDefault();
         }
-        $scope.source = MapproxySources.current(true);
-        $scope.source_form.$setPristine();
+        setSource();
     };
     $scope.addLayerManual = function(event) {
         event.preventDefault();
@@ -307,9 +368,31 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
     $scope.layerTitle = function(layer) {
         return WMSSources.layerTitle($scope.source.data.req.url, layer);
     };
+    $scope.getResolution = function(url) {
+        if(!$scope.custom.resSelected) {
+            $scope.custom.resSelected = true;
+            $scope.custom.min_resLabel = 'min_res';
+            $scope.custom.max_resLabel = 'max_res';
+            convertResScales(url, 'res');
+            safeApply($scope);
+        }
+    };
+    $scope.getScale = function(url) {
+        if($scope.custom.resSelected) {
+            $scope.custom.resSelected = false;
+            $scope.custom.min_resLabel = 'min_res_scale';
+            $scope.custom.max_resLabel = 'max_res_scale';
+            convertResScales(url, 'scale');
+            safeApply($scope);
+        }
+    };
 
     //must defined here if this controller should own all subelements of custom/source
-    $scope.custom = {};
+    $scope.custom = {
+        'resSelected': true,
+        'min_resLabel': 'min_res',
+        'max_resLabel': 'max_res'
+    };
     $scope.defaults = {};
 
     $scope.source = angular.copy(DEFAULT_SOURCE);
@@ -330,26 +413,7 @@ function MapproxySourceFormCtrl($scope, localize, MapproxySources, WMSSources, P
 
     MapproxySources.current(true, $scope.source);
 
-    $scope.$on('sources.current', function() {
-        $scope.source = {};
-        $scope.source = MapproxySources.current(true);
-        $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.source);
-        if(angular.equals($scope.source, DEFAULT_SOURCE)) {
-            $scope.formTitle = 'New source';
-            if(angular.isDefined($scope.defaults.data.srs)) {
-                $scope.source.data.supported_srs = angular.copy($scope.defaults.data.srs);
-            }
-        } else {
-            $scope.formTitle = 'Edit source';
-        }
-        $scope.source_form.$setPristine();
-
-        if($scope.source._manual) {
-            $scope.editareaBinds.visible = true;
-        } else {
-            $scope.editareaBinds.visible = false;
-        }
-    });
+    $scope.$on('sources.current', setSource);
 
     $scope._messageService = MessageService;
     $scope.$watch('_messageService.messages.defaults.load_success', function() {

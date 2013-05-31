@@ -559,11 +559,19 @@
     },
     {
         "key": "Resolutions",
-        "value": "Resolutions"
+        "value": "Auflösungen"
     },
     {
         "key": "Scales",
-        "value": "Scales"
+        "value": "Maßstäbe"
+    },
+    {
+        "key": "Resolution",
+        "value": "Auflösung"
+    },
+    {
+        "key": "Scale",
+        "value": "Maßstab"
     },
     {
         "key": "Level",
@@ -580,5 +588,21 @@
     {
         "key": "Degrees",
         "value": "Grad"
+    },
+    {
+        "key": "min_res",
+        "value": "Minimale Auflösung"
+    },
+    {
+        "key": "max_res",
+        "value": "Maximale Auflösung"
+    },
+    {
+        "key": "min_res_scale",
+        "value": "Minimale Auflösung (als Maßstab)"
+    },
+    {
+        "key": "max_res_scale",
+        "value": "Maximale Auflösung (als Maßstab)"
     }
 ]
