@@ -33,3 +33,40 @@
         <p>{{message}}</p>
     </span>
 </script>
+
+<script type="text/ng-template" id="extendableInputList">
+<ul class="extendableInputList">
+    <div ng-repeat="item in extendableInputListBinds">
+        <li>
+            <label>{{listPrefix}}{{$index}}:
+            <input type="text" class="_extendableInputListItem inputField input-medium" float
+            ng-blur="update()"
+            ng-click="focusOn(this)"
+            ng-model="items[$index]">
+            </label>
+        </li>
+    </div>
+
+    <div>
+        <li>
+            <label>{{listPrefix}}{{extendableInputListBinds.length}}:
+            <input type="text" class="_extendableInputListItem inputField input-medium" float
+                id="_extendableInputListNewInput"
+                ng-blur="blured=true;waitForFocus();"
+                ng-change="showNext=true"
+                ng-model="items[extendableInputListBinds.length]">
+            </label>
+        </li>
+    </div>
+
+    <div ng-show="showNext">
+        <li>
+            <label>{{listPrefix}}{{extendableInputListBinds.length + 1}}:
+            <input type="text" class="_extendableInputListItem inputField input-medium" float
+                ng-focus="update()"
+                ng-model="items[extendableInputListBinds.length + 1]">
+            </label>
+        </li>
+    </div>
+</ul>
+</script>
