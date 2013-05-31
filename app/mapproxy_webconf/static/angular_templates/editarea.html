@@ -6,6 +6,7 @@
         <div class="pull-left">
             <button
                 ng-show='!editareaBinds.editareaValue._manual'
+                ng-disabled="ngDisabled"
                 dialog="ask" dialog-title="{{'Confirm!'|i18n}}"
                 dialog-text="{{'If you save the manual edition, you wont be able to edit it in the above form again. Realy save the manual edition?'|i18n}}"
                 callback='save()'
@@ -15,11 +16,13 @@
             <button
                 ng-click='save()'
                 ng-show='editareaBinds.editareaValue._manual'
+                ng-disabled="ngDisabled"
                 class='btn btn-small'>
                 {{'Save'|i18n}}
             </button>
             <button
                 ng-click='reset()'
+                ng-disabled="ngDisabled"
                 class='btn btn-small'>
                 {{'Reset'|i18n}}
             </button>
@@ -27,12 +30,14 @@
         <div class="pull-right">
             <button
                 ng-click='leaveEditarea()'
+                ng-disabled="ngDisabled"
                 ng-show='!editareaBinds.editareaValue._manual'
                 class='btn btn-small'>
                 {{'Back to form edit'|i18n}}
             </button>
             <button
                 ng-show='editareaBinds.editareaValue._manual'
+                ng-disabled="ngDisabled"
                 class='btn btn-small'
                 dialog="ask"
                 dialog-title="{{'Really go back to form editing'|i18n}}?"
