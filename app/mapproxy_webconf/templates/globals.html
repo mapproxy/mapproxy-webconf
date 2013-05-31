@@ -42,7 +42,7 @@
     <form name="globals_form" novalidate ng-show="!editareaBinds.visible">
         <div ng-include src="template"></div>
 
-        <button class="btn btn-small" ng-click="save($event)" ng-disabled="!globals_form.$valid" id="globals_form_save">{{'Save'|i18n}}</button>
+        <button class="btn btn-small" ng-click="save($event)" ng-disabled="!globals_form.$valid" id="globals_form_save" ng-class="{'btn-success': globals_form.$valid}">{{'Save'|i18n}}</button>
     </form>
     <hr ng-show="!editareaBinds.visible">
     <div editarea="editareaBinds"

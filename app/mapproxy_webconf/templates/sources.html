@@ -133,7 +133,7 @@
             <div ng-include src="'${ get_url('static', filepath='angular_templates/min_max_res.html') }'"></div>
         <hr>
         <div class="pull-left">
-          <button class="btn btn-small" ng-click="addSource($event)" ng-disabled="!source_form.$valid" id="source_form_save">{{'Save'|i18n}}</button>
+          <button class="btn btn-small" ng-click="addSource($event)" ng-disabled="!source_form.$valid" id="source_form_save" ng-class="{'btn-success': source_form.$valid}">{{'Save'|i18n}}</button>
           <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
         </div>
         <div id="_editarea_toggle_button_container" class="pull-right">

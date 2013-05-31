@@ -394,14 +394,6 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
         }, true
     );
 
-    $scope.$watch('source_form.$valid', function(formValid) {
-        if(formValid) {
-            $('#source_form_save').addClass('btn-success');
-        } else {
-            $('#source_form_save').removeClass('btn-success');
-        }
-    });
-
     $(window).on('beforeunload', function() {
         if($scope.source_form.$dirty || $scope.editareaBinds.dirty) {
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
@@ -601,14 +593,6 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
             $scope.addCache();
         }
     }, true);
-
-    $scope.$watch('cache_form.$valid', function(formValid) {
-        if(formValid) {
-            $('#cache_form_save').addClass('btn-success');
-        } else {
-            $('#cache_form_save').removeClass('btn-success');
-        }
-    });
 
     $scope.$watch('cache', function() {
         $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.cache);
@@ -863,14 +847,6 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         }
     }, true);
 
-    $scope.$watch('grid_form.$valid', function(formValid) {
-        if(formValid) {
-            $('#grid_form_save').addClass('btn-success');
-        } else {
-            $('#grid_form_save').removeClass('btn-success');
-        }
-    });
-
     $scope._messageService = MessageService;
 
     $scope.$watch('_messageService.messages.defaults.load_success', function() {
@@ -934,14 +910,6 @@ function MapproxyLayerListCtrl($scope, localize, MapproxyLayers, MessageService)
     $scope.$watch('_messageService.messages.delete_success', function() {
         MapproxyLayers.refresh();
         MapproxyLayers.current(true, DEFAULT_LAYER);
-    });
-
-    $scope.$watch('_listChanged', function(changed) {
-        if(changed) {
-            $('#layer_list_save').addClass('btn-success');
-        } else {
-            $('#layer_list_save').removeClass('btn-success');
-        }
     });
 
     $(window).on('beforeunload', function() {
@@ -1094,13 +1062,6 @@ function MapproxyLayerFormCtrl($scope, $http, localize, MapproxySources, Mapprox
             $scope.addLayer();
         }
     }, true);
-    $scope.$watch('layer_form.$valid', function(formValid) {
-        if(formValid) {
-            $('#layer_form_save').addClass('btn-success');
-        } else {
-            $('#layer_form_save').removeClass('btn-success');
-        }
-    });
     $scope.$watch('layer', function() {
             $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.layer);
         }, true
@@ -1203,14 +1164,6 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareSer
         }, true
     );
 
-    $scope.$watch('globals_form.$valid', function(formValid) {
-        if(formValid) {
-            $('#globals_form_save').addClass('btn-success');
-        } else {
-            $('#globals_form_save').removeClass('btn-success');
-        }
-    });
-
     $(window).on('beforeunload', function() {
         if($scope.globals_form.$dirty || $scope.editareaBinds.dirty) {
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
@@ -1291,14 +1244,6 @@ function MapproxyServicesCtrl($scope, localize, MapproxyServices, DataShareServi
         }
     });
     $scope.$on('dss.service', setTemplate);
-
-    $scope.$watch('services_form.$valid', function(formValid) {
-        if(formValid) {
-            $('#services_form_save').addClass('btn-success');
-        } else {
-            $('#services_form_save').removeClass('btn-success');
-        }
-    });
 
     $(window).on('beforeunload', function() {
         if($scope.services_form.$dirty) {

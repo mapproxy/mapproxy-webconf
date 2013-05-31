@@ -8,7 +8,7 @@
     <span class="icon-plus-sign icon-white" ></span>
     {{'Create new layer'|i18n}}
   </button>
-  <button class="btn btn-small pull-right" id="layer_list_save" ng-click="updateLayerTree()" style="margin-right:1em;" ng-disabled="!listChanged()">{{'Save'|i18n}}</button>
+  <button class="btn btn-small pull-right" id="layer_list_save" ng-click="updateLayerTree()" style="margin-right:1em;" ng-disabled="!listChanged()" ng-class="{'btn-success': _listChanged}">{{'Save'|i18n}}</button>
 
   <h3>{{'Layer'|i18n}}</h3>
   <span message-handler="success" message-types="layers.delete_success,layers.updateStructur_success"></span>
@@ -107,7 +107,7 @@
     <div ng-include src="'${ get_url('static', filepath='angular_templates/min_max_res.html') }'"></div>
 
     <div class="pull-left">
-      <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!layer_form.$valid" id="layer_form_save">{{'Save'|i18n}}</button>
+      <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!layer_form.$valid" id="layer_form_save" ng-class="{'btn-success': layer_form.$valid}">{{'Save'|i18n}}</button>
       <button class="btn btn-small" ng-click="resetForm()">{{'Reset'|i18n}}</button>
     </div>
     <div id="_editarea_toggle_button_container" class="pull-right"></div>
