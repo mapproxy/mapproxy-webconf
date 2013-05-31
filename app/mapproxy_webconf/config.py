@@ -141,6 +141,24 @@ def mapproxy_conf_from_storage(storage, project):
     layers = storage.get_all_data('layers', project).values()
     grids = storage.get_all_data('grids', project)
 
+    if sources:
+        defaults = storage.get_all_data('defaults', project)
+        dpi = defaults.values()[0].get('dpi', (2.54/(0.00028 * 100)))
+        for source in sources.items():
+            units = source[1].get('units', 'm')
+            units = 1 if units == 'm' else 111319.4907932736
+            for key in ['min_res_scale', 'max_res_scale']:
+                if key in source[1].keys():
+                    try:
+                        source[1][key[:7]] = scale_to_res(float(source[1][key]), dpi, units)
+                    except ValueError:
+                        raise ConfigError('source %s contains invalid value in %s item' % (source[1].get('name', ''), key))
+                    del source[1][key]
+            try:
+                del source[1]['units']
+            except KeyError:
+                pass
+
     if grids:
         defaults = storage.get_all_data('defaults', project)
         dpi = defaults.values()[0].get('dpi', (2.54/(0.00028 * 100)))
