@@ -141,26 +141,15 @@ def mapproxy_conf_from_storage(storage, project):
     layers = storage.get_all_data('layers', project).values()
     grids = storage.get_all_data('grids', project)
 
+    defaults = storage.get_all_data('defaults', project)
+
     if sources:
-        defaults = storage.get_all_data('defaults', project)
-        dpi = defaults.values()[0].get('dpi', (2.54/(0.00028 * 100)))
-        for source in sources.items():
-            units = source[1].get('units', 'm')
-            units = 1 if units == 'm' else 111319.4907932736
-            for key in ['min_res_scale', 'max_res_scale']:
-                if key in source[1].keys():
-                    try:
-                        source[1][key[:7]] = scale_to_res(float(source[1][key]), dpi, units)
-                    except ValueError:
-                        raise ConfigError('source %s contains invalid value in %s item' % (source[1].get('name', ''), key))
-                    del source[1][key]
-            try:
-                del source[1]['units']
-            except KeyError:
-                pass
+        clear_min_max_res_scales(sources.values(), 'source', defaults)
+
+    if layers:
+        clear_min_max_res_scales(layers, 'layer', defaults)
 
     if grids:
-        defaults = storage.get_all_data('defaults', project)
         dpi = defaults.values()[0].get('dpi', (2.54/(0.00028 * 100)))
         for grid in grids.items():
             if 'scales' in grid[1].keys():
@@ -198,6 +187,22 @@ def mapproxy_conf_from_storage(storage, project):
 
     return mapproxy_conf
 
+def clear_min_max_res_scales(data_elements, element_type, defaults):
+    dpi = defaults.values()[0].get('dpi', (2.54/(0.00028 * 100)))
+    for data_element in data_elements:
+        units = data_element.get('units', 'm')
+        units = 1 if units == 'm' else 111319.4907932736
+        for key in ['min_res_scale', 'max_res_scale']:
+            if key in data_element.keys():
+                try:
+                    data_element[key[:7]] = scale_to_res(float(data_element[key]), dpi, units)
+                except ValueError:
+                    raise ConfigError('%s %s contains invalid value in %s item' % (element_type, data_element.get('name', ''), key))
+                del data_element[key]
+        try:
+            del data_element['units']
+        except KeyError:
+            pass
 
 def replace_ids_cache(cache, id_map):
     if 'grids' in cache:
