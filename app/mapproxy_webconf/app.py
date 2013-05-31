@@ -262,7 +262,7 @@ def convert_res_scales():
 
     result = []
     for i, d in enumerate(data):
-        result.append(convert(d, dpi, units) if d else None)
+        result.append(round(convert(d, dpi, units),9) if d else None)
     return {'result': result}
 
 def init_app(storage_dir):

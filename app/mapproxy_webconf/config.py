@@ -156,7 +156,7 @@ def mapproxy_conf_from_storage(storage, project):
                 units = grid[1].get('units', 'm')
                 units = 1 if units == 'm' else 111319.4907932736
                 try:
-                    grid[1]['res'] = [scale_to_res(float(scale), dpi, units) for scale in grid[1]['scales']]
+                    grid[1]['res'] = [round(scale_to_res(float(scale), dpi, units), 9) for scale in grid[1]['scales']]
                 except ValueError:
                     raise ConfigError('grid %s contains invalid value in scales section' % grid[1].get('name', ''))
                 del grid[1]['scales']
@@ -194,8 +194,9 @@ def clear_min_max_res_scales(data_elements, element_type, defaults):
         units = 1 if units == 'm' else 111319.4907932736
         for key in ['min_res_scale', 'max_res_scale']:
             if key in data_element.keys():
+                mapproxy_conf_key = key[:7] # remove '_scale'
                 try:
-                    data_element[key[:7]] = scale_to_res(float(data_element[key]), dpi, units)
+                    data_element[mapproxy_conf_key] = round(scale_to_res(float(data_element[key]), dpi, units), 9)
                 except ValueError:
                     raise ConfigError('%s %s contains invalid value in %s item' % (element_type, data_element.get('name', ''), key))
                 del data_element[key]
