@@ -253,12 +253,12 @@ def create_json():
 @app.route('/scales', 'POST', name='res_to_scales')
 def convert_res_scales():
     data = request.json.get('data', [])
-    mode = request.json.get('mode', 'res')
+    mode = request.json.get('mode', 'to_scale')
     dpi = request.json.get('dpi', (2.54/(0.00028 * 100)))
     units = request.json.get('units', 'm')
     data = [float(d) if d else None for d in data]
     units = 1 if units == 'm' else 111319.4907932736
-    convert = res_to_scale if mode == 'res' else scale_to_res
+    convert = res_to_scale if mode == 'to_scale' else scale_to_res
 
     result = []
     for i, d in enumerate(data):

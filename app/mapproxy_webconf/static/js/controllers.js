@@ -338,7 +338,7 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
             $scope.custom.resSelected = true;
             $scope.custom.min_resLabel = 'min_res';
             $scope.custom.max_resLabel = 'max_res';
-            convertMinMaxRes($scope, $http, $scope.custom.scalesToResURL, 'res');
+            convertMinMaxRes($scope, $http, $scope.custom.scalesToResURL, 'to_res');
             safeApply($scope);
         }
     };
@@ -347,7 +347,7 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
             $scope.custom.resSelected = false;
             $scope.custom.min_resLabel = 'min_res_scale';
             $scope.custom.max_resLabel = 'max_res_scale';
-            convertMinMaxRes($scope, $http, $scope.custom.resToScalesURL, 'scale');
+            convertMinMaxRes($scope, $http, $scope.custom.resToScalesURL, 'to_scale');
             safeApply($scope);
         }
     };
@@ -817,13 +817,13 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
     $scope.getResolutions = function(url) {
         if(!$scope.custom.resSelected) {
             $scope.custom.resSelected = true;
-            convertResScales(url, 'scales');
+            convertResScales(url, 'to_scale');
         }
     };
     $scope.getScales = function(url) {
         if($scope.custom.resSelected) {
             $scope.custom.resSelected = false;
-            convertResScales(url, 'res');
+            convertResScales(url, 'to_res');
         }
     };
     $scope.resetForm = function(event) {
@@ -1047,7 +1047,7 @@ function MapproxyLayerFormCtrl($scope, $http, localize, MapproxySources, Mapprox
             $scope.custom.resSelected = true;
             $scope.custom.min_resLabel = 'min_res';
             $scope.custom.max_resLabel = 'max_res';
-            convertMinMaxRes($scope, $http, $scope.custom.scalesToResURL, 'res');
+            convertMinMaxRes($scope, $http, $scope.custom.scalesToResURL, 'to_res');
             safeApply($scope);
         }
     };
@@ -1056,7 +1056,7 @@ function MapproxyLayerFormCtrl($scope, $http, localize, MapproxySources, Mapprox
             $scope.custom.resSelected = false;
             $scope.custom.min_resLabel = 'min_res_scale';
             $scope.custom.max_resLabel = 'max_res_scale';
-            convertMinMaxRes($scope, $http, $scope.custom.resToScalesURL, 'scale');
+            convertMinMaxRes($scope, $http, $scope.custom.resToScalesURL, 'to_scale');
             safeApply($scope);
         }
     };
