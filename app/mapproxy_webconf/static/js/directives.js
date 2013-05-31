@@ -404,6 +404,11 @@ directive('labeled', function($parse, $templateCache, localize) {
                     scope.warning = val == 'true';
                 });
             }
+
+            attrs.$observe('invalid', function(val) {
+                scope.invalid = Boolean(val);
+            })
+
         }
     };
 }).
