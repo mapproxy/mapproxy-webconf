@@ -727,6 +727,43 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         }
     };
 
+    var setGrid = function() {
+        $scope.grid = MapproxyGrids.current(true);
+
+        if(angular.isDefined($scope.grid.data.scales)) {
+            $scope.custom.res_scales = angular.copy($scope.grid.data.scales);
+            $scope.custom.resSelected = false;
+        } else if(angular.isDefined($scope.grid.data.res)) {
+            $scope.custom.res_scales = angular.copy($scope.grid.data.res);
+            $scope.custom.resSelected = true;
+        } else {
+            $scope.custom.res_scales = [];
+            $scope.custom.resSelected = true
+        }
+
+        $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.grid);
+
+        if(angular.isUndefined($scope.grid.data.bbox)) {
+            $scope.grid.data.bbox = [null, null, null, null];
+        }
+
+        $scope.formTitle = angular.equals($scope.grid, DEFAULT_GRID) ? 'New grid' : 'Edit grid';
+
+        if($scope.grid.default) {
+            $scope.formTitle = 'Default grid';
+            $scope.editareaBinds.visible = false;
+        } else {
+            $scope.grid_form.$setPristine();
+            if($scope.grid._manual) {
+                $scope.editareaBinds.visible = true;
+            } else {
+                $scope.editareaBinds.visible = false;
+            }
+        }
+
+        safeApply($scope);
+    };
+
     $scope.prepareForEditarea = function(data) {
         return $.extend(true, {'data': {'name': ""}}, data);
     };
@@ -793,8 +830,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         if(angular.isDefined(event)) {
             event.preventDefault();
         }
-        $scope.grid = MapproxyGrids.current(true);
-        $scope.grid_form.$setPristine();
+        setGrid();
     };
     $scope.custom = {
         'res_scales': [],
@@ -811,42 +847,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
 
     MapproxyGrids.current(true, $scope.grid);
 
-    $scope.$on('grids.current', function() {
-        $scope.grid = MapproxyGrids.current(true);
-
-        if(angular.isDefined($scope.grid.data.scales)) {
-            $scope.custom.res_scales = angular.copy($scope.grid.data.scales);
-            $scope.custom.resSelected = false;
-        } else if(angular.isDefined($scope.grid.data.res)) {
-            $scope.custom.res_scales = angular.copy($scope.grid.data.res);
-            $scope.custom.resSelected = true;
-        } else {
-            $scope.custom.res_scales = [];
-            $scope.custom.resSelected = true
-        }
-
-        $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.grid);
-
-        if(angular.isUndefined($scope.grid.data.bbox)) {
-            $scope.grid.data.bbox = [null, null, null, null];
-        }
-
-        $scope.formTitle = angular.equals($scope.grid, DEFAULT_GRID) ? 'New grid' : 'Edit grid';
-
-        if($scope.grid.default) {
-            $scope.formTitle = 'Default grid';
-            $scope.editareaBinds.visible = false;
-        } else {
-            $scope.grid_form.$setPristine();
-            if($scope.grid._manual) {
-                $scope.editareaBinds.visible = true;
-            } else {
-                $scope.editareaBinds.visible = false;
-            }
-        }
-
-        safeApply($scope);
-    });
+    $scope.$on('grids.current', setGrid);
 
     $scope.$watch('editareaBinds.save', function(save) {
         if(save) {
