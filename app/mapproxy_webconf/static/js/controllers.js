@@ -950,8 +950,24 @@ function MapproxyLayerListCtrl($scope, localize, MapproxyLayers, MessageService)
     });
 };
 
-function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches, MapproxyLayers, MessageService) {
+function MapproxyLayerFormCtrl($scope, $http, localize, MapproxySources, MapproxyCaches, MapproxyLayers, MessageService, ProjectDefaults) {
     var DEFAULT_LAYER = {'data': {}};
+
+    var setLayer = function() {
+        $scope.layer = MapproxyLayers.current(true);
+        $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.layer);
+        $scope.formTitle = angular.equals($scope.layer, DEFAULT_LAYER) ? 'New layer' : 'Edit layer';
+
+        extractMinMaxRes($scope, $scope.layer);
+
+        $scope.layer_form.$setPristine();
+
+        if($scope.layer._manual) {
+            $scope.editareaBinds.visible = true;
+        } else {
+            $scope.editareaBinds.visible = false;
+        }
+    };
 
     $scope.replaceIdsWithNames = function(layer) {
         layer = angular.copy(layer);
@@ -999,6 +1015,9 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
             MessageService.message('layers', 'form_error', errorMsg);
         } else {
             $scope.layer._manual = $scope.editareaBinds.visible;
+            if(!$scope.layer._manual) {
+                insertMinMaxRes($scope, $scope.layer);
+            }
             MapproxyLayers.add($scope.layer);
             $scope.formTitle = 'Edit layer';
             $scope.layer_form.$setPristine();
@@ -1006,9 +1025,11 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
             $scope.editareaBinds.save = false;
         }
     };
-    $scope.resetForm = function() {
-        $scope.layer = MapproxyLayers.current(true);
-        $scope.layer_form.$setPristine();
+    $scope.resetForm = function(event) {
+        if(angular.isDefined(event)) {
+            event.preventDefault();
+        }
+        setLayer();
     };
     $scope.layerTitle = function(name) {
         var layer = MapproxyLayers.byName(name);
@@ -1020,7 +1041,32 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         var name = MapproxySources.nameById(_id) || MapproxyCaches.nameById(_id);
         return name ? name : _id;
     };
+    $scope.getResolution = function() {
+        if(!$scope.custom.resSelected) {
+            $scope.custom.resSelected = true;
+            $scope.custom.min_resLabel = 'min_res';
+            $scope.custom.max_resLabel = 'max_res';
+            convertMinMaxRes($scope, $http, $scope.custom.scalesToResURL, 'res');
+            safeApply($scope);
+        }
+    };
+    $scope.getScale = function() {
+        if($scope.custom.resSelected) {
+            $scope.custom.resSelected = false;
+            $scope.custom.min_resLabel = 'min_res_scale';
+            $scope.custom.max_resLabel = 'max_res_scale';
+            convertMinMaxRes($scope, $http, $scope.custom.resToScalesURL, 'scale');
+            safeApply($scope);
+        }
+    };
 
+    $scope.custom = {
+        'units': 'm',
+        'resSelected': true,
+        'min_resLabel': 'min_res',
+        'max_resLabel': 'max_res'
+    };
+    $scope.defaults = {};
     $scope.layer = angular.copy(DEFAULT_LAYER);
     MapproxyLayers.current(true, $scope.layer);
     $scope.formTitle = 'New layer';
@@ -1031,16 +1077,13 @@ function MapproxyLayerFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         dirty: false
     };
 
-    $scope.$on('layers.current', function() {
-        $scope.layer = MapproxyLayers.current(true);
-        $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.layer);
-        $scope.formTitle = angular.equals($scope.layer, DEFAULT_LAYER) ? 'New layer' : 'Edit layer';
-        $scope.layer_form.$setPristine();
+    $scope.$on('layers.current', setLayer);
 
-        if($scope.layer._manual) {
-            $scope.editareaBinds.visible = true;
-        } else {
-            $scope.editareaBinds.visible = false;
+    $scope._messageService = MessageService;
+    $scope.$watch('_messageService.messages.defaults.load_success', function() {
+        var defaults = ProjectDefaults.list();
+        if(defaults.length > 0) {
+            $scope.defaults = defaults[0];
         }
     });
 
