@@ -416,12 +416,7 @@ directive('extendableInputList', function($timeout) {
         },
         replace: true,
         transclude: true,
-        template: '<ul>' +
-                  '<div ng-repeat="item in extendableInputListBinds">' +
-                  '<li>{{listPrefix}}{{$index}}: <input class="_extendableInputListItem" float ng-blur="update()" ng-click="focusOn(this)" ng-model="items[$index]"></li>' +
-                  '</div>' +
-                  '<div><li>{{listPrefix}}{{extendableInputListBinds.length}}: <input class="_extendableInputListItem" id="_extendableInputListNewInput" float ng-blur="blured=true;waitForFocus();" ng-change="showNext=true" ng-model="items[extendableInputListBinds.length]"></li></div>' +
-                  '<div ng-show="showNext"><li>{{listPrefix}}{{extendableInputListBinds.length + 1}}: <input class="_extendableInputListItem" float ng-focus="update()" ng-model="items[extendableInputListBinds.length + 1]"></li></div>',
+        templateUrl: 'extendableInputList',
         link: function(scope, element, attrs) {
             var focusElement = false;
             scope.items = [];

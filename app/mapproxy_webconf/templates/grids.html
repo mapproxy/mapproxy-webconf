@@ -91,7 +91,9 @@
         <button type="button" class="btn btn-small" ng-class="{'active': custom.resSelected}" ng-click="getResolutions('${get_url('scales_to_res')}')">{{'Resolutions'|i18n}}</button>
         <button type="button" class="btn btn-small" ng-class="{'active': !custom.resSelected}" ng-click="getScales('${get_url('res_to_scales')}')">{{'Scales'|i18n}}</button>
       </div>
-      <div extendable-input-list="custom.res_scales" list-prefix="{{'Level'|i18n}}"></div>
+
+      <div extendable-input-list="custom.res_scales" list-prefix="Level"></div>
+      <hr>
       <!-- buttons -->
       <div class="pull-left">
         <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="!grid_form.$valid" id="grid_form_save">{{'Save'|i18n}}</button>
