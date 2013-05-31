@@ -256,14 +256,13 @@ def convert_res_scales():
     mode = request.json.get('mode', 'res')
     dpi = request.json.get('dpi', (2.54/(0.00028 * 100)))
     units = request.json.get('units', 'm')
-
-    data = map(float, data)
+    data = [float(d) if d else None for d in data]
     units = 1 if units == 'm' else 111319.4907932736
     convert = res_to_scale if mode == 'res' else scale_to_res
 
     result = []
     for i, d in enumerate(data):
-        result.append(convert(d, dpi, units))
+        result.append(convert(d, dpi, units) if d else None)
     return {'result': result}
 
 def init_app(storage_dir):
