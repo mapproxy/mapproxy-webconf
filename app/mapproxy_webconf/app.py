@@ -254,7 +254,7 @@ def create_json():
 def convert_res_scales():
     data = request.json.get('data', [])
     mode = request.json.get('mode', 'to_scale')
-    dpi = request.json.get('dpi', (2.54/(0.00028 * 100)))
+    dpi = float(request.json.get('dpi', (2.54/(0.00028 * 100))))
     units = request.json.get('units', 'm')
     data = [float(d) if d else None for d in data]
     units = 1 if units == 'm' else 111319.4907932736

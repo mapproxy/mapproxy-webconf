@@ -150,7 +150,7 @@ def mapproxy_conf_from_storage(storage, project):
         clear_min_max_res_scales(layers, 'layer', defaults)
 
     if grids:
-        dpi = defaults.values()[0].get('dpi', (2.54/(0.00028 * 100)))
+        dpi = float(defaults.values()[0].get('dpi', (2.54/(0.00028 * 100))))
         for grid in grids.items():
             if 'scales' in grid[1].keys():
                 units = grid[1].get('units', 'm')
@@ -188,7 +188,7 @@ def mapproxy_conf_from_storage(storage, project):
     return mapproxy_conf
 
 def clear_min_max_res_scales(data_elements, element_type, defaults):
-    dpi = defaults.values()[0].get('dpi', (2.54/(0.00028 * 100)))
+    dpi = float(defaults.values()[0].get('dpi', (2.54/(0.00028 * 100))))
     for data_element in data_elements:
         units = data_element.get('units', 'm')
         units = 1 if units == 'm' else 111319.4907932736

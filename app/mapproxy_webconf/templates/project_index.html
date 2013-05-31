@@ -5,7 +5,7 @@
   <form ng-controller="ProjectDefaultsCtrl" name="defaults_form">
     <fieldset>
       <div labeled="input_label" name-for="defaults_form.dpi" text="{{'DPI'|i18n}}">
-        <input name="default_form.dpi" id="default_form.dpi" class="input-small" ng-model="defaults.data.dpi" type="number">
+        <input float name="default_form.dpi" id="default_form.dpi" class="input-small" ng-model="defaults.data.dpi" type="number">
       </div>
       <hr>
       <div labeled="input_label" name-for="defaults_form.default_srs" text="{{'SRS'|i18n}}">
