@@ -1,0 +1,16 @@
+<div labeled="input_label" name-for="units" text="{{'Map units'|i18n}}">
+  <div class="btn-group" ng-model="custom.units" data-toggle-name="is_private" data-toggle="buttons-radio" id="units">
+    <button type="button" ng-click="custom.units='m'" class="btn btn-small" ng-class="{'active': custom.units=='m'}" data-toggle="button">{{'Meters'|i18n}}</button>
+    <button type="button" ng-click="custom.units='d'" class="btn btn-small" ng-class="{'active': custom.units=='d'}" data-toggle="button">{{'Degrees'|i18n}}</button>
+  </div>
+  <div class="btn-group" data-toggle="buttons-radio">
+    <button type="button" class="btn btn-small" ng-class="{'active': custom.resSelected}" ng-click="getResolution()">{{'Resolution'|i18n}}</button>
+    <button type="button" class="btn btn-small" ng-class="{'active': !custom.resSelected}" ng-click="getScale()">{{'Scale'|i18n}}</button>
+  </div>
+  <div labeled="input_label" name-for="min_res" text="{{custom.min_resLabel|i18n}}">
+    <input float id="min_res" ng-model="custom.min_res" class="input-medium">
+  </div>
+  <div labeled="input_label" name-for="max_res" text="{{custom.max_resLabel|i18n}}">
+    <input float id="max_res" ng-model="custom.max_res" class="input-medium">
+  </div>
+</div>

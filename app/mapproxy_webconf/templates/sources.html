@@ -45,7 +45,7 @@
 
 %def middleblock():
 <div ng-controller="MapproxySourceNoticeCtrl">
-  <div ng-controller="MapproxySourceFormCtrl">
+  <div ng-controller="MapproxySourceFormCtrl" ng-init="custom.scalesToResURL='${get_url('scales_to_res')}';custom.resToScalesURL='${get_url('res_to_scales')}';">
     <form name="source_form" novalidate ng-show="!editareaBinds.visible">
       <h3>{{formTitle|i18n}}</h3>
       <fieldset>
@@ -126,24 +126,7 @@
               <input type="checkbox" ng-model="source.data.req.transparent" id="source_form.req_transparent">
             </div>
             <hr class="formLine">
-            <div labeled="input_label" name-for="source_form.units" text="{{'Map units'|i18n}}">
-              <div class="btn-group" ng-model="source.data.units" data-toggle-name="is_private" data-toggle="buttons-radio" id="source_form.units">
-                <button type="button" ng-click="source.data.units='m'" class="btn btn-small" ng-class="{'active': source.data.units=='m'}" data-toggle="button">{{'Meters'|i18n}}</button>
-                <button type="button" ng-click="source.data.units='d'" class="btn btn-small" ng-class="{'active': source.data.units=='d'}" data-toggle="button">{{'Degrees'|i18n}}</button>
-              </div>
-            </div>
-            <div class="btn-group" data-toggle="buttons-radio">
-              <button type="button" class="btn btn-small" ng-class="{'active': custom.resSelected}" ng-click="getResolution('${get_url('scales_to_res')}')">{{'Resolution'|i18n}}</button>
-              <button type="button" class="btn btn-small" ng-class="{'active': !custom.resSelected}" ng-click="getScale('${get_url('res_to_scales')}')">{{'Scale'|i18n}}</button>
-            </div>
-            <div labeled="input_label" name-for="source_form.min_res" text="{{custom.min_resLabel|i18n}}">
-              <input float id="source_form.min_res" ng-model="custom.min_res" class="input-medium">
-            </div>
-            <div labeled="input_label" name-for="source_form.max_res" text="{{custom.max_resLabel|i18n}}">
-              <input float id="source_form.max_res" ng-model="custom.max_res" class="input-medium">
-            </div>
-          </div>
-        </div>
+            <div ng-include src="'${ get_url('static', filepath='angular_templates/min_max_res.html') }'"></div>
         <hr>
         <div class="pull-left">
           <button class="btn btn-small" ng-click="addSource($event)" ng-disabled="!source_form.$valid" id="source_form_save">{{'Save'|i18n}}</button>

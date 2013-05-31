@@ -64,7 +64,7 @@ function TreeCtrl($scope, localize, WMSSources, MessageService) {
 };
 
 function MapproxySourceListCtrl($scope, localize, MapproxySources, MessageService) {
-    var DEFAULT_SOURCE = {'data': {"type": "wms", "req": {}, "coverage": {}, "supported_srs": [], 'units': 'm'}};
+    var DEFAULT_SOURCE = {'data': {"type": "wms", "req": {}, "coverage": {}, "supported_srs": []}};
     var refreshList = function() {
         $scope.mapproxy_sources = MapproxySources.list();
     };
@@ -134,7 +134,7 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources, MessageServic
 };
 
 function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSources, ProjectDefaults, MessageService, MapproxyCaches) {
-    var DEFAULT_SOURCE = {"data": {"type": "wms", "req": {}, "coverage": {}, 'units': 'm'}};
+    var DEFAULT_SOURCE = {"data": {"type": "wms", "req": {}, "coverage": {}}};
 
     var convertResScales = function(url, mode) {
         if(angular.isDefined($scope.custom.min_res) || angular.isDefined($scope.custom.max_res)) {
@@ -145,7 +145,7 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
             $http.post(url, {
                 "data": data,
                 "dpi": $scope.defaults.data.dpi,
-                "units": $scope.source.data.units,
+                "units": $scope.custom.units,
                 "mode": mode
             }).success(function(response) {
                 $scope.custom.min_res = response.result[0];
@@ -168,6 +168,7 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
 
         $scope.custom.min_res = $scope.source.data['min_res'] || $scope.source.data['min_res_scale'];
         $scope.custom.max_res = $scope.source.data['max_res'] || $scope.source.data['max_res_scale'];
+        $scope.custom.units = $scope.source.data['units'] || 'm';
         $scope.custom.resSelected = !(angular.isDefined($scope.source.data['min_res_scale']) || angular.isDefined($scope.source.data['max_res_scale']));
         if($scope.custom.resSelected) {
             $scope.custom.min_resLabel = 'min_res';
@@ -296,6 +297,7 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
             $scope.source._manual = $scope.editareaBinds.visible;
             if(!$scope.source._manual) {
                 var mode = $scope.custom.resSelected ? '' : '_scale';
+                $scope.source.data['units'] = $scope.custom.units || undefined;
                 $scope.source.data['min_res' + mode] = angular.isDefined($scope.custom.min_res) ? $scope.custom.min_res : undefined;
                 $scope.source.data['max_res' + mode] = angular.isDefined($scope.custom.max_res) ? $scope.custom.max_res : undefined;
                 if(mode == '') {
@@ -368,27 +370,28 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
     $scope.layerTitle = function(layer) {
         return WMSSources.layerTitle($scope.source.data.req.url, layer);
     };
-    $scope.getResolution = function(url) {
+    $scope.getResolution = function() {
         if(!$scope.custom.resSelected) {
             $scope.custom.resSelected = true;
             $scope.custom.min_resLabel = 'min_res';
             $scope.custom.max_resLabel = 'max_res';
-            convertResScales(url, 'res');
+            convertResScales(custom.scalesToResURL, 'res');
             safeApply($scope);
         }
     };
-    $scope.getScale = function(url) {
+    $scope.getScale = function() {
         if($scope.custom.resSelected) {
             $scope.custom.resSelected = false;
             $scope.custom.min_resLabel = 'min_res_scale';
             $scope.custom.max_resLabel = 'max_res_scale';
-            convertResScales(url, 'scale');
+            convertResScales(custom.resToScalesURL, 'scale');
             safeApply($scope);
         }
     };
 
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {
+        'units': 'm',
         'resSelected': true,
         'min_resLabel': 'min_res',
         'max_resLabel': 'max_res'
