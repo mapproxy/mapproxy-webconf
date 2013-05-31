@@ -399,6 +399,7 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
+    console.log($scope)
 };
 
 function MapproxyCacheListCtrl($scope, MapproxyCaches, MessageService) {

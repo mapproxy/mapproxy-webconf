@@ -1,5 +1,5 @@
 <script type="text/ng-template" id="checkbox_label">
-    <div class="control-group">
+    <div class="control-group" ng-class="{'error': invalid}">
         <div class="controls">
             <label class="control-label" for="{{name}}">
                 <span ng-transclude></span> {{getText()}}
@@ -10,7 +10,7 @@
 </script>
 
 <script type="text/ng-template" id="input_label">
-    <div class="control-group">
+    <div class="control-group" ng-class="{'error': invalid}">
         <div class="controls">
             <label class="control-label" for="{{name}}">{{getText()}}:</label>
             <span ng-transclude></span>
