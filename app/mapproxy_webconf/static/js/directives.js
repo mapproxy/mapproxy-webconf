@@ -442,6 +442,11 @@ directive('extendableInputList', function($timeout) {
                 //added function to sort to sort numbers
                 //found at http://www.w3schools.com/jsref/jsref_sort.asp
                 if($.inArray(undefined, scope.items) == -1 && !angular.equals(scope.items, scope.extendableInputListBinds)) {
+                    var removeIdx = $.inArray("", scope.items);
+                    while(removeIdx != -1) {
+                        scope.items.splice(removeIdx, 1);
+                        removeIdx = $.inArray("", scope.items);
+                    }
                     scope.extendableInputListBinds = angular.copy(scope.items.sort(
                         function(a, b) {
                             return a-b;
@@ -472,6 +477,7 @@ directive('extendableInputList', function($timeout) {
                     scope.listPrefix = val + ' ';
                 }
             });
+
         }
     };
 }).
