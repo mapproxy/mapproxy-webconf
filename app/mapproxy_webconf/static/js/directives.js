@@ -439,6 +439,8 @@ directive('labeled', function($parse, $templateCache, localize) {
 }).
 
 directive('extendableInputList', function($timeout) {
+    //form validation issue:
+    //http://stackoverflow.com/questions/12044277/how-to-validate-inputs-dynamically-created-using-ng-repeat-ng-show-angular
     return {
         restrict: 'A',
         scope: {
