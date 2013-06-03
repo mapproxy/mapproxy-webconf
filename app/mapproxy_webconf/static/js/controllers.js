@@ -151,7 +151,7 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
 
         extractMinMaxRes($scope, $scope.source);
 
-        $scope.source_form.$setPristine();
+        $scope.form.$setPristine();
 
         if($scope.source._manual) {
             $scope.editareaBinds.visible = true;
@@ -273,7 +273,7 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
             }
             MapproxySources.add($scope.source);
             $scope.formTitle = 'Edit source';
-            $scope.source_form.$setPristine();
+            $scope.form.$setPristine();
             $scope.editareaBinds.dirty = false;
             $scope.editareaBinds.save = false;
         }
@@ -395,7 +395,7 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
     );
 
     $(window).on('beforeunload', function() {
-        if($scope.source_form.$dirty || $scope.editareaBinds.dirty) {
+        if($scope.form.$dirty || $scope.editareaBinds.dirty) {
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
