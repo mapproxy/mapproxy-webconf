@@ -483,3 +483,10 @@ div.blockMsg {
     max-height: 200px;
     overflow: auto;
 }
+
+._layerSwitcher {
+    position: absolute;
+    top: 20px;
+    right: 5px;
+    z-index: 1500;
+}

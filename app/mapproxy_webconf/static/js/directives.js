@@ -647,7 +647,7 @@ directive('tooltip', function() {
     }
 }).
 
-directive('olMap', function($compile) {
+directive('olMap', function($compile, $http, $templateCache) {
     return {
         restrict: 'A',
         scope: {
@@ -655,6 +655,40 @@ directive('olMap', function($compile) {
         },
         transclude: true,
         link: function(scope, element, attrs) {
+            var loadLayerSwitcherTemplate = function() {
+                var layerSwitcherTemplate = $templateCache.get("layerswitcher_template");
+                if(angular.isUndefined(layerSwitcherTemplate)) {
+                    $http.get('/static/angular_templates/layerswitcher.html').success(function(layerSwitcherTemplate) {
+                        $templateCache.put('layerswitcher_template', layerSwitcherTemplate);
+                        renderLayerSwitcher($compile(layerSwitcherTemplate)(scope));
+                    });
+                } else {
+                    renderLayerSwitcher($compile(layerSwitcherTemplate)(scope));
+                }
+            };
+            var renderLayerSwitcher = function(layerSwitcherElement) {
+                $(scope.map.div).find('.olMapViewport').append(layerSwitcherElement);
+            };
+            var prepareLayerSwitcher = function() {
+                scope.rasterBaselayers = [];
+                scope.rasterOverlays = [];
+
+                angular.forEach(scope.olmapBinds.layers, function(layer) {
+                    var l = angular.isDefined(layer.layers) ? layer.layers.length : -1;
+                    if(layer.displayInLayerSwitcher) {
+                        if(layer.isBaseLayer) {
+                            scope.rasterBaselayers.push(layer);
+                        } else {
+                            scope.rasterOverlays.push(layer);
+                        }
+                    }
+                });
+                var layerSwitcherElement = loadLayerSwitcherTemplate(scope);
+
+                $(scope.map.div).find('.olMapViewport').append(layerSwitcherElement);
+
+            };
+
             var createMap = function() {
                 if(scope.map instanceof OpenLayers.Map) {
                     scope.map.destroy();
@@ -684,12 +718,14 @@ directive('olMap', function($compile) {
                     layers: scope.olmapBinds.layers
                 });
                 if(attrs.mapLayerSwitcher) {
-                    var layerswitcher = new OpenLayers.Control.LayerSwitcher({roundedCorner: true});
-                    scope.map.addControl(layerswitcher);
-                    layerswitcher.maximizeControl();
+                    prepareLayerSwitcher(scope.map);
                 }
                 scope.map.zoomToMaxExtent();
             };
+
+            scope.toggleOverlay = function(layer) {
+                layer.setVisibility(!layer.visibility);
+            }
 
             scope.destroyMap = function() {
                 if(scope.map instanceof OpenLayers.Map) {

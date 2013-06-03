@@ -1,0 +1,19 @@
+<script type="text/ng-template" id="layerItem">
+    <label for="rasterOverlay_{{$index}}">
+        <input type="checkbox" id="rasterOverlay_{{$index}}" ng-checked="layer.visibility" ng-click="toggleOverlay(layer)">{{layer.name}}
+    </label>
+    <div ng-repeat="layer in layer.layers" style="margin-left:5px" ng-include="'layerItem'"></div>
+</script>
+
+<div class="_layerSwitcher pull-right">
+    <h3 ng-show="rasterBaselayers.length > 0">Raster BaseLayer</h3>
+    <div ng-repeat="layer in rasterBaselayers">
+        <label for="rasterBaselayer_{{$index}}">
+            <input type="radio" id="rasterBaselayer_{{$index}}" name="active" ng-checked="layer.visibility" ng-change="toggleBaselayer(layer)">
+            {{layer.name}}
+        </label>
+    </div>
+    <h3 ng-show="rasterOverlays.length > 0">Raster Overlays</h3>
+    <div style="overflow: scroll; height:400px">
+        <div ng-repeat="layer in rasterOverlays" ng-include="'layerItem'"></div>
+</div>
