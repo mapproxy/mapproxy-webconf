@@ -443,7 +443,8 @@ directive('extendableInputList', function($timeout) {
         restrict: 'A',
         scope: {
             extendableInputListBinds: '=extendableInputList',
-            ngDisabled: '='
+            ngDisabled: '=',
+            form: '=parentForm'
         },
         replace: true,
         transclude: true,
