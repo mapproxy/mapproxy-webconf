@@ -1,16 +1,18 @@
 <ul class="extendableInputList">
     <div ng-repeat="item in extendableInputListBinds">
         <li>
-            <div labeled="input_label" name-for="eil_item_{{$index}}" text="{{listPrefix}} {{$index}}">
-                <input type="text" class="_extendableInputListItem inputField input-medium" float
-                ng-blur="update()"
-                ng-click="focusOn(this)"
-                ng-model="items[$index]"
-                ng-disabled="ngDisabled"
-                id="eil_item_{{$index}}"
-                name="eil_item_{{$index}}">
-                <i class="icon-remove" ng-click="remove($index)" ng-show="!ngDisabled"></i>
-            </div>
+            <form name="_eilForm">
+                <div labeled="input_label" name-for="eil_item" text="{{listPrefix}} {{$index}}" form-name="_eilForm">
+                    <input type="text" class="_extendableInputListItem inputField input-medium" float
+                    ng-blur="update()"
+                    ng-click="focusOn(this)"
+                    ng-model="items[$index]"
+                    ng-disabled="ngDisabled"
+                    id="eil_item"
+                    name="eil_item">
+                    <i class="icon-remove" ng-click="remove($index)" ng-show="!ngDisabled"></i>
+                </div>
+            </form>
         </li>
     </div>
 
