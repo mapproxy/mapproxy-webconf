@@ -621,6 +621,32 @@ directive('editarea', function($http, MessageService) {
     };
 }).
 
+directive('tooltip', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            scope.tooltipMode = attrs.tooltip || 'tooltip';
+            scope.tooltipContent = attrs.tooltipContent;
+            scope.tooltipTitle = attrs.tooltipTitle;
+            scope.tooltipPlacement = attrs.tooltipPlacement || 'right';
+            if(scope.tooltipMode == 'popover') {
+                $(element).popover({
+                    title: scope.tooltipTitle,
+                    content: scope.tooltipContent,
+                    trigger: 'hover',
+                    placement: scope.tooltipPlacement
+                });
+            } else {
+                $(element).attr('data-original-title', scope.tooltipContent);
+                $(element).tooltip({
+                    title: scope.tooltipTitle,
+                    placement: scope.tooltipPlacement
+                });
+            }
+        }
+    }
+}).
+
 directive('olMap', function($compile) {
     return {
         restrict: 'A',
