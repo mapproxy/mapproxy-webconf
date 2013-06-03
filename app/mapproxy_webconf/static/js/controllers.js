@@ -8,7 +8,7 @@ function TreeCtrl($scope, localize, WMSSources, MessageService) {
     };
     $scope.prepareLayer = function(layer, sourceURL) {
         if(!layer.name) {
-            $.each(layer.layers, function(idx, layer) {
+            angular.forEach(layer.layers, function(layer) {
                 layer.sourceURL = sourceURL;
             });
             return layer.layers;
