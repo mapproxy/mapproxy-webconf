@@ -6,6 +6,21 @@ function TreeCtrl($scope, localize, WMSSources, MessageService) {
         $scope.wms_list = WMSSources.list();
         $scope.wms_urls = WMSSources.allURLs();
     };
+    var createLayer = function(list, layer, srs, url) {
+        console.log(list)
+        var newLayer = new OpenLayers.Layer.WMS(layer.title, url, {
+            srs: srs,
+            transparent: !layer.opaque
+        }, {
+          singleTile: true,
+          ratio: 1.0
+        });
+        newLayer.layers = [];
+        angular.forEach(layer.layers, function(layer) {
+            createLayer(newLayer.layers, layer, srs, url);
+        })
+        list.push(newLayer);
+    };
     $scope.prepareLayer = function(layer, sourceURL) {
         if(!layer.name) {
             angular.forEach(layer.layers, function(layer) {
@@ -33,14 +48,7 @@ function TreeCtrl($scope, localize, WMSSources, MessageService) {
             'EPSG:4326' : wms.data.layer.srs[0];
         var extent = wms.data.layer.llbbox;
         angular.forEach(wms.data.layer.layers, function(layer) {
-            layers.push(new OpenLayers.Layer.WMS(layer.title, wms.data.url, {
-                layers: [layer.name],
-                srs: srs,
-                transparent: !layer.opaque
-            }, {
-              singleTile: true,
-              ratio: 1.0
-            }));
+            createLayer(layers, layer, srs, wms.data.url);
         });
         $scope.olmapBinds = {
             visible: true,
