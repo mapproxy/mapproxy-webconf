@@ -50,7 +50,7 @@
 %def middleblock():
 <div ng-controller="MapproxySourceNoticeCtrl">
   <div ng-controller="MapproxySourceFormCtrl" ng-init="custom.scalesToResURL='${get_url('scales_to_res')}';custom.resToScalesURL='${get_url('res_to_scales')}';">
-    <form name="source_form" novalidate ng-show="!editareaBinds.visible">
+    <form name="form" novalidate ng-show="!editareaBinds.visible">
       <h3>{{formTitle|i18n}}</h3>
       <fieldset>
         <div toggle-group mode="multiShow">
@@ -62,10 +62,10 @@
               <p>{{'Replace service URL deletes all layers depends to it!'|i18n}}</p>
           </div>
           <div ng-show="true">
-            <div labeled="input_label" invalid="{{source_form.name.$invalid}}" name-for="name" text="{{'Name'|i18n}}">
+            <div labeled="input_label" name-for="name" text="{{'Name'|i18n}}">
               <input class="input-xlarge" type="text" required ng-model="source.data.name" id="name" name="name"/>
             </div>
-            <div id="source_wms_url" labeled="input_label" name-for="req_url" text="{{'URL'|i18n}}" invalid="{{source_form.req_url.$invalid}}">
+            <div id="source_wms_url" labeled="input_label" name-for="req_url" text="{{'URL'|i18n}}">
               <input
                 id="req_url"
                 name="req_url"
@@ -81,7 +81,7 @@
               />
             </div>
 
-            <div labeled="input_label" name-for="req_layer" text="{{'Layer'|i18n}}" invalid="{{source_form.req_layers.$invalid}}">
+            <div labeled="input_label" name-for="req_layer" text="{{'Layer'|i18n}}" >
               <div droppable sortable required accepts="wms_layer" allow-array="true"
                   ng-model="source.data.req.layers"
                   name="req_layers"
@@ -105,7 +105,7 @@
             <hr class="formLine">
             <div class="input-append" labeled='input_label' name-for="coverage_bbox" text="{{'Coverage BBOX'|i18n}}">
               <input type="text" ng-model="source.data.coverage.bbox" id="coverage_bbox" name="coverage_bbox" class="input-medium">
-              <button class="btn btn-small" ng-disabled="!source.data.req.url" ng-click="addCoverage($event)" id="source_form_load_coverage">{{'Use coverage from WMS'|i18n}}</button>
+              <button class="btn btn-small" ng-disabled="!source.data.req.url" ng-click="addCoverage($event)" id="form_load_coverage">{{'Use coverage from WMS'|i18n}}</button>
             </div>
             <div labeled="input_label" name-for="coverage_srs" text="{{'Coverage SRS'|i18n}}">
               <select class="input-xlarge" ng-model="source.data.coverage.srs" id="coverage_srs" name="coverage_srs" ng-options="srs for srs in defaults.data.srs">
@@ -135,7 +135,7 @@
             <div ng-include src="'${ get_url('static', filepath='angular_templates/min_max_res.html') }'"></div>
         <hr>
         <div class="pull-left">
-          <button class="btn btn-small" ng-click="addSource($event)" ng-disabled="!source_form.$valid" id="source_form_save" ng-class="{'btn-success': source_form.$valid}">{{'Save'|i18n}}</button>
+          <button class="btn btn-small" ng-click="addSource($event)" ng-disabled="!form.$valid" id="form_save" ng-class="{'btn-success': form.$valid}">{{'Save'|i18n}}</button>
           <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
         </div>
         <div id="_editarea_toggle_button_container" class="pull-right">
@@ -198,10 +198,10 @@
   <div message-handler="success" message-types="wms_capabilities.delete_success,wms_capabilities.update_success"></div>
   <div message-handler="error" message-types="wms_capabilities.load_error,wms_capabilities.delete_error,wms_capabilities.update_error"></div>
   <hr>
-  <form name="capabilities_form" novalidate>
-    <div class="input-append" labeled="input_label" name-for="addCapabilities"  text="{{'Load WMS'|i18n}}">
-      <input type="url" required name="capabilities_url" ng-model="capabilities.url" id="addCapabilities" unique="{{wms_urls}}">
-      <button class="btn btn-small" ng-click="addCapabilities()" ng-disabled="!capabilities_form.$valid">{{'Add'|i18n}}</button>
+  <form name="form" novalidate>
+    <div class="input-append" labeled="input_label" name-for="url"  text="{{'Load WMS'|i18n}}">
+      <input type="url" required name="url" ng-model="capabilities.url" id="url" unique="{{wms_urls}}">
+      <button class="btn btn-small" ng-click="addCapabilities()" ng-disabled="!form.$valid">{{'Add'|i18n}}</button>
     </div>
     <div message-handler="success" message-types="wms_capabilities.add_success"></div>
     <div message-handler="error" message-types="wms_capabilities.add_error"></div>

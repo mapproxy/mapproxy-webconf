@@ -53,31 +53,31 @@
     <h3>{{formTitle|i18n}}</h3>
     <form name="form" id="form" ng-show="!grid.default" novalidate>
       <!-- name -->
-      <div labeled="input_label" name-for="form.name" text="{{'Name'|i18n}}">
-          <input required type="text" ng-model="grid.data.name" id="form.name" ng-disabled="grid._locked"/>
+      <div labeled="input_label" name-for="name" text="{{'Name'|i18n}}">
+          <input required type="text" ng-model="grid.data.name" id="name" ng-disabled="grid._locked" name="name"/>
       </div>
       <!-- SRS -->
-      <div labeled="input_label" name-for="form.srs" text="{{'SRS'|i18n}}">
-           <select ng-model="grid.data.srs" id="form.srs" ng-options="srs for srs in defaults.data.srs" ng-disabled="grid._locked">
+      <div labeled="input_label" name-for="srs" text="{{'SRS'|i18n}}">
+           <select ng-model="grid.data.srs" id="srs" ng-options="srs for srs in defaults.data.srs" ng-disabled="grid._locked" name="srs">
           </select>
       </div>
       <hr>
       <!-- BBox -->
-      <div labeled="input_label" name-for="form.bbox_0" text="{{'BBox'|i18n}}">
-          <input type="number" ng-model="grid.data.bbox[0]" class="input-mini" id="form.bbox_0" ng-disabled="grid._locked" />
-          <input type="number" ng-model="grid.data.bbox[1]" class="input-mini" id="form.bbox_1" ng-disabled="grid._locked" />
-          <input type="number" ng-model="grid.data.bbox[2]" class="input-mini" id="form.bbox_2" ng-disabled="grid._locked" />
-          <input type="number" ng-model="grid.data.bbox[3]" class="input-mini" id="form.bbox_3" ng-disabled="grid._locked" />
+      <div labeled="input_label" name-for="bbox_0" text="{{'BBox'|i18n}}">
+          <input type="number" ng-model="grid.data.bbox[0]" class="input-mini" id="bbox_0" ng-disabled="grid._locked" name="bbox_0"/>
+          <input type="number" ng-model="grid.data.bbox[1]" class="input-mini" id="bbox_1" ng-disabled="grid._locked" name="bbox_1"/>
+          <input type="number" ng-model="grid.data.bbox[2]" class="input-mini" id="bbox_2" ng-disabled="grid._locked" name="bbox_2"/>
+          <input type="number" ng-model="grid.data.bbox[3]" class="input-mini" id="bbox_3" ng-disabled="grid._locked" name="bbox_3"/>
       </div>
       <!-- BBox SRS -->
-      <div labeled="input_label" name-for="form.bbox_srs" text="{{'BBox SRS'|i18n}}">
-          <select ng-model="grid.data.bbox_srs" id="form.bbox_srs" ng-options="srs for srs in defaults.data.srs" ng-disabled="grid._locked">
+      <div labeled="input_label" name-for="bbox_srs" text="{{'BBox SRS'|i18n}}">
+          <select ng-model="grid.data.bbox_srs" id="bbox_srs" ng-options="srs for srs in defaults.data.srs" ng-disabled="grid._locked" name="bbox_srs">
           </select>
       </div>
       <hr>
       <!-- origin -->
-      <div labeled="input_label" name-for="form.origin" text="{{'Origin'|i18n}}">
-          <select ng-model="grid.data.origin" id="form.origin" ng-disabled="grid._locked">
+      <div labeled="input_label" name-for="origin" text="{{'Origin'|i18n}}">
+          <select ng-model="grid.data.origin" id="origin" ng-disabled="grid._locked" name="origin">
               <option value="sw">SW / LL</option>
               <option value="nw">NW / UL</option>
           </select>

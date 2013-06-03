@@ -1,5 +1,4 @@
 <div>
-  <pre ng-bind="this|json"></pre>
   <div labeled="input_label" name-for="units" text="{{'Map units'|i18n}}">
     <div class="btn-group" ng-model="custom.units" data-toggle-name="is_private" data-toggle="buttons-radio" id="units">
       <button type="button" ng-click="custom.units='m'" class="btn btn-small" ng-class="{'active': custom.units=='m'}" data-toggle="button">{{'Meters'|i18n}}</button>
@@ -10,10 +9,10 @@
       <button type="button" class="btn btn-small" ng-class="{'active': !custom.resSelected}" ng-click="getScale()">{{'Scale'|i18n}}</button>
     </div>
     <div labeled="input_label" name-for="min_res" text="{{custom.min_resLabel|i18n}}">
-      <input float id="min_res" ng-model="custom.min_res" class="input-medium">
+      <input type="text" float id="min_res" name="min_res" ng-model="custom.min_res" class="input-medium">
     </div>
     <div labeled="input_label" name-for="max_res" text="{{custom.max_resLabel|i18n}}">
-      <input float id="max_res" ng-model="custom.max_res" class="input-medium">
+      <input type="text" float id="max_res" ng-model="custom.max_res" class="input-medium" name="max_res">
     </div>
   </div>
 </div>

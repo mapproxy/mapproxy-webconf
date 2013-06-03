@@ -14,39 +14,39 @@
 %def middleblock():
     <script type="text/ng-template"  id="wms.html">
         <h3>{{'wms'|i18n}}</h3>
-        <div labeled="checkbox_label" name-for="form.wms_active" text="{{'Active'|i18n}}">
-            <input type="checkbox" ng-model="services.data.wms.active" id="form.wms_active">
+        <div labeled="checkbox_label" name-for="wms_active" text="{{'Active'|i18n}}">
+            <input type="checkbox" ng-model="services.data.wms.active" id="wms_active" name="wms_active">
         </div>
-        <div labeled="input_label" name-for="form.wms_title" text="{{'Title'|i18n}}">
-            <input type="text" ng-model="services.data.wms.md.title" id="form.wms_title">
+        <div labeled="input_label" name-for="wms_title" text="{{'Title'|i18n}}">
+            <input type="text" ng-model="services.data.wms.md.title" id="wms_title" name="wms_title">
         </div>
-        <div labeled="input_label" name-for="form.wms_srs" text="{{'SRS'|i18n}}">
-             <select id="form.wms_srs" multiple="multiple" ng-model="services.data.wms.srs" ng-options="srs for srs in defaults.data.srs">
+        <div labeled="input_label" name-for="wms_srs" text="{{'SRS'|i18n}}">
+             <select id="wms_srs" multiple="multiple" ng-model="services.data.wms.srs" ng-options="srs for srs in defaults.data.srs" name="wms_srs">
              </select>
          </div>
     </script>
     <script type="text/ng-template"  id="tms.html">
         <h3>{{'tms'|i18n}}</h3>
-        <div labeled="checkbox_label" name-for="form.tms_active" text="{{'Active'|i18n}}">
-            <input type="checkbox" ng-model="services.data.tms.active" id="form.tms_active">
+        <div labeled="checkbox_label" name-for="tms_active" text="{{'Active'|i18n}}">
+            <input type="checkbox" ng-model="services.data.tms.active" id="tms_active" name="tms_active">
         </div>
     </script>
     <script type="text/ng-template"  id="wmts.html">
         <h3>{{'wmts'|i18n}}</h3>
-        <div labeled="checkbox_label" name-for="form.wmts_active" text="{{'Active'|i18n}}">
-            <input type="checkbox" ng-model="services.data.wmts.active" id="form.wmts_active">
+        <div labeled="checkbox_label" name-for="wmts_active" text="{{'Active'|i18n}}">
+            <input type="checkbox" ng-model="services.data.wmts.active" id="wmts_active" name="wmts_active">
         </div>
     </script>
     <script type="text/ng-template"  id="kml.html">
         <h3>{{'kml'|i18n}}</h3>
-        <div labeled="checkbox_label" name-for="form.kml_active" text="{{'Active'|i18n}}">
-            <input type="checkbox" ng-model="services.data.kml.active" id="form.kml_active">
+        <div labeled="checkbox_label" name-for="kml_active" text="{{'Active'|i18n}}">
+            <input type="checkbox" ng-model="services.data.kml.active" id="kml_active" name="kml_active">
         </div>
     </script>
     <script type="text/ng-template"  id="demo.html">
         <h3>{{'demo'|i18n}}</h3>
-        <div labeled="checkbox_label" name-for="form.demo_active" text="{{'Active'|i18n}}">
-            <input type="checkbox" ng-model="services.data.demo.active" id="form.demo_active">
+        <div labeled="checkbox_label" name-for="demo_active" text="{{'Active'|i18n}}">
+            <input type="checkbox" ng-model="services.data.demo.active" id="demo_active" name="demo_active">
         </div>
     </script>
     <div ng-controller="MapproxyServicesCtrl">

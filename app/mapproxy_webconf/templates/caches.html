@@ -43,12 +43,12 @@
   <form name="form" ng-model="cache" ng-show="!editareaBinds.visible">
     <h3>{{formTitle|i18n}}</h3>
     <!-- name -->
-    <div labeled="input_label" name-for="form.cache_name" text="{{'Name'|i18n}}">
-        <input required class="input-xlarge" type="text" ng-model="cache.data.name" id="form.cache_name"/>
+    <div labeled="input_label" name-for="cache_name" text="{{'Name'|i18n}}">
+        <input required class="input-xlarge" type="text" ng-model="cache.data.name" id="cache_name" name="cache_name"/>
     </div>
     <!-- sources -->
       <!-- change-callback MUST provide parameters callback and new_data -->
-    <div labeled="input_label" name-for="form.sources" text="{{'Sources'|i18n}}">
+    <div labeled="input_label" name-for="sources" text="{{'Sources'|i18n}}">
         <div
             droppable
             sortable
@@ -57,7 +57,8 @@
             insert-callback="checkName(callback, new_item)"
             allow-array="true"
             ng-model="cache.data.sources"
-            name="form.sources"
+            name="sources"
+            id="sources"
             use-key-for-value="_id"
             class="input-xlarge insertable-list uneditable-input">
             <div ng-repeat="source in cache.data.sources" class="label">
@@ -66,13 +67,14 @@
             </div>
         </div>
     </div>
-    <div labeled="input_label" name-for="form.grids" text="{{'Grids'|i18n}}">
+    <div labeled="input_label" name-for="grids" text="{{'Grids'|i18n}}">
       <div
         droppable
         accepts="mapproxy_grid"
         ng-model="cache.data.grids"
         allow-array="true"
-        name="form.grids"
+        name="grids"
+        id="grids"
         use-key-for-value="_id"
         class="input-xlarge insertable-list uneditable-input">
         <div ng-repeat="grid in cache.data.grids" class="label">
@@ -81,15 +83,15 @@
         </div>
       </div>
     </div>
-    <div labeled="input_label" name-for="form.format" text="{{'Format'|i18n}}">
-      <select class="input-xlarge" ng-model="cache.data.format" id="form.format">
+    <div labeled="input_label" name-for="format" text="{{'Format'|i18n}}">
+      <select class="input-xlarge" ng-model="cache.data.format" id="format" name="format">
         <option value="mixed">Mixed</option>
         <option value="image/png">Image/PNG</option>
         <option value="image/jpeg">Image/JPEG</option>
       </select>
     </div>
-    <div labeled="input_label" name-for="form.request_format" text="{{'Request format'|i18n}}">
-      <select class="input-xlarge" ng-model="cache.data.request_format" id="form.request_format">
+    <div labeled="input_label" name-for="request_format" text="{{'Request format'|i18n}}">
+      <select class="input-xlarge" ng-model="cache.data.request_format" id="request_format" name="request_format">
         <option value="image/png">Image/PNG</option>
         <option value="image/jpeg">Image/JPEG</option>
       </select>

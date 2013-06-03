@@ -79,15 +79,15 @@
   <form name="form" novalidate ng-show="!editareaBinds.visible">
     <h3>{{formTitle|i18n}}</h3>
     <!-- name -->
-    <div labeled="input_label" name-for="form.layer_name" text="{{'Name'|i18n}}">
-      <input required type="text" required ng-model="layer.data.name" class="input-xlarge" id="form.layer_name"/>
+    <div labeled="input_label" name-for="layer_name" text="{{'Name'|i18n}}">
+      <input required type="text" required ng-model="layer.data.name" class="input-xlarge" id="layer_name" name="layer_name"/>
     </div>
     <!-- title -->
-    <div labeled="input_label" name-for="form.layer_title" text="{{'Title'|i18n}}">
-      <input required type="text" required ng-model="layer.data.title" class="input-xlarge" id="form.layer_title"/>
+    <div labeled="input_label" name-for="layer_title" text="{{'Title'|i18n}}">
+      <input required type="text" required ng-model="layer.data.title" class="input-xlarge" id="layer_title" name="layer_title"/>
     </div>
     <!-- sources -->
-    <div labeled="input_label" name-for="form.sources" text="{{'Sources'|i18n}}">
+    <div labeled="input_label" name-for="sources" text="{{'Sources'|i18n}}">
       <div
         droppable
         sortable
@@ -95,7 +95,8 @@
         accepts="mapproxy_source,mapproxy_cache"
         allow-array="true"
         ng-model="layer.data.sources"
-        id="layer_sources"
+        id="sources"
+        name="sources"
         use-key-for-value="_id"
         class="input-xlarge insertable-list uneditable-input">
         <div ng-repeat="source in layer.data.sources" class="label">

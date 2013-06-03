@@ -4,12 +4,12 @@
   <hr>
   <form ng-controller="ProjectDefaultsCtrl" name="form">
     <fieldset>
-      <div labeled="input_label" name-for="form.dpi" text="{{'DPI'|i18n}}">
-        <input float name="default_form.dpi" id="default_form.dpi" class="input-small" ng-model="defaults.data.dpi" type="number">
+      <div labeled="input_label" name-for="dpi" text="{{'DPI'|i18n}}">
+        <input float name="dpi" id="dpi" class="input-small" ng-model="defaults.data.dpi" type="number">
       </div>
       <hr>
-      <div labeled="input_label" name-for="form.default_srs" text="{{'SRS'|i18n}}">
-        <div name="default_form.default_srs" class="well well-small">
+      <div labeled="input_label" name-for="default_srs" text="{{'SRS'|i18n}}">
+        <div name="default_srs" id="default_srs" class="well well-small">
           <span class="badge" ng-repeat="srs in defaults.data.srs">{{srs}}
             <i class="icon-remove" ng-click="removeSRS($event, srs)"></i>
           </span>

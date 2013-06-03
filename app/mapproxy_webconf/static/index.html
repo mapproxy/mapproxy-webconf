@@ -54,7 +54,7 @@
                     <div class="span4 well">
                         <h3>Edit Source</h3>
                         <div ng-controller="MapproxySourceNoticeCtrl">
-                            <form class="form-horizontal" name="source_form" ng-controller="MapproxySourceFormCtrl" novalidate>
+                            <form class="form-horizontal" name="form" ng-controller="MapproxySourceFormCtrl" novalidate>
                                 <div toggle-group mode="multiShow">
                                     <div
                                         style="display:none;"
@@ -66,30 +66,30 @@
 
                                     <div ng-show="true">
                                 <!-- name -->
-                                        <div labeled-control-group name-for="source_form.name" text="Name">
-                                            <input class="input-xlarge" type="text" required ng-model="source.name" name="source_form.name"/>
+                                        <div labeled-control-group name-for="form.name" text="Name">
+                                            <input class="input-xlarge" type="text" required ng-model="source.name" name="form.name"/>
                                         </div>
                                 <!-- req -->
                                     <!-- url -->
-                                        <div labeled-control-group name-for="source_form.req_url" text="URL">
+                                        <div labeled-control-group name-for="form.req_url" text="URL">
                                             <!-- change-callback MUST provide parameters callback and new_data -->
                                             <!-- if an input field should be droppable, it must be wraped in an other element.
                                                  otherwise input field value will not be updated when something is dropped in.-->
                                             <div droppable change-callback="openDialog(callback, new_data)" class="droppable_input_wrapper input-xlarge"
                                                 accepts="wms_source" use-key-for-value="url" ng-model="source.req.url">
-                                                <input class="input-xlarge" type="url" value="{{source.wms_source}}" name="source_form.req_url"
+                                                <input class="input-xlarge" type="url" value="{{source.wms_source}}" name="form.req_url"
                                                     required ng-model="source.req.url" />
                                             </div>
                                         </div>
                                     <!-- layer -->
-                                        <div labeled-control-group name-for="source_form.req_layer" text="Layer">
+                                        <div labeled-control-group name-for="form.req_layer" text="Layer">
                                             <div
                                                 droppable
                                                 required
                                                 accepts="wms_layer"
                                                 allow-array="true"
                                                 ng-model="source.req.layers"
-                                                name="source_form.req_layers"
+                                                name="form.req_layers"
                                                 use-key-for-value="name"
                                                 class="input-xlarge insertable_multi uneditable-input">
                                                 <div sortable ng-model="source.req.layers" >
@@ -105,16 +105,16 @@
                                             <button class="btn btn-small" ng-click="addLayerManual($event)">Add</button>
                                         </div>
                                     <!-- transparent -->
-                                        <div labeled-control-group name-for="source_form.req_transparent" text="Transparent" warning="{{invalid_image_settings}}" warning-msg="Selectet image format(s) not support transparency.">
-                                            <input type="checkbox" ng-model="source.req.transparent" name="source_form.req_transparent">
+                                        <div labeled-control-group name-for="form.req_transparent" text="Transparent" warning="{{invalid_image_settings}}" warning-msg="Selectet image format(s) not support transparency.">
+                                            <input type="checkbox" ng-model="source.req.transparent" name="form.req_transparent">
                                         </div>
                                     </div>
                                     <h5 toggle-element="next">Optional Settings</h5>
                                     <div ng-show="false">
                                 <!-- supported_formats -->
                                         <!-- XXXkai: replace by received list of supported formats -->
-                                        <div labeled-control-group name-for="source_form.supported_formats" text="Supported formats" warning="{{invalid_image_settings}}" warning-msg="Selectet image format(s) not support transparency.">
-                                            <select name="source_form.supported_formats" multiple="multiple" ng-model="source.supported_formats">
+                                        <div labeled-control-group name-for="form.supported_formats" text="Supported formats" warning="{{invalid_image_settings}}" warning-msg="Selectet image format(s) not support transparency.">
+                                            <select name="form.supported_formats" multiple="multiple" ng-model="source.supported_formats">
                                                 <option value="PNG">PNG</option>
                                                 <option value="JPEG">JPEG</option>
                                                 <option value="GIF">GIF</option>
@@ -122,40 +122,40 @@
                                         </div>
                                 <!-- supported_srs -->
                                         <!-- XXXkai: replace by received list of supported srs -->
-                                        <div labeled-control-group name-for="source_form.supported_srs" text="Supported SRS">
-                                            <select name="source_form.supported_srs" multiple="multiple" ng-model="source.supported_srs">
+                                        <div labeled-control-group name-for="form.supported_srs" text="Supported SRS">
+                                            <select name="form.supported_srs" multiple="multiple" ng-model="source.supported_srs">
                                                 <option value="EPSG:3857">EPSG:3857</option>
                                                 <option value="EPSG:4326">EPSG:4326</option>
                                                 <option value="EPSG:900913">EPSG:900913</option>
                                             </select>
                                         </div>
                                 <!-- min_scale -->
-                                        <div labeled-control-group name-for="source_form.min_scale" text="Min. Scale">
-                                            <input float type="number" ng-model="source.min_scale" name="source_form.min_scale">
+                                        <div labeled-control-group name-for="form.min_scale" text="Min. Scale">
+                                            <input float type="number" ng-model="source.min_scale" name="form.min_scale">
                                         </div>
                                 <!-- max_scale -->
-                                        <div labeled-control-group name-for="source_form.max_scale" text="Max. Scale">
-                                            <input float type="number" ng-model="source.max_scale" name="source_form.max_scale" bigger-than="source.min_scale">
+                                        <div labeled-control-group name-for="form.max_scale" text="Max. Scale">
+                                            <input float type="number" ng-model="source.max_scale" name="form.max_scale" bigger-than="source.min_scale">
                                         </div>
                                 <!-- min_res -->
-                                        <div labeled-control-group name-for="source_form.min_res" text="Min. Resolution">
-                                            <input float type="number" ng-model="source.min_res" name="source_form.min_res">
+                                        <div labeled-control-group name-for="form.min_res" text="Min. Resolution">
+                                            <input float type="number" ng-model="source.min_res" name="form.min_res">
                                         </div>
                                 <!-- max_res -->
-                                        <div labeled-control-group name-for="source_form.max_res" text="Max. Resolution">
-                                            <input float type="number" ng-model="source.max_res" name="source_form.max_res">
+                                        <div labeled-control-group name-for="form.max_res" text="Max. Resolution">
+                                            <input float type="number" ng-model="source.max_res" name="form.max_res">
                                         </div>
                                 <!-- concurent_requests -->
-                                        <div labeled-control-group name-for="source_form.concurrent_requests" text="Concurrent requests" warning="{{high_number_of_concurrent_requests}}" warning-msg="{{source.concurrent_requests}} concurrent requests can decrease performance.">
-                                            <input type="number" integer min=0 type="text" ng-model="source.concurrent_requests" name="source_form.concurrent_requests">
+                                        <div labeled-control-group name-for="form.concurrent_requests" text="Concurrent requests" warning="{{high_number_of_concurrent_requests}}" warning-msg="{{source.concurrent_requests}} concurrent requests can decrease performance.">
+                                            <input type="number" integer min=0 type="text" ng-model="source.concurrent_requests" name="form.concurrent_requests">
                                         </div>
                                     </div>
                                 <!-- wms_opts -->
                                     <h5 toggle-element="next">WMS OPTS</h5>
                                     <div ng-show="false">
                                     <!-- version -->
-                                        <div labeled-control-group name-for="source_form.wms_version" text="Version">
-                                            <select name="source_form.wms_version" ng-model="source.wms_opts.version">
+                                        <div labeled-control-group name-for="form.wms_version" text="Version">
+                                            <select name="form.wms_version" ng-model="source.wms_opts.version">
                                                 <option value="1.0.0">1.0.0</option>
                                                 <option value="1.1.0">1.1.0</option>
                                                 <option value="1.1.1">1.1.1</option>
@@ -163,33 +163,33 @@
                                             </select>
                                         </div>
                                     <!-- map -->
-                                        <div labeled-control-group name-for="source_form.wms_map" text="Map">
-                                            <input type="checkbox" name="source_form.wms_map" ng-model="source.wms_opts.map">
+                                        <div labeled-control-group name-for="form.wms_map" text="Map">
+                                            <input type="checkbox" name="form.wms_map" ng-model="source.wms_opts.map">
                                         </div>
                                     <!-- featureinfo -->
-                                        <div labeled-control-group name-for="source_form.wms_featureinfo" text="Featureinfo">
-                                            <input type="checkbox" name="source_form.wms_featureinfo" ng-model="source.wms_opts.featureinfo">
+                                        <div labeled-control-group name-for="form.wms_featureinfo" text="Featureinfo">
+                                            <input type="checkbox" name="form.wms_featureinfo" ng-model="source.wms_opts.featureinfo">
                                         </div>
                                     <!-- featureinfo_format -->
-                                        <div labeled-control-group name-for="source_form.wms_featureinfo_format" text="Featureinfo format">
-                                            <input type="text" name="source_form.wms_featureinfo_format" ng-model="source.wms_opts.featureinfo_format">
+                                        <div labeled-control-group name-for="form.wms_featureinfo_format" text="Featureinfo format">
+                                            <input type="text" name="form.wms_featureinfo_format" ng-model="source.wms_opts.featureinfo_format">
                                         </div>
                                     <!-- featureinfo_xslt -->
-                                        <div labeled-control-group name-for="source_form.wms_featureinfo_xslt" text="Featureinfo XSLT">
-                                            <input type="text" name="source_form.wms_featureinfo_xslt" ng-model="source.wms_opts.featureinfo_xslt">
+                                        <div labeled-control-group name-for="form.wms_featureinfo_xslt" text="Featureinfo XSLT">
+                                            <input type="text" name="form.wms_featureinfo_xslt" ng-model="source.wms_opts.featureinfo_xslt">
                                         </div>
                                     <!-- legendgraphic -->
-                                        <div labeled-control-group name-for="source_form.wms_legendgraphic" text="Legendgraphic">
-                                            <input type="checkbox" name="source_form.wms_legendgraphic" ng-model="source.wms_opts.legendgraphic">
+                                        <div labeled-control-group name-for="form.wms_legendgraphic" text="Legendgraphic">
+                                            <input type="checkbox" name="form.wms_legendgraphic" ng-model="source.wms_opts.legendgraphic">
                                         </div>
                                     <!-- legendurl -->
-                                        <div labeled-control-group name-for="source_form.wms_legendurl" text="Legend URL">
-                                            <input type="url" name="source_form.wms_legendurl" ng-model="source.wms_opts.legendurl">
+                                        <div labeled-control-group name-for="form.wms_legendurl" text="Legend URL">
+                                            <input type="url" name="form.wms_legendurl" ng-model="source.wms_opts.legendurl">
                                         </div>
                                     </div>
                                 </div>
                             <!-- buttons -->
-                                <button class="btn btn-small" ng-click="addSource($event)" ng-disabled="!source_form.$valid">Save</button>
+                                <button class="btn btn-small" ng-click="addSource($event)" ng-disabled="!form.$valid">Save</button>
                                 <button class="btn btn-small" ng-click="resetForm($event)">Reset</button>
                             </form>
                         </div>
