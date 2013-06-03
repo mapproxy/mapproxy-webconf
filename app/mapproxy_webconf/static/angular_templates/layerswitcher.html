@@ -1,6 +1,6 @@
 <script type="text/ng-template" id="layerItem">
-    <label for="rasterOverlay_{{$index}}">
-        <input type="checkbox" id="rasterOverlay_{{$index}}" ng-checked="layer.visibility" ng-click="toggleOverlay(layer)">{{layer.name}}
+    <label for="{{$id}}_{{$index}}">
+        <input type="checkbox" id="{{$id}}_{{$index}}" ng-checked="layer.visibility" ng-click="toggleOverlay(layer)">{{layer.name}}
     </label>
     <div ng-repeat="layer in layer.layers" style="margin-left:5px" ng-include="'layerItem'"></div>
 </script>
