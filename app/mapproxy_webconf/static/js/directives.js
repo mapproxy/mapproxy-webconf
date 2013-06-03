@@ -375,6 +375,21 @@ directive('labeled', function($parse, $templateCache, localize) {
         },
         scope: 'element',
         link: function(scope, element, attrs) {
+            var invalidWatchActive = false;
+            var initInvalidWatch = function() {
+                if(!invalidWatchActive &&
+                   scope.formName &&
+                   scope.name &&
+                   angular.isDefined(scope[scope.formName]) &&
+                   angular.isDefined(scope[scope.formName][scope.name])) {
+                    scope.$watch(scope.formName + '.' + scope.name + '.$invalid', function(val) {
+                        var invalid = Boolean(val);
+                        var pristine = scope[scope.formName][scope.name].$pristine;
+                        scope.invalid = invalid && !pristine;
+                    });
+                    invalidWatchActive = true;
+                }
+            };
 
             scope.showWarning = function() {
                 if(scope.warning) {
@@ -398,6 +413,8 @@ directive('labeled', function($parse, $templateCache, localize) {
 
             scope.name = attrs.nameFor;
 
+            scope.formName = attrs.formName || 'form';
+
             if(angular.isDefined(attrs.$attr.warning)) {
                 scope.warning_msg = attrs.warningMsg;
                 attrs.$observe('warning', function(val) {
@@ -405,10 +422,18 @@ directive('labeled', function($parse, $templateCache, localize) {
                 });
             }
 
-            attrs.$observe('invalid', function(val) {
-                scope.invalid = Boolean(val);
-            })
-
+            attrs.$observe('formName', function(val) {
+                if(angular.isDefined(val)) {
+                    scope.formName = val;
+                    initInvalidWatch();
+                }
+            });
+            attrs.$observe('nameFor', function(val) {
+                if(angular.isDefined(val)) {
+                    scope.name = val;
+                    initInvalidWatch();
+                }
+            });
         }
     };
 }).
