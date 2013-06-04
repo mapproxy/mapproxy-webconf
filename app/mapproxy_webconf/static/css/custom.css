@@ -446,6 +446,10 @@ input.droppable-active, div.droppable-active {
   margin-bottom: 5px;
 }
 
+.grp_layer .wms_layer {
+  margin-left: 10px;
+}
+
 /* map */
 
 .map-icon-remove {
