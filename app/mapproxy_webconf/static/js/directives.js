@@ -670,17 +670,12 @@ directive('olMap', function($compile, $http, $templateCache) {
                 $(scope.map.div).find('.olMapViewport').append(layerSwitcherElement);
             };
             var prepareLayerSwitcher = function() {
-                scope.rasterBaselayers = [];
                 scope.rasterOverlays = [];
 
                 angular.forEach(scope.layers, function(layer) {
                     var l = angular.isDefined(layer.layers) ? layer.layers.length : -1;
                     if(layer.displayInLayerSwitcher) {
-                        if(layer.isBaseLayer) {
-                            scope.rasterBaselayers.push(layer);
-                        } else {
-                            scope.rasterOverlays.push(layer);
-                        }
+                        scope.rasterOverlays.push(layer);
                     }
                 });
                 loadLayerSwitcherTemplate(scope);
@@ -718,12 +713,35 @@ directive('olMap', function($compile, $http, $templateCache) {
                 }
                 scope.layers = [];
                 scope.mapLayers = [];
+
+                if(angular.isDefined(scope.olmapBinds.backgroundLayer)) {
+                    var imageLayer = new OpenLayers.Layer.Image('Blank',
+                        OpenLayers.ImgPath+'/blank.gif',
+                        scope.olmapBinds.extent,
+                        new OpenLayers.Size(500, 500), {
+                            isBaseLayer: true,
+                            displayInLayerSwitcher: false
+                        }
+                    );
+                    scope.mapLayers.push(imageLayer)
+                    var backgroundLayer = new OpenLayers.Layer.WMS('Background Layer',
+                        scope.olmapBinds.backgroundLayer.url, {
+                            srs: scope.olmapBinds.proj,
+                            transparent: false,
+                            layers: scope.olmapBinds.backgroundLayer.layers
+                        }, {
+                            singleTile: true,
+                            ratio: 1.0
+                        });
+                    scope.rasterBackgroundLayer.push(backgroundLayer);
+                    scope.mapLayers.push(backgroundLayer)
+                }
+
                 angular.forEach(scope.olmapBinds.layers, function(layer) {
                     createLayer(scope.layers, layer, scope.olmapBinds.proj, scope.olmapBinds.url);
                 });
                 scope.map = new OpenLayers.Map(scope.mapId, {
                     projection: scope.olmapBinds.proj,
-                    allOverlays: true,
                     maxExtent: scope.olmapBinds.extent,
                     units: scope.olmapBinds.proj.units,
                     controls: [
@@ -744,7 +762,7 @@ directive('olMap', function($compile, $http, $templateCache) {
                 scope.map.zoomToMaxExtent();
             };
 
-            scope.toggleOverlay = function(layer) {
+            scope.toggleVisibility = function(layer) {
                 layer.setVisibility(!layer.visibility);
             }
 
@@ -763,6 +781,7 @@ directive('olMap', function($compile, $http, $templateCache) {
                 proj: undefined,
                 layers: undefined
             };
+            scope.rasterBackgroundLayer = [];
 
             scope.mapId = 'ol_map_' + scope.$id;
             //setup map element and add to element

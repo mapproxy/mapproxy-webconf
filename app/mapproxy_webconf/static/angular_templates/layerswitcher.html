@@ -2,7 +2,7 @@
     <i class="icon-plus pull-left" ng-show="layer._layers && layer._layers.length > 0 && !layer.expanded" ng-click="layer.expanded=true;"></i>
     <i class="icon-minus pull-left" ng-show="layer._layers && layer._layers.length > 0 && layer.expanded" ng-click="layer.expanded=false;"></i>
     <label for="{{$id}}_{{$index}}">
-        <input type="checkbox" id="{{$id}}_{{$index}}" ng-checked="layer.visibility" ng-click="toggleOverlay(layer)">{{layer.name}}
+        <input type="checkbox" id="{{$id}}_{{$index}}" ng-checked="layer.visibility" ng-click="toggleVisibility(layer)">{{layer.name}}
     </label>
     <span ng-show="layer.expanded">
         <div ng-repeat="layer in layer._layers" style="margin-left:5px" ng-include="'layerItem'"></div>
@@ -11,14 +11,9 @@
 
 <div class="_layerSwitcher pull-right olControlLayerSwitcher">
     <div class="layersDiv" ng-show="layerSwitcherMaximized">
-        <div class="baseLbl" ng-show="rasterBaselayers.length > 0">Raster BaseLayer</div>
-        <div class="baseLayersDiv" ng-show="rasterBaselayers.length > 0">
-            <div ng-repeat="layer in rasterBaselayers" >
-                <label for="rasterBaselayer_{{$index}}">
-                    <input type="radio" id="rasterBaselayer_{{$index}}" name="active" ng-checked="layer.visibility" ng-change="toggleBaselayer(layer)">
-                    {{layer.name}}
-                </label>
-            </div>
+        <div class="baseLbl" ng-show="rasterBackgroundLayer.length > 0">Raster BaseLayer</div>
+        <div class="baseLayersDiv" ng-show="rasterBackgroundLayer.length > 0">
+            <div ng-repeat="layer in rasterBackgroundLayer" ng-include="'layerItem'"></div>
         </div>
         <div class="dataLbl" ng-show="rasterOverlays.length > 0">Raster Overlays</div>
         <div class="dataLayersDiv" ng-show="rasterOverlays.length > 0">

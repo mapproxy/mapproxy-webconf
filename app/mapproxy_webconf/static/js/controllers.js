@@ -38,7 +38,11 @@ function TreeCtrl($scope, localize, WMSSources, MessageService) {
             proj: srs,
             extent: extent,
             layers: wms.data.layer.layers,
-            url: wms.data.url
+            url: wms.data.url,
+            backgroundLayer: {
+                url: 'http://osm.omniscale.net/proxy/service?',
+                layers: ['osm']
+            }
         }
     }
 
