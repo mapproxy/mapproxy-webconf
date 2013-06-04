@@ -214,10 +214,6 @@ def globals(project):
 def services(project):
     return template('services', project=project, language=LANGUAGE)
 
-@app.route('/project/<project>/conf/yaml', name='yaml')
-def yaml_page(project):
-    return template('yaml', project=project)
-
 @app.route('/static/<filepath:path>', name='static')
 def static(filepath):
     return static_file(filepath, root=os.path.join(os.path.dirname(__file__), 'static'))
@@ -225,11 +221,6 @@ def static(filepath):
 @app.route('/i18n/<filename>', name='i18n')
 def i18n(filename):
     return static_file(filename, root=os.path.join(os.path.dirname(__file__), 'static/i18n'))
-
-@app.route('/conf/<project>/yaml', 'GET')
-def write_config(project, storage):
-    mapproxy_conf = config.mapproxy_conf_from_storage(storage, project)
-    return config.write_mapproxy_yaml(mapproxy_conf, os.path.join(configuration.get('app', 'output_path'), project + '.yaml'))
 
 @app.route('/yaml', 'POST', name='json_to_yaml')
 def create_yaml():
