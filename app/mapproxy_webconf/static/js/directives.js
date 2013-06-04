@@ -689,20 +689,22 @@ directive('olMap', function($compile, $http, $templateCache) {
             };
 
             var createLayer = function(list, layer, srs, url) {
-                var newLayer = new OpenLayers.Layer.WMS(layer.title, url, {
-                    srs: srs,
-                    transparent: !layer.opaque,
-                    layers: [layer.name]
-                }, {
-                  singleTile: true,
-                  ratio: 1.0
-                });
-                newLayer._layers = [];
-                angular.forEach(layer.layers, function(layer) {
-                    createLayer(newLayer._layers, layer, srs, url);
-                })
-                list.push(newLayer);
-                scope.mapLayers.push(newLayer)
+                if(layer.name || layer.layers) {
+                    var newLayer = new OpenLayers.Layer.WMS(layer.title, url, {
+                        srs: srs,
+                        transparent: !layer.opaque,
+                        layers: [layer.name]
+                    }, {
+                      singleTile: true,
+                      ratio: 1.0
+                    });
+                    newLayer._layers = [];
+                    angular.forEach(layer.layers, function(layer) {
+                        createLayer(newLayer._layers, layer, srs, url);
+                    })
+                    list.push(newLayer);
+                    scope.mapLayers.push(newLayer)
+                }
             };
 
             var createMap = function() {
