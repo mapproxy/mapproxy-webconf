@@ -163,7 +163,7 @@
           ng-repeat="layer in layer.layers"
           ng-include="'wms_layer_renderer'"
           draggable
-          item-data="{{layer}}"
+          item-data="{{prepareItemData(layer)}}"
           class="wms_layer grp_layer label"></div>
           <!-- wms_layer is required for dropping into droppable -->
   </script>
@@ -187,7 +187,7 @@
           <div
             ng-repeat="layer in wms.data.layer.layers"
             ng-include="'wms_layer_renderer'"
-            draggable item-data="{{layer}}"
+            draggable item-data="{{prepareItemData(layer)}}"
             class="wms_layer">
           </div>
           <!-- wms_layer is required for dropping into droppable -->

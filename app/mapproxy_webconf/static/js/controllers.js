@@ -6,7 +6,17 @@ function TreeCtrl($scope, localize, WMSSources, MessageService) {
         $scope.wms_list = WMSSources.list();
         $scope.wms_urls = WMSSources.allURLs();
     };
-
+    $scope.prepareItemData = function(layer) {
+        var _layers = [];
+        if(layer.name != null) {
+            _layers.push(layer);
+        } else {
+            angular.forEach(layer.layers, function(_layer) {
+                _layers = _layers.concat($scope.prepareItemData(_layer));
+            })
+        }
+        return _layers;
+    };
     $scope.addCapabilities = function() {
         WMSSources.add({data: {url: $scope.capabilities.url}});
     };
@@ -390,7 +400,6 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
-    console.log($scope)
 };
 
 function MapproxyCacheListCtrl($scope, MapproxyCaches, MessageService) {
