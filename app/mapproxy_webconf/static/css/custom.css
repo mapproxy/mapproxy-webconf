@@ -480,7 +480,8 @@ div.blockMsg {
 
 .olControlLayerSwitcher .layersDiv .baseLayersDiv,
 .olControlLayerSwitcher .layersDiv .dataLayersDiv {
-    max-height: 200px;
+    max-height: 250px;
+    max-width: 250px;
     overflow: auto;
 }
 
@@ -489,4 +490,8 @@ div.blockMsg {
     top: 20px;
     right: 5px;
     z-index: 1500;
+}
+
+.toggleLayerSwitcher {
+  position: absolute;
 }

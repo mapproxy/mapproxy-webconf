@@ -9,15 +9,22 @@
     </span>
 </script>
 
-<div class="_layerSwitcher pull-right">
-    <h3 ng-show="rasterBaselayers.length > 0">Raster BaseLayer</h3>
-    <div ng-repeat="layer in rasterBaselayers">
-        <label for="rasterBaselayer_{{$index}}">
-            <input type="radio" id="rasterBaselayer_{{$index}}" name="active" ng-checked="layer.visibility" ng-change="toggleBaselayer(layer)">
-            {{layer.name}}
-        </label>
+<div class="_layerSwitcher pull-right olControlLayerSwitcher">
+    <div class="layersDiv" ng-show="layerSwitcherMaximized">
+        <div class="baseLbl" ng-show="rasterBaselayers.length > 0">Raster BaseLayer</div>
+        <div class="baseLayersDiv" ng-show="rasterBaselayers.length > 0">
+            <div ng-repeat="layer in rasterBaselayers" >
+                <label for="rasterBaselayer_{{$index}}">
+                    <input type="radio" id="rasterBaselayer_{{$index}}" name="active" ng-checked="layer.visibility" ng-change="toggleBaselayer(layer)">
+                    {{layer.name}}
+                </label>
+            </div>
+        </div>
+        <div class="dataLbl" ng-show="rasterOverlays.length > 0">Raster Overlays</div>
+        <div class="dataLayersDiv" ng-show="rasterOverlays.length > 0">
+            <div ng-repeat="layer in rasterOverlays" ng-include="'layerItem'"></div>
+        </div>
     </div>
-    <h3 ng-show="rasterOverlays.length > 0">Raster Overlays</h3>
-    <div style="overflow: scroll; height:400px">
-        <div ng-repeat="layer in rasterOverlays" ng-include="'layerItem'"></div>
+    <div class="toggleLayerSwitcher maximizeDiv olButton" ng-show="!layerSwitcherMaximized"><img id="OpenLayers_Control_MaximizeDiv_innerImage" class="olAlphaImg" style="position: relative;" src="/static/img/layer-switcher-maximize.png" ng-click="layerSwitcherMaximized=true;"></div>
+    <div class="toggleLayerSwitcher minimizeDiv olButton" ng-show="layerSwitcherMaximized"><img id="OpenLayers_Control_MinimizeDiv_innerImage" class="olAlphaImg" style="position: relative;" src="/static/img/layer-switcher-minimize.png" ng-click="layerSwitcherMaximized=false;"></div>
 </div>
