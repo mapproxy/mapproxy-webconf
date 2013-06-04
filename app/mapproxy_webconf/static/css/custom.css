@@ -446,16 +446,6 @@ input.droppable-active, div.droppable-active {
   margin-bottom: 5px;
 }
 
-/* map */
-
-.map-icon-remove {
-    position: absolute;
-    cursor: pointer;
-    top: 5px;
-    right: 5px;
-    z-index: 1500;
-}
-
 div.blockOverlay {
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
@@ -472,6 +462,16 @@ div.blockMsg {
 
 .clear {
     clear: both;
+}
+
+/* map */
+
+.map-icon-remove {
+    position: absolute;
+    cursor: pointer;
+    top: 5px;
+    right: 5px;
+    z-index: 1500;
 }
 
 .olControlLayerSwitcher {
