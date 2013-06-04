@@ -683,9 +683,7 @@ directive('olMap', function($compile, $http, $templateCache) {
                         }
                     }
                 });
-                var layerSwitcherElement = loadLayerSwitcherTemplate(scope);
-
-                $(scope.map.div).find('.olMapViewport').append(layerSwitcherElement);
+                loadLayerSwitcherTemplate(scope);
             };
 
             var createLayer = function(list, layer, srs, url) {
