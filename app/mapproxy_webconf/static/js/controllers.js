@@ -7,14 +7,13 @@ function TreeCtrl($scope, localize, WMSSources, MessageService) {
         $scope.wms_urls = WMSSources.allURLs();
     };
     $scope.prepareItemData = function(layer) {
-        var _layers = [];
         if(layer.name != null) {
-            _layers.push(layer);
-        } else {
-            angular.forEach(layer.layers, function(_layer) {
-                _layers = _layers.concat($scope.prepareItemData(_layer));
-            })
+            return [layer]
         }
+        var _layers = [];
+        angular.forEach(layer.layers, function(_layer) {
+            _layers = _layers.concat($scope.prepareItemData(_layer));
+        })
         return _layers;
     };
     $scope.addCapabilities = function() {
