@@ -11,8 +11,8 @@
 
 <script type="text/ng-template" id="input_label">
     <div class="control-group" ng-class="{'error': invalid}">
+        <label class="control-label" for="{{name}}">{{getText()}}:</label>
         <div class="controls">
-            <label class="control-label" for="{{name}}">{{getText()}}:</label>
             <span ng-transclude></span>
             <span ng-show="showWarning()" id="tooltip_{{$id}}" class="icon-warning-sign warning_icon"></span>
         </div>
