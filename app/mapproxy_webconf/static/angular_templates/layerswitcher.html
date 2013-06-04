@@ -1,8 +1,12 @@
 <script type="text/ng-template" id="layerItem">
+    <i class="icon-plus pull-left" ng-show="layer.layers && layer.layers.length > 0 && !layer.expanded" ng-click="layer.expanded=true;"></i>
+    <i class="icon-minus pull-left" ng-show="layer.layers && layer.layers.length > 0 && layer.expanded" ng-click="layer.expanded=false;"></i>
     <label for="{{$id}}_{{$index}}">
         <input type="checkbox" id="{{$id}}_{{$index}}" ng-checked="layer.visibility" ng-click="toggleOverlay(layer)">{{layer.name}}
     </label>
-    <div ng-repeat="layer in layer.layers" style="margin-left:5px" ng-include="'layerItem'"></div>
+    <span ng-show="layer.expanded">
+        <div ng-repeat="layer in layer.layers" style="margin-left:5px" ng-include="'layerItem'"></div>
+    </span>
 </script>
 
 <div class="_layerSwitcher pull-right">
