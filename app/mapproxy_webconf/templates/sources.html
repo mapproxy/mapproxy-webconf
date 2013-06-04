@@ -156,17 +156,24 @@
 <div ng-controller="TreeCtrl">
   <h3>{{'Available WMS'|i18n}}</h3>
   <script type="text/ng-template"  id="wms_layer_renderer">
+
       <div ng-click="show_infos(layer)" class="label droppable_name">
-          {{layer.title}} – <span ng-show="layer.name">{{layer.name}}</span>
+        <i class="icon-plus pull-left" ng-show="layer.layers && layer.layers.length > 0 && !layer.expanded" ng-click="layer.expanded=true;"></i>
+        <i class="icon-minus pull-left" ng-show="layer.layers && layer.layers.length > 0 && layer.expanded" ng-click="layer.expanded=false;"></i>
+        {{layer.title}} – <span ng-show="layer.name">{{layer.name}}</span>
       </div>
-      <div
-          ng-repeat="layer in layer.layers"
-          ng-include="'wms_layer_renderer'"
-          draggable
-          item-data="{{prepareItemData(layer)}}"
-          ng-show="layer.name || layer.layers"
-          class="wms_layer grp_layer"></div>
-          <!-- wms_layer is required for dropping into droppable -->
+      <span ng-show="layer.expanded">
+        <div
+            ng-repeat="layer in layer.layers"
+            ng-include="'wms_layer_renderer'"
+            draggable
+            item-data="{{prepareItemData(layer)}}"
+            ng-show="(layer.name || layer.layers)"
+            ng-class="{'grp_layer': layer.layers}"
+            class="wms_layer">
+        </div>
+        <!-- wms_layer is required for dropping into droppable -->
+      </span>
   </script>
   <div toggle-group mode='hideOther' class="accordion">
     <div ng-repeat="wms in wms_list" class="wms accordion-group">
@@ -190,6 +197,7 @@
             ng-include="'wms_layer_renderer'"
             draggable item-data="{{prepareItemData(layer)}}"
             ng-show="layer.name || layer.layers"
+            ng-class="{'grp_layer': layer.layers}"
             class="wms_layer">
           </div>
           <!-- wms_layer is required for dropping into droppable -->
