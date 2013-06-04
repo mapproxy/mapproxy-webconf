@@ -673,7 +673,7 @@ directive('olMap', function($compile, $http, $templateCache) {
                 scope.rasterBaselayers = [];
                 scope.rasterOverlays = [];
 
-                angular.forEach(scope.olmapBinds.layers, function(layer) {
+                angular.forEach(scope.layers, function(layer) {
                     var l = angular.isDefined(layer.layers) ? layer.layers.length : -1;
                     if(layer.displayInLayerSwitcher) {
                         if(layer.isBaseLayer) {
@@ -686,7 +686,23 @@ directive('olMap', function($compile, $http, $templateCache) {
                 var layerSwitcherElement = loadLayerSwitcherTemplate(scope);
 
                 $(scope.map.div).find('.olMapViewport').append(layerSwitcherElement);
+            };
 
+            var createLayer = function(list, layer, srs, url) {
+                var newLayer = new OpenLayers.Layer.WMS(layer.title, url, {
+                    srs: srs,
+                    transparent: !layer.opaque,
+                    layers: [layer.name]
+                }, {
+                  singleTile: true,
+                  ratio: 1.0
+                });
+                newLayer._layers = [];
+                angular.forEach(layer.layers, function(layer) {
+                    createLayer(newLayer._layers, layer, srs, url);
+                })
+                list.push(newLayer);
+                scope.mapLayers.push(newLayer)
             };
 
             var createMap = function() {
@@ -700,6 +716,11 @@ directive('olMap', function($compile, $http, $templateCache) {
                 if(!(scope.olmapBinds.extent instanceof OpenLayers.Bounds)) {
                     scope.olmapBinds.extent = new OpenLayers.Bounds(scope.olmapBinds.extent).transform(new OpenLayers.Projection('EPSG:4326'), scope.olmapBinds.proj);
                 }
+                scope.layers = [];
+                scope.mapLayers = [];
+                angular.forEach(scope.olmapBinds.layers, function(layer) {
+                    createLayer(scope.layers, layer, scope.olmapBinds.proj, scope.olmapBinds.url);
+                });
                 scope.map = new OpenLayers.Map(scope.mapId, {
                     projection: scope.olmapBinds.proj,
                     allOverlays: true,
@@ -715,7 +736,7 @@ directive('olMap', function($compile, $http, $templateCache) {
                         }),
                         new OpenLayers.Control.PanZoomBar({autoActivate: true})
                     ],
-                    layers: scope.olmapBinds.layers
+                    layers: scope.mapLayers
                 });
                 if(attrs.mapLayerSwitcher) {
                     prepareLayerSwitcher(scope.map);

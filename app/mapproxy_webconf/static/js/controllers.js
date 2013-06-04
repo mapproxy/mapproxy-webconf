@@ -6,21 +6,7 @@ function TreeCtrl($scope, localize, WMSSources, MessageService) {
         $scope.wms_list = WMSSources.list();
         $scope.wms_urls = WMSSources.allURLs();
     };
-    var createLayer = function(list, layer, srs, url) {
-        console.log(list)
-        var newLayer = new OpenLayers.Layer.WMS(layer.title, url, {
-            srs: srs,
-            transparent: !layer.opaque
-        }, {
-          singleTile: true,
-          ratio: 1.0
-        });
-        newLayer.layers = [];
-        angular.forEach(layer.layers, function(layer) {
-            createLayer(newLayer.layers, layer, srs, url);
-        })
-        list.push(newLayer);
-    };
+
     $scope.prepareLayer = function(layer, sourceURL) {
         if(!layer.name) {
             angular.forEach(layer.layers, function(layer) {
@@ -43,18 +29,16 @@ function TreeCtrl($scope, localize, WMSSources, MessageService) {
     };
     $scope.showMap = function(event, wms) {
         event.stopPropagation();
-        var layers = [];
         var srs = ($.inArray('EPSG:4326', wms.data.layer.srs) != -1 || $.inArray('epsg:4326', wms.data.layer.srs) != -1) ?
             'EPSG:4326' : wms.data.layer.srs[0];
         var extent = wms.data.layer.llbbox;
-        angular.forEach(wms.data.layer.layers, function(layer) {
-            createLayer(layers, layer, srs, wms.data.url);
-        });
+
         $scope.olmapBinds = {
             visible: true,
             proj: srs,
             extent: extent,
-            layers: layers
+            layers: wms.data.layer.layers,
+            url: wms.data.url
         }
     }
 
@@ -407,7 +391,6 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
     });
-    console.log($scope)
 };
 
 function MapproxyCacheListCtrl($scope, MapproxyCaches, MessageService) {
