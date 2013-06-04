@@ -6,16 +6,7 @@ function TreeCtrl($scope, localize, WMSSources, MessageService) {
         $scope.wms_list = WMSSources.list();
         $scope.wms_urls = WMSSources.allURLs();
     };
-    $scope.prepareLayer = function(layer, sourceURL) {
-        if(!layer.name) {
-            $.each(layer.layers, function(idx, layer) {
-                layer.sourceURL = sourceURL;
-            });
-            return layer.layers;
-        }
-        layer.sourceURL = sourceURL;
-        return layer;
-    };
+
     $scope.addCapabilities = function() {
         WMSSources.add({data: {url: $scope.capabilities.url}});
     };

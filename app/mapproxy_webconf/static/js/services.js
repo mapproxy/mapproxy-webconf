@@ -232,6 +232,27 @@ WMSSourceService = function(_section) {
     MapproxyBaseService.call(this, _section);
     var _this = this;
 
+    this._addSourceURL = function(layer, sourceURL) {
+        layer.sourceURL = sourceURL;
+        if(angular.isDefined(layer.layers)) {
+            angular.forEach(layer.layers, function(layer) {
+                _this._addSourceURL(layer, sourceURL);
+            });
+        }
+    };
+    this.list = function() {
+        var result = [];
+        angular.forEach(_this._items, function(item) {
+            var sourceURL = item.data.url;
+            angular.forEach(item.data.layer.layers, function(layer) {
+                _this._addSourceURL(layer, sourceURL)
+            });
+        });
+        for(var key in _this._items) {
+            result.push(_this._items[key]);
+        }
+        return result;
+    };
     this._identifySource = function(url) {
         var source = false;
         angular.forEach(_this._items, function(_source) {
@@ -294,8 +315,9 @@ WMSSourceService = function(_section) {
             result.push(wms.url);
         });
         return result;
-    }
+    };
 
+    this.return_dict['list'] = _this.list;
     this.return_dict['layerTitle'] = _this.layerTitle;
     this.return_dict['refresh'] = _this.refresh;
     this.return_dict['allURLs'] = _this.allURLs;
