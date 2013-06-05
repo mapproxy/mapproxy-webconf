@@ -37,12 +37,8 @@ function TreeCtrl($scope, localize, WMSSources, MessageService) {
             visible: true,
             proj: srs,
             extent: extent,
-            layers: wms.data.layer.layers,
-            url: wms.data.url,
-            backgroundLayer: {
-                url: 'http://osm.omniscale.net/proxy/service?',
-                layers: ['osm']
-            }
+            layers: {'wms': wms.data.layer.layers},
+            url: wms.data.url
         }
     }
 
@@ -289,6 +285,36 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
             }
         }
     };
+    $scope.showCoverageInMap = function(event) {
+        if(angular.isDefined(event)) {
+            event.stopPropagation();
+        }
+        var bbox = $scope.source.data.coverage.bbox;
+        if(angular.isString(bbox)) {
+            bbox = bbox.split(',');
+            angular.forEach(bbox, function(value, idx) {
+                bbox[idx] = parseFloat(value);
+            });
+        }
+        var srs = $scope.source.data.coverage.srs || 'EPSG:4326';
+
+        $scope.olmapBinds = {
+            visible: true,
+            extent: bbox,
+            proj: srs,
+            layers: {'vector': [{
+                'name': 'Coverage',
+                'geometries': [{
+                    'type': 'bbox',
+                    'coordinates': bbox
+                }]
+            }]},
+            backgroundLayer: {
+                url: 'http://osm.omniscale.net/proxy/service?',
+                layers: ['osm']
+            }
+        }
+    }
     $scope.resetForm = function(event) {
         if(!angular.isUndefined(event)) {
             event.preventDefault();

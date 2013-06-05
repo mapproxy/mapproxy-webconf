@@ -604,5 +604,9 @@
     {
         "key": "max_res_scale",
         "value": "Maximale Auflösung (als Maßstab)"
+    },
+    {
+        "key": "Show coverage in map",
+        "value": "Coverage in Karte anzeigen"
     }
 ]
