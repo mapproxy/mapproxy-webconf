@@ -673,7 +673,6 @@ directive('olMap', function($compile, $http, $templateCache) {
                 scope.rasterOverlays = [];
 
                 angular.forEach(scope.layers, function(layer) {
-                    var l = angular.isDefined(layer.layers) ? layer.layers.length : -1;
                     if(layer.displayInLayerSwitcher) {
                         scope.rasterOverlays.push(layer);
                     }
@@ -681,7 +680,7 @@ directive('olMap', function($compile, $http, $templateCache) {
                 loadLayerSwitcherTemplate(scope);
             };
 
-            var createLayer = function(list, layer, srs, url) {
+            var createWMSLayer = function(list, layer, srs, url) {
                 if(layer.name || layer.layers) {
                     var newLayer = new OpenLayers.Layer.WMS(layer.title, url, {
                         srs: srs,
@@ -693,12 +692,33 @@ directive('olMap', function($compile, $http, $templateCache) {
                     });
                     newLayer._layers = [];
                     angular.forEach(layer.layers, function(layer) {
-                        createLayer(newLayer._layers, layer, srs, url);
+                        createWMSLayer(newLayer._layers, layer, srs, url);
                     })
                     list.push(newLayer);
                     scope.mapLayers.push(newLayer)
                 }
             };
+
+            var createVectorLayer = function(list, layer) {
+                var newLayer = new OpenLayers.Layer.Vector(layer.name);
+
+                if(angular.isDefined(layer.geometries)) {
+                    angular.forEach(layer.geometries, function(geometry) {
+                        switch(geometry.type) {
+                            case 'bbox':
+                                var bbox = new OpenLayers.Bounds(geometry.coordinates);
+                                var feature = new OpenLayers.Feature.Vector(bbox.toGeometry());
+                                newLayer.addFeatures([feature]);
+                                break;
+                        }
+                    })
+                }
+                if(angular.isUndefined(scope.olmapBinds.extent)) {
+                    scope.olmapBinds.extent = newLayer.getDataExtent();
+                }
+                list.push(newLayer);
+                scope.mapLayers.push(newLayer);
+            }
 
             var createMap = function() {
                 if(scope.map instanceof OpenLayers.Map) {
@@ -731,15 +751,23 @@ directive('olMap', function($compile, $http, $templateCache) {
                             layers: scope.olmapBinds.backgroundLayer.layers
                         }, {
                             singleTile: true,
-                            ratio: 1.0
+                            ratio: 1.0,
+                            visibility: true
                         });
                     scope.rasterBackgroundLayer.push(backgroundLayer);
                     scope.mapLayers.push(backgroundLayer)
                 }
 
-                angular.forEach(scope.olmapBinds.layers, function(layer) {
-                    createLayer(scope.layers, layer, scope.olmapBinds.proj, scope.olmapBinds.url);
-                });
+                if(angular.isDefined(scope.olmapBinds.layers.wms)) {
+                    angular.forEach(scope.olmapBinds.layers.wms, function(layer) {
+                        createWMSLayer(scope.layers, layer, scope.olmapBinds.proj, scope.olmapBinds.url);
+                    });
+                }
+                if(angular.isDefined(scope.olmapBinds.layers.vector)) {
+                    angular.forEach(scope.olmapBinds.layers.vector, function(layer) {
+                        createVectorLayer(scope.layers, layer);
+                    });
+                }
                 scope.map = new OpenLayers.Map(scope.mapId, {
                     projection: scope.olmapBinds.proj,
                     maxExtent: scope.olmapBinds.extent,
@@ -771,6 +799,11 @@ directive('olMap', function($compile, $http, $templateCache) {
                     scope.map.destroy();
                     delete scope.map;
                 }
+                scope.layerSwitcherMaximized = false;
+                scope.mapLayers = [];
+                scope.layers = [];
+                scope.rasterBackgroundLayer = [];
+                scope.rasterOverlays = [];
                 $.unblockUI();
                 scope.olmapBinds.visible = false;
             };
