@@ -606,7 +606,7 @@
         "value": "Maximale Auflösung (als Maßstab)"
     },
     {
-        "key": "This is required",
+        "key": "This field is required",
         "value": "Dieses Feld wird benötigt"
     },
     {
