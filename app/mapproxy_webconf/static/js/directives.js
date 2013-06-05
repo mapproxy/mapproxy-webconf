@@ -729,7 +729,7 @@ directive('olMap', function($compile, $http, $templateCache) {
                     scope.olmapBinds.proj = new OpenLayers.Projection(scope.olmapBinds.proj);
                 }
                 if(!(scope.olmapBinds.extent instanceof OpenLayers.Bounds)) {
-                    scope.olmapBinds.extent = new OpenLayers.Bounds(scope.olmapBinds.extent).transform(new OpenLayers.Projection('EPSG:4326'), scope.olmapBinds.proj);
+                    scope.olmapBinds.extent = new OpenLayers.Bounds(scope.olmapBinds.extent || [-180, -90, 180, 90]).transform(new OpenLayers.Projection('EPSG:4326'), scope.olmapBinds.proj);
                 }
                 scope.layers = [];
                 scope.mapLayers = [];
