@@ -6,6 +6,7 @@ from xml.etree.ElementTree import ParseError
 
 from mapproxy.client import http
 from mapproxy.script.scales import scale_to_res, res_to_scale
+from mapproxy.srs import SRS
 
 from . import bottle
 from . import config
@@ -255,6 +256,20 @@ def convert_res_scales():
     for i, d in enumerate(data):
         result.append(round(convert(d, dpi, units),9) if d else None)
     return {'result': result}
+
+@app.route('/transform_bbox', 'POST', name='transform_bbox')
+def transform_bbox():
+    bbox = request.json.get('bbox')
+    source_srs = request.json.get('sourceSRS')
+    dest_srs = request.json.get('destSRS')
+
+    source = SRS(source_srs)
+    dest = SRS(dest_srs)
+    transformed_bbox = source.transform_bbox_to(dest, bbox)
+
+    return {'result': transformed_bbox}
+
+
 
 def init_app(storage_dir):
     app.install(storage.SQLiteStorePlugin(os.path.join(configuration.get('app', 'storage_path'), configuration.get('app', 'sqlite_db'))))

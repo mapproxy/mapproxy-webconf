@@ -647,7 +647,7 @@ directive('tooltip', function() {
     }
 }).
 
-directive('olMap', function($compile, $http, $templateCache) {
+directive('olMap', function($compile, $http, $templateCache, $rootScope) {
     return {
         restrict: 'A',
         scope: {
@@ -798,18 +798,34 @@ directive('olMap', function($compile, $http, $templateCache) {
                 }
                 list.push(newLayer);
                 scope.mapLayers.push(newLayer);
+            };
+
+            var prepareMapParameters = function() {
+                if(!(scope.olmapBinds.proj instanceof OpenLayers.Projection)) {
+                    scope.olmapBinds.proj = new OpenLayers.Projection(scope.olmapBinds.proj);
+                }
+
+                if(angular.isUndefined(scope.olmapBinds.extent) && scope.olmapBinds.proj.getCode() != 'EPSG:4326') {
+                    $http.post($rootScope.TRANSFORM_BBOX_URL, {
+                        "bbox": [-180, -90, 180, 90],
+                        "sourceSRS": "EPSG:4326",
+                        "destSRS": scope.olmapBinds.proj.getCode()
+                    }).success(function(response) {
+                        scope.olmapBinds.extent = new OpenLayers.Bounds(response.result);
+                        createMap();
+                    });
+                } else {
+                    if(!(scope.olmapBinds.extent instanceof OpenLayers.Bounds)) {
+                        scope.olmapBinds.extent = new OpenLayers.Bounds(scope.olmapBinds.extent || [-180, -90, 180, 90]);
+                    }
+                    createMap();
+                }
             }
 
             var createMap = function() {
                 if(scope.map instanceof OpenLayers.Map) {
                     scope.map.destroy();
                     delete scope.map;
-                }
-                if(!(scope.olmapBinds.proj instanceof OpenLayers.Projection)) {
-                    scope.olmapBinds.proj = new OpenLayers.Projection(scope.olmapBinds.proj);
-                }
-                if(!(scope.olmapBinds.extent instanceof OpenLayers.Bounds)) {
-                    scope.olmapBinds.extent = new OpenLayers.Bounds(scope.olmapBinds.extent || [-180, -90, 180, 90]).transform(new OpenLayers.Projection('EPSG:4326'), scope.olmapBinds.proj);
                 }
                 scope.layers = [];
                 scope.mapLayers = [];
@@ -925,7 +941,7 @@ directive('olMap', function($compile, $http, $templateCache) {
 
             scope.$watch('olmapBinds.visible', function(visible) {
                 if(visible) {
-                    createMap();
+                    prepareMapParameters();
                     $.blockUI({
                         message: $(element),
                         css: {
