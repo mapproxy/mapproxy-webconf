@@ -1325,8 +1325,10 @@ function ProjectDefaultsCtrl($scope, ProjectDefaults, MessageService) {
         if(angular.isDefined(event)) {
             event.preventDefault();
         }
-        $scope.defaults.data.srs.push($scope.custom.newSRS);
-        $scope.custom.newSRS = undefined;
+        if($.inArray($scope.custom.newSRS, $scope.defaults.data.srs) === -1) {
+            $scope.defaults.data.srs.push($scope.custom.newSRS);
+            $scope.custom.newSRS = undefined;
+        }
     };
     $scope.removeSRS = function(event, srs) {
         var srsID = $.inArray(srs, $scope.defaults.data.srs);
