@@ -747,12 +747,12 @@ directive('olMap', function($compile, $http, $templateCache) {
                     var backgroundLayer = new OpenLayers.Layer.WMS('Background Layer',
                         scope.olmapBinds.backgroundLayer.url, {
                             srs: scope.olmapBinds.proj,
-                            transparent: false,
                             layers: scope.olmapBinds.backgroundLayer.layers
                         }, {
                             singleTile: true,
                             ratio: 1.0,
-                            visibility: true
+                            visibility: true,
+                            isBaseLayer: false
                         });
                     scope.rasterBackgroundLayer.push(backgroundLayer);
                     scope.mapLayers.push(backgroundLayer)
