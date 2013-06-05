@@ -655,6 +655,85 @@ directive('olMap', function($compile, $http, $templateCache) {
         },
         transclude: true,
         link: function(scope, element, attrs) {
+            //Default OpenLayers vector style
+            //OpenLayers.Feature.Vector.style
+            var default_vector_styling = {
+                'default': {
+                    fillColor: "red",
+                    fillOpacity: 0.4,
+                    hoverFillColor: "white",
+                    hoverFillOpacity: 0.8,
+                    strokeColor: "#ee9900",
+                    strokeOpacity: 1,
+                    strokeWidth: 1,
+                    strokeLinecap: "round",
+                    strokeDashstyle: "solid",
+                    hoverStrokeColor: "red",
+                    hoverStrokeOpacity: 1,
+                    hoverStrokeWidth: 0.2,
+                    pointRadius: 6,
+                    hoverPointRadius: 1,
+                    hoverPointUnit: "%",
+                    pointerEvents: "visiblePainted",
+                    cursor: "inherit",
+                    fontColor: "#000000",
+                    labelAlign: "cm",
+                    labelOutlineColor: "white",
+                    labelOutlineWidth: 3
+                },
+                'select': {
+                    fillColor: "blue",
+                    fillOpacity: 0.4,
+                    hoverFillColor: "white",
+                    hoverFillOpacity: 0.8,
+                    strokeColor: "blue",
+                    strokeOpacity: 1,
+                    strokeWidth: 2,
+                    strokeLinecap: "round",
+                    strokeDashstyle: "solid",
+                    hoverStrokeColor: "red",
+                    hoverStrokeOpacity: 1,
+                    hoverStrokeWidth: 0.2,
+                    pointRadius: 6,
+                    hoverPointRadius: 1,
+                    hoverPointUnit: "%",
+                    pointerEvents: "visiblePainted",
+                    cursor: "pointer",
+                    fontColor: "#000000",
+                    labelAlign: "cm",
+                    labelOutlineColor: "white",
+                    labelOutlineWidth: 3
+
+                },
+                'temporary': {
+                    fillColor: "#66cccc",
+                    fillOpacity: 0.2,
+                    hoverFillColor: "white",
+                    hoverFillOpacity: 0.8,
+                    strokeColor: "#66cccc",
+                    strokeOpacity: 1,
+                    strokeLinecap: "round",
+                    strokeWidth: 2,
+                    strokeDashstyle: "solid",
+                    hoverStrokeColor: "red",
+                    hoverStrokeOpacity: 1,
+                    hoverStrokeWidth: 0.2,
+                    pointRadius: 6,
+                    hoverPointRadius: 1,
+                    hoverPointUnit: "%",
+                    pointerEvents: "visiblePainted",
+                    cursor: "inherit",
+                    fontColor: "#000000",
+                    labelAlign: "cm",
+                    labelOutlineColor: "white",
+                    labelOutlineWidth: 3
+
+                },
+                'delete': {
+                    display: "none"
+                }
+            };
+
             var loadLayerSwitcherTemplate = function() {
                 var layerSwitcherTemplate = $templateCache.get("layerswitcher_template");
                 if(angular.isUndefined(layerSwitcherTemplate)) {
@@ -701,7 +780,8 @@ directive('olMap', function($compile, $http, $templateCache) {
 
             var createVectorLayer = function(list, layer) {
                 var newLayer = new OpenLayers.Layer.Vector(layer.name);
-
+                var style = $.extend({}, default_vector_styling, layer.style);
+                newLayer.styleMap = new OpenLayers.StyleMap(style);
                 if(angular.isDefined(layer.geometries)) {
                     angular.forEach(layer.geometries, function(geometry) {
                         switch(geometry.type) {
