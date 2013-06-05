@@ -713,8 +713,8 @@ directive('olMap', function($compile, $http, $templateCache) {
                         }
                     })
                 }
-                if(angular.isUndefined(scope.olmapBinds.extent)) {
-                    scope.olmapBinds.extent = newLayer.getDataExtent();
+                if(layer.zoomToDataExtent) {
+                    scope.dataExtent = newLayer.getDataExtent();
                 }
                 list.push(newLayer);
                 scope.mapLayers.push(newLayer);
@@ -787,7 +787,11 @@ directive('olMap', function($compile, $http, $templateCache) {
                 if(attrs.mapLayerSwitcher) {
                     prepareLayerSwitcher(scope.map);
                 }
-                scope.map.zoomToMaxExtent();
+                if(angular.isDefined(scope.dataExtent)) {
+                    scope.map.zoomToExtent(scope.dataExtent)
+                } else {
+                    scope.map.zoomToMaxExtent();
+                }
             };
 
             scope.toggleVisibility = function(layer) {
@@ -800,6 +804,7 @@ directive('olMap', function($compile, $http, $templateCache) {
                     delete scope.map;
                 }
                 scope.layerSwitcherMaximized = false;
+                scope.dataExtent = undefined;
                 scope.mapLayers = [];
                 scope.layers = [];
                 scope.rasterBackgroundLayer = [];

@@ -300,10 +300,10 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
 
         $scope.olmapBinds = {
             visible: true,
-            extent: bbox,
             proj: srs,
             layers: {'vector': [{
                 'name': 'Coverage',
+                'zoomToDataExtent': true,
                 'geometries': [{
                     'type': 'bbox',
                     'coordinates': bbox
