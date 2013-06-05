@@ -206,6 +206,8 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
         }
     };
     $scope.checkURL = function(callback, new_data) {
+        //if add grouped layers, all layer have the same url, so only the first one must be checked
+        new_data = new_data[0]
         var addLayer = false;
         var urlReplaceAsk = false;
         if(angular.isUndefined($scope.source.data.req.url)) {
