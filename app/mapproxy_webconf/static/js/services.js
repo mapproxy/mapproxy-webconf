@@ -262,23 +262,27 @@ WMSSourceService = function(_section) {
         });
         return source;
     };
-    this._identifyLayer = function(url, layerName) {
+    this._identifyLayer = function(layers, layerName) {
         var layer = false;
-        var source = _this._identifySource(url);
-        if(source) {
-            angular.forEach(source.data.layer.layers, function(_layer) {
+        angular.forEach(layers, function(_layer) {
+            if(!layer) {
                 if(_layer.name == layerName) {
                     layer = _layer;
+                } else if(angular.isDefined(_layer.layers)) {
+                    layer = _this._identifyLayer(_layer.layers, layerName);
                 }
-            });
-        }
+            }
+        });
         return layer;
     };
 
     this.layerTitle = function(url, layerName) {
-        var layer = _this._identifyLayer(url, layerName);
-        if(layer) {
-            return layer.title;
+        var source = _this._identifySource(url);
+        if(source) {
+            var layer = _this._identifyLayer(source.data.layer.layers, layerName);
+            if(layer) {
+                return layer.title;
+            }
         }
         return false;
     };
