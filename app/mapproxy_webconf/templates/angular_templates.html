@@ -1,8 +1,17 @@
+<script type="text/ng-template" id="error_messages">
+    <div ng-show="!angularElement.$pristine && angularElement.$error.required">{{'This field is required'|i18n}}</div>
+    <div ng-show="!angularElement.$pristine && angularElement.$error.url">{{'Invalid URL'|i18n}}</div>
+    <div ng-show="!angularElement.$pristine && angularElement.$error.number">{{'Invalid number'|i18n}}</div>
+    <div ng-show="!angularElement.$pristine && angularElement.$error.float">{{'Invalid float'|i18n}}</div>
+    <div ng-show="!angularElement.$pristine && angularElement.$error.integer">{{'Invalid integer'|i18n}}</div>
+</script>
+
 <script type="text/ng-template" id="checkbox_label">
     <div class="control-group" ng-class="{'error': invalid}">
         <div class="controls">
             <label class="control-label" for="{{name}}">
                 <span ng-transclude></span> {{getText()}}
+                <span ng-include="'error_messages'" class="text-error"></span>
             </label>
             <span ng-show="showWarning()" id="tooltip_{{$id}}" class="icon-warning-sign warning_icon"></span>
         </div>
@@ -15,6 +24,7 @@
         <div class="controls">
             <span ng-transclude></span>
             <span ng-show="showWarning()" id="tooltip_{{$id}}" class="icon-warning-sign warning_icon"></span>
+            <span ng-include="'error_messages'" class="text-error"></span>
         </div>
     </div>
 </script>

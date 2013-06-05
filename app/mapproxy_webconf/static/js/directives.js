@@ -415,6 +415,11 @@ directive('labeled', function($parse, $templateCache, localize) {
 
             scope.formName = attrs.formName || 'form';
 
+            //form element object
+            if($.inArray(scope.name, Object.keys(scope[scope.formName])) != -1) {
+                scope.angularElement = scope[scope.formName][scope.name];
+            }
+
             if(angular.isDefined(attrs.$attr.warning)) {
                 scope.warning_msg = attrs.warningMsg;
                 attrs.$observe('warning', function(val) {

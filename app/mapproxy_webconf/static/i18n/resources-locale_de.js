@@ -604,5 +604,25 @@
     {
         "key": "max_res_scale",
         "value": "Maximale Auflösung (als Maßstab)"
+    },
+    {
+        "key": "This is required",
+        "value": "Dieses Feld wird benötigt"
+    },
+    {
+        "key": "Invalid URL",
+        "value": "Ungültige URL"
+    },
+    {
+        "key": "Invalid number",
+        "value": "Keine gültige Zahl"
+    },
+    {
+        "key": "Invalid float",
+        "value": "Keine gültige Gleitkommazahl"
+    },
+    {
+        "key": "Invalid integer",
+        "value": "Keine gültige Ganzzahl"
     }
 ]
