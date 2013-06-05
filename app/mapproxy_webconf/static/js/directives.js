@@ -659,7 +659,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope) {
             //OpenLayers.Feature.Vector.style
             var default_vector_styling = {
                 'default': {
-                    fillColor: "red",
+                    fillColor: "#ee9900",
                     fillOpacity: 0.4,
                     hoverFillColor: "white",
                     hoverFillOpacity: 0.8,
