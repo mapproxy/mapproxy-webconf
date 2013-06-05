@@ -301,17 +301,20 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
         $scope.olmapBinds = {
             visible: true,
             proj: srs,
-            layers: {'vector': [{
-                'name': 'Coverage',
-                'zoomToDataExtent': true,
-                'geometries': [{
-                    'type': 'bbox',
-                    'coordinates': bbox
+            layers: {
+                'vector': [{
+                    'name': 'Coverage',
+                    'zoomToDataExtent': true,
+                    'geometries': [{
+                        'type': 'bbox',
+                        'coordinates': bbox
+                    }]
+                }],
+                'background': [{
+                    title: 'BackgroundLayer',
+                    url: 'http://osm.omniscale.net/proxy/service?',
+                    name: 'osm'
                 }]
-            }]},
-            backgroundLayer: {
-                url: 'http://osm.omniscale.net/proxy/service?',
-                layers: ['osm']
             }
         }
     }
