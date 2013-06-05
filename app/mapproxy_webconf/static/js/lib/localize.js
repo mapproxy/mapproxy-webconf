@@ -14,7 +14,7 @@ angular.module('localization', [])
     .factory('localize', ['$http', '$rootScope', '$window', '$filter', function ($http, $rootScope, $window, $filter) {
         var localize = {
             // use the $window service to get the language of the user's browser
-            language: app.LANGUAGE,
+            language: $rootScope.LANGUAGE,
             // array to hold the localized resource string entries
             dictionary:[],
             // flag to indicate if the service hs loaded the resource file
