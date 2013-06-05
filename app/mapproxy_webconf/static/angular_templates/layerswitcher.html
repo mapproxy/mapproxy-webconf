@@ -9,7 +9,11 @@
     </span>
 </script>
 
-<div class="_layerSwitcher pull-right olControlLayerSwitcher">
+<div
+    class="_layerSwitcher pull-right olControlLayerSwitcher"
+    ng-mousedown="$event.stopPropagation();"
+    ng-click="$event.stopPropagation();"
+    ng-dblclick="$event.stopPropagation();">
     <div class="layersDiv" ng-show="layerSwitcherMaximized">
         <div class="baseLbl" ng-show="rasterBackgroundLayer.length > 0">Raster BaseLayer</div>
         <div class="baseLayersDiv" ng-show="rasterBackgroundLayer.length > 0">
