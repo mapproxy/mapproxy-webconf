@@ -734,40 +734,6 @@ directive('olMap', function($compile, $http, $templateCache) {
                 scope.layers = [];
                 scope.mapLayers = [];
 
-                if(angular.isDefined(scope.olmapBinds.backgroundLayer)) {
-                    var imageLayer = new OpenLayers.Layer.Image('Blank',
-                        OpenLayers.ImgPath+'/blank.gif',
-                        scope.olmapBinds.extent,
-                        new OpenLayers.Size(500, 500), {
-                            isBaseLayer: true,
-                            displayInLayerSwitcher: false
-                        }
-                    );
-                    scope.mapLayers.push(imageLayer)
-                    var backgroundLayer = new OpenLayers.Layer.WMS('Background Layer',
-                        scope.olmapBinds.backgroundLayer.url, {
-                            srs: scope.olmapBinds.proj,
-                            layers: scope.olmapBinds.backgroundLayer.layers
-                        }, {
-                            singleTile: true,
-                            ratio: 1.0,
-                            visibility: true,
-                            isBaseLayer: false
-                        });
-                    scope.rasterBackgroundLayer.push(backgroundLayer);
-                    scope.mapLayers.push(backgroundLayer)
-                }
-
-                if(angular.isDefined(scope.olmapBinds.layers.wms)) {
-                    angular.forEach(scope.olmapBinds.layers.wms, function(layer) {
-                        createWMSLayer(scope.layers, layer, scope.olmapBinds.proj, scope.olmapBinds.url);
-                    });
-                }
-                if(angular.isDefined(scope.olmapBinds.layers.vector)) {
-                    angular.forEach(scope.olmapBinds.layers.vector, function(layer) {
-                        createVectorLayer(scope.layers, layer);
-                    });
-                }
                 scope.map = new OpenLayers.Map(scope.mapId, {
                     projection: scope.olmapBinds.proj,
                     maxExtent: scope.olmapBinds.extent,
@@ -781,9 +747,47 @@ directive('olMap', function($compile, $http, $templateCache) {
                             }
                         }),
                         new OpenLayers.Control.PanZoomBar({autoActivate: true})
-                    ],
-                    layers: scope.mapLayers
+                    ]
                 });
+
+                if(angular.isDefined(scope.olmapBinds.backgroundLayer)) {
+                    var imageLayer = new OpenLayers.Layer.Image('Blank',
+                        OpenLayers.ImgPath+'/blank.gif',
+                        scope.olmapBinds.extent,
+                        new OpenLayers.Size(500, 500), {
+                            isBaseLayer: true,
+                            displayInLayerSwitcher: false
+                        }
+                    );
+                    scope.map.addLayer(imageLayer);
+
+                    var backgroundLayer = new OpenLayers.Layer.WMS('Background Layer',
+                        scope.olmapBinds.backgroundLayer.url, {
+                            srs: scope.olmapBinds.proj,
+                            layers: scope.olmapBinds.backgroundLayer.layers
+                        }, {
+                            singleTile: true,
+                            ratio: 1.0,
+                            visibility: true,
+                            isBaseLayer: false
+                        });
+                    scope.map.addLayer(backgroundLayer);
+                    scope.rasterBackgroundLayer.push(backgroundLayer);
+
+                }
+                if(angular.isDefined(scope.olmapBinds.layers.wms)) {
+                    angular.forEach(scope.olmapBinds.layers.wms, function(layer) {
+                        createWMSLayer(scope.layers, layer, scope.olmapBinds.proj, scope.olmapBinds.url);
+                    });
+                }
+                if(angular.isDefined(scope.olmapBinds.layers.vector)) {
+                    angular.forEach(scope.olmapBinds.layers.vector, function(layer) {
+                        createVectorLayer(scope.layers, layer);
+                    });
+                }
+
+                scope.map.addLayers(scope.mapLayers);
+
                 if(attrs.mapLayerSwitcher) {
                     prepareLayerSwitcher(scope.map);
                 }
