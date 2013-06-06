@@ -803,13 +803,13 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
     $scope.getResolutions = function(url) {
         if(!$scope.custom.resSelected) {
             $scope.custom.resSelected = true;
-            convertResScales(url, 'to_scale');
+            convertResScales(url, 'to_res');
         }
     };
     $scope.getScales = function(url) {
         if($scope.custom.resSelected) {
             $scope.custom.resSelected = false;
-            convertResScales(url, 'to_res');
+            convertResScales(url, 'to_scale');
         }
     };
     $scope.resetForm = function(event) {
