@@ -72,7 +72,7 @@ angular.module('localization', [])
             }
         };
         // force the load of the resource file
-        localize.initLocalizedResources();
+        localize.setLanguage($rootScope.LANGUAGE)
 
         // return the local instance when called
         return localize;

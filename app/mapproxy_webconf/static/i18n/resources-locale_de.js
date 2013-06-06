@@ -608,5 +608,49 @@
     {
         "key": "Show coverage in map",
         "value": "Coverage in Karte anzeigen"
+    },
+    {
+        "key": "This field is required",
+        "value": "Dieses Feld wird benötigt"
+    },
+    {
+        "key": "Invalid URL",
+        "value": "Ungültige URL"
+    },
+    {
+        "key": "Invalid number",
+        "value": "Keine gültige Zahl"
+    },
+    {
+        "key": "Invalid float",
+        "value": "Keine gültige Gleitkommazahl"
+    },
+    {
+        "key": "Invalid integer",
+        "value": "Keine gültige Ganzzahl"
+    },
+    {
+        "key": "Here you can define project wide settings",
+        "value": "In diesem Abschnitt könne projektweite Einstellungen vorgenommen werden"
+    },
+    {
+        "key": "Default configuration",
+        "value": "Allgemeine Einstellungen"
+    },
+    {
+        "key": "Go to MapProxy configuration",
+        "value": "Hier geht es zur MapProxy-Konfiguration des Projektes"
+    },
+    {
+        "key": "Tiles X * Tiles Y",
+        "value": "Kacheln X * Kacheln Y"
+    },
+    {
+        "key": "Total tiles",
+        "value": "Kacheln gesammt"
+    },
+    {
+        "key": "Calculate tiles",
+        "value": "Kachelanzahl berechnen"
     }
 ]

@@ -7,6 +7,7 @@ from xml.etree.ElementTree import ParseError
 from mapproxy.client import http
 from mapproxy.script.scales import scale_to_res, res_to_scale
 from mapproxy.srs import SRS
+from mapproxy.grid import TileGrid
 
 from . import bottle
 from . import config
@@ -255,6 +256,47 @@ def convert_res_scales():
     result = []
     for i, d in enumerate(data):
         result.append(round(convert(d, dpi, units),9) if d else None)
+
+    return {'result': result}
+
+@app.route('/calculate_tiles', 'POST', name='calculate_tiles')
+def calculate_tiles():
+    data = request.json
+
+    origin = data.get('origin', None)
+    name = data.get('name', None)
+    srs = data.get('srs', None)
+    bbox = data.get('bbox', None)
+    if bbox is not None and not all(bbox):
+        bbox = None
+    dpi = float(data.get('dpi', (2.54/(0.00028 * 100))))
+    units = 1 if data.get('units', 'm') == 'm' else 111319.4907932736
+
+    res = data.get('res', None)
+    if res:
+        res = [float(r) for r in res]
+
+    scales = data.get('scales', None)
+    if scales:
+        scales = [float(s) for s in scales]
+
+    if res is None and scales is not None:
+        res = [round(scale_to_res(scale, dpi, units), 9) for scale in scales]
+
+    tile_grid = TileGrid(srs=srs, bbox=bbox, res=res, origin=origin, name=name)
+
+    result = []
+    res_scale = 'resolution' if scales is None else 'scale'
+    for level, res in enumerate(tile_grid.resolutions):
+        tiles_in_x, tiles_in_y = tile_grid.grid_sizes[level]
+        total_tiles = tiles_in_x * tiles_in_y
+        result.append({
+            'level': level,
+            res_scale: res if scales is None else res_to_scale(res, dpi, units),
+            'tiles_in_x': tiles_in_x,
+            'tiles_in_y': tiles_in_y,
+            'total_tiles': total_tiles
+        })
     return {'result': result}
 
 @app.route('/transform_bbox', 'POST', name='transform_bbox')

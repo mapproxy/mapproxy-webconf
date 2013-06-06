@@ -23,12 +23,11 @@
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/jquery-ui-1.10.0.custom.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/jquery.blockUI.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/angular.js') }"></script>
+    <script type="text/javascript" src="${ get_url('static', filepath='js/lib/angular-locale_de-de.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/angular.extensions.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/angular-resource.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/localize.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/bootstrap.js') }"></script>
-    <script type="text/javascript" src="${ get_url('static', filepath='js/lib/proj4js-compressed.js') }"></script>
-    <script type="text/javascript" src="${ get_url('static', filepath='js/lib/proj4js.defs.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/OpenLayers-2.12.js') }"></script>
 
     <!-- site libs -->
@@ -51,13 +50,12 @@
 
       /* add directives and services*/
         var app = angular.module('mapproxy_gui', ['angular.extensions', 'localization', 'mapproxy_gui.directives', 'mapproxy_gui.services', 'mapproxy_gui.validators']);
-      /* Set language */
+
+      /* Set globals */
         app.run(function($rootScope) {
           $rootScope.LANGUAGE = '${ language }';
           $rootScope.TRANSFORM_BBOX_URL = "${ get_url('transform_bbox') }";
         });
-
-
     </script>
     %include angular_templates
   </head>

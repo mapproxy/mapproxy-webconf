@@ -198,6 +198,8 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
         }
     };
     $scope.checkURL = function(callback, new_data) {
+        //if add grouped layers, all layer have the same url, so only the first one must be checked
+        new_data = new_data[0]
         var addLayer = false;
         var urlReplaceAsk = false;
         if(angular.isUndefined($scope.source.data.req.url)) {
@@ -709,7 +711,7 @@ function MapproxyGridListCtrl($scope, MapproxyGrids, MessageService) {
     });
 };
 
-function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageService, ProjectDefaults) {
+function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageService, ProjectDefaults, DataShareService) {
     var DEFAULT_GRID = {'data': {'bbox': [null, null, null, null], 'units': 'm'}};
     var convertResScales = function(url, mode) {
         if($scope.custom.res_scales.length > 0) {
@@ -826,15 +828,28 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
     $scope.getResolutions = function(url) {
         if(!$scope.custom.resSelected) {
             $scope.custom.resSelected = true;
-            convertResScales(url, 'to_scale');
+            convertResScales(url, 'to_res');
         }
     };
     $scope.getScales = function(url) {
         if($scope.custom.resSelected) {
             $scope.custom.resSelected = false;
-            convertResScales(url, 'to_res');
+            convertResScales(url, 'to_scale');
         }
     };
+    $scope.calculateTiles = function() {
+        var data = {
+            'srs': $scope.grid.data.srs,
+            'bbox': $scope.grid.data.bbox,
+            'name': $scope.grid.data.name,
+            'dpi': $scope.defaults.data.dpi
+        };
+        data[$scope.custom.resSelected ? 'res' : 'scales'] = $scope.custom.res_scales.length > 0 ? $scope.custom.res_scales : undefined;
+
+        $http.post($scope.calculateTilesURL, data).success(function(response) {
+            DataShareService.data('calculatedTiles', response.result);
+        });
+    }
     $scope.resetForm = function(event) {
         if(angular.isDefined(event)) {
             event.preventDefault();
@@ -1350,8 +1365,10 @@ function ProjectDefaultsCtrl($scope, ProjectDefaults, MessageService) {
         if(angular.isDefined(event)) {
             event.preventDefault();
         }
-        $scope.defaults.data.srs.push($scope.custom.newSRS);
-        $scope.custom.newSRS = undefined;
+        if($.inArray($scope.custom.newSRS, $scope.defaults.data.srs) === -1) {
+            $scope.defaults.data.srs.push($scope.custom.newSRS);
+            $scope.custom.newSRS = undefined;
+        }
     };
     $scope.removeSRS = function(event, srs) {
         var srsID = $.inArray(srs, $scope.defaults.data.srs);
@@ -1376,3 +1393,10 @@ function ProjectDefaultsCtrl($scope, ProjectDefaults, MessageService) {
         }
     });
 };
+
+function DisplayCalculatedTilesCtrl($scope, DataShareService) {
+    $scope.calculatedTiles = [];
+    $scope.$on('dss.calculatedTiles', function() {
+        $scope.calculatedTiles = DataShareService.data('calculatedTiles');
+    });
+}
