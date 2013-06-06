@@ -222,9 +222,9 @@ def write_config(project, storage):
     try:
         config.write_mapproxy_yaml(mapproxy_conf, os.path.join(configuration.get('app', 'output_path'), project + '.yaml'))
         return {'success': 'creating mapproxy config successful'}
-    except yaml.YAMLError:
+    except:
         response.status = 400
-        return {'error': 'creating yaml failed'}
+        return {'error': 'creating mapproxy config failed'}
 
 
 @app.route('/static/<filepath:path>', name='static')
