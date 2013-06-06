@@ -624,5 +624,17 @@
     {
         "key": "Invalid integer",
         "value": "Keine gültige Ganzzahl"
+    },
+    {
+        "key": "Here you can define project wide settings",
+        "value": "In diesem Abschnitt könne projektweite Einstellungen vorgenommen werden"
+    },
+    {
+        "key": "Default configuration",
+        "value": "Allgemeine Einstellungen"
+    },
+    {
+        "key": "Go to MapProxy configuration",
+        "value": "Hier geht es zur MapProxy-Konfiguration des Projektes"
     }
 ]
