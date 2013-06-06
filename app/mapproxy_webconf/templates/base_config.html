@@ -4,6 +4,15 @@
         {{'Configuration'|i18n}}
       </h2>
     </a>
+    <div ng-controller="MapProxyConfigCtrl" class="pull-right">
+      <div>
+          <button class="btn btn-small" ng-click="writeMapProxyConfig($event)">
+            {{'create configuration'|i18n}}
+          </button>
+      </div>
+      <div message-handler="success" message-types="mapproxy_config.success"></div>
+      <div message-handler="error" message-types="mapproxy_config.error"></div>
+    </div>
     <ul class="nav nav-tabs tab-menu">
       %navigation("sources", "{{'Sources'|i18n}}")
       %navigation("grids", "{{'Grids'|i18n}}")
@@ -12,6 +21,7 @@
       %navigation("services", "{{'Services'|i18n}}" )
       %navigation("globals", "{{'Globals'|i18n}}")
     </ul>
+
 % end
 
 %def content():

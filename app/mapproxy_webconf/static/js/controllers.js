@@ -1,5 +1,19 @@
 var PAGE_LEAVE_MSG = "You have unsaved changes in this form. Realy leave the page and disgard unsaved changes?";
 
+function MapProxyConfigCtrl($scope, $http, localize, MessageService) {
+    $scope.writeMapProxyConfig = function(event) {
+        var url = "/conf/base/write_config";
+        $http.post(url)
+            .success(function(message) {
+                $scope._messageService.message('mapproxy_config', 'success', message.success);
+            }).error(function () {
+                $scope._messageService.messageService.message('mapproxy_config', 'error', message.error);
+            });
+    };
+
+    $scope._messageService = MessageService;
+}
+
 function TreeCtrl($scope, localize, WMSSources, MessageService) {
 
     var refreshTree = function() {

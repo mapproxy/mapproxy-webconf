@@ -132,6 +132,11 @@
         "value": "Konfiguration"
     },
     {
+        "key": "create configuration",
+        "value": "Konfiguration erstellen"
+    },
+
+    {
         "key": "Seeding",
         "value": "Seeding"
     },
