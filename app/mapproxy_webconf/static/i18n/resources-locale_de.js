@@ -644,5 +644,9 @@
     {
         "key": "Total tiles",
         "value": "Kacheln gesammt"
+    },
+    {
+        "key": "Calculate tiles",
+        "value": "Kachelanzahl berechnen"
     }
 ]
