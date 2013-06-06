@@ -636,5 +636,13 @@
     {
         "key": "Go to MapProxy configuration",
         "value": "Hier geht es zur MapProxy-Konfiguration des Projektes"
+    },
+    {
+        "key": "Tiles X * Tiles Y",
+        "value": "Kacheln X * Kacheln Y"
+    },
+    {
+        "key": "Total tiles",
+        "value": "Kacheln gesammt"
     }
 ]

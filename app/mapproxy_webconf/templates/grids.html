@@ -48,7 +48,7 @@
 %end
 
 %def middleblock():
-<div ng-controller="MapproxyGridFormCtrl">
+<div ng-controller="MapproxyGridFormCtrl" ng-init="calculateTilesURL='${ get_url('calculate_tiles') }'">
   <div ng-show="!editareaBinds.visible">
     <h3>{{formTitle|i18n}}</h3>
     <form name="form" id="form" ng-show="!grid.default" novalidate>
@@ -98,6 +98,8 @@
 
       <div extendable-input-list="custom.res_scales" list-prefix="Level" ng-disabled="grid._locked" parent-form="form"></div>
       <hr>
+      <button class="btn btn-small" ng-click="calculateTiles()" ng-disabled="!grid.data.srs">Calculate Tiles</button>
+      <hr>
       <!-- buttons -->
       <div class="pull-left">
         <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="grid._locked||!form.$valid" id="form_save" ng-class="{'btn-success': form.$valid&&!grid._locked}">{{'Save'|i18n}}</button>
@@ -145,7 +147,26 @@
 %end
 
 %def rightblock():
-&nbsp;
+<div ng-controller="DisplayCalculatedTilesCtrl">
+  <table class="table" ng-show="calculatedTiles">
+    <thead>
+      <tr>
+        <th><span class="text-center">{{'Level'|i18n}}</span></th>
+        <th ng-show="calculatedTiles[0].resolution"><span class="pull-right">{{'Resolutions'|i18n}}</span></th>
+        <th ng-show="calculatedTiles[0].scale"><span class="pull-left">{{'Scales'|i18n}}</span></th>
+        <th><span class="pull-right">{{'Total tiles'|i18n}}</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="row in calculatedTiles | orderBy:'level'">
+        <td>{{row.level}}</td>
+        <td ng-show="row.resolution"><span class="pull-right">{{row.resolution | number:9}}</span></td>
+        <td ng-show="row.scale"><span class="pull-left">1 : {{row.scale | number}}</span></td>
+        <td tooltip="popover" tooltip-placement="right" tooltip-title="{{'Tiles X * Tiles Y'|i18n}}" tooltip-content="{{row.tiles_in_x|number}} * {{row.tiles_in_y|number}}"><span class="pull-right">{{row.total_tiles | number}}</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 %end
 
 %rebase base_config leftblock=leftblock, middleblock=middleblock, rightblock=rightblock, project=get('project'), language=get('language'), active='grids'
