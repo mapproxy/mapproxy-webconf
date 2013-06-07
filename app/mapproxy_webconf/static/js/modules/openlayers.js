@@ -1,4 +1,4 @@
-angular.module('mapproxy_gui.openlayers', ['localization']).
+angular.module('mapproxy_gui.openlayers', []).
 
 //Default OpenLayers vector style
 //OpenLayers.Feature.Vector.style
