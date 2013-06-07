@@ -499,3 +499,8 @@ div.blockMsg {
 .toggleLayerSwitcher {
   position: absolute;
 }
+
+/* jquery.ui */
+.ui-front {
+  z-index: 1050;
+}

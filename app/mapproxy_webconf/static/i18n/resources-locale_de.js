@@ -652,5 +652,13 @@
     {
         "key": "Calculate tiles",
         "value": "Kachelanzahl berechnen"
+    },
+    {
+        "key": "Keep changes?",
+        "value": "Änderungen behalten?"
+    },
+    {
+        "key": "You made changes in this map. Do you want to keep them?",
+        "value": "Sie haben Änderungen in der Karte vorgenommen. Möchten Sie diese Änderungen behalten?"
     }
 ]

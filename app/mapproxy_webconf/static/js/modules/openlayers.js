@@ -86,6 +86,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
             olmapBinds: '=olMap'
         },
         transclude: true,
+        templateUrl: '/static/angular_templates/openlayersmap.html',
         controller: function($scope, $element, $attrs) {
             var eventHandlers = {
                 checkMaxFeaturesAfterAddOrActivate: function() {
@@ -385,18 +386,13 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
         },
         link: function(scope, element, attrs) {
             scope.mapId = 'ol_map_' + scope.$id;
-            //setup map element and add to element
-            var mapElement = $('<div></div>')
+
+            //setup map element
+            element.find('#_olmapTemp')
                 .attr('id', scope.mapId)
                 .css('width', attrs.mapWidth)
                 .css('height', attrs.mapHeight);
 
-            var closeButton = angular.element('<i ng-click="destroyMap()"></i>')
-                .addClass('icon-remove map-icon-remove');
-            $compile(closeButton)(scope);
-
-            mapElement.append(closeButton);
-            element.append(mapElement);
 
             if(!scope.olmapBinds.visible) {
                 $(element).hide();
