@@ -63,6 +63,7 @@ OpenLayers.Control.DeleteFeature = OpenLayers.Class(OpenLayers.Control, {
         }
         if(this.modifyControl) {
             this.modifyControl.selectControl.unselect(feature);
+            this.modifyControl.deactivate();
         }
         // if feature doesn't have a fid, destroy it
         if(feature.fid == undefined) {
