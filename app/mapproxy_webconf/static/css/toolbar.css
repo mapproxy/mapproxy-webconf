@@ -74,6 +74,10 @@
     background-image: url(../img/draw_rectangle_on.png);
     background-repeat: no-repeat;
 }
+.olControlDrawFeatureRectItemInactive.itemDisabled {
+    background-image: url(../img/draw_rectangle_disabled.png);
+    background-repeat: no-repeat;
+}
 
 .olControlSplitFeatureItemActive {
     background-image: url(../img/cut_on.png);
