@@ -796,6 +796,30 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope) {
             };
 
             //Toolbar
+            var initToolbar = function() {
+                scope.toolbar = new OpenLayers.Control.Panel({
+                    'displayClass': 'customEditingToolbar'
+                });
+                var _select = new OpenLayers.Control.SelectFeature(scope.drawLayer, {
+                    displayClass: "olControlSelectFeature"
+                });
+                var _draw = new OpenLayers.Control.DrawFeature(scope.drawLayer, OpenLayers.Handler.Polygon, {
+                    displayClass: "olControlDrawFeaturePolygon"
+                });
+                var _modify = new OpenLayers.Control.ModifyFeature(scope.drawLayer, {
+                    displayClass: "olControlModifyFeature",
+                    mode: OpenLayers.Control.ModifyFeature.RESIZE |
+                          OpenLayers.Control.ModifyFeature.DRAG
+                });
+                var _delete = new OpenLayers.Control.DeleteFeature(scope.drawLayer, {
+                    displayClass: "olControlDeleteFeature"
+                });
+
+                scope.toolbar.addControls([_select, _draw, _modify, _delete]);
+                scope.map.addControl(scope.toolbar)
+
+            }
+
             //Layers
             var createBackgroundLayer = function(list, layer, srs) {
                 var newLayer = new OpenLayers.Layer.WMS(layer.title, layer.url, {
@@ -809,7 +833,6 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope) {
                 list.push(newLayer);
                 scope.mapLayers.push(newLayer);
             };
-
             var createWMSLayer = function(list, layer, srs, url) {
                 if(layer.name || layer.layers) {
                     var newLayer = new OpenLayers.Layer.WMS(layer.title, url, {
@@ -828,7 +851,6 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope) {
                     scope.mapLayers.push(newLayer)
                 }
             };
-
             var createVectorLayer = function(list, layer) {
                 var newLayer = new OpenLayers.Layer.Vector(layer.name);
                 var style = $.extend({}, default_vector_styling, layer.style);
@@ -846,6 +868,10 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope) {
                 }
                 if(layer.zoomToDataExtent) {
                     scope.dataExtent = newLayer.getDataExtent();
+                }
+                if(layer.isDrawLayer) {
+                    scope.drawLayer = newLayer;
+                    scope.drawLayer._maxFeatures = layer.maxFeatures;
                 }
                 list.push(newLayer);
                 scope.mapLayers.push(newLayer);
@@ -875,8 +901,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope) {
                     }
                     createMap();
                 }
-            }
-
+            };
             var createMap = function() {
                 if(scope.map instanceof OpenLayers.Map) {
                     scope.map.destroy();
@@ -929,6 +954,9 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope) {
 
                 scope.map.addLayers(scope.mapLayers);
 
+                if(attrs.mapToolbar && scope.drawLayer) {
+                    initToolbar();
+                }
                 if(attrs.mapLayerSwitcher) {
                     prepareLayerSwitcher(scope.map);
                 }
@@ -949,6 +977,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope) {
                 scope.layers = [];
                 scope.rasterBackgroundLayers = [];
                 scope.rasterOverlays = [];
+                scope.drawLayer = undefined;
                 $.unblockUI();
                 scope.olmapBinds.visible = false;
             };

@@ -1,0 +1,209 @@
+/* Draw Control */
+.customEditingToolbar {
+    float: right;
+    left: 60px;
+    height: 30px;
+    min-width: 68px;
+}
+.customEditingToolbar div {
+    float: right;
+    margin: 5px;
+    width: 24px;
+    height: 24px;
+}
+.olControlNavigationItemActive {
+    background-image: url(../img/multi_toolbar.png);
+    background-repeat: no-repeat;
+    background-position: -103px -23px;
+}
+.olControlNavigationItemInactive {
+    background-image: url(../img/multi_toolbar.png);
+    background-repeat: no-repeat;
+    background-position: -103px -0px;
+}
+
+.olControlDrawFeaturePointItemInactive {
+    background-image: url(../img/draw_point_off.png);
+    background-repeat: no-repeat;
+}
+
+.olControlDrawFeaturePointItemActive {
+    background-image: url(../img/draw_point_on.png);
+    background-repeat: no-repeat;
+}
+
+.olControlDrawFeatureLineItemInactive {
+    background-image: url(../img/draw_line_off.png);
+    background-repeat: no-repeat;
+}
+
+.olControlDrawFeatureLineItemActive {
+    background-image: url(../img/draw_line_on.png);
+    background-repeat: no-repeat;
+}
+
+.olControlDrawFeaturePolygonItemInactive {
+    background-image: url(../img/draw_polygon_off.png);
+    background-repeat: no-repeat;
+}
+.olControlDrawFeaturePolygonItemInactive.itemDisabled {
+    background-image: url(../img/draw_polygon_disabled.png);
+    background-repeat: no-repeat;
+}
+.olControlDrawFeaturePolygonItemActive {
+    background-image: url(../img/draw_polygon_on.png);
+    background-repeat: no-repeat;
+}
+.olControlModifyFeatureItemActive {
+    background-image: url(../img/multi_toolbar.png);
+    background-repeat: no-repeat;
+    background-position: -128px -23px;
+}
+.olControlModifyFeatureItemInactive {
+    background-image: url(../img/multi_toolbar.png);
+    background-repeat: no-repeat;
+    background-position: -128px 0px;
+}
+
+/* Draw Rectangle */
+.olControlDrawFeatureRectItemInactive {
+    background-image: url(../img/draw_rectangle_off.png);
+    background-repeat: no-repeat;
+}
+.olControlDrawFeatureRectItemActive {
+    background-image: url(../img/draw_rectangle_on.png);
+    background-repeat: no-repeat;
+}
+
+.olControlSplitFeatureItemActive {
+    background-image: url(../img/cut_on.png);
+    background-repeat: no-repeat;
+}
+
+.olControlSplitFeatureItemInactive {
+    background-image: url(../img/cut_off.png);
+    background-repeat: no-repeat;
+}
+
+.olControlSplitFeatureItemInactive.itemDisabled {
+    background-image: url(../img/cut_disabled.png);
+    background-repeat: no-repeat;
+}
+
+
+
+.olControlMergeFeatureItemInactive.itemDisabled {
+    background-image: url(../img/union_disabled.png);
+    background-repeat: no-repeat;
+}
+
+.olControlMergeFeatureItemInactive {
+    background-image: url(../img/union_off.png);
+    background-repeat: no-repeat;
+}
+
+.olControlMergeFeatureItemActive {
+    background-image: url(../img/union_on.png);
+    background-repeat: no-repeat;
+}
+
+
+div.olControlCopyFeaturesItemActive {
+    background-image: url(../img/copy_on.png);
+    background-repeat: no-repeat;
+}
+div.olControlCopyFeaturesItemInactive {
+    background-image: url(../img/copy_off.png);
+    background-repeat: no-repeat;
+}
+.olControlCopyFeaturesItemInactive.itemDisabled {
+    background-image: url(../img/copy_disabled.png);
+    background-repeat: no-repeat;
+}
+
+
+/* Delete */
+.olControlDeleteFeatureItemActive {
+    background-image: url(../img/delete_on.png);
+    background-repeat: no-repeat;
+}
+
+.olControlDeleteFeatureItemInactive.itemDisabled {
+    background-image: url(../img/delete_disabled.png);
+    background-repeat: no-repeat;
+}
+.olControlDeleteFeatureItemInactive {
+    background-image: url(../img/delete_off.png);
+    background-repeat: no-repeat;
+}
+
+/* Measure Toolbar */
+div.olControlMeasureLineItemActive {
+    background-image: url(../img/multi_toolbar.png);
+    background-repeat: no-repeat;
+    background-position: -228px -23px
+}
+div.olControlMeasureLineItemInactive {
+    background-image: url(../img/multi_toolbar.png);
+    background-repeat: no-repeat;
+    background-position: -228px 0px;
+}
+
+div.olControlMeasurePointItemInactive {
+    background-image: url(../img/measure_point_off.png);
+    background-repeat: no-repeat;
+}
+div.olControlMeasurePointItemActive {
+    background-image: url(../img/measure_point_on.png);
+    background-repeat: no-repeat;
+}
+
+div.olControlMeasurePolygonItemInactive {
+    background-image: url(../img/measure_polygon_off.png);
+    background-repeat: no-repeat;
+}
+div.olControlMeasurePolygonItemActive {
+    background-image: url(../img/measure_polygon_on.png);
+    background-repeat: no-repeat;
+}
+
+
+div.olControlSaveFeaturesItemActive {
+    background-image: url(../img/multi_toolbar.png);
+    background-repeat: no-repeat;
+    background-position: -178px -23px;
+}
+div.olControlSaveFeaturesItemInactive {
+    background-image: url(../img/multi_toolbar.png);
+    background-repeat: no-repeat;
+    background-position: -178px 0px;
+}
+div.olControlSelectFeatureItemActive {
+    background-image: url(../img/multi_toolbar.png);
+    background-repeat: no-repeat;
+    background-position: -253px -23px;
+}
+div.olControlSelectFeatureItemInactive {
+    background-image: url(../img/multi_toolbar.png);
+    background-repeat: no-repeat;
+    background-position: -253px 0px;
+}
+div.olControlCopyFeatureItemActive {
+    background-image: url(../img/multi_toolbar.png);
+    background-repeat: no-repeat;
+    background-position: -77px -23px;
+}
+div.olControlCopyFeatureItemInactive {
+    background-image: url(../img/multi_toolbar.png);
+    background-repeat: no-repeat;
+    background-position: -77px 0px;
+}
+
+div.olControlSnappItemActive {
+    background-image: url(../img/missing_on.png);
+    background-repeat: no-repeat;
+}
+div.olControlSnappItemInactive {
+    background-image: url(../img/missing_off.png);
+    background-repeat: no-repeat;
+}

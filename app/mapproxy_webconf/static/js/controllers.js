@@ -307,6 +307,8 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
                 'vector': [{
                     'name': 'Coverage',
                     'zoomToDataExtent': true,
+                    'isDrawLayer': true,
+                    'maxFeatures': 1,
                     'geometries': [{
                         'type': 'bbox',
                         'coordinates': bbox

@@ -112,7 +112,7 @@
               </select>
             </div>
             <button class="btn btn-small" ng-disabled="!source.data.coverage.bbox" ng-click="showCoverageInMap()">{{'Show coverage in map'|i18n}}</button>
-            <div ol-map="olmapBinds" map-width="1000" map-height="600" map-hidden="true" map-layer-switcher="true"></div>
+            <div ol-map="olmapBinds" map-width="1000" map-height="600" map-hidden="true" map-layer-switcher="true" map-toolbar="true"></div>
             <hr class="formLine">
             <div labeled="input_label" name-for="supported_srs" text="{{'Supported SRS'|i18n}}">
               <button class="btn btn-small pull-right" ng-click="loadSRS($event)" ng-disabled="!source.data.req.url">
