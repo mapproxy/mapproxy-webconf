@@ -87,6 +87,26 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
         },
         transclude: true,
         controller: function($scope, $element, $attrs) {
+            var eventHandlers = {
+                checkMaxFeaturesAfterAddOrActivate: function() {
+                    if(this.drawControl._disabled) {
+                        this.drawControl.deactivate();
+                    } else if(this.drawLayer.features.length >= this.drawLayer._maxFeatures) {
+                        this.drawControl.deactivate();
+                        OpenLayers.Element.addClass(this.drawControl.panel_div, 'itemDisabled');
+                        this.drawControl._disabled = true;
+                    }
+                },
+                checkMaxFeaturesAfterDelete: function() {
+                    if(this.drawLayer.features.length < this.drawLayer._maxFeatures) {
+                        OpenLayers.Element.removeClass(this.drawControl.panel_div, 'itemDisabled');
+                        this.drawControl._disabled = false;
+                    }
+                },
+                activateDrawControlHandler: function() {
+
+                }
+            }
             //LayerSwitcher
             var loadLayerSwitcherTemplate = function() {
                 var layerSwitcherTemplate = $templateCache.get("layerswitcher_template");
@@ -136,13 +156,6 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                             }
                         );
                         break;
-                if(angular.isDefined($scope.drawLayer._maxFeatures)) {
-                    _draw.events.register('featureadded', {'drawLayer': $scope.drawLayer, 'drawControl': _draw}, function(f) {
-                        if(this.drawLayer.features.length >= this.drawLayer._maxFeatures) {
-                            this.drawControl.deactivate();
-                            OpenLayers.Element.addClass(this.drawControl.panel_div, 'itemDisabled');
-                        }
-                    })
                 }
                 var _modify = new OpenLayers.Control.ModifyFeature($scope.drawLayer, {
                     displayClass: "olControlModifyFeature",
@@ -158,6 +171,28 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                 $scope.toolbar.addControls([_select, _draw, _modify, _delete]);
                 $scope.map.addControl($scope.toolbar)
 
+                if(angular.isDefined($scope.drawLayer._maxFeatures)) {
+                    if($scope.drawLayer.features.length >= $scope.drawLayer._maxFeatures) {
+                        OpenLayers.Element.addClass(_draw.panel_div, 'itemDisabled');
+                        _draw._disabled = true;
+                    }
+                    var eventData = {
+                        'drawLayer': $scope.drawLayer,
+                        'drawControl': _draw
+                    };
+                    _draw.events.register(
+                        'featureadded',
+                        eventData,
+                        eventHandlers.checkMaxFeaturesAfterAddOrActivate);
+                    _draw.events.register(
+                        'activate',
+                        eventData,
+                        eventHandlers.checkMaxFeaturesAfterAddOrActivate);
+                    _delete.events.register(
+                        'featuredeleted',
+                        eventData,
+                        eventHandlers.checkMaxFeaturesAfterDelete);
+                }
             }
 
             //Layers
