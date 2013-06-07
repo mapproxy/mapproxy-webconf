@@ -150,7 +150,9 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                           OpenLayers.Control.ModifyFeature.DRAG
                 });
                 var _delete = new OpenLayers.Control.DeleteFeature($scope.drawLayer, {
-                    displayClass: "olControlDeleteFeature"
+                    displayClass: "olControlDeleteFeature",
+                    selectControl: _select,
+                    modifyControl: _modify
                 });
 
                 $scope.toolbar.addControls([_select, _draw, _modify, _delete]);
