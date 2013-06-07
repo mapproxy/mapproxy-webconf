@@ -354,6 +354,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                 $scope.drawLayer = undefined;
                 $.unblockUI();
                 $scope.olmapBinds.visible = false;
+                safeApply($scope);
             };
 
             //Directive initialization
