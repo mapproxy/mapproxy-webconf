@@ -769,6 +769,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope) {
                 }
             };
 
+            //LayerSwitcher
             var loadLayerSwitcherTemplate = function() {
                 var layerSwitcherTemplate = $templateCache.get("layerswitcher_template");
                 if(angular.isUndefined(layerSwitcherTemplate)) {
@@ -794,6 +795,8 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope) {
                 loadLayerSwitcherTemplate(scope);
             };
 
+            //Toolbar
+            //Layers
             var createBackgroundLayer = function(list, layer, srs) {
                 var newLayer = new OpenLayers.Layer.WMS(layer.title, layer.url, {
                         srs: srs,
@@ -847,7 +850,11 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope) {
                 list.push(newLayer);
                 scope.mapLayers.push(newLayer);
             };
+            scope.toggleVisibility = function(layer) {
+                layer.setVisibility(!layer.visibility);
+            };
 
+            //Map
             var prepareMapParameters = function() {
                 if(!(scope.olmapBinds.proj instanceof OpenLayers.Projection)) {
                     scope.olmapBinds.proj = new OpenLayers.Projection(scope.olmapBinds.proj);
@@ -931,11 +938,6 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope) {
                     scope.map.zoomToMaxExtent();
                 }
             };
-
-            scope.toggleVisibility = function(layer) {
-                layer.setVisibility(!layer.visibility);
-            }
-
             scope.destroyMap = function() {
                 if(scope.map instanceof OpenLayers.Map) {
                     scope.map.destroy();
@@ -951,6 +953,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope) {
                 scope.olmapBinds.visible = false;
             };
 
+            //Directive initialization
             scope.olmapBinds = {
                 visible: attrs.MapHidden || false,
                 extent: undefined,
