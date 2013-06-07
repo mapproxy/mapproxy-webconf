@@ -102,9 +102,6 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                         OpenLayers.Element.removeClass(this.drawControl.panel_div, 'itemDisabled');
                         this.drawControl._disabled = false;
                     }
-                },
-                activateDrawControlHandler: function() {
-
                 }
             }
             //LayerSwitcher
