@@ -77,6 +77,7 @@ OpenLayers.Control.DeleteFeature = OpenLayers.Class(OpenLayers.Control, {
             }
             this.layer.drawFeature(feature);
         }
+        this._toggleControlState();
     },
     /**
      * Deletes given features
