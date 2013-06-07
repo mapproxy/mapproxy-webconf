@@ -329,10 +329,13 @@ directive('dialog', function($parse, localize) {
                     case 'ask':
                         buttons[localize.getLocalizedString('Yes')] = function() {
                             $(this).dialog("close");
-                            scope.callback(scope);
+                            scope.confirmCallback(scope);
                         };
                         buttons[localize.getLocalizedString('No')] = function() {
                             $(this).dialog("close");
+                            if(angular.isFunction(scope.refuseCallback)) {
+                                scope.refuseCallback(scope);
+                            }
                         };
                         break;
                     case 'confirm':
@@ -352,7 +355,8 @@ directive('dialog', function($parse, localize) {
                 });
             };
             scope.dialog_id = scope.$id;
-            scope.callback = $parse(attrs.callback);
+            scope.confirmCallback = $parse(attrs.callback);
+            scope.refuseCallback = attrs.refuseCallback ? $parse(attrs.refuseCallback) : false;
             scope.dialog = $('<div style="display:none;" id="dialog_' + scope.dialog_id +'"><p></p></div>');
             element.after(scope.dialog);
 
