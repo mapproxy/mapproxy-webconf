@@ -121,9 +121,21 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                 var _select = new OpenLayers.Control.SelectFeature($scope.drawLayer, {
                     displayClass: "olControlSelectFeature"
                 });
-                var _draw = new OpenLayers.Control.DrawFeature($scope.drawLayer, OpenLayers.Handler.Polygon, {
-                    displayClass: "olControlDrawFeaturePolygon"
-                });
+                var _draw = undefined;
+
+                switch($scope.drawLayer._allowedGeometry) {
+                    case 'bbox':
+                        _draw = new OpenLayers.Control.DrawFeature(
+                            $scope.drawLayer,
+                            OpenLayers.Handler.RegularPolygon, {
+                                displayClass: "olControlDrawFeatureRect",
+                                handlerOptions: {
+                                    sides: 4,
+                                    irregular: true
+                                }
+                            }
+                        );
+                        break;
                 if(angular.isDefined($scope.drawLayer._maxFeatures)) {
                     _draw.events.register('featureadded', {'drawLayer': $scope.drawLayer, 'drawControl': _draw}, function(f) {
                         if(this.drawLayer.features.length >= this.drawLayer._maxFeatures) {
@@ -197,7 +209,8 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                 }
                 if(layer.isDrawLayer) {
                     $scope.drawLayer = newLayer;
-                    $scope.drawLayer._maxFeatures = layer.maxFeatures;
+                    $scope.drawLayer._maxFeatures = layer.maxFeatures || false;
+                    $scope.drawLayer._allowedGeometry = layer.allowedGeometry;
                 }
                 list.push(newLayer);
                 $scope.mapLayers.push(newLayer);
