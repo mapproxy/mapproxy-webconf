@@ -806,6 +806,14 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope) {
                 var _draw = new OpenLayers.Control.DrawFeature(scope.drawLayer, OpenLayers.Handler.Polygon, {
                     displayClass: "olControlDrawFeaturePolygon"
                 });
+                if(angular.isDefined(scope.drawLayer._maxFeatures)) {
+                    _draw.events.register('featureadded', {'drawLayer': scope.drawLayer, 'drawControl': _draw}, function(f) {
+                        if(this.drawLayer.features.length >= this.drawLayer._maxFeatures) {
+                            this.drawControl.deactivate();
+                            OpenLayers.Element.addClass(this.drawControl.panel_div, 'itemDisabled');
+                        }
+                    })
+                }
                 var _modify = new OpenLayers.Control.ModifyFeature(scope.drawLayer, {
                     displayClass: "olControlModifyFeature",
                     mode: OpenLayers.Control.ModifyFeature.RESIZE |
