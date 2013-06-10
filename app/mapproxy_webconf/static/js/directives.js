@@ -391,19 +391,6 @@ directive('labeled', function($parse, $templateCache, localize) {
                 }
             };
 
-            scope.showWarning = function() {
-                if(scope.warning) {
-                    element.addClass('warning');
-                    $('#tooltip_'+ scope.$id).tooltip({
-                        placement: 'right',
-                        title: scope.warningMsg
-                    });
-                    return true;
-                } else {
-                    element.removeClass('warning');
-                    return false;
-                }
-            };
             scope.warningMsg = function() {
                 return attrs.warningMsg;
             };

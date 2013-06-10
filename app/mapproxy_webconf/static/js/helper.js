@@ -82,4 +82,4 @@ var generateInfoDialogContent = function(data, localize) {
 
     message += '</div>';
     return message;
-}
+};

@@ -48,117 +48,115 @@
 %end
 
 %def middleblock():
-<div ng-controller="MapproxySourceNoticeCtrl">
-  <div ng-controller="MapproxySourceFormCtrl" ng-init="custom.scalesToResURL='${get_url('scales_to_res')}';custom.resToScalesURL='${get_url('res_to_scales')}';">
-    <form name="form" novalidate ng-show="!editareaBinds.visible">
-      <h3>{{formTitle|i18n}}</h3>
-      <fieldset>
-        <div toggle-group mode="multiShow">
-          <!-- title? -->
-          <div
-            style="display:none;"
-            id="confirm_url_change_dialog"
-            title="{{'Confirm!'|i18n}}">
-              <p>{{'Replace service URL deletes all layers depends to it!'|i18n}}</p>
+<div ng-controller="MapproxySourceFormCtrl" ng-init="custom.scalesToResURL='${get_url('scales_to_res')}';custom.resToScalesURL='${get_url('res_to_scales')}';">
+  <form name="form" novalidate ng-show="!editareaBinds.visible">
+    <h3>{{formTitle|i18n}}</h3>
+    <fieldset>
+      <div toggle-group mode="multiShow">
+        <!-- title? -->
+        <div
+          style="display:none;"
+          id="confirm_url_change_dialog"
+          title="{{'Confirm!'|i18n}}">
+            <p>{{'Replace service URL deletes all layers depends to it!'|i18n}}</p>
+        </div>
+        <div ng-show="true">
+          <div labeled="input_label" name-for="name" text="{{'Name'|i18n}}">
+            <input class="input-xlarge" type="text" required ng-model="source.data.name" id="name" name="name"/>
           </div>
-          <div ng-show="true">
-            <div labeled="input_label" name-for="name" text="{{'Name'|i18n}}">
-              <input class="input-xlarge" type="text" required ng-model="source.data.name" id="name" name="name"/>
-            </div>
-            <div id="source_wms_url" labeled="input_label" name-for="req_url" text="{{'URL'|i18n}}">
-              <input
-                id="req_url"
-                name="req_url"
-                class="input-xlarge"
-                type="url"
-                value="{{source.data.wms_source}}"
-                ng-model="source.data.req.url"
+          <div id="source_wms_url" labeled="input_label" name-for="req_url" text="{{'URL'|i18n}}">
+            <input
+              id="req_url"
+              name="req_url"
+              class="input-xlarge"
+              type="url"
+              value="{{source.data.wms_source}}"
+              ng-model="source.data.req.url"
+              required
+              droppable
+              change-callback="openDialog(callback, new_data)"
+              accepts="wms_source"
+              use-key-for-value="data.url"
+            />
+          </div>
+
+          <div labeled="input_label" name-for="req_layer" text="{{'Layer'|i18n}}" >
+            <div droppable sortable required accepts="wms_layer" allow-array="true"
+                ng-model="source.data.req.layers"
+                name="req_layers"
+                id="req_layers"
                 required
-                droppable
-                change-callback="openDialog(callback, new_data)"
-                accepts="wms_source"
-                use-key-for-value="data.url"
-              />
+                use-key-for-value="name"
+                class="input-xlarge insertable-list uneditable-input"
+                insert-callback="checkURL(callback, new_data)">
+                <div ng-repeat="layer in source.data.req.layers" class="label">
+                  {{layer}}
+                  <span ng-show="layerTitle(layer)">({{layerTitle(layer)}})</span>
+                   <i class="icon-remove" ng-click="remove(layer)"></i>
+                </div>
             </div>
+          </div>
+          <div class="input-append" labeled="input_label" name-for="add_layer_manual" text="{{'Manual add layer'|i18n}}">
+            <input type="text" id="add_layer_manual" name="add_layer_manual" ng-model="custom.layer_manual" class="input-medium" unique="{{source.data.req.layers}}">
+            <button class="btn btn-small" ng-click="addLayerManual($event)" ng-disabled="!custom.layer_manual">{{'Add'|i18n}}</button>
+          </div>
 
-            <div labeled="input_label" name-for="req_layer" text="{{'Layer'|i18n}}" >
-              <div droppable sortable required accepts="wms_layer" allow-array="true"
-                  ng-model="source.data.req.layers"
-                  name="req_layers"
-                  id="req_layers"
-                  required
-                  use-key-for-value="name"
-                  class="input-xlarge insertable-list uneditable-input"
-                  insert-callback="checkURL(callback, new_data)">
-                  <div ng-repeat="layer in source.data.req.layers" class="label">
-                    {{layer}}
-                    <span ng-show="layerTitle(layer)">({{layerTitle(layer)}})</span>
-                     <i class="icon-remove" ng-click="remove(layer)"></i>
-                  </div>
-              </div>
+          <hr class="formLine">
+          <div class="input-append" labeled='input_label' name-for="coverage_bbox" text="{{'Coverage BBOX'|i18n}}">
+            <input type="text" ng-model="source.data.coverage.bbox" id="coverage_bbox" name="coverage_bbox" class="input-medium">
+            <button class="btn btn-small" ng-disabled="!source.data.req.url" ng-click="addCoverage($event)" id="form_load_coverage">{{'Use coverage from WMS'|i18n}}</button>
+          </div>
+          <div labeled="input_label" name-for="coverage_srs" text="{{'Coverage SRS'|i18n}}">
+            <select class="input-xlarge" ng-model="source.data.coverage.srs" id="coverage_srs" name="coverage_srs" ng-options="srs for srs in defaults.data.srs">
+            </select>
+          </div>
+          <button class="btn btn-small" ng-disabled="!source.data.coverage.bbox" ng-click="showCoverageInMap()">{{'Show coverage in map'|i18n}}</button>
+          <div ol-map="olmapBinds" map-width="1000" map-height="600" map-hidden="true" map-layer-switcher="true"></div>
+          <hr class="formLine">
+          <div labeled="input_label" name-for="supported_srs" text="{{'Supported SRS'|i18n}}">
+            <button class="btn btn-small pull-right" ng-click="loadSRS($event)" ng-disabled="!source.data.req.url">
+              {{'Add SRS from WMS'|i18n}}
+            </button>
+            <div name="supported_srs" id="supported_srs" class="well well-small input-large">
+              <span class="badge" ng-repeat="srs in source.data.supported_srs">
+                {{srs}}<i class="icon-remove" ng-click="removeSRS($event, srs)"></i>
+              </span>
             </div>
-            <div class="input-append" labeled="input_label" name-for="add_layer_manual" text="{{'Manual add layer'|i18n}}">
-              <input type="text" id="add_layer_manual" name="add_layer_manual" ng-model="custom.layer_manual" class="input-medium" unique="{{source.data.req.layers}}">
-              <button class="btn btn-small" ng-click="addLayerManual($event)" ng-disabled="!custom.layer_manual">{{'Add'|i18n}}</button>
-            </div>
+          </div>
+          <div class="input-append" labeled="input_label" name-for="add_srs_manual" text="{{'Manual add SRS'|i18n}}">
+            <input type="text" id="add_srs_manual" name="add_srs_manual" ng-model="custom.srs_manual" class="input-medium">
+            <button class="btn btn-small" ng-click="addSRSManual($event)" ng-disabled="!custom.srs_manual">{{'Add'|i18n}}</button>
+          </div>
 
-            <hr class="formLine">
-            <div class="input-append" labeled='input_label' name-for="coverage_bbox" text="{{'Coverage BBOX'|i18n}}">
-              <input type="text" ng-model="source.data.coverage.bbox" id="coverage_bbox" name="coverage_bbox" class="input-medium">
-              <button class="btn btn-small" ng-disabled="!source.data.req.url" ng-click="addCoverage($event)" id="form_load_coverage">{{'Use coverage from WMS'|i18n}}</button>
-            </div>
-            <div labeled="input_label" name-for="coverage_srs" text="{{'Coverage SRS'|i18n}}">
-              <select class="input-xlarge" ng-model="source.data.coverage.srs" id="coverage_srs" name="coverage_srs" ng-options="srs for srs in defaults.data.srs">
+          <hr class="formLine">
+          <div labeled='checkbox_label' name-for="req_transparent" text="{{'Transparency'|i18n}}" warning="{{warningLogic.checkImageSettings()}}" warning-msg="{{'Selectet image format(s) not support transparency.'|i18n}}">
+            <input type="checkbox" ng-model="source.data.req.transparent" id="req_transparent" name="req_transparent">
+          </div>
+          <div labeled="input_label" name-for="supported_formats" text="{{'Supported formats'|i18n}}" warning="{{warningLogic.checkImageSettings()}}" warning-msg="{{'Selectet image format(s) not support transparency.'|i18n}}">
+              <select name="supported_formats" id="supported_formats" multiple="multiple" ng-model="source.data.supported_formats">
+                  <option value="PNG">PNG</option>
+                  <option value="JPEG">JPEG</option>
+                  <option value="GIF">GIF</option>
               </select>
-            </div>
-            <button class="btn btn-small" ng-disabled="!source.data.coverage.bbox" ng-click="showCoverageInMap()">{{'Show coverage in map'|i18n}}</button>
-            <div ol-map="olmapBinds" map-width="1000" map-height="600" map-hidden="true" map-layer-switcher="true"></div>
-            <hr class="formLine">
-            <div labeled="input_label" name-for="supported_srs" text="{{'Supported SRS'|i18n}}">
-              <button class="btn btn-small pull-right" ng-click="loadSRS($event)" ng-disabled="!source.data.req.url">
-                {{'Add SRS from WMS'|i18n}}
-              </button>
-              <div name="supported_srs" id="supported_srs" class="well well-small input-large">
-                <span class="badge" ng-repeat="srs in source.data.supported_srs">
-                  {{srs}}<i class="icon-remove" ng-click="removeSRS($event, srs)"></i>
-                </span>
-              </div>
-            </div>
-            <div class="input-append" labeled="input_label" name-for="add_srs_manual" text="{{'Manual add SRS'|i18n}}">
-              <input type="text" id="add_srs_manual" name="add_srs_manual" ng-model="custom.srs_manual" class="input-medium">
-              <button class="btn btn-small" ng-click="addSRSManual($event)" ng-disabled="!custom.srs_manual">{{'Add'|i18n}}</button>
-            </div>
-
-            <hr class="formLine">
-            <div labeled='checkbox_label' name-for="req_transparent" text="{{'Transparency'|i18n}}" warning="{{invalid_image_settings}}" warning-msg="{{'Selectet image format(s) not support transparency.'|i18n}}">
-              <input type="checkbox" ng-model="source.data.req.transparent" id="req_transparent" name="req_transparent">
-            </div>
-            <div labeled="input_label" name-for="supported_formats" text="{{'Supported formats'|i18n}}">
-                <select name="supported_formats" id="supported_formats" multiple="multiple" ng-model="source.data.supported_formats">
-                    <option value="PNG">PNG</option>
-                    <option value="JPEG">JPEG</option>
-                    <option value="GIF">GIF</option>
-                </select>
-            </div>
-            <hr class="formLine">
-            <div ng-include src="'${ get_url('static', filepath='angular_templates/min_max_res.html') }'"></div>
-        <hr>
-        <div class="pull-left">
-          <button class="btn btn-small" ng-click="addSource($event)" ng-disabled="!form.$valid" id="form_save" ng-class="{'btn-success': form.$valid}">{{'Save'|i18n}}</button>
-          <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
-          <button class="btn btn-small" ng-click="copySource($event)">{{'Copy'|i18n}}</button>
-        </div>
-        <div id="_editarea_toggle_button_container" class="pull-right">
-        </div>
-      </fieldset>
-    </form>
-    <div editarea="editareaBinds"
-        yaml-URL="${get_url('json_to_yaml')}"
-        json-URL="${get_url('yaml_to_json')}"
-        keep-empty-fields="name"></div>
-    <div message-handler="success" message-types="sources.add_success,sources.update_success"></div>
-    <div message-handler="error" message-types="sources.add_error,sources.update_error,sources.form_error"></div>
-  </div>
+          </div>
+          <hr class="formLine">
+          <div ng-include src="'${ get_url('static', filepath='angular_templates/min_max_res.html') }'"></div>
+      <hr>
+      <div class="pull-left">
+        <button class="btn btn-small" ng-click="addSource($event)" ng-disabled="!form.$valid" id="form_save" ng-class="{'btn-success': form.$valid}">{{'Save'|i18n}}</button>
+        <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
+        <button class="btn btn-small" ng-click="copySource($event)">{{'Copy'|i18n}}</button>
+      </div>
+      <div id="_editarea_toggle_button_container" class="pull-right">
+      </div>
+    </fieldset>
+  </form>
+  <div editarea="editareaBinds"
+      yaml-URL="${get_url('json_to_yaml')}"
+      json-URL="${get_url('yaml_to_json')}"
+      keep-empty-fields="name"></div>
+  <div message-handler="success" message-types="sources.add_success,sources.update_success"></div>
+  <div message-handler="error" message-types="sources.add_error,sources.update_error,sources.form_error"></div>
 </div>
 %end
 

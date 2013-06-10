@@ -180,6 +180,16 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
         }
     };
 
+    $scope.warningLogic = {
+        checkImageSettings: function() {
+            var non_transparent_formats = ['JPEG', 'GIF'];
+            console.log($(non_transparent_formats).not($scope.source.data.supported_formats))
+            return $scope.source.data.req.transparent == true &&
+            $(non_transparent_formats).not($scope.source.data.supported_formats).length != non_transparent_formats.length
+        }
+
+    };
+
     $scope.prepareForEditarea = function(source) {
         return $.extend(true, {'data': {'name': ""}}, source);
     };
@@ -1396,49 +1406,6 @@ function MapproxyServicesCtrl($scope, localize, MapproxyServices, DataShareServi
         if($scope.form.$dirty) {
             return localize.getLocalizedString(PAGE_LEAVE_MSG);
         }
-    });
-};
-
-function MapproxySourceNoticeCtrl($scope, localize, MapproxySources) {
-    //define all watch results
-    $scope.invalid_image_settings = false;
-    $scope.high_number_of_concurrent_requests = false;
-
-    var checkImageSettings = function(newVal, oldVal, scope) {
-        //ensure all variables to check for are defined!
-        if(angular.isDefined($scope.watch_source) &&
-            angular.isDefined($scope.watch_source.data.req) &&
-           angular.isDefined($scope.watch_source.data.supported_formats) &&
-           $scope.watch_source.data.req.transparent == true) {
-            var found = false;
-            var non_transparent_formats = ['JPEG', 'GIF'];
-            angular.forEach($scope.watch_source.data.supported_formats, function(format) {
-                if (!found) {
-                    found = -1 != non_transparent_formats.indexOf(format);
-                }
-                $scope.invalid_image_settings = found;
-            })
-        } else {
-            $scope.invalid_image_settings = false;
-        }
-    };
-
-    var checkConcurrentRequests = function(newVal, oldVal, scope) {
-        if(angular.isDefined($scope.watch_source) &&
-            angular.isDefined($scope.watch_source.data.concurrent_requests) &&
-           $scope.watch_source.data.concurrent_requests > 4) {
-            $scope.high_number_of_concurrent_requests = true;
-        } else {
-            $scope.high_number_of_concurrent_requests = false;
-        }
-    }
-
-    $scope.$watch('watch_source.data.supported_formats', checkImageSettings)
-    $scope.$watch('watch_source.data.req.transparent', checkImageSettings)
-    $scope.$watch('watch_source.data.concurrent_requests', checkConcurrentRequests)
-
-    $scope.$on('sources.current', function() {
-        $scope.watch_source = MapproxySources.current();
     });
 };
 
