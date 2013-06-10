@@ -136,14 +136,14 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                 $scope.toolbar = new OpenLayers.Control.Panel({
                     'displayClass': 'customEditingToolbar'
                 });
-                var _select = new OpenLayers.Control.SelectFeature($scope.drawLayer, {
+                $scope._select = new OpenLayers.Control.SelectFeature($scope.drawLayer, {
                     displayClass: "olControlSelectFeature"
                 });
-                var _draw = undefined;
+                $scope._draw = undefined;
 
                 switch($scope.drawLayer._allowedGeometry) {
                     case 'bbox':
-                        _draw = new OpenLayers.Control.DrawFeature(
+                        $scope._draw = new OpenLayers.Control.DrawFeature(
                             $scope.drawLayer,
                             OpenLayers.Handler.RegularPolygon, {
                                 displayClass: "olControlDrawFeatureRect",
@@ -155,38 +155,39 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                         );
                         break;
                 }
-                var _modify = new OpenLayers.Control.ModifyFeature($scope.drawLayer, {
+                $scope._modify = new OpenLayers.Control.ModifyFeature($scope.drawLayer, {
                     displayClass: "olControlModifyFeature",
                     mode: OpenLayers.Control.ModifyFeature.RESIZE |
                           OpenLayers.Control.ModifyFeature.DRAG
                 });
-                var _delete = new OpenLayers.Control.DeleteFeature($scope.drawLayer, {
+                $scope._delete = new OpenLayers.Control.DeleteFeature($scope.drawLayer, {
                     displayClass: "olControlDeleteFeature",
-                    selectControl: _select,
-                    modifyControl: _modify
+                    selectControl: $scope._select,
+                    modifyControl: $scope._modify
                 });
 
-                $scope.toolbar.addControls([_select, _draw, _modify, _delete]);
+                $scope.toolbar.addControls([$scope._select, $scope._draw, $scope._modify, $scope._delete]);
                 $scope.map.addControl($scope.toolbar)
 
                 if(angular.isDefined($scope.drawLayer._maxFeatures)) {
                     if($scope.drawLayer.features.length >= $scope.drawLayer._maxFeatures) {
-                        OpenLayers.Element.addClass(_draw.panel_div, 'itemDisabled');
-                        _draw._disabled = true;
+                        OpenLayers.Element.addClass($scope._draw.panel_div, 'itemDisabled');
+                        $scope._draw._disabled = true;
                     }
                     var eventData = {
                         'drawLayer': $scope.drawLayer,
-                        'drawControl': _draw
+                        'drawControl': $scope._draw,
+                        'scope': $scope
                     };
-                    _draw.events.register(
+                    $scope._draw.events.register(
                         'featureadded',
                         eventData,
                         eventHandlers.checkMaxFeaturesAfterAddOrActivate);
-                    _draw.events.register(
+                    $scope._draw.events.register(
                         'activate',
                         eventData,
                         eventHandlers.checkMaxFeaturesAfterAddOrActivate);
-                    _delete.events.register(
+                    $scope._delete.events.register(
                         'featuredeleted',
                         eventData,
                         eventHandlers.checkMaxFeaturesAfterDelete);
