@@ -729,5 +729,9 @@
     {
         "key": "Copy",
         "value": "Kopieren"
+    },
+    {
+        "key": "Supported formats",
+        "value": "Unterstütze Bildformate"
     }
 ]

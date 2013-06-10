@@ -133,6 +133,13 @@
             <div labeled='checkbox_label' name-for="req_transparent" text="{{'Transparency'|i18n}}" warning="{{invalid_image_settings}}" warning-msg="{{'Selectet image format(s) not support transparency.'|i18n}}">
               <input type="checkbox" ng-model="source.data.req.transparent" id="req_transparent" name="req_transparent">
             </div>
+            <div labeled="input_label" name-for="supported_formats" text="{{'Supported formats'|i18n}}">
+                <select name="supported_formats" id="supported_formats" multiple="multiple" ng-model="source.data.supported_formats">
+                    <option value="PNG">PNG</option>
+                    <option value="JPEG">JPEG</option>
+                    <option value="GIF">GIF</option>
+                </select>
+            </div>
             <hr class="formLine">
             <div ng-include src="'${ get_url('static', filepath='angular_templates/min_max_res.html') }'"></div>
         <hr>
