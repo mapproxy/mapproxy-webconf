@@ -321,8 +321,14 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
                     name: 'osm'
                 }]
             }
-        }
-    }
+        };
+        var unregisterCoverageWatch = $scope.$watch('olmapBinds.layers.vector.Coverage.geometries', function(newValue, oldValue) {
+            if(!angular.equals(newValue, oldValue)) {
+                $scope.source.data.coverage.bbox = newValue[0].coordinates;
+                unregisterCoverageWatch();
+            }
+        }, true);
+    };
     $scope.resetForm = function(event) {
         if(!angular.isUndefined(event)) {
             event.preventDefault();

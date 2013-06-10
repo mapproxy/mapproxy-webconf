@@ -421,7 +421,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                         }
                     });
                 }
-            }, true);
+            });
         },
         link: function(scope, element, attrs) {
             scope.mapId = 'ol_map_' + scope.$id;
