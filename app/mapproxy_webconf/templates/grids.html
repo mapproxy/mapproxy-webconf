@@ -104,6 +104,7 @@
       <div class="pull-left">
         <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="grid._locked||!form.$valid" id="form_save" ng-class="{'btn-success': form.$valid&&!grid._locked}">{{'Save'|i18n}}</button>
         <button class="btn btn-small" ng-click="resetForm($event)" ng-disabled="grid._locked">{{'Reset'|i18n}}</button>
+        <button class="btn btn-small" ng-click="copyGrid($event)">{{'Copy'|i18n}}</button>
       </div>
       <div id="_editarea_toggle_button_container" class="pull-right" ng-show="!grid._locked"></div>
     </form>

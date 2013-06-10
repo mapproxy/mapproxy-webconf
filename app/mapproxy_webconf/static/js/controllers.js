@@ -406,6 +406,15 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
             safeApply($scope);
         }
     };
+    $scope.copySource = function(event) {
+        if(event) {
+            event.preventDefault();
+        }
+        var copiedData = angular.copy($scope.source.data);
+        delete copiedData.name;
+        var newSource = $.extend({}, DEFAULT_SOURCE, {'data': copiedData});
+        MapproxySources.current(true, newSource);
+    };
 
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {
@@ -634,6 +643,15 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
     $scope.showName = function(_id) {
         var name = MapproxySources.nameById(_id) || MapproxyCaches.nameById(_id) || MapproxyGrids.nameById(_id);
         return name ? name : _id;
+    };
+    $scope.copyCache = function(event) {
+        if(event) {
+            event.preventDefault();
+        }
+        var copiedData = angular.copy($scope.cache.data);
+        delete copiedData.name;
+        var newCache = $.extend({}, DEFAULT_CACHE, {'data': copiedData});
+        MapproxyCaches.current(true, newCache);
     };
     $scope.cache = angular.copy(DEFAULT_CACHE);
     $scope.formTitle = 'New cache';
@@ -928,6 +946,15 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         }
         setGrid();
     };
+    $scope.copyGrid = function(event) {
+        if(event) {
+            event.preventDefault();
+        }
+        var copiedData = angular.copy($scope.grid.data);
+        delete copiedData.name;
+        var newGrid = $.extend({}, DEFAULT_GRID, {'data': copiedData});
+        MapproxyGrids.current(true, newGrid);
+    };
     $scope.custom = {
         'res_scales': [],
         'resSelected': false
@@ -1140,7 +1167,15 @@ function MapproxyLayerFormCtrl($scope, $http, localize, MapproxySources, Mapprox
             safeApply($scope);
         }
     };
-
+    $scope.copyLayer = function(event) {
+        if(event) {
+            event.preventDefault();
+        }
+        var copiedData = angular.copy($scope.layer.data);
+        delete copiedData.name;
+        var newLayer = $.extend({}, DEFAULT_LAYER, {'data': copiedData});
+        MapproxyLayers.current(true, newLayer);
+    };
     $scope.custom = {
         'units': 'm',
         'resSelected': false,

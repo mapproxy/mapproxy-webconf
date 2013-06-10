@@ -725,5 +725,9 @@
     {
         "key": "Meta data",
         "value": "Metadaten"
+    },
+    {
+        "key": "Copy",
+        "value": "Kopieren"
     }
 ]
