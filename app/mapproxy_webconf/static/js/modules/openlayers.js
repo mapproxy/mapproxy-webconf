@@ -224,8 +224,8 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                     $scope.mapLayers.push(newLayer)
                 }
             };
-            var createVectorLayer = function(list, layer) {
-                var newLayer = new OpenLayers.Layer.Vector(layer.name);
+            var createVectorLayer = function(list, layer, name) {
+                var newLayer = new OpenLayers.Layer.Vector(name);
                 var style = $.extend({}, DEFAULT_VECTOR_STYLING, layer.style);
                 newLayer.styleMap = new OpenLayers.StyleMap(style);
                 if(angular.isDefined(layer.geometries)) {
@@ -321,8 +321,8 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                     });
                 }
                 if(angular.isDefined($scope.olmapBinds.layers.vector)) {
-                    angular.forEach($scope.olmapBinds.layers.vector, function(layer) {
-                        createVectorLayer($scope.layers, layer);
+                    angular.forEach($scope.olmapBinds.layers.vector, function(layer, name) {
+                        createVectorLayer($scope.layers, layer, name);
                     });
                 }
 

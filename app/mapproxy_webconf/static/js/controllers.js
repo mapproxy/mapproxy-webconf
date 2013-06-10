@@ -304,17 +304,17 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
             visible: true,
             proj: srs,
             layers: {
-                'vector': [{
-                    'name': 'Coverage',
-                    'zoomToDataExtent': true,
-                    'isDrawLayer': true,
-                    'maxFeatures': 1,
-                    'allowedGeometry': 'bbox',
-                    'geometries': [{
-                        'type': 'bbox',
-                        'coordinates': bbox
-                    }]
-                }],
+                'vector': {
+                    'Coverage': {
+                        'zoomToDataExtent': true,
+                        'isDrawLayer': true,
+                        'maxFeatures': 1,
+                        'allowedGeometry': 'bbox',
+                        'geometries': [{
+                            'type': 'bbox',
+                            'coordinates': bbox
+                        }]
+                    }},
                 'background': [{
                     title: 'BackgroundLayer',
                     url: 'http://osm.omniscale.net/proxy/service?',
