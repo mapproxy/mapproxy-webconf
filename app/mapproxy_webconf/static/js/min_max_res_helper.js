@@ -34,7 +34,7 @@ var extractMinMaxRes = function(scope, dataElement) {
         scope.custom.min_res = dataElement.data['min_res'] || dataElement.data['min_res_scale'];
         scope.custom.max_res = dataElement.data['max_res'] || dataElement.data['max_res_scale'];
         scope.custom.units = dataElement.data['units'] || 'm';
-        scope.custom.resSelected = !(angular.isDefined(dataElement.data['min_res_scale']) || angular.isDefined(dataElement.data['max_res_scale']));
+        scope.custom.resSelected = angular.isDefined(dataElement.data['min_res']) || angular.isDefined(dataElement.data['max_res']);
         if(scope.custom.resSelected) {
             scope.custom.min_resLabel = 'min_res';
             scope.custom.max_resLabel = 'max_res';

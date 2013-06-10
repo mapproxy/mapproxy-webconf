@@ -396,7 +396,7 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {
         'units': 'm',
-        'resSelected': true,
+        'resSelected': false,
         'min_resLabel': 'min_res',
         'max_resLabel': 'max_res'
     };
@@ -763,7 +763,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
             $scope.custom.resSelected = true;
         } else {
             $scope.custom.res_scales = [];
-            $scope.custom.resSelected = true
+            $scope.custom.resSelected = false
         }
 
         $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.grid);
@@ -872,7 +872,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
     };
     $scope.custom = {
         'res_scales': [],
-        'resSelected': true
+        'resSelected': false
     };
     $scope.grid = angular.copy(DEFAULT_GRID);
     $scope.formTitle = 'New grid';
@@ -1085,7 +1085,7 @@ function MapproxyLayerFormCtrl($scope, $http, localize, MapproxySources, Mapprox
 
     $scope.custom = {
         'units': 'm',
-        'resSelected': true,
+        'resSelected': false,
         'min_resLabel': 'min_res',
         'max_resLabel': 'max_res'
     };
