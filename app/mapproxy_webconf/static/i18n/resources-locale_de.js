@@ -661,5 +661,69 @@
     {
         "key": "Informations",
         "value": "Informationen"
+    },
+    {
+        "key": "Abstract",
+        "value": "Kurzbeschreibung"
+    },
+    {
+        "key": "Online resource",
+        "value": "Online Quelle"
+    },
+    {
+        "key": "Person",
+        "value": "Person"
+    },
+    {
+        "key": "Position",
+        "value": "Position"
+    },
+    {
+        "key": "Organization",
+        "value": "Organisation"
+    },
+    {
+        "key": "Address",
+        "value": "Adresse"
+    },
+    {
+        "key": "City",
+        "value": "Ort"
+    },
+    {
+        "key": "Postcode",
+        "value": "Postleitzahl"
+    },
+    {
+        "key": "Country",
+        "value": "Land"
+    },
+    {
+        "key": "Phone",
+        "value": "Telefonnummer"
+    },
+    {
+        "key": "Fax",
+        "value": "Faxnummer"
+    },
+    {
+        "key": "Email",
+        "value": "Email"
+    },
+    {
+        "key": "Fees",
+        "value": "Gebühren"
+    },
+    {
+        "key": "Access constraints",
+        "value": "Zugriffsbeschränkungen"
+    },
+    {
+        "key": "Contact",
+        "value": "Kontakt"
+    },
+    {
+        "key": "Meta data",
+        "value": "Metadaten"
     }
 ]
