@@ -69,7 +69,7 @@ function TreeCtrl($scope, localize, WMSSources, MessageService) {
     $scope.capabilities = {};
 };
 
-function MapproxySourceListCtrl($scope, localize, MapproxySources, MessageService) {
+function MapproxySourceListCtrl($scope, $templateCache, localize, MapproxySources, MessageService) {
     var DEFAULT_SOURCE = {'data': {"type": "wms", "req": {}, "coverage": {}, "supported_srs": []}};
     var refreshList = function() {
         $scope.mapproxy_sources = MapproxySources.list();
@@ -121,6 +121,14 @@ function MapproxySourceListCtrl($scope, localize, MapproxySources, MessageServic
         });
         result += '</ul>';
         return result;
+    };
+    $scope.getInfos = function(source) {
+        var message = '';
+        message += source.data.name ? 'name: ' + source.data.name + '<br>' : '';
+        message += source.data.req.url ? 'url: ' + source.data.req.url + '<br>' : '';
+        message += source.data.req.layers ? 'layer: ' + source.data.req.layers.join(', ') + '<br>' : '';
+        message += angular.isDefined(source.data.req.transparent) ? 'transparent: ' + (source.data.req.transparent ? 'Yes' : 'No') : '';
+        return message;
     };
 
     $scope._messageService = MessageService;
@@ -442,7 +450,7 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
     });
 };
 
-function MapproxyCacheListCtrl($scope, MapproxyCaches, MessageService) {
+function MapproxyCacheListCtrl($scope, MapproxyCaches, MessageService, MapproxySources, MapproxyGrids) {
     var DEFAULT_CACHE = {'data': {'meta_size': [null, null]}};
     var refreshList = function() {
         $scope.mapproxy_caches = MapproxyCaches.list();
@@ -494,6 +502,25 @@ function MapproxyCacheListCtrl($scope, MapproxyCaches, MessageService) {
         });
         result += '</ul>';
         return result;
+    };
+    $scope.getInfos = function(cache) {
+        var namedSources = []
+        angular.forEach(cache.data.sources, function(id) {
+            var sourceName = MapproxySources.nameById(id) || MapproxyCaches.nameById(id);
+            namedSources.push(sourceName ? sourceName : id);
+        });
+        var namedGrids = [];
+        angular.forEach(cache.data.grids, function(id) {
+            var gridName = MapproxyGrids.nameById(id);
+            namedGrids.push(gridName ? gridName : id);
+        });
+
+        var message = '';
+        message += cache.data.name ? 'name: ' + cache.data.name + '<br>' : '';
+        message += cache.data.source ? 'sources: ' + namedSources.join(', ') + '<br>' : '';
+        message += cache.data.grids ? 'grids: ' + namedGrids.join(', ') + '<br>' : '';
+        message += cache.data.format ? 'format: ' + cache.data.format : '';
+        return message;
     };
 
     $scope._messageService = MessageService;
@@ -707,6 +734,19 @@ function MapproxyGridListCtrl($scope, MapproxyGrids, MessageService) {
         });
         result += '</ul>';
         return result;
+    };
+    $scope.getInfos = function(grid) {
+        var message = '';
+        message += 'name: ' + grid.data.name + '<br>';
+        message += grid.data.srs ? 'srs: ' + grid.data.srs + '<br>' : '';
+        message += (grid.data.coverage) ?
+            ((grid.data.coverage.bbox) ?
+                'coverage: ' + grid.data.coverage.bbox + ((grid.data.coverage.srs) ?
+                    '(' + grid.data.coverage.srs + ')<br>' : '<br>')
+                : '')
+            : '';
+        message += grid.data.origin ? 'origin: ' + grid.data.origin : '';
+        return message
     };
 
     $scope._messageService = MessageService

@@ -657,5 +657,9 @@
     {
         "key": "Calculate tiles",
         "value": "Kachelanzahl berechnen"
+    },
+    {
+        "key": "Informations",
+        "value": "Informationen"
     }
 ]

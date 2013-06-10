@@ -140,7 +140,10 @@
               class="mapproxy_source"
               ng-repeat="source in filtered = (mapproxy_sources |filter:{data.name:search}) | orderBy:'name'"
               item-data="{{source}}">
-              <li class="droppable_name"> {{source.data.name}}</li>
+              <li class="droppable_name">
+                {{source.data.name}}
+                <i class="icon-info-sign pull-right" dialog="confirm" dialog-title="{{'Informations'|i18n}}" dialog-height="300" dialog-text="{{getInfos(source)}}"></i>
+              </li>
           </div>
       </ul>
       <span ng-show="false">{{filtered.length}}</span>
@@ -160,7 +163,10 @@
               class="mapproxy_cache"
               ng-repeat="cache in filtered = (mapproxy_caches | filter:{data.name:search}) | orderBy:'name'"
               item-data="{{cache}}">
-              <li class="droppable_name">{{cache.data.name}}</li>
+              <li class="droppable_name">
+                {{cache.data.name}}
+                <i class="icon-info-sign pull-right" dialog="confirm" dialog-title="{{'Informations'|i18n}}" dialog-height="300" dialog-text="{{getInfos(cache)}}"></i>
+              </li>
           </div>
       </ul>
       <span ng-show="false">{{filtered.length}}</span>
