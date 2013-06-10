@@ -358,7 +358,27 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                     $scope.map.zoomToMaxExtent();
                 }
             };
-            $scope.destroyMap = function() {
+            $scope.destroyMap = function(saveChanges) {
+                if(angular.isDefined($scope._draw)) {
+                    $scope._draw.deactivate()
+                }
+                if(angular.isDefined($scope._modify)) {
+                    $scope._modify.deactivate();
+                }
+                if(saveChanges) {
+                    var newGeometries = [];
+                    angular.forEach($scope.drawLayer.features, function(feature) {
+                        var geometry = feature.geometry.bounds.toArray();
+                        newGeometries.push({
+                            'type': $scope.drawLayer._allowedGeometry,
+                            'coordinates': geometry
+                        });
+                    });
+
+                    safeApply($scope, function() {
+                        $scope.olmapBinds.layers.vector[$scope.drawLayer.name].geometries = newGeometries;
+                    });
+                }
                 if($scope.map instanceof OpenLayers.Map) {
                     $scope.map.destroy();
                     delete $scope.map;
