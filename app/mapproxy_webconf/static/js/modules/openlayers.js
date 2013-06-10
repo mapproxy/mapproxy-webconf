@@ -103,6 +103,10 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                         OpenLayers.Element.removeClass(this.drawControl.panel_div, 'itemDisabled');
                         this.drawControl._disabled = false;
                     }
+                },
+                noticeChanges: function() {
+                    $scope.unsavedChanges = true;
+                    safeApply($scope)
                 }
             }
             //LayerSwitcher
@@ -192,6 +196,19 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                         eventData,
                         eventHandlers.checkMaxFeaturesAfterDelete);
                 }
+                $scope.drawLayer.events.register(
+                    'featureadded',
+                    null,
+                    eventHandlers.noticeChanges);
+                $scope._delete.events.register(
+                    'featuredeleted',
+                    null,
+                    eventHandlers.noticeChanges);
+                $scope.drawLayer.events.register(
+                    'featuremodified',
+                    null,
+                    eventHandlers.noticeChanges);
+
             }
 
             //Layers
