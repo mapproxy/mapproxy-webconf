@@ -1,4 +1,4 @@
-var MapproxyBaseService = function(_section, _dependencies) {
+var MapproxyBaseService = function(_section, _model, _dependencies) {
     var _this = this;
     this._items = {};
     this._item;
@@ -6,6 +6,7 @@ var MapproxyBaseService = function(_section, _dependencies) {
     this._section = _section;
     this._action;
     this._dependencies = _dependencies;
+    this._model = _model;
     this._rootScope;
     this._resource;
     this._messageService;
@@ -178,8 +179,8 @@ var MapproxyBaseService = function(_section, _dependencies) {
     }
 };
 
-var MapproxyLayerService = function(_section) {
-    MapproxyBaseService.call(this, _section);
+var MapproxyLayerService = function(_section, _model, _dependencies) {
+    MapproxyBaseService.call(this, _section, _model, _dependencies);
     var _this = this;
 
     this.prepareLayer = function(store, layer, idx, parent_id) {
@@ -329,14 +330,67 @@ WMSSourceService = function(_section) {
     this.return_dict['srs'] = _this.srs;
 };
 
-var layerService = new MapproxyLayerService('layers');
-var globalsService = new MapproxyBaseService('globals');
+var layerModel = {
+    'name': undefined,
+    'title': undefined,
+    'sources': [],
+    'min_res': undefined,
+    'max_res': undefined,
+    'min_res_scale': undefined,
+    'max_res_scale': undefined
+};
+var globalsModel = {
+    'cache': {
+        'meta_size': [],
+        'meta_buffer': undefined
+    },
+    'image': {
+        'resampling_method': undefined,
+        'paletted': undefined
+    }
+};
+var cacheModel = {
+    'name': undefined,
+    'sources': [],
+    'grids': [],
+    'format': undefined,
+    'request_format': undefined
+};
+var gridModel = {
+    'name': undefined,
+    'srs': undefined,
+    'bbox': [],
+    'bbox_srs': undefined,
+    'origin': undefined,
+    'res': [],
+    'scales': []
+};
+var sourceModel = {
+    'name': undefined,
+    'req': {
+        'url': undefined,
+        'layers': [],
+        'transparent': undefined
+    },
+    'coverage': {
+        'bbox': undefined,
+        'srs': undefined
+    },
+    'supported_formats': []
+};
+var defaultsModel = {
+    'dpi': undefined,
+    'srs': []
+}
+
+var layerService = new MapproxyLayerService('layers', layerModel);
+var globalsService = new MapproxyBaseService('globals', globalsModel);
 var servicesService = new MapproxyBaseService('services');
-var cacheService = new MapproxyBaseService('caches', [layerService]);
-var gridService = new MapproxyBaseService('grids', [cacheService]);
-var sourceService = new MapproxyBaseService('sources', [cacheService, layerService]);
+var cacheService = new MapproxyBaseService('caches', cacheModel, [layerService]);
+var gridService = new MapproxyBaseService('grids', gridModel, [cacheService]);
+var sourceService = new MapproxyBaseService('sources', sourceModel, [cacheService, layerService]);
 var wmsService = new WMSSourceService('wms_capabilities');
-var defaultsService = new MapproxyBaseService('defaults');
+var defaultsService = new MapproxyBaseService('defaults', defaultsModel);
 
 angular.module('mapproxy_gui.services', ['mapproxy_gui.resources']).
 
