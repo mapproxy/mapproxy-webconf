@@ -151,13 +151,13 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
         var item = _this.byId(_id);
         return item ? item.data.name : false;
     };
-    this.current = function(copy, _item) {
+    this.current = function(_item) {
         if(_item) {
             _this._item = _item;
             if(angular.isDefined(_this._rootScope))
                 _this._rootScope.$broadcast(_this._section + '.current');
         } else {
-            return copy ? angular.copy(_this._item) : _this._item;
+            return $.extend({}, {'data': _this._model}, _this._item);
         }
     };
     this.last = function() {
@@ -194,7 +194,8 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
         current: _this.current,
         last: _this.last,
         error: _this.error,
-        section: _this._section
+        section: _this._section,
+        model: _this._model
     }
 };
 
