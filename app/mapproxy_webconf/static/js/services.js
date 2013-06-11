@@ -48,6 +48,22 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
             _this._successMessageHandler(_this._localize.getLocalizedString('Load complete'));
         }
     };
+    this._removeNonModelProperties = function(data) {
+        var cleanup = function(cleanData, data) {
+            var _data = {};
+            angular.forEach(cleanData, function(value, key) {
+                if(angular.isObject(cleanData[key]) && !angular.isArray(cleanData[key])) {
+                    _data[key] = cleanup(cleanData[key], data[key]);
+                } else {
+                    if(angular.isDefined(data)) {
+                        _data[key] = data[key]
+                    }
+                }
+            });
+            return _data;
+        };
+        return cleanup(_this._model, data);;
+    };
     this.load = function() {
         _this._items = {};
         _this._loaded = false;
@@ -67,6 +83,9 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
         }, _this._errorMessageHandler);
     };
     this.add = function(_item) {
+        if(!_item._manual) {
+            _item.data = _this._removeNonModelProperties(_item.data);
+        }
         var item = new _this._resource(_item);
         delete item._dependencies;
         delete item._section;
