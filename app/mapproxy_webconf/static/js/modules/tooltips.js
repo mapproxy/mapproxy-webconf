@@ -1,57 +1,97 @@
 angular.module('mapproxy_gui.tooltips', []).
 
-directive('tooltip', function() {
+/**
+ * Loads a json dict from given URL
+ *
+ * Example dict:
+ *
+ * {
+ *     'tooltipID': {
+ *         'content': 'The tooltip content',
+ *         'title': 'Popover title'
+ *     }
+ * }
+ *
+ * 'title' is optional. If provided, a popover is created, otherwise a tooltip is created
+ *
+ * In application initialization use tooltipMapper.loadDict(url) to specify and load the
+ * tooltip dict
+ *
+ * Example:
+ * app.run(function(tooltipMapper) {
+ *     tooltipMapper.loadDict('[url_to_tooltip_dict]');
+ * });
+ */
+
+factory('tooltipMapper', function($http, $rootScope) {
+    var tooltipMapper = {
+        tooltips: {},
+        loadDict: function(url) {
+            $http.get(url, {cache: false}).success(function(data) {
+                tooltipMapper.tooltips = data;
+                $rootScope.$broadcast('tooltipsLoaded');
+            }); //XXXkai: error handling
+        }
+    };
+
+    return tooltipMapper;
+}).
+
+/**
+ * Example:
+ *   <button tooltip="tooltipID"></button>
+ * Description:
+ *   Will look after tooltipID in tooltipMapper and create a tooltip with tooltipMapper.tooltips[tooltipID].content
+ *   If tooltipMapper.tooltips[tooltipID].title is provided, a popover is created
+ *
+ * Example:
+ *   <button tooltip tooltip-content="ToolTip"></button>
+ * Description:
+ *   Will create a tooltip with tooltip-content. don't lkook in tooltipMapper
+ *   If tooltip-title is provided, a popover is created
+ *
+ * Other options:
+ *   tooltip-placement: [left, right, top, bottom]
+ */
+directive('tooltip', function(tooltipMapper) {
     return {
         restrict: 'A',
         scope: 'element',
         link: function(scope, element, attrs) {
-            var initPopover = function() {
+            var initPopover = function(content, title) {
                 $(element).popover({
-                    title: scope.tooltipTitle,
-                    content: scope.tooltipContent,
+                    title: title,
+                    content: content,
                     trigger: 'hover',
                     placement: scope.tooltipPlacement
                 });
             };
-            var initTooltip = function() {
-                $(element).attr('data-original-title', scope.tooltipContent);
+            var initTooltip = function(content) {
+                $(element).attr('data-original-title', content);
                 $(element).tooltip({
-                    title: scope.tooltipTitle,
                     placement: scope.tooltipPlacement
                 });
             };
 
-            scope.tooltipMode = attrs.tooltip || 'tooltip';
-            scope.tooltipContent = attrs.tooltipContent;
-            scope.tooltipTitle = attrs.tooltipTitle;
             scope.tooltipPlacement = attrs.tooltipPlacement || 'right';
 
-            if(scope.tooltipMode == 'popover') {
-                initPopover();
+            if(angular.isDefined(attrs.tooltipContent)) {
+                if(angular.isDefined(attrs.tooltipTitle)) {
+                    initPopover(attrs.tooltipContent, attrs.tooltipTitle);
+                } else {
+                    initTooltip(attrs.tooltipContent);
+                }
             } else {
-                initTooltip();
-            }
+                scope.$on('tooltipsLoaded', function() {
+                    var tooltipData = tooltipMapper.tooltips[attrs.tooltip];
 
-            attrs.$observe('tooltipContent', function(val) {
-                scope.tooltipContent = val;
-                if(scope.tooltipMode == 'popover') {
-                    $(element).popover('destroy');
-                    initPopover();
-                } else {
-                    $(element).tooltip('destroy');
-                    initTooltip();
-                }
-            });
-            attrs.$observe('tooltipTitle', function(val) {
-                scope.tooltipTitle = val;
-                if(scope.tooltipMode == 'popover') {
-                    $(element).popover('destroy');
-                    initPopover();
-                } else {
-                    $(element).tooltip('destroy');
-                    initTooltip();
-                }
-            });
+                    if(angular.isDefined(tooltipData.title)) {
+                        initPopover(tooltipData.content, tooltipData.title);
+                    } else {
+                        initTooltip(tooltipData.content);
+                    }
+                });
+            }
         }
-    }
+    };
 });
