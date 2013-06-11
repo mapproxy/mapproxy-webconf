@@ -979,33 +979,6 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope) {
             }, true);
         }
     }
-}).
-
-directive('messageHandler', function($templateCache, MessageService) {
-    return {
-        restrict: 'A',
-        scope: 'Element',
-        replace: true,
-        transclude: true,
-        template: function(element, attrs) {
-            return $templateCache.get(attrs.messageHandler);
-        },
-        link: function(scope, element, attrs) {
-            scope.messageService = MessageService;
-
-            var messageTypes = attrs.messageTypes.split(',');
-
-            angular.forEach(messageTypes, function(messageType) {
-                scope.$watch('messageService.messages.' + messageType, function(messageObject) {
-                    if(angular.isDefined(messageObject)) {
-                        scope.message = messageObject.message;
-                        scope.messageService.removeMessage(messageObject.section, messageObject.action);
-                        $(element).show().fadeOut(3000);
-                    }
-                } , true);
-            });
-        }
-    };
 });
 
 /* Controller for directives */

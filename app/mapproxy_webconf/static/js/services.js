@@ -367,23 +367,4 @@ service('DataShareService', function($rootScope) {
             }
         }
     }
-}).
-
-service('MessageService', function($rootScope) {
-    var service = {};
-
-    service.messages = {};
-    service.message = function(section, action, message) {
-        service.messages[section] = service.messages[section] || {};
-        service.messages[section][action] = {
-            'section': section,
-            'action': action,
-            'message': message
-        }
-    };
-
-    service.removeMessage = function(section, action) {
-        delete service.messages[section][action];
-    }
-    return service;
 });

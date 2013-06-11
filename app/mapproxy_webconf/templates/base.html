@@ -35,6 +35,7 @@
     <script type="text/javascript" src="${ get_url('static', filepath='js/validators.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/resources.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/services.js') }"></script>
+    <script type="text/javascript" src="${ get_url('static', filepath='js/modules/messages.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/directives.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/controllers.js') }"></script>
     % if defined('jsblock') and hasattr(jsblock, '__call__'):
@@ -49,7 +50,7 @@
         OpenLayers.ImgPath = "${ get_url('static', filepath='img/') }";
 
       /* add directives and services*/
-        var app = angular.module('mapproxy_gui', ['angular.extensions', 'localization', 'mapproxy_gui.directives', 'mapproxy_gui.services', 'mapproxy_gui.validators']);
+        var app = angular.module('mapproxy_gui', ['angular.extensions', 'localization', 'mapproxy_gui.directives', 'mapproxy_gui.services', 'mapproxy_gui.validators', 'mapproxy_gui.messages']);
 
       /* Set globals */
         app.run(function($rootScope) {
