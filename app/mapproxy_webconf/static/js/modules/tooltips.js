@@ -63,12 +63,14 @@ directive('tooltip', function(tooltipMapper) {
                     title: title,
                     content: content,
                     trigger: 'hover',
+                    html: true,
                     placement: scope.tooltipPlacement
                 });
             };
             var initTooltip = function(content) {
                 $(element).attr('data-original-title', content);
                 $(element).tooltip({
+                    html: true,
                     placement: scope.tooltipPlacement
                 });
             };
