@@ -70,7 +70,6 @@ function TreeCtrl($scope, localize, WMSSources, MessageService) {
 };
 
 function MapproxySourceListCtrl($scope, $templateCache, localize, MapproxySources, MessageService) {
-    var DEFAULT_SOURCE = {'data': {"type": "wms", "req": {}, "coverage": {}, "supported_srs": []}};
     var refreshList = function() {
         $scope.mapproxy_sources = MapproxySources.list();
     };
@@ -81,17 +80,35 @@ function MapproxySourceListCtrl($scope, $templateCache, localize, MapproxySource
         }
         return class_;
     };
-    $scope.editSource = function(source) {
-        $scope.selected = source
-        MapproxySources.current(true, $.extend({}, DEFAULT_SOURCE, source));
+    $scope.editSource = function(event, source) {
+        if(angular.isDefined(event)) {
+            event.preventDefault();
+        }
+        $scope.selected = source;
+        MapproxySources.current(source);
     };
-    $scope.removeSource = function(source) {
+    $scope.removeSource = function(event, source) {
+        if(angular.isDefined(event)) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
         $scope.selected = undefined;
         MapproxySources.remove(source);
     };
+    $scope.copySource = function(event, source) {
+        if(angular.isDefined(event)) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        $scope.selected = undefined;
+        var copiedData = angular.copy(source.data);
+        delete copiedData.name;
+        var newSource = $.extend({}, {'data': MapproxySources.model}, {'data': copiedData});
+        MapproxySources.current(newSource);
+    };
     $scope.newSource = function() {
         $scope.selected = undefined;
-        MapproxySources.current(true, DEFAULT_SOURCE);
+        MapproxySources.current({'data': MapproxySources.model});
     };
     $scope.hasDependencies = function(source) {
         var hasDependencies = false;
@@ -149,22 +166,24 @@ function MapproxySourceListCtrl($scope, $templateCache, localize, MapproxySource
     }, true);
     $scope.$watch('_messageService.messages.sources.delete_success', function() {
         refreshList();
-        MapproxySources.current(true, DEFAULT_SOURCE);
+        MapproxySources.current({'data': MapproxySources.model});
     }, true);
 };
 
 function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSources, ProjectDefaults, MessageService, MapproxyCaches) {
-    var DEFAULT_SOURCE = {"data": {"type": "wms", "req": {}, "coverage": {}}};
 
     var setSource = function() {
-        $scope.source = {};
-        $scope.source = MapproxySources.current(true);
+        $scope.source = MapproxySources.current();
         $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.source);
-        if(angular.equals($scope.source, DEFAULT_SOURCE)) {
+        //if equal, we have a clean new source
+        if(angular.equals($scope.source.data, MapproxySources.model)) {
             $scope.formTitle = 'New source';
             if(angular.isDefined($scope.defaults.data.srs)) {
                 $scope.source.data.supported_srs = angular.copy($scope.defaults.data.srs);
             }
+        //the only case, we have a not clean source without name is after copy one
+        } else if(angular.isUndefined($scope.source.data.name)) {
+            $scope.formTitle = 'New source';
         } else {
             $scope.formTitle = 'Edit source';
         }
@@ -183,7 +202,6 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
     $scope.warningLogic = {
         checkImageSettings: function() {
             var non_transparent_formats = ['JPEG', 'GIF'];
-            console.log($(non_transparent_formats).not($scope.source.data.supported_formats))
             return $scope.source.data.req.transparent == true &&
             $(non_transparent_formats).not($scope.source.data.supported_formats).length != non_transparent_formats.length
         }
@@ -416,15 +434,6 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
             safeApply($scope);
         }
     };
-    $scope.copySource = function(event) {
-        if(event) {
-            event.preventDefault();
-        }
-        var copiedData = angular.copy($scope.source.data);
-        delete copiedData.name;
-        var newSource = $.extend({}, DEFAULT_SOURCE, {'data': copiedData});
-        MapproxySources.current(true, newSource);
-    };
 
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {
@@ -433,9 +442,9 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
         'min_resLabel': 'min_res',
         'max_resLabel': 'max_res'
     };
-    $scope.defaults = {};
+    $scope.defaults = {'data': ProjectDefaults.model};
 
-    $scope.source = angular.copy(DEFAULT_SOURCE);
+    $scope.source = {'data': MapproxySources.model};
     $scope.formTitle = 'New source';
 
     $scope.editareaBinds = {
@@ -451,7 +460,7 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
         }
     }, true);
 
-    MapproxySources.current(true, $scope.source);
+    MapproxySources.current($scope.source);
 
     $scope.$on('sources.current', setSource);
 

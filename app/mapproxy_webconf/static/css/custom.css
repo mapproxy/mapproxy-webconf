@@ -302,7 +302,8 @@ ul.vertical-list li {
     padding: 0.5em;
 }
 
-ul.vertical-list li i.icon-remove {
+ul.vertical-list li i.icon-remove,
+ul.vertical-list li i.icon-share {
     float: right;
     cursor: pointer;
     opacity: 0.25;
@@ -311,11 +312,16 @@ ul.vertical-list li i.icon-remove {
     height: 20px; // make clickable area bigger
 }
 
-ul.vertical-list li i.icon-remove:hover {
+ul.vertical-list li i.icon-remove:hover,
+ul.vertical-list li i.icon-share:hover {
     opacity: 0.9;
 }
 
 ul.vertical-list div.selected li i.icon-remove {
+    background-image: url("../img/glyphicons-halflings-white.png");
+    opacity: 0.9;
+}
+ul.vertical-list div.selected li i.icon-share {
     background-image: url("../img/glyphicons-halflings-white.png");
     opacity: 0.9;
 }

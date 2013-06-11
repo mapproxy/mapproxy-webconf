@@ -22,7 +22,7 @@
   </div>
   <ul class="vertical-list">
     <div class="{{isSelected(source)}}" ng-repeat="source in filtered = (mapproxy_sources | filter: {data.name:search})"
-    ng-click="editSource(source)">
+    ng-click="editSource($event, source)">
     <li>
       <i ng-show="source._manual" class="icon-pencil"></i>
       {{source.data.name}}
@@ -30,7 +30,7 @@
         dialog="ask"
         dialog-title="{{'Confirm!'|i18n}}"
         dialog-text="{{'Really remove source:'|i18n}} {{source.data.name}}?"
-        callback="removeSource(source)">
+        callback="removeSource($event, source)">
       </i>
       <i ng-show="hasDependencies(source)" class="icon-remove"
         dialog="confirm"
@@ -39,6 +39,7 @@
         dialog-title="{{'Confirm!'|i18n}}"
         dialog-text="{{'Can not remove source:'|i18n}} {{source.data.name}}<br>{{'Dependencies are:'|i18n}}<br>{{getDependencies(source)}}">
        </i>
+       <i class="icon-share" ng-click="copySource($event, source)"></i>
      </li>
     </div>
   </ul>
