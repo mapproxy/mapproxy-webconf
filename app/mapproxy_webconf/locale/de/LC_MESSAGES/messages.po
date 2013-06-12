@@ -1,0 +1,353 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2013-06-12 14:11+CEST\n"
+"PO-Revision-Date: 2013-06-12 14:38+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+#: mapproxy_webconf/templates/angular_templates.html:2
+msgid "This field is required"
+msgstr "Dieses Feld wird benötigt"
+
+#: mapproxy_webconf/templates/angular_templates.html:3
+msgid "Invalid URL"
+msgstr "Ungültige URL"
+
+#: mapproxy_webconf/templates/angular_templates.html:4
+msgid "Invalid number"
+msgstr "Keine gültige Zahl"
+
+#: mapproxy_webconf/templates/angular_templates.html:5
+msgid "Invalid float"
+msgstr "Keine gültige Gleitkommazahl"
+
+#: mapproxy_webconf/templates/angular_templates.html:6
+msgid "Invalid integer"
+msgstr "Keine gültige Ganzzahl"
+
+#: mapproxy_webconf/templates/angular_templates.html:43
+msgid "An error occured"
+msgstr "Es ist ein Fehler aufgetreten"
+
+#: mapproxy_webconf/templates/base.html:72
+msgid "Projects"
+msgstr "Projekte"
+
+#: mapproxy_webconf/templates/base.html:73
+#: mapproxy_webconf/templates/base_config.html:4
+msgid "Configuration"
+msgstr "Konfiguration"
+
+#: mapproxy_webconf/templates/base_config.html:10
+msgid "create configuration"
+msgstr "Konfiguration erstellen"
+
+#: mapproxy_webconf/templates/caches.html:5
+msgid "Create new cache"
+msgstr "Neuen Cache erstellen"
+
+#: mapproxy_webconf/templates/caches.html:8
+msgid "Cache"
+msgstr "Cache"
+
+#: mapproxy_webconf/templates/caches.html:14
+#: mapproxy_webconf/templates/caches.html:148
+#: mapproxy_webconf/templates/layers.html:127
+msgid "Not shown caches"
+msgstr "Ausgeblendete Caches"
+
+#: mapproxy_webconf/templates/caches.html:102
+#: mapproxy_webconf/templates/globals.html:45
+#: mapproxy_webconf/templates/grids.html:103
+#: mapproxy_webconf/templates/layers.html:11
+#: mapproxy_webconf/templates/layers.html:79
+#: mapproxy_webconf/templates/project_index.html:25
+#: mapproxy_webconf/templates/services.html:109
+#: mapproxy_webconf/templates/sources.html:147
+msgid "Save"
+msgstr "Speichern"
+
+#: mapproxy_webconf/templates/caches.html:103
+#: mapproxy_webconf/templates/grids.html:104
+#: mapproxy_webconf/templates/layers.html:80
+#: mapproxy_webconf/templates/sources.html:148
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+#: mapproxy_webconf/templates/caches.html:104
+#: mapproxy_webconf/templates/grids.html:105
+#: mapproxy_webconf/templates/layers.html:81
+#: mapproxy_webconf/templates/sources.html:149
+msgid "Copy"
+msgstr "Kopieren"
+
+#: mapproxy_webconf/templates/caches.html:124
+#: mapproxy_webconf/templates/config_index.html:7
+#: mapproxy_webconf/templates/layers.html:99
+#: mapproxy_webconf/templates/sources.html:13
+msgid "Sources"
+msgstr "Sources"
+
+#: mapproxy_webconf/templates/caches.html:129
+#: mapproxy_webconf/templates/layers.html:104
+#: mapproxy_webconf/templates/sources.html:20
+msgid "Not shown sources"
+msgstr "Ausgeblendete Sources"
+
+#: mapproxy_webconf/templates/caches.html:143
+#: mapproxy_webconf/templates/config_index.html:9
+#: mapproxy_webconf/templates/layers.html:122
+msgid "Caches"
+msgstr "Caches"
+
+#: mapproxy_webconf/templates/caches.html:166
+#: mapproxy_webconf/templates/config_index.html:11
+msgid "Grids"
+msgstr "Grids"
+
+#: mapproxy_webconf/templates/caches.html:171
+#: mapproxy_webconf/templates/grids.html:13
+msgid "Not shown grids"
+msgstr "Ausgeblendete Grids"
+
+#: mapproxy_webconf/templates/config_index.html:3
+msgid "The MapProxy configuration is grouped into sections, each configures a different aspect of MapProxy. These are the following sections:"
+msgstr "Die MapProxy Konfiguration ist in Abschnitte unterteilt, die die unterschiedlichen Bereiche des MapProxy konfigurieren. Dies sind die folgenden Abschnitte:"
+
+#: mapproxy_webconf/templates/config_index.html:5
+#: mapproxy_webconf/templates/globals.html:3
+#: mapproxy_webconf/templates/globals.html:41
+msgid "Globals"
+msgstr "Globals"
+
+#: mapproxy_webconf/templates/config_index.html:6
+msgid "Internals of MapProxy and default values that are used in the other configuration sections."
+msgstr "MapProxy spezifische Konfigurationen und Standartwerte für andere Konfigurationsabschnitte."
+
+#: mapproxy_webconf/templates/config_index.html:8
+msgid "Define where MapProxy can retrieve new data."
+msgstr "Definieren der Datenquellen des MapProxy."
+
+#: mapproxy_webconf/templates/config_index.html:10
+msgid "Configure the internal caches."
+msgstr "Konfiguriert die internen Caches."
+
+#: mapproxy_webconf/templates/config_index.html:12
+msgid "Define the grids that MapProxy uses to aligns cached images."
+msgstr "Definieren der Grids die MapProxy verwendet um die gecachten Kacheln auszurichten."
+
+#: mapproxy_webconf/templates/config_index.html:13
+#: mapproxy_webconf/templates/sources.html:203
+msgid "Layers"
+msgstr "Layers"
+
+#: mapproxy_webconf/templates/config_index.html:14
+msgid "Configure the layers that MapProxy offers. Each layer can consist of multiple sources and caches."
+msgstr "Konfiguriert die durch MapProxy bereitgestellten Layer. Jeder Layer kann aus mehreren Sourcen und Caches bestehen."
+
+#: mapproxy_webconf/templates/config_index.html:15
+#: mapproxy_webconf/templates/services.html:2
+msgid "Services"
+msgstr "Dienste"
+
+#: mapproxy_webconf/templates/config_index.html:16
+msgid "The services MapProxy offers, e.g. WMS or TMS."
+msgstr "Die durch den MapProxy bereitgestellten Dienste, z.B. WMS oder TMS."
+
+#: mapproxy_webconf/templates/globals.html:18
+msgid "cache"
+msgstr "Cache"
+
+#: mapproxy_webconf/templates/globals.html:28
+msgid "image"
+msgstr "Image"
+
+#: mapproxy_webconf/templates/grids.html:5
+msgid "Create new grid"
+msgstr "Neues Grid erstellen"
+
+#: mapproxy_webconf/templates/grids.html:7
+msgid "User defined grids"
+msgstr "Grids"
+
+#: mapproxy_webconf/templates/grids.html:38
+msgid "Default grids"
+msgstr "Default Grids"
+
+#: mapproxy_webconf/templates/grids.html:84
+#: mapproxy_webconf/templates/grids.html:93
+#: mapproxy_webconf/templates/grids.html:154
+msgid "Resolutions"
+msgstr "Auflösungen"
+
+#: mapproxy_webconf/templates/grids.html:87
+msgid "Meters"
+msgstr "Meter"
+
+#: mapproxy_webconf/templates/grids.html:88
+msgid "Degrees"
+msgstr "Grad"
+
+#: mapproxy_webconf/templates/grids.html:94
+#: mapproxy_webconf/templates/grids.html:155
+msgid "Scales"
+msgstr "Maßstäbe"
+
+#: mapproxy_webconf/templates/grids.html:99
+msgid "Calculate tiles"
+msgstr "Kachelanzahl berechnen"
+
+#: mapproxy_webconf/templates/grids.html:134
+msgid "Lock"
+msgstr "Bearbeitung abschließen"
+
+#: mapproxy_webconf/templates/grids.html:142
+msgid "Unlock"
+msgstr "Bearbeitung wieder aufnehmen"
+
+#: mapproxy_webconf/templates/grids.html:153
+msgid "Level"
+msgstr "Level"
+
+#: mapproxy_webconf/templates/grids.html:156
+msgid "Total tiles"
+msgstr "Kacheln gesammt"
+
+#: mapproxy_webconf/templates/layers.html:9
+msgid "Create new layer"
+msgstr "Neuen Layer erstellen"
+
+#: mapproxy_webconf/templates/layers.html:13
+msgid "Layer"
+msgstr "Layer"
+
+#: mapproxy_webconf/templates/layers.html:19
+msgid "Not shown layers"
+msgstr "Ausgeblendete Layers"
+
+#: mapproxy_webconf/templates/project_index.html:2
+msgid "Project defaults"
+msgstr "Defaultwerte des Projekts"
+
+#: mapproxy_webconf/templates/project_index.html:3
+msgid "infotext_default_settings"
+msgstr "TODO: Infotexte Default Settings"
+
+#: mapproxy_webconf/templates/project_index.html:21
+#: mapproxy_webconf/templates/sources.html:102
+#: mapproxy_webconf/templates/sources.html:129
+#: mapproxy_webconf/templates/sources.html:223
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: mapproxy_webconf/templates/project_index.html:28
+#: mapproxy_webconf/templates/projects.html:11
+msgid "To configuration"
+msgstr "Zur Konfiguration"
+
+#: mapproxy_webconf/templates/projects.html:5
+msgid "project"
+msgstr "Projekt"
+
+#: mapproxy_webconf/templates/projects.html:6
+msgid "settings"
+msgstr "Einstellungen"
+
+#: mapproxy_webconf/templates/projects.html:8
+msgid "Goto default settings"
+msgstr "Default Einstellungen bearbeiten"
+
+#: mapproxy_webconf/templates/projects.html:15
+msgid "status mapproxy configuration"
+msgstr "Status der MapProxy Konfiguration"
+
+#: mapproxy_webconf/templates/projects.html:19
+msgid "The mapproxy configuration of this project is valid"
+msgstr "Die MapProxy-Konfiguration für dieses Projekts ist lauffähig"
+
+#: mapproxy_webconf/templates/projects.html:25
+msgid "Attention"
+msgstr "Achtung"
+
+#: mapproxy_webconf/templates/projects.html:26
+msgid "The mapproxy configuration of this project is invalid"
+msgstr "Die MapProxy-Konfiguration für dieses Projekts ist nicht lauffähig"
+
+#: mapproxy_webconf/templates/projects.html:28
+msgid "following errors are recorded"
+msgstr "Bei der Überprüfung sind folgende Fehler aufgetreten"
+
+#: mapproxy_webconf/templates/projects.html:43
+msgid "project overview"
+msgstr "Projektübersicht"
+
+#: mapproxy_webconf/templates/services.html:16
+msgid "wms"
+msgstr "WMS"
+
+#: mapproxy_webconf/templates/services.html:29
+msgid "Meta data"
+msgstr "Metadaten"
+
+#: mapproxy_webconf/templates/services.html:38
+msgid "Contact"
+msgstr "Kontakt"
+
+#: mapproxy_webconf/templates/services.html:83
+msgid "tms"
+msgstr "TMS"
+
+#: mapproxy_webconf/templates/services.html:89
+msgid "wmts"
+msgstr "WMTS"
+
+#: mapproxy_webconf/templates/services.html:95
+msgid "kml"
+msgstr "KML"
+
+#: mapproxy_webconf/templates/services.html:101
+msgid "demo"
+msgstr "Demo"
+
+#: mapproxy_webconf/templates/sources.html:10
+msgid "Create new source"
+msgstr "Neue Source anlegen"
+
+#: mapproxy_webconf/templates/sources.html:62
+msgid "Replace service URL deletes all layers depends to it!"
+msgstr "Das Ersetzen der Service-URL führt zum leeren der Layerliste!"
+
+#: mapproxy_webconf/templates/sources.html:108
+msgid "Use coverage from WMS"
+msgstr "Coverage des WMS benutzen"
+
+#: mapproxy_webconf/templates/sources.html:114
+msgid "Show coverage in map"
+msgstr "Coverage in Karte anzeigen"
+
+#: mapproxy_webconf/templates/sources.html:119
+msgid "Add SRS from WMS"
+msgstr "SRS von WMS hinzufügen"
+
+#: mapproxy_webconf/templates/sources.html:166
+msgid "Available WMS"
+msgstr "Verfügbare WMS"
+
+#: mapproxy_webconf/templates/sources.html:197
+msgid "Infos"
+msgstr "Informationen"
+
+#: mapproxy_webconf/templates/sources.html:200
+msgid "URL"
+msgstr "URL"
+

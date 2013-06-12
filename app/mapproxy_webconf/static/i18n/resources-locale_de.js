@@ -1,12 +1,12 @@
 [
-    {
-        "key": "Create new source",
-        "value": "Neue Source anlegen"
-    },
-    {
-        "key": "Sources",
-        "value": "Sources"
-    },
+    // {
+    //     "key": "Create new source",
+    //     "value": "Neue Source anlegen"
+    // },
+    // {
+    //     "key": "Sources",
+    //     "value": "Sources"
+    // },
     {
         "key": "New source",
         "value": "Neue Source"
@@ -15,30 +15,30 @@
         "key": "Edit source",
         "value": "Source bearbeiten"
     },
-    {
-        "key": "Replace service URL deletes all layers depends to it!",
-        "value": "Das Ersetzen der Service-URL führt zum leeren der Layerliste!"
-    },
+    // {
+    //     "key": "Replace service URL deletes all layers depends to it!",
+    //     "value": "Das Ersetzen der Service-URL führt zum leeren der Layerliste!"
+    // },
     {
         "key": "Name",
         "value": "Name"
     },
-    {
-        "key": "URL",
-        "value": "URL"
-    },
-    {
-        "key": "Layer",
-        "value": "Layer"
-    },
+    // {
+    //     "key": "URL",
+    //     "value": "URL"
+    // },
+    // {
+    //     "key": "Layer",
+    //     "value": "Layer"
+    // },
     {
         "key": "Manual add layer",
         "value": "Layer manuell hinzufügen"
     },
-    {
-        "key": "Add",
-        "value": "Hinzufügen"
-    },
+    // {
+    //     "key": "Add",
+    //     "value": "Hinzufügen"
+    // },
     {
         "key": "Transparency",
         "value": "Transparenz"
@@ -47,14 +47,14 @@
         "key": "Selectet image format(s) not support transparency.",
         "value": "Das ausgewählte Bildformat unterstüzt keine Transparenz"
     },
-    {
-        "key": "Save",
-        "value": "Speichern"
-    },
-    {
-        "key": "Reset",
-        "value": "Zurücksetzen"
-    },
+    // {
+    //     "key": "Save",
+    //     "value": "Speichern"
+    // },
+    // {
+    //     "key": "Reset",
+    //     "value": "Zurücksetzen"
+    // },
     {
         "key": "Saved successfully",
         "value": "Speichern erfolgreich!"
@@ -79,14 +79,14 @@
         "key": "No",
         "value": "Nein"
     },
-    {
-        "key": "Infos",
-        "value": "Informationen"
-    },
-    {
-        "key": "Layers",
-        "value": "Layers"
-    },
+    // {
+    //     "key": "Infos",
+    //     "value": "Informationen"
+    // },
+    // {
+    //     "key": "Layers",
+    //     "value": "Layers"
+    // },
     {
         "key": "refreshed",
         "value": "aktualisiert"
@@ -99,14 +99,14 @@
         "key": "Add WMS successfully",
         "value": "WMS erfolgreich hinzugefügt!"
     },
-    {
-        "key": "An error occured",
-        "value": "Es ist ein Fehler aufgetreten"
-    },
-    {
-        "key": "Available WMS",
-        "value": "Verfügbare WMS"
-    },
+    // {
+    //     "key": "An error occured",
+    //     "value": "Es ist ein Fehler aufgetreten"
+    // },
+    // {
+    //     "key": "Available WMS",
+    //     "value": "Verfügbare WMS"
+    // },
     {
         "key": "Really remove WMS:",
         "value": "Wirklich dieser WMS enternen:"
@@ -123,19 +123,18 @@
         "key": "Project",
         "value": "Projekt"
     },
-    {
-        "key": "Projects",
-        "value": "Projekte"
-    },
-    {
-        "key": "Configuration",
-        "value": "Konfiguration"
-    },
-    {
-        "key": "create configuration",
-        "value": "Konfiguration erstellen"
-    },
-
+    // {
+    //     "key": "Projects",
+    //     "value": "Projekte"
+    // },
+    // {
+    //     "key": "Configuration",
+    //     "value": "Konfiguration"
+    // },
+    // {
+    //     "key": "create configuration",
+    //     "value": "Konfiguration erstellen"
+    // },
     {
         "key": "Seeding",
         "value": "Seeding"
@@ -144,34 +143,34 @@
         "key": "Demo",
         "value": "Demo"
     },
-    {
-        "key": "Globals",
-        "value": "Globals"
-    },
-    {
-        "key": "Grids",
-        "value": "Grids"
-    },
-    {
-        "key": "Caches",
-        "value": "Caches"
-    },
-    {
-        "key": "Services",
-        "value": "Dienste"
-    },
+    // {
+    //     "key": "Globals",
+    //     "value": "Globals"
+    // },
+    // {
+    //     "key": "Grids",
+    //     "value": "Grids"
+    // },
+    // {
+    //     "key": "Caches",
+    //     "value": "Caches"
+    // },
+    // {
+    //     "key": "Services",
+    //     "value": "Dienste"
+    // },
     {
         "key": "YAML",
         "value": "YAML"
     },
-    {
-        "key": "Create new cache",
-        "value": "Neuen Cache erstellen"
-    },
-    {
-        "key": "Cache",
-        "value": "Cache"
-    },
+    // {
+    //     "key": "Create new cache",
+    //     "value": "Neuen Cache erstellen"
+    // },
+    // {
+    //     "key": "Cache",
+    //     "value": "Cache"
+    // },
     {
         "key": "Really remove cache:",
         "value": "Diesen Cache wirklich entfernen:"
@@ -188,34 +187,34 @@
         "key": "Edit cache",
         "value": "Cache bearbeiten"
     },
-    {
-        "key": "The MapProxy configuration is grouped into sections, each configures a different aspect of MapProxy. These are the following sections:",
-        "value": "Die MapProxy Konfiguration ist in Abschnitte unterteilt, die die unterschiedlichen Bereiche des MapProxy konfigurieren. Dies sind die folgenden Abschnitte."
-    },
-    {
-        "key": "Internals of MapProxy and default values that are used in the other configuration sections.",
-        "value": "MapProxy spezifische Konfigurationen und Standartwerte für andere Konfigurationsabschnitte."
-    },
-    {
-        "key": "Define where MapProxy can retrieve new data.",
-        "value": "Definieren der Datenquellen des MapProxy."
-    },
-    {
-        "key": "Configure the internal caches.",
-        "value": "Konfiguriert die internen Caches."
-    },
-    {
-        "key": "Define the grids that MapProxy uses to aligns cached images.",
-        "value": "Definieren der Grids die MapProxy verwendet um die gecachten Kacheln auszurichten."
-    },
-    {
-        "key": "Configure the layers that MapProxy offers. Each layer can consist of multiple sources and caches.",
-        "value": "Konfiguriert die durch MapProxy bereitgestellten Layer. Jeder Layer kann aus mehreren Sourcen und Caches bestehen."
-    },
-    {
-        "key": "The services MapProxy offers, e.g. WMS or TMS.",
-        "value": "Die durch den MapProxy bereitgestellten Dienste, z.B. WMS oder TMS"
-    },
+    // {
+    //     "key": "The MapProxy configuration is grouped into sections, each configures a different aspect of MapProxy. These are the following sections:",
+    //     "value": "Die MapProxy Konfiguration ist in Abschnitte unterteilt, die die unterschiedlichen Bereiche des MapProxy konfigurieren. Dies sind die folgenden Abschnitte."
+    // },
+    // {
+    //     "key": "Internals of MapProxy and default values that are used in the other configuration sections.",
+    //     "value": "MapProxy spezifische Konfigurationen und Standartwerte für andere Konfigurationsabschnitte."
+    // },
+    // {
+    //     "key": "Define where MapProxy can retrieve new data.",
+    //     "value": "Definieren der Datenquellen des MapProxy."
+    // },
+    // {
+    //     "key": "Configure the internal caches.",
+    //     "value": "Konfiguriert die internen Caches."
+    // },
+    // {
+    //     "key": "Define the grids that MapProxy uses to aligns cached images.",
+    //     "value": "Definieren der Grids die MapProxy verwendet um die gecachten Kacheln auszurichten."
+    // },
+    // {
+    //     "key": "Configure the layers that MapProxy offers. Each layer can consist of multiple sources and caches.",
+    //     "value": "Konfiguriert die durch MapProxy bereitgestellten Layer. Jeder Layer kann aus mehreren Sourcen und Caches bestehen."
+    // },
+    // {
+    //     "key": "The services MapProxy offers, e.g. WMS or TMS.",
+    //     "value": "Die durch den MapProxy bereitgestellten Dienste, z.B. WMS oder TMS"
+    // },
     {
         "key": "Meta size",
         "value": "Metakachelgröße"
@@ -224,10 +223,10 @@
         "key": "Meta buffer",
         "value": "Metapuffer"
     },
-    {
-        "key": "Create new grid",
-        "value": "Neues Grid erstellen"
-    },
+    // {
+    //     "key": "Create new grid",
+    //     "value": "Neues Grid erstellen"
+    // },
     {
         "key": "Really remove grid:",
         "value": "Wirklich dieses Grid entfernen:"
@@ -260,10 +259,10 @@
         "key": "Origin",
         "value": "Orientierung"
     },
-    {
-        "key": "Create new layer",
-        "value": "Neuen Layer erstellen"
-    },
+    // {
+    //     "key": "Create new layer",
+    //     "value": "Neuen Layer erstellen"
+    // },
     {
         "key": "Really remove layer:",
         "value": "Wirklich diesen Layer entfernen:"
@@ -292,26 +291,26 @@
         "key": "You have unsaved changes in this form. Realy leave the page and disgard unsaved changes?",
         "value": "Es gibt ungespeicherte Änderungen. Wirklich die Seiter verlassen und die Änderungen verwerfen?"
     },
-    {
-        "key": "wms",
-        "value": "WMS"
-    },
-    {
-        "key": "tms",
-        "value": "TMS"
-    },
-    {
-        "key": "wmts",
-        "value": "WMTS"
-    },
-    {
-        "key": "kml",
-        "value": "KML"
-    },
-    {
-        "key": "demo",
-        "value": "Demo"
-    },
+    // {
+    //     "key": "wms",
+    //     "value": "WMS"
+    // },
+    // {
+    //     "key": "tms",
+    //     "value": "TMS"
+    // },
+    // {
+    //     "key": "wmts",
+    //     "value": "WMTS"
+    // },
+    // {
+    //     "key": "kml",
+    //     "value": "KML"
+    // },
+    // {
+    //     "key": "demo",
+    //     "value": "Demo"
+    // },
     {
         "key": "Saving failed",
         "value": "Speichern fehlgeschlagen"
@@ -342,10 +341,10 @@
         "value": "Coverage SRS",
         "description": "How to translate coverage?"
     },
-    {
-        "key": "Use coverage from WMS",
-        "value": "Coverage des WMS benutzen"
-    },
+    // {
+    //     "key": "Use coverage from WMS",
+    //     "value": "Coverage des WMS benutzen"
+    // },
     {
         "key": "Supported SRS",
         "value": "Unterstütze Koordinatensysteme"
@@ -354,18 +353,18 @@
         "key": "Manual add SRS",
         "value": "Koordinatensystem manuell hinzufügen"
     },
-    {
-        "key": "Add SRS from WMS",
-        "value": "SRS von WMS hinzufügen"
-    },
-    {
-        "key": "Default grids",
-        "value": "Default Grids"
-    },
-    {
-        "key": "User defined grids",
-        "value": "Grids"
-    },
+    // {
+    //     "key": "Add SRS from WMS",
+    //     "value": "SRS von WMS hinzufügen"
+    // },
+    // {
+    //     "key": "Default grids",
+    //     "value": "Default Grids"
+    // },
+    // {
+    //     "key": "User defined grids",
+    //     "value": "Grids"
+    // },
     {
         "key": "Default grid",
         "value": "Default Grid"
@@ -382,14 +381,14 @@
         "key": "Save manual edition",
         "value": "Manuelle Bearbeitung speichern"
     },
-    {
-        "key": "cache",
-        "value": "Cache"
-    },
-    {
-        "key": "image",
-        "value": "Image"
-    },
+    // {
+    //     "key": "cache",
+    //     "value": "Cache"
+    // },
+    // {
+    //     "key": "image",
+    //     "value": "Image"
+    // },
     {
         "key": "Resampling method",
         "value": "Resampling Methode"
@@ -406,46 +405,46 @@
         "key": "Back to form edit",
         "value": "Zurück zum formularbasierten Editieren"
     },
-    {
-        "key": "project overview",
-        "value": "Projektübersicht"
-    },
-    {
-        "key": "Attention",
-        "value": "Achtung"
-    },
-    {
-        "key": "settings",
-        "value": "Einstellungen"
-    },
-    {
-        "key": "status mapproxy configuration",
-        "value": "Status der MapProxy Konfiguration"
-    },
-    {
-        "key": "The mapproxy configuration of this project is valid",
-        "value": "Die MapProxy-Konfiguration für dieses Projekts ist lauffähig"
-    },
-    {
-        "key": "project",
-        "value": "Projekt"
-    },
-    {
-        "key": "The mapproxy configuration of this project is invalid",
-        "value": "Die MapProxy-Konfiguration für dieses Projekts ist nicht lauffähig"
-    },
-    {
-        "key": "following errors are recorded",
-        "value": "Bei der Überprüfung sind folgende Fehler aufgetreten"
-    },
-    {
-        "key": "To configuration",
-        "value": "Zur Konfiguration"
-    },
-    {
-        "key": "Goto default settings",
-        "value": "Default Einstellungen bearbeiten"
-    },
+    // {
+    //     "key": "project overview",
+    //     "value": "Projektübersicht"
+    // },
+    // {
+    //     "key": "Attention",
+    //     "value": "Achtung"
+    // },
+    // {
+    //     "key": "settings",
+    //     "value": "Einstellungen"
+    // },
+    // {
+    //     "key": "status mapproxy configuration",
+    //     "value": "Status der MapProxy Konfiguration"
+    // },
+    // {
+    //     "key": "The mapproxy configuration of this project is valid",
+    //     "value": "Die MapProxy-Konfiguration für dieses Projekts ist lauffähig"
+    // },
+    // {
+    //     "key": "project",
+    //     "value": "Projekt"
+    // },
+    // {
+    //     "key": "The mapproxy configuration of this project is invalid",
+    //     "value": "Die MapProxy-Konfiguration für dieses Projekts ist nicht lauffähig"
+    // },
+    // {
+    //     "key": "following errors are recorded",
+    //     "value": "Bei der Überprüfung sind folgende Fehler aufgetreten"
+    // },
+    // {
+    //     "key": "To configuration",
+    //     "value": "Zur Konfiguration"
+    // },
+    // {
+    //     "key": "Goto default settings",
+    //     "value": "Default Einstellungen bearbeiten"
+    // },
     {
         "key": "Dependencies are:",
         "value": "Die Abhängigkeiten sind:"
@@ -454,22 +453,22 @@
         "key": "Name required.",
         "value": "Name wird benötigt"
     },
-    {
-        "key": "Not shown sources",
-        "value": "Ausgeblendete Sources"
-    },
-    {
-        "key": "Not shown grids",
-        "value": "Ausgeblendete Grids"
-    },
-    {
-        "key": "Not shown caches",
-        "value": "Ausgeblendete Caches"
-    },
-    {
-        "key": "Not shown layers",
-        "value": "Ausgeblendete Layers"
-    },
+    // {
+    //     "key": "Not shown sources",
+    //     "value": "Ausgeblendete Sources"
+    // },
+    // {
+    //     "key": "Not shown grids",
+    //     "value": "Ausgeblendete Grids"
+    // },
+    // {
+    //     "key": "Not shown caches",
+    //     "value": "Ausgeblendete Caches"
+    // },
+    // {
+    //     "key": "Not shown layers",
+    //     "value": "Ausgeblendete Layers"
+    // },
     {
         "key": "Filter",
         "value": "Filter"
@@ -478,14 +477,14 @@
         "key": "Add SRS",
         "value": "Koordinatensystem hinzufügen"
     },
-    {
-        "key": "Project defaults",
-        "value": "Defaultwerte des Projekts"
-    },
-    {
-        "key": "infotext_default_settings",
-        "value": "TODO: Infotexte Default Settings"
-    },
+    // {
+    //     "key": "Project defaults",
+    //     "value": "Defaultwerte des Projekts"
+    // },
+    // {
+    //     "key": "infotext_default_settings",
+    //     "value": "TODO: Infotexte Default Settings"
+    // },
     {
         "key": "OK",
         "value": "OK"
@@ -530,14 +529,14 @@
         "key": "Request format",
         "value": "Request Format"
     },
-    {
-        "key": "Lock",
-        "value": "Bearbeitung abschließen"
-    },
-    {
-        "key": "Unlock",
-        "value": "Bearbeitung wieder aufnehmen"
-    },
+    // {
+    //     "key": "Lock",
+    //     "value": "Bearbeitung abschließen"
+    // },
+    // {
+    //     "key": "Unlock",
+    //     "value": "Bearbeitung wieder aufnehmen"
+    // },
     {
         "key": "Really lock the grid",
         "value": "Abschließen des Bearbeitens für Grid"
@@ -562,14 +561,14 @@
         "key": "If you go back to form editing, you will loose all configurations which are not represented by form fields",
         "value": "Wenn Sie zum formularbasierten Editieren zurückkehren verlieren Sie alle nicht durch ein Formularfeld representierten Konfigurationen"
     },
-    {
-        "key": "Resolutions",
-        "value": "Auflösungen"
-    },
-    {
-        "key": "Scales",
-        "value": "Maßstäbe"
-    },
+    // {
+    //     "key": "Resolutions",
+    //     "value": "Auflösungen"
+    // },
+    // {
+    //     "key": "Scales",
+    //     "value": "Maßstäbe"
+    // },
     {
         "key": "Resolution",
         "value": "Auflösung"
@@ -578,22 +577,22 @@
         "key": "Scale",
         "value": "Maßstab"
     },
-    {
-        "key": "Level",
-        "value": "Level"
-    },
+    // {
+    //     "key": "Level",
+    //     "value": "Level"
+    // },
     {
         "key": "Map units",
         "value": "Karteneinheit"
     },
-    {
-        "key": "Meters",
-        "value": "Meter"
-    },
-    {
-        "key": "Degrees",
-        "value": "Grad"
-    },
+    // {
+    //     "key": "Meters",
+    //     "value": "Meter"
+    // },
+    // {
+    //     "key": "Degrees",
+    //     "value": "Grad"
+    // },
     {
         "key": "min_res",
         "value": "Minimale Auflösung"
@@ -610,30 +609,30 @@
         "key": "max_res_scale",
         "value": "Maximale Auflösung (als Maßstab)"
     },
-    {
-        "key": "Show coverage in map",
-        "value": "Coverage in Karte anzeigen"
-    },
-    {
-        "key": "This field is required",
-        "value": "Dieses Feld wird benötigt"
-    },
-    {
-        "key": "Invalid URL",
-        "value": "Ungültige URL"
-    },
-    {
-        "key": "Invalid number",
-        "value": "Keine gültige Zahl"
-    },
-    {
-        "key": "Invalid float",
-        "value": "Keine gültige Gleitkommazahl"
-    },
-    {
-        "key": "Invalid integer",
-        "value": "Keine gültige Ganzzahl"
-    },
+    // {
+    //     "key": "Show coverage in map",
+    //     "value": "Coverage in Karte anzeigen"
+    // },
+    // {
+    //     "key": "This field is required",
+    //     "value": "Dieses Feld wird benötigt"
+    // },
+    // {
+    //     "key": "Invalid URL",
+    //     "value": "Ungültige URL"
+    // },
+    // {
+    //     "key": "Invalid number",
+    //     "value": "Keine gültige Zahl"
+    // },
+    // {
+    //     "key": "Invalid float",
+    //     "value": "Keine gültige Gleitkommazahl"
+    // },
+    // {
+    //     "key": "Invalid integer",
+    //     "value": "Keine gültige Ganzzahl"
+    // },
     {
         "key": "Here you can define project wide settings",
         "value": "In diesem Abschnitt könne projektweite Einstellungen vorgenommen werden"
@@ -650,14 +649,14 @@
         "key": "Tiles X * Tiles Y",
         "value": "Kacheln X * Kacheln Y"
     },
-    {
-        "key": "Total tiles",
-        "value": "Kacheln gesammt"
-    },
-    {
-        "key": "Calculate tiles",
-        "value": "Kachelanzahl berechnen"
-    },
+    // {
+    //     "key": "Total tiles",
+    //     "value": "Kacheln gesammt"
+    // },
+    // {
+    //     "key": "Calculate tiles",
+    //     "value": "Kachelanzahl berechnen"
+    // },
     {
         "key": "Informations",
         "value": "Informationen"
@@ -718,18 +717,18 @@
         "key": "Access constraints",
         "value": "Zugriffsbeschränkungen"
     },
-    {
-        "key": "Contact",
-        "value": "Kontakt"
-    },
-    {
-        "key": "Meta data",
-        "value": "Metadaten"
-    },
-    {
-        "key": "Copy",
-        "value": "Kopieren"
-    },
+    // {
+    //     "key": "Contact",
+    //     "value": "Kontakt"
+    // },
+    // {
+    //     "key": "Meta data",
+    //     "value": "Metadaten"
+    // },
+    // {
+    //     "key": "Copy",
+    //     "value": "Kopieren"
+    // },
     {
         "key": "Supported formats",
         "value": "Unterstütze Bildformate"

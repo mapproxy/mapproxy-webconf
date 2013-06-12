@@ -1,25 +1,25 @@
 %def site_navbar():
     <a href="${ get_url('configuration', project='base') }">
       <h2 class="pull-left tab-menu-header">
-        {{'Configuration'|i18n}}
+        ${ __('Configuration') }
       </h2>
     </a>
     <div ng-controller="MapProxyConfigCtrl" class="pull-right">
       <div>
           <button class="btn btn-small" ng-click="writeMapProxyConfig($event)">
-            {{'create configuration'|i18n}}
+            ${ __('create configuration') }
           </button>
       </div>
       <div message-handler="success" message-types="mapproxy_config.success"></div>
       <div message-handler="error" message-types="mapproxy_config.error"></div>
     </div>
     <ul class="nav nav-tabs tab-menu">
-      %navigation("sources", "{{'Sources'|i18n}}")
-      %navigation("grids", "{{'Grids'|i18n}}")
-      %navigation("caches", "{{'Caches'|i18n}}" )
-      %navigation("layers", "{{'Layers'|i18n}}" )
-      %navigation("services", "{{'Services'|i18n}}" )
-      %navigation("globals", "{{'Globals'|i18n}}")
+      %navigation("sources", __('Sources'))
+      %navigation("grids",  __('Grids'))
+      %navigation("caches", __('Caches'))
+      %navigation("layers", __('Layers'))
+      %navigation("services", __('Services'))
+      %navigation("globals", __('Globals'))
     </ul>
 
 % end
