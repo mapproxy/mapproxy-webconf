@@ -226,10 +226,12 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
             };
             var createWMSLayer = function(list, layer, srs, url) {
                 if(layer.name || layer.layers) {
+                    olLayers = angular.isArray(layer.name) ? layer.name : [layer.name];
+
                     var newLayer = new OpenLayers.Layer.WMS(layer.title, url, {
                         srs: srs,
                         transparent: !layer.opaque,
-                        layers: [layer.name]
+                        layers: olLayers
                     }, {
                       singleTile: true,
                       ratio: 1.0
@@ -241,6 +243,23 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                     list.push(newLayer);
                     $scope.mapLayers.push(newLayer)
                 }
+            };
+            var createCombinedWMSLayer = function(layers, srs, url) {
+                var extractLayerNames = function(list, layer) {
+                    if(layer.name) {
+                        list.push(layer.name)
+                    }
+                    if(layer.layers) {
+                        angular.forEach(layer.layers, function(layer) {
+                            extractLayerNames(list, layer)
+                        });
+                    }
+                };
+                var layerNames = [];
+                angular.forEach(layers, function(layer) {
+                    extractLayerNames(layerNames, layer)
+                });
+                createWMSLayer([], {'name': layerNames, 'title': 'Combined Layer'}, srs, url);
             };
             var createVectorLayer = function(list, layer, name) {
                 var newLayer = new OpenLayers.Layer.Vector(name);
@@ -334,9 +353,13 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                     });
                 }
                 if(angular.isDefined($scope.olmapBinds.layers.wms)) {
-                    angular.forEach($scope.olmapBinds.layers.wms, function(layer) {
-                        createWMSLayer($scope.layers, layer, $scope.olmapBinds.proj, $scope.olmapBinds.url);
-                    });
+                    if($scope.olmapBinds.singleRequest) {
+                        createCombinedWMSLayer($scope.olmapBinds.layers.wms, $scope.olmapBinds.proj, $scope.olmapBinds.url);
+                    } else {
+                        angular.forEach($scope.olmapBinds.layers.wms, function(layer) {
+                            createWMSLayer($scope.layers, layer, $scope.olmapBinds.proj, $scope.olmapBinds.url);
+                        });
+                    }
                 }
                 if(angular.isDefined($scope.olmapBinds.layers.vector)) {
                     angular.forEach($scope.olmapBinds.layers.vector, function(layer, name) {
