@@ -13,9 +13,8 @@
       <span ng-show="list.length - filtered.length" ng-click="search=''">{{'Not shown grids'|i18n}}: {{list.length - filtered.length}}</span>
     </div>
     <ul class="vertical-list">
-       <div class="{{isSelected(item)}}" ng-repeat="item in filtered = (list | filter: {data.name:search}) | orderBy:'name'"
-        ng-click="editItem($event, item)">
-         <li>
+      <div class="{{isSelected(item)}}" ng-repeat="item in filtered = (list | filter: {data.name:search}) | orderBy:'name'" ng-click="editItem($event, item)">
+        <li>
           <i ng-show="item._manual" class="icon-pencil"></i>
           <i ng-show="item._locked || item.default" class="icon-ok"></i>
           {{item.data.name}}
@@ -37,10 +36,9 @@
       </div>
     </ul>
     <h3>{{'Default grids'|i18n}}</h3>
-     <ul class="vertical-list">
-       <div class="{{isSelected(item)}}" ng-repeat="item in defaultGrids | orderBy:'name'"
-        ng-click="editItem(item)">
-         <li>{{item.data.name}}</li>
+    <ul class="vertical-list">
+      <div class="{{isSelected(item)}}" ng-repeat="item in defaultGrids | orderBy:'name'" ng-click="editItem(item)">
+        <li>{{item.data.name}}</li>
       </div>
     </ul>
     <span ng-show="false">{{filtered.length}}</span>
@@ -58,7 +56,7 @@
       </div>
       <!-- SRS -->
       <div labeled="input_label" name-for="srs" text="{{'SRS'|i18n}}">
-           <select ng-model="grid.data.srs" id="srs" ng-options="srs for srs in defaults.data.srs" ng-disabled="grid._locked" name="srs">
+          <select ng-model="grid.data.srs" id="srs" ng-options="srs for srs in defaults.data.srs" ng-disabled="grid._locked" name="srs">
           </select>
       </div>
       <hr>

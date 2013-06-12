@@ -14,23 +14,24 @@
         <hr>
         <h4>{{'status mapproxy configuration'|i18n}}</h4>
         %if data['valid']:
-            <div class="alert alert-block alert-success ">
+          <div class="alert alert-block alert-success ">
             <h4 class="alert-heading">
               {{'The mapproxy configuration of this project is valid'|i18n}}
             </h4>
           </div>
         %else:
-            <div class="alert alert-block alert-error ">
-              <h4 class"alert-heading" style="margin-bottom: 10px">
-                {{'Attention'|i18n}}:
-                {{'The mapproxy configuration of this project is invalid'|i18n}}</h4>
-              <p style="margin-bottom: 10px">{{'following errors are recorded'|i18n}}:</p>
+          <div class="alert alert-block alert-error ">
+            <h4 class"alert-heading" style="margin-bottom: 10px">
+              {{'Attention'|i18n}}:
+              {{'The mapproxy configuration of this project is invalid'|i18n}}
+            </h4>
+            <p style="margin-bottom: 10px">{{'following errors are recorded'|i18n}}:</p>
             <ul>
               %for msg in data['errors']:
                 <li>${msg}</li>
               %end
             </ul>
-            </div>
+          </div>
         %end
       </div>
     %end

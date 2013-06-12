@@ -64,36 +64,35 @@
   </head>
 <body>
   <div id="wrapper">
-      <div class="navbar navbar-static-top">
-        <div class="navbar-inner">
-          <div class="container">
-            <a class="brand" href="/">MPG</a>
-            <ul class="nav">
-              <li><a href="${ get_url('projects') }">{{'Projects'|i18n}}</a></li>
-              <li><a href="${ get_url('configuration', project='base') }">{{'Configuration'|i18n}}</a></li>
-            </ul>
-          </div>
+    <div class="navbar navbar-static-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">MPG</a>
+          <ul class="nav">
+            <li><a href="${ get_url('projects') }">{{'Projects'|i18n}}</a></li>
+            <li><a href="${ get_url('configuration', project='base') }">{{'Configuration'|i18n}}</a></li>
+          </ul>
         </div>
-      </div><!-- /.navbar -->
-      <div class="sitebar-wrapper">
-        <div class="shadow"></div>
-           <div class="sitebar container">
-             % if defined('site_navbar'):
-               %site_navbar()
-             % end
-            </div>
-         </div>
-        <div class="container content">
-            <div class="row-fluid">
-            % if defined('content'):
-              %content()
-            % end
-           </div>
-         </div>
-       <footer>
-          &copy; 2013 - Omniscale GmbH & Co. KG
-       </footer>
-   </div>
-
+      </div>
+    </div><!-- /.navbar -->
+    <div class="sitebar-wrapper">
+      <div class="shadow"></div>
+      <div class="sitebar container">
+        % if defined('site_navbar'):
+          %site_navbar()
+        % end
+      </div>
+    </div>
+    <div class="container content">
+      <div class="row-fluid">
+        % if defined('content'):
+          %content()
+        % end
+      </div>
+    </div>
+    <footer>
+      &copy; 2013 - Omniscale GmbH & Co. KG
+    </footer>
+  </div>
 </body>
 </html>
