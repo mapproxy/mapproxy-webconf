@@ -1,5 +1,6 @@
 import os
 import yaml
+import gettext
 from copy import deepcopy
 
 from xml.etree.ElementTree import ParseError
@@ -22,6 +23,14 @@ LANGUAGE = configuration.get('app', 'language')
 app = bottle.Bottle()
 bottle.TEMPLATE_PATH = [os.path.join(os.path.dirname(__file__), 'templates')]
 SimpleTemplate.defaults["get_url"] = app.get_url
+
+try:
+    translation = gettext.translation('messages', os.path.join(os.path.dirname(os.path.realpath(__file__)), 'locale'), ['de'])
+    translation.install()
+    SimpleTemplate.defaults["__"] = translation.gettext
+
+except IOError as e:
+    print e
 
 class RESTBase(object):
     def __init__(self, section):
