@@ -3,10 +3,10 @@
 %end
 
 %def leftblock():
-<div ng-controller="MapproxySourceListCtrl">
+<div ng-controller="SourceListCtrl">
   <div class="pull-right">
     <!-- konflikt mit bootstrap -->
-    <button class="btn btn-small btn-add pull-right" ng-click="newSource()">
+    <button class="btn btn-small btn-add pull-right" ng-click="newItem()">
       <span class="icon-plus-sign icon-white" ></span> {{'Create new source'|i18n}}
     </button>
   </div>
@@ -16,30 +16,30 @@
   <div>
     <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
     <br>
-    <span ng-show="mapproxy_sources.length - filtered.length" ng-click="search=''">
-      {{'Not shown sources'|i18n}}: {{mapproxy_sources.length - filtered.length}}
+    <span ng-show="list.length - filtered.length" ng-click="search=''">
+      {{'Not shown sources'|i18n}}: {{list.length - filtered.length}}
     </span>
   </div>
   <ul class="vertical-list">
-    <div class="{{isSelected(source)}}" ng-repeat="source in filtered = (mapproxy_sources | filter: {data.name:search})"
-    ng-click="editSource($event, source)">
+    <div class="{{isSelected(item)}}" ng-repeat="item in filtered = (list | filter: {data.name:search})"
+    ng-click="editItem($event, item)">
     <li>
-      <i ng-show="source._manual" class="icon-pencil"></i>
-      {{source.data.name}}
-      <i ng-show="!hasDependencies(source)" class="icon-remove"
+      <i ng-show="item._manual" class="icon-pencil"></i>
+      {{item.data.name}}
+      <i ng-show="!hasDependencies(item)" class="icon-remove"
         dialog="ask"
         dialog-title="{{'Confirm!'|i18n}}"
         dialog-text="{{'Really remove source:'|i18n}} {{source.data.name}}?"
-        callback="removeSource($event, source)">
+        callback="removeItem($event, item)">
       </i>
-      <i ng-show="hasDependencies(source)" class="icon-remove"
+      <i ng-show="hasDependencies(item)" class="icon-remove"
         dialog="confirm"
         dialog-width="600"
         dialog-heiht="300"
         dialog-title="{{'Confirm!'|i18n}}"
-        dialog-text="{{'Can not remove source:'|i18n}} {{source.data.name}}<br>{{'Dependencies are:'|i18n}}<br>{{getDependencies(source)}}">
+        dialog-text="{{'Can not remove source:'|i18n}} {{item.data.name}}<br>{{'Dependencies are:'|i18n}}<br>{{getDependencies(item)}}">
        </i>
-       <i class="icon-share" ng-click="copySource($event, source)"></i>
+       <i class="icon-share" ng-click="copyItem($event, item)"></i>
      </li>
     </div>
   </ul>

@@ -3,8 +3,8 @@
 %end
 
 %def leftblock():
-<div ng-controller="MapproxyLayerListCtrl">
-  <button class="btn btn-small btn-add pull-right" ng-click="newLayer()">
+<div ng-controller="LayerListCtrl">
+  <button class="btn btn-small btn-add pull-right" ng-click="newItem()">
     <span class="icon-plus-sign icon-white" ></span>
     {{'Create new layer'|i18n}}
   </button>
@@ -16,60 +16,28 @@
   <div>
     <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
     <br>
-    <span ng-show="mapproxy_layers.length - filtered.length" ng-click="search=''">{{'Not shown layers'|i18n}}: {{mapproxy_layers.length - filtered.length}}</span>
+    <span ng-show="list.length - filtered.length" ng-click="search=''">{{'Not shown layers'|i18n}}: {{list.length - filtered.length}}</span>
   </div>
-  <script type="text/ng-template"  id="mapproxy_layer_renderer.html">
-    <ul sortable ng-model="layer._layers">
-      <li ng-repeat="layer in layer._layers | orderBy:'_rank'">  <!-- new scope -->
-      <!-- new scope -->
-      <!-- need to access layer._layers from 2 lines above so i have to go 2 scopes up ($parent.$parent) -->
-        <div ng-click="editLayer(layer)">
-          <i ng-show="layer._manual" class="icon-pencil"></i>
-          {{layer.name}} ({{layer.title}})
-          <i class="icon-remove"
-            dialog="ask"
-            dialog-title="{{'Confirm!'|i18n}}"
-            dialog-text="{{'Really remove layer:'|i18n}} {{layer.title}} ({{layer.name}})?"
-            callback="removeLayer(layer)"></i>
-            <div
-              ng-include="'mapproxy_layer_renderer.html'"
-              style="margin-left: 0.5em"
-            >
-        </div>
-      </li>
-    </ul>
-  </script>
   <div>
     <ul class="vertical-list">
     </ul>
-    <ul sortable ng-model="mapproxy_layers" class="vertical-list">
-
-      <div class="{{isSelected(layer)}}"
-        ng-repeat="layer in filtered = (mapproxy_layers | filter:{data.title:search}) | orderBy:'_rank'"
-        ng-click="editLayer(layer)">
+    <ul sortable ng-model="list" class="vertical-list">
+      <div class="{{isSelected(item)}}"
+        ng-repeat="item in filtered = (list | filter:{data.title:search}) | orderBy:'_rank'"
+        ng-click="editItem($event, item)">
         <li>
-          <i ng-show="layer._manual" class="icon-pencil"></i>
-          {{layer.data.title}} ({{layer.data.name}})
+          <i ng-show="item._manual" class="icon-pencil"></i>
+          {{item.data.title}} ({{item.data.name}})
           <i class="icon-remove pull-right"
             dialog="ask"
             dialog-title="{{'Confirm!'|i18n}}"
-            dialog-text="{{'Really remove layer:'|i18n}} {{layer.data.title}} ({{layer.data.name}})?"
-            callback="removeLayer(layer)"></i>
-          <!-- <div
-                ng-include="'mapproxy_layer_renderer.html'"
-                style="margin-left: 0.5em"
-                sortable
-                ng-model="layer._layers"
-              >
-          </div> -->
+            dialog-text="{{'Really remove layer:'|i18n}} {{item.data.title}} ({{item.data.name}})?"
+            callback="removeItem($event, item)"></i>
+          <i class="icon-share" ng-click="copyItem($event, item)"></i>
         </li>
       </div>
     </ul>
     <span ng-show="false">{{filtered.length}}</span>
-  </div>
-  <div class="text-success list_save_ok" ng-show="false">
-    <i class="icon-ok"></i>
-    <strong>{{'Saved successfully'|i18n}}</strong>
   </div>
 </div>
 %end
@@ -127,46 +95,46 @@
 
 %def rightblock():
   <div>
-    <span ng-controller="MapproxySourceListCtrl">
+    <span ng-controller="SourceListCtrl">
       <h3>{{'Sources'|i18n}}</h3>
       <span message-handler="error" message-types="sources.load_error"></span>
       <div>
         <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
         <br>
-        <span ng-show="mapproxy_sources.length - filtered.length" ng-click="search=''">{{'Not shown sources'|i18n}}: {{mapproxy_sources.length - filtered.length}}</span>
+        <span ng-show="list.length - filtered.length" ng-click="search=''">{{'Not shown sources'|i18n}}: {{list.length - filtered.length}}</span>
       </div>
       <ul class="vertical-list small">
           <div
               draggable
               class="mapproxy_source"
-              ng-repeat="source in filtered = (mapproxy_sources |filter:{data.name:search}) | orderBy:'name'"
-              item-data="{{source}}">
+              ng-repeat="item in filtered = (list |filter:{data.name:search}) | orderBy:'name'"
+              item-data="{{item}}">
               <li class="droppable_name">
-                {{source.data.name}}
-                <i class="icon-info-sign pull-right" dialog="confirm" dialog-title="{{'Informations'|i18n}}" dialog-height="300" dialog-text="{{getInfos(source)}}"></i>
+                {{item.data.name}}
+                <i class="icon-info-sign pull-right" dialog="confirm" dialog-title="{{'Informations'|i18n}}" dialog-height="300" dialog-text="{{getInfos(item)}}"></i>
               </li>
           </div>
       </ul>
       <span ng-show="false">{{filtered.length}}</span>
     </span>
     <hr>
-    <span ng-controller="MapproxyCacheListCtrl">
+    <span ng-controller="CacheListCtrl">
       <h3>{{'Caches'|i18n}}</h3>
       <span message-handler="error" message-types="caches.load_error"></span>
       <div>
         <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
         <br>
-        <span ng-show="mapproxy_caches.length - filtered.length" ng-click="search=''">{{'Not shown caches'|i18n}}: {{mapproxy_caches.length - filtered.length}}</span>
+        <span ng-show="list.length - filtered.length" ng-click="search=''">{{'Not shown caches'|i18n}}: {{list.length - filtered.length}}</span>
       </div>
       <ul class="vertical-list small">
           <div
               draggable
               class="mapproxy_cache"
-              ng-repeat="cache in filtered = (mapproxy_caches | filter:{data.name:search}) | orderBy:'name'"
-              item-data="{{cache}}">
+              ng-repeat="item in filtered = (list | filter:{data.name:search}) | orderBy:'name'"
+              item-data="{{item}}">
               <li class="droppable_name">
-                {{cache.data.name}}
-                <i class="icon-info-sign pull-right" dialog="confirm" dialog-title="{{'Informations'|i18n}}" dialog-height="300" dialog-text="{{getInfos(cache)}}"></i>
+                {{item.data.name}}
+                <i class="icon-info-sign pull-right" dialog="confirm" dialog-title="{{'Informations'|i18n}}" dialog-height="300" dialog-text="{{getInfos(item)}}"></i>
               </li>
           </div>
       </ul>
