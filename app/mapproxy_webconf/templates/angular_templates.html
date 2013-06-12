@@ -7,23 +7,24 @@
 </script>
 
 <script type="text/ng-template" id="checkbox_label">
-    <div class="control-group" ng-class="{'error': invalid}">
+    <div class="control-group" ng-class="{'error': invalid, 'warning': warning}">
         <div class="controls">
             <label class="control-label" for="{{name}}">
                 <span ng-transclude></span> {{getText()}}
                 <span ng-include="'error_messages'" class="text-error"></span>
+                <i class="pull-right icon-warning-sign" ng-show="warning" tooltip="tooltip" tooltip-content="{{warningMsg()}}"></i>
             </label>
-            <span ng-show="showWarning()" id="tooltip_{{$id}}" class="icon-warning-sign warning_icon"></span>
+
         </div>
     </div>
 </script>
 
 <script type="text/ng-template" id="input_label">
-    <div class="control-group" ng-class="{'error': invalid}">
+    <div class="control-group" ng-class="{'error': invalid, 'warning': warning}">
         <label class="control-label" for="{{name}}">{{getText()}}:</label>
         <div class="controls">
             <span ng-transclude></span>
-            <span ng-show="showWarning()" id="tooltip_{{$id}}" class="icon-warning-sign warning_icon"></span>
+            <i class="pull-right icon-warning-sign" ng-show="warning" tooltip="tooltip" tooltip-content="{{warningMsg()}}"></i>
             <span ng-include="'error_messages'" class="text-error"></span>
         </div>
     </div>

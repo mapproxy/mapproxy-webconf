@@ -1,5 +1,5 @@
 %def leftblock():
-  <div ng-controller="MapproxyGridListCtrl">
+  <div ng-controller="GridListCtrl">
     <button class="btn btn-small btn-add pull-right" ng-click="newGrid()">
       <span class="icon-plus-sign icon-white" ></span>
       {{'Create new grid'|i18n}}</button>
@@ -10,37 +10,37 @@
     <div>
       <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
       <br>
-      <span ng-show="mapproxy_grids.length - filtered.length" ng-click="search=''">{{'Not shown grids'|i18n}}: {{mapproxy_grids.length - filtered.length}}</span>
+      <span ng-show="list.length - filtered.length" ng-click="search=''">{{'Not shown grids'|i18n}}: {{list.length - filtered.length}}</span>
     </div>
     <ul class="vertical-list">
-       <div class="{{isSelected(grid)}}" ng-repeat="grid in filtered = (mapproxy_grids | filter: {data.name:search}) | orderBy:'name'"
-        ng-click="editGrid(grid)">
+       <div class="{{isSelected(item)}}" ng-repeat="item in filtered = (list | filter: {data.name:search}) | orderBy:'name'"
+        ng-click="editItem($event, item)">
          <li>
-          <i ng-show="grid._manual" class="icon-pencil"></i>
-          <i ng-show="grid._locked || grid.default" class="icon-ok"></i>
-          {{grid.data.name}}
-          <i ng-show="!hasDependencies(grid)" class="icon-remove"
+          <i ng-show="item._manual" class="icon-pencil"></i>
+          <i ng-show="item._locked || item.default" class="icon-ok"></i>
+          {{item.data.name}}
+          <i ng-show="!hasDependencies(item)" class="icon-remove"
             dialog="ask"
             dialog-title="{{'Confirm!'|i18n}}"
-            dialog-text="{{'Really remove grid:'|i18n}} {{grid.data.name}}?"
-            callback="removeGrid(grid)">
+            dialog-text="{{'Really remove grid:'|i18n}} {{item.data.name}}?"
+            callback="removeItem($event, item)">
           </i>
-          <i ng-show="hasDependencies(grid)" class="icon-remove"
+          <i ng-show="hasDependencies(item)" class="icon-remove"
             dialog="confirm"
             dialog-width="600"
             dialog-height="300"
             dialog-title="Confirm!"
-            dialog-text="{{'Can not remove grid:'|i18n}} {{grid.data.name}}<br>{{'Dependencies are:'|i18n}}<br>{{getDependencies(grid)}}">
+            dialog-text="{{'Can not remove grid:'|i18n}} {{item.data.name}}<br>{{'Dependencies are:'|i18n}}<br>{{getDependencies(item)}}">
           </i>
+          <i class="icon-share" ng-click="copyItem($event, item)"></i>
         </li>
       </div>
     </ul>
     <h3>{{'Default grids'|i18n}}</h3>
      <ul class="vertical-list">
-       <div class="{{isSelected(grid)}}" ng-repeat="grid in default_grids | orderBy:'name'"
-        ng-click="editGrid(grid)">
-         <li>{{grid.data.name}}
-        </li>
+       <div class="{{isSelected(item)}}" ng-repeat="item in defaultGrids | orderBy:'name'"
+        ng-click="editItem(item)">
+         <li>{{item.data.name}}</li>
       </div>
     </ul>
     <span ng-show="false">{{filtered.length}}</span>
@@ -104,6 +104,7 @@
       <div class="pull-left">
         <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="grid._locked||!form.$valid" id="form_save" ng-class="{'btn-success': form.$valid&&!grid._locked}">{{'Save'|i18n}}</button>
         <button class="btn btn-small" ng-click="resetForm($event)" ng-disabled="grid._locked">{{'Reset'|i18n}}</button>
+        <button class="btn btn-small" ng-click="copyGrid($event)">{{'Copy'|i18n}}</button>
       </div>
       <div id="_editarea_toggle_button_container" class="pull-right" ng-show="!grid._locked"></div>
     </form>

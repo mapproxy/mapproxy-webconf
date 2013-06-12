@@ -216,6 +216,17 @@ def globals(project):
 def services(project):
     return template('services', project=project, language=LANGUAGE)
 
+@app.route('/conf/<project>/write_config', 'POST', name='write_config')
+def write_config(project, storage):
+    mapproxy_conf = config.mapproxy_conf_from_storage(storage, project)
+    try:
+        config.write_mapproxy_yaml(mapproxy_conf, os.path.join(configuration.get('app', 'output_path'), project + '.yaml'))
+        return {'success': 'creating mapproxy config successful'}
+    except:
+        response.status = 400
+        return {'error': 'creating mapproxy config failed'}
+
+
 @app.route('/static/<filepath:path>', name='static')
 def static(filepath):
     return static_file(filepath, root=os.path.join(os.path.dirname(__file__), 'static'))

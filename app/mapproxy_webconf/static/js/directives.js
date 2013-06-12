@@ -395,19 +395,6 @@ directive('labeled', function($parse, $templateCache, localize) {
                 }
             };
 
-            scope.showWarning = function() {
-                if(scope.warning) {
-                    element.addClass('warning');
-                    $('#tooltip_'+ scope.$id).tooltip({
-                        placement: 'right',
-                        title: scope.warningMsg
-                    });
-                    return true;
-                } else {
-                    element.removeClass('warning');
-                    return false;
-                }
-            };
             scope.warningMsg = function() {
                 return attrs.warningMsg;
             };
@@ -626,89 +613,6 @@ directive('editarea', function($http, MessageService) {
             if(_toggleButtonContainer) {
                 $(element).find('#_editarea_toggle_button').appendTo(_toggleButtonContainer);
             }
-        }
-    };
-}).
-
-directive('tooltip', function() {
-    return {
-        restrict: 'A',
-        scope: 'element',
-        link: function(scope, element, attrs) {
-            var initPopover = function() {
-                $(element).popover({
-                    title: scope.tooltipTitle,
-                    content: scope.tooltipContent,
-                    trigger: 'hover',
-                    placement: scope.tooltipPlacement
-                });
-            };
-            var initTooltip = function() {
-                $(element).attr('data-original-title', scope.tooltipContent);
-                $(element).tooltip({
-                    title: scope.tooltipTitle,
-                    placement: scope.tooltipPlacement
-                });
-            };
-
-            scope.tooltipMode = attrs.tooltip || 'tooltip';
-            scope.tooltipContent = attrs.tooltipContent;
-            scope.tooltipTitle = attrs.tooltipTitle;
-            scope.tooltipPlacement = attrs.tooltipPlacement || 'right';
-
-            if(scope.tooltipMode == 'popover') {
-                initPopover();
-            } else {
-                initTooltip();
-            }
-
-            attrs.$observe('tooltipContent', function(val) {
-                scope.tooltipContent = val;
-                if(scope.tooltipMode == 'popover') {
-                    $(element).popover('destroy');
-                    initPopover();
-                } else {
-                    $(element).tooltip('destroy');
-                    initTooltip();
-                }
-            });
-            attrs.$observe('tooltipTitle', function(val) {
-                scope.tooltipTitle = val;
-                if(scope.tooltipMode == 'popover') {
-                    $(element).popover('destroy');
-                    initPopover();
-                } else {
-                    $(element).tooltip('destroy');
-                    initTooltip();
-                }
-            });
-        }
-    }
-}).
-
-directive('messageHandler', function($templateCache, MessageService) {
-    return {
-        restrict: 'A',
-        scope: 'Element',
-        replace: true,
-        transclude: true,
-        template: function(element, attrs) {
-            return $templateCache.get(attrs.messageHandler);
-        },
-        link: function(scope, element, attrs) {
-            scope.messageService = MessageService;
-
-            var messageTypes = attrs.messageTypes.split(',');
-
-            angular.forEach(messageTypes, function(messageType) {
-                scope.$watch('messageService.messages.' + messageType, function(messageObject) {
-                    if(angular.isDefined(messageObject)) {
-                        scope.message = messageObject.message;
-                        scope.messageService.removeMessage(messageObject.section, messageObject.action);
-                        $(element).show().fadeOut(3000);
-                    }
-                } , true);
-            });
         }
     };
 });

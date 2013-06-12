@@ -1,4 +1,4 @@
-var MapproxyBaseService = function(_section, _dependencies) {
+var MapproxyBaseService = function(_section, _model, _dependencies) {
     var _this = this;
     this._items = {};
     this._item;
@@ -6,6 +6,7 @@ var MapproxyBaseService = function(_section, _dependencies) {
     this._section = _section;
     this._action;
     this._dependencies = _dependencies;
+    this._model = _model;
     this._rootScope;
     this._resource;
     this._messageService;
@@ -47,6 +48,22 @@ var MapproxyBaseService = function(_section, _dependencies) {
             _this._successMessageHandler(_this._localize.getLocalizedString('Load complete'));
         }
     };
+    this._removeNonModelProperties = function(data) {
+        var cleanup = function(cleanData, data) {
+            var _data = {};
+            angular.forEach(cleanData, function(value, key) {
+                if(angular.isObject(cleanData[key]) && !angular.isArray(cleanData[key])) {
+                    _data[key] = cleanup(cleanData[key], data[key]);
+                } else {
+                    if(angular.isDefined(data)) {
+                        _data[key] = data[key]
+                    }
+                }
+            });
+            return _data;
+        };
+        return cleanup(_this._model, data);;
+    };
     this.load = function() {
         _this._items = {};
         _this._loaded = false;
@@ -66,6 +83,9 @@ var MapproxyBaseService = function(_section, _dependencies) {
         }, _this._errorMessageHandler);
     };
     this.add = function(_item) {
+        if(!_item._manual) {
+            _item.data = _this._removeNonModelProperties(_item.data);
+        }
         var item = new _this._resource(_item);
         delete item._dependencies;
         delete item._section;
@@ -131,13 +151,13 @@ var MapproxyBaseService = function(_section, _dependencies) {
         var item = _this.byId(_id);
         return item ? item.data.name : false;
     };
-    this.current = function(copy, _item) {
+    this.current = function(_item) {
         if(_item) {
             _this._item = _item;
             if(angular.isDefined(_this._rootScope))
                 _this._rootScope.$broadcast(_this._section + '.current');
         } else {
-            return copy ? angular.copy(_this._item) : _this._item;
+            return $.extend({}, {'data': _this._model}, _this._item);
         }
     };
     this.last = function() {
@@ -174,12 +194,13 @@ var MapproxyBaseService = function(_section, _dependencies) {
         current: _this.current,
         last: _this.last,
         error: _this.error,
-        section: _this._section
+        section: _this._section,
+        model: _this._model
     }
 };
 
-var MapproxyLayerService = function(_section) {
-    MapproxyBaseService.call(this, _section);
+var MapproxyLayerService = function(_section, _model, _dependencies) {
+    MapproxyBaseService.call(this, _section, _model, _dependencies);
     var _this = this;
 
     this.prepareLayer = function(store, layer, idx, parent_id) {
@@ -329,14 +350,67 @@ WMSSourceService = function(_section) {
     this.return_dict['srs'] = _this.srs;
 };
 
-var layerService = new MapproxyLayerService('layers');
-var globalsService = new MapproxyBaseService('globals');
+var layerModel = {
+    'name': undefined,
+    'title': undefined,
+    'sources': [],
+    'min_res': undefined,
+    'max_res': undefined,
+    'min_res_scale': undefined,
+    'max_res_scale': undefined
+};
+var globalsModel = {
+    'cache': {
+        'meta_size': [],
+        'meta_buffer': undefined
+    },
+    'image': {
+        'resampling_method': undefined,
+        'paletted': undefined
+    }
+};
+var cacheModel = {
+    'name': undefined,
+    'sources': [],
+    'grids': [],
+    'format': undefined,
+    'request_format': undefined
+};
+var gridModel = {
+    'name': undefined,
+    'srs': undefined,
+    'bbox': [],
+    'bbox_srs': undefined,
+    'origin': undefined,
+    'res': [],
+    'scales': []
+};
+var sourceModel = {
+    'name': undefined,
+    'req': {
+        'url': undefined,
+        'layers': [],
+        'transparent': undefined
+    },
+    'coverage': {
+        'bbox': undefined,
+        'srs': undefined
+    },
+    'supported_formats': []
+};
+var defaultsModel = {
+    'dpi': undefined,
+    'srs': []
+}
+
+var layerService = new MapproxyLayerService('layers', layerModel);
+var globalsService = new MapproxyBaseService('globals', globalsModel);
 var servicesService = new MapproxyBaseService('services');
-var cacheService = new MapproxyBaseService('caches', [layerService]);
-var gridService = new MapproxyBaseService('grids', [cacheService]);
-var sourceService = new MapproxyBaseService('sources', [cacheService, layerService]);
+var cacheService = new MapproxyBaseService('caches', cacheModel, [layerService]);
+var gridService = new MapproxyBaseService('grids', gridModel, [cacheService]);
+var sourceService = new MapproxyBaseService('sources', sourceModel, [cacheService, layerService]);
 var wmsService = new WMSSourceService('wms_capabilities');
-var defaultsService = new MapproxyBaseService('defaults');
+var defaultsService = new MapproxyBaseService('defaults', defaultsModel);
 
 angular.module('mapproxy_gui.services', ['mapproxy_gui.resources']).
 
@@ -367,23 +441,4 @@ service('DataShareService', function($rootScope) {
             }
         }
     }
-}).
-
-service('MessageService', function($rootScope) {
-    var service = {};
-
-    service.messages = {};
-    service.message = function(section, action, message) {
-        service.messages[section] = service.messages[section] || {};
-        service.messages[section][action] = {
-            'section': section,
-            'action': action,
-            'message': message
-        }
-    };
-
-    service.removeMessage = function(section, action) {
-        delete service.messages[section][action];
-    }
-    return service;
 });

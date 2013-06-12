@@ -1,6 +1,6 @@
 %def leftblock():
-<div ng-controller="MapproxyCacheListCtrl">
-    <button class="btn btn-small btn-add pull-right" ng-click="newCache()">
+<div ng-controller="CacheListCtrl">
+    <button class="btn btn-small btn-add pull-right" ng-click="newItem()">
       <span class="icon-plus-sign icon-white" ></span>
       {{'Create new cache'|i18n}}</button>
 
@@ -10,27 +10,28 @@
     <div>
       <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
       <br>
-      <span ng-show="mapproxy_caches.length - filtered.length" ng-click="search=''">{{'Not shown caches'|i18n}}: {{mapproxy_caches.length - filtered.length}}</span>
+      <span ng-show="list.length - filtered.length" ng-click="search=''">{{'Not shown caches'|i18n}}: {{list.length - filtered.length}}</span>
     </div>
     <ul class="vertical-list">
-      <div class="{{isSelected(cache)}}" ng-repeat="cache in filtered = (mapproxy_caches | filter:{data.name:search}) | orderBy:'name'"
-      ng-click="editCache(cache)">
+      <div class="{{isSelected(item)}}" ng-repeat="item in filtered = (list | filter:{data.name:search}) | orderBy:'name'"
+      ng-click="editItem($event, item)">
         <li>
-          <i ng-show="cache._manual" class="icon-pencil"></i>
-          {{cache.data.name}}
-          <i ng-show="!hasDependencies(cache)" class="icon-remove"
+          <i ng-show="item._manual" class="icon-pencil"></i>
+          {{item.data.name}}
+          <i ng-show="!hasDependencies(item)" class="icon-remove"
              dialog="ask"
              dialog-title="{{'Confirm!'|i18n}}"
-             dialog-text="{{'Really remove cache:'|i18n}} {{cache.data.name}}?"
-             callback="removeCache(cache)">
+             dialog-text="{{'Really remove cache:'|i18n}} {{item.data.name}}?"
+             callback="removeItem($event, item)">
           </i>
-          <i ng-show="hasDependencies(cache)" class="icon-remove"
+          <i ng-show="hasDependencies(item)" class="icon-remove"
             dialog="confirm"
             dialog-width="600"
             dialog-height="300"
             dialog-title="Confirm!"
-            dialog-text="{{'Can not remove cache:'|i18n}} {{cache.data.name}}<br>{{'Dependencies are:'|i18n}}<br>{{getDependencies(cache)}}">
+            dialog-text="{{'Can not remove cache:'|i18n}} {{item.data.name}}<br>{{'Dependencies are:'|i18n}}<br>{{getDependencies(item)}}">
           </i>
+          <i class="icon-share" ng-click="copyItem($event, item)"></i>
         </li>
       </div>
     </ul>
@@ -99,6 +100,7 @@
     <div class="pull-left">
       <button class="btn btn-small" ng-click="addCache($event)" ng-disabled="!form.$valid" id="form_save" ng-class="{'btn-success': form.$valid}">{{'Save'|i18n}}</button>
       <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
+      <button class="btn btn-small" ng-click="copyCache($event)">{{'Copy'|i18n}}</button>
     </div>
     <div id="_editarea_toggle_button_container" class="pull-right"></div>
 
@@ -117,63 +119,68 @@
 
 %def rightblock():
 <div>
-  <span ng-controller="MapproxySourceListCtrl">
+  <span ng-controller="SourceListCtrl">
     <h3>{{'Sources'|i18n}}</h3>
     <span message-handler="error" message-types="sources.load_error"></span>
     <div>
       <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
       <br>
-      <span ng-show="mapproxy_sources.length - filtered.length" ng-click="search=''">{{'Not shown sources'|i18n}}: {{mapproxy_sources.length - filtered.length}}</span>
+      <span ng-show="list.length - filtered.length" ng-click="search=''">{{'Not shown sources'|i18n}}: {{list.length - filtered.length}}</span>
     </div>
     <ul class="vertical-list small">
-      <div draggable class="mapproxy_source" ng-repeat="source in filtered = (mapproxy_sources | filter:{data.name:search}) | orderBy:'name'"
-          item-data="{{source}}">
+      <div draggable class="mapproxy_source" ng-repeat="item in filtered = (list | filter:{data.name:search}) | orderBy:'name'"
+          item-data="{{item}}">
         <li class="droppable_name">
-            {{source.data.name}}
+            {{item.data.name}}
+            <i class="icon-info-sign pull-right" dialog="confirm" dialog-title="{{'Informations'|i18n}}" dialog-height="300" dialog-text="{{getInfos(item)}}"></i>
         </li>
       </div>
     </ul>
     <span ng-show="false">{{filtered.length}}</span>
   </span>
   <hr>
-  <span ng-controller="MapproxyCacheListCtrl">
+  <span ng-controller="CacheListCtrl">
     <h3>{{'Caches'|i18n}}</h3>
     <span message-handler="error" message-types="caches.load_error"></span>
     <div>
       <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
       <br>
-      <span ng-show="mapproxy_caches.length - filtered.length" ng-click="search=''">{{'Not shown caches'|i18n}}: {{mapproxy_caches.length - filtered.length}}</span>
+      <span ng-show="list.length - filtered.length" ng-click="search=''">{{'Not shown caches'|i18n}}: {{list.length - filtered.length}}</span>
     </div>
     <ul class="vertical-list small">
       <div
         draggable
         class="mapproxy_cache"
-        ng-repeat="cache in filtered = (mapproxy_caches | filter:{data.name:search}) | orderBy:'name'"
-        item-data="{{cache}}">
-        <li class="droppable_name">{{cache.data.name}}</li>
+        ng-repeat="item in filtered = (list | filter:{data.name:search}) | orderBy:'name'"
+        item-data="{{item}}">
+        <li class="droppable_name">
+          {{item.data.name}}
+          <i class="icon-info-sign pull-right" dialog="confirm" dialog-title="{{'Informations'|i18n}}" dialog-height="300" dialog-text="{{getInfos(item)}}"></i>
+        </li>
       </div>
     </ul>
     <span ng-show="false">{{filtered.length}}</span>
   </span>
   <hr>
-  <div ng-controller="MapproxyGridListCtrl">
+  <div ng-controller="GridListCtrl">
     <h3>{{'Grids'|i18n}}</h3>
     <span message-handler="error" message-types="grids.load_error"></span>
     <div>
       <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
       <br>
-      <span ng-show="(mapproxy_grids.concat(default_grids)).length - filtered.length" ng-click="search=''">{{'Not shown grids'|i18n}}: {{(mapproxy_grids.concat(default_grids)).length - filtered.length}}</span>
+      <span ng-show="(list.concat(default_grids)).length - filtered.length" ng-click="search=''">{{'Not shown grids'|i18n}}: {{(list.concat(default_grids)).length - filtered.length}}</span>
     </div>
     <ul class="vertical-list small">
       <div
         draggable
         class="mapproxy_grid"
-        ng-repeat="grid in filtered = (mapproxy_grids.concat(default_grids) | filter: {data.name:search}) | orderBy:'name'"
+        ng-repeat="item in filtered = (list.concat(default_grids) | filter: {data.name:search}) | orderBy:'name'"
         item-data="{{grid}}">
-        <li class="droppable_name" ng-class="{'locked-grid': grid._locked}">
-          <i ng-show="grid._locked || grid.default" class="icon-ok"></i>
-          <i ng-show="!grid._locked && !grid.default" class="icon-warning-sign"></i>
-          {{grid.data.name}}
+        <li class="droppable_name" ng-class="{'locked-grid': item._locked}">
+          <i ng-show="item._locked || item.default" class="icon-ok"></i>
+          <i ng-show="!item._locked && !item.default" class="icon-warning-sign"></i>
+          {{item.data.name}}
+          <i class="icon-info-sign pull-right" dialog="confirm" dialog-title="{{'Informations'|i18n}}" dialog-height="300" dialog-text="{{getInfos(item)}}"></i>
         </li>
       </div>
     </ul>

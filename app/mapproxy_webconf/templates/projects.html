@@ -4,10 +4,10 @@
       <div>
         <h3>{{'project'|i18n}}: ${name}</h3>
         <h4>{{'settings'|i18n}}</h4>
-        <div class="pull-left" tooltip="popover" tooltip-placement="left" tooltip-title="{{'Default configuration'|i18n}}" tooltip-content="{{'Here you can define project wide settings'|i18n}}">
+        <div class="pull-left" tooltip="t1" tooltip-placement="left">
           <a href="${ get_url('project_index', project=name) }" class="btn btn-small">{{'Goto default settings'|i18n}}</a>
         </div>
-        <div class="pull-right" tooltip="tooltip" tooltip-placement="top" tooltip-content="{{'Go to MapProxy configuration'|i18n}}">
+        <div class="pull-right" tooltip="t2" tooltip-placement="top">
           <a href="${ get_url('configuration', project=name) }" class="btn btn-small">{{'To configuration'|i18n}} &rarr;</a>
         </div>
         <div style="clear:both"></div>

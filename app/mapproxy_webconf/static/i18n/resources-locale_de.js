@@ -132,6 +132,11 @@
         "value": "Konfiguration"
     },
     {
+        "key": "create configuration",
+        "value": "Konfiguration erstellen"
+    },
+
+    {
         "key": "Seeding",
         "value": "Seeding"
     },
@@ -660,5 +665,81 @@
     {
         "key": "You made changes in this map. Do you want to keep them?",
         "value": "Sie haben Änderungen in der Karte vorgenommen. Möchten Sie diese Änderungen behalten?"
+    },
+    {
+        "key": "Informations",
+        "value": "Informationen"
+    },
+    {
+        "key": "Abstract",
+        "value": "Kurzbeschreibung"
+    },
+    {
+        "key": "Online resource",
+        "value": "Online Quelle"
+    },
+    {
+        "key": "Person",
+        "value": "Person"
+    },
+    {
+        "key": "Position",
+        "value": "Position"
+    },
+    {
+        "key": "Organization",
+        "value": "Organisation"
+    },
+    {
+        "key": "Address",
+        "value": "Adresse"
+    },
+    {
+        "key": "City",
+        "value": "Ort"
+    },
+    {
+        "key": "Postcode",
+        "value": "Postleitzahl"
+    },
+    {
+        "key": "Country",
+        "value": "Land"
+    },
+    {
+        "key": "Phone",
+        "value": "Telefonnummer"
+    },
+    {
+        "key": "Fax",
+        "value": "Faxnummer"
+    },
+    {
+        "key": "Email",
+        "value": "Email"
+    },
+    {
+        "key": "Fees",
+        "value": "Gebühren"
+    },
+    {
+        "key": "Access constraints",
+        "value": "Zugriffsbeschränkungen"
+    },
+    {
+        "key": "Contact",
+        "value": "Kontakt"
+    },
+    {
+        "key": "Meta data",
+        "value": "Metadaten"
+    },
+    {
+        "key": "Copy",
+        "value": "Kopieren"
+    },
+    {
+        "key": "Supported formats",
+        "value": "Unterstütze Bildformate"
     }
 ]
