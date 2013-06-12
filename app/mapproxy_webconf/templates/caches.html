@@ -2,16 +2,16 @@
 <div ng-controller="CacheListCtrl">
   <button class="btn btn-small btn-add pull-right" ng-click="newItem()">
     <span class="icon-plus-sign icon-white" ></span>
-    {{'Create new cache'|i18n}}
+    ${ __('Create new cache') }
   </button>
 
-  <h3>{{'Cache'|i18n}}</h3>
+  <h3>${ __('Cache') }</h3>
   <span message-handler="success" message-types="caches.delete_success"></span>
   <span message-handler="error" message-types="caches.load_error,caches.delete_error"></span>
   <div>
-    <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
+    <input type="text" ng-model="search" placeholder="${ __('Filter') }..."/>
     <br>
-    <span ng-show="list.length - filtered.length" ng-click="search=''">{{'Not shown caches'|i18n}}: {{list.length - filtered.length}}</span>
+    <span ng-show="list.length - filtered.length" ng-click="search=''">${ __('Not shown caches') }: {{list.length - filtered.length}}</span>
   </div>
   <ul class="vertical-list">
     <div class="{{isSelected(item)}}" ng-repeat="item in filtered = (list | filter:{data.name:search}) | orderBy:'name'"
@@ -21,8 +21,8 @@
         {{item.data.name}}
         <i ng-show="!hasDependencies(item)" class="icon-remove"
            dialog="ask"
-           dialog-title="{{'Confirm!'|i18n}}"
-           dialog-text="{{'Really remove cache:'|i18n}} {{item.data.name}}?"
+           dialog-title="${ __('Confirm!') }"
+           dialog-text="${ __('Really remove cache:') } {{item.data.name}}?"
            callback="removeItem($event, item)">
         </i>
         <i ng-show="hasDependencies(item)" class="icon-remove"
@@ -30,7 +30,7 @@
           dialog-width="600"
           dialog-height="300"
           dialog-title="Confirm!"
-          dialog-text="{{'Can not remove cache:'|i18n}} {{item.data.name}}<br>{{'Dependencies are:'|i18n}}<br>{{getDependencies(item)}}">
+          dialog-text="${ __('Can not remove cache:'|i18n}} {{item.data.name}}<br>{{'Dependencies are:') }<br>{{getDependencies(item)}}">
         </i>
         <i class="icon-share" ng-click="copyItem($event, item)"></i>
       </li>
@@ -45,12 +45,12 @@
   <form name="form" ng-model="cache" ng-show="!editareaBinds.visible">
     <h3>{{formTitle|i18n}}</h3>
     <!-- name -->
-    <div labeled="input_label" name-for="cache_name" text="{{'Name'|i18n}}">
+    <div labeled="input_label" name-for="cache_name" text="${ __('Name') }">
         <input required class="input-xlarge" type="text" ng-model="cache.data.name" id="cache_name" name="cache_name"/>
     </div>
     <!-- sources -->
       <!-- change-callback MUST provide parameters callback and new_data -->
-    <div labeled="input_label" name-for="sources" text="{{'Sources'|i18n}}">
+    <div labeled="input_label" name-for="sources" text="${ __('Sources') }">
         <div
             droppable
             sortable
@@ -69,7 +69,7 @@
             </div>
         </div>
     </div>
-    <div labeled="input_label" name-for="grids" text="{{'Grids'|i18n}}">
+    <div labeled="input_label" name-for="grids" text="${ __('Grids') }">
       <div
         droppable
         accepts="mapproxy_grid"
@@ -85,23 +85,23 @@
         </div>
       </div>
     </div>
-    <div labeled="input_label" name-for="format" text="{{'Format'|i18n}}">
+    <div labeled="input_label" name-for="format" text="${ __('Format') }">
       <select class="input-xlarge" ng-model="cache.data.format" id="format" name="format">
         <option value="mixed">Mixed</option>
         <option value="image/png">Image/PNG</option>
         <option value="image/jpeg">Image/JPEG</option>
       </select>
     </div>
-    <div labeled="input_label" name-for="request_format" text="{{'Request format'|i18n}}">
+    <div labeled="input_label" name-for="request_format" text="${ __('Request format') }">
       <select class="input-xlarge" ng-model="cache.data.request_format" id="request_format" name="request_format">
         <option value="image/png">Image/PNG</option>
         <option value="image/jpeg">Image/JPEG</option>
       </select>
     </div>
     <div class="pull-left">
-      <button class="btn btn-small" ng-click="addCache($event)" ng-disabled="!form.$valid" id="form_save" ng-class="{'btn-success': form.$valid}">{{'Save'|i18n}}</button>
-      <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
-      <button class="btn btn-small" ng-click="copyCache($event)">{{'Copy'|i18n}}</button>
+      <button class="btn btn-small" ng-click="addCache($event)" ng-disabled="!form.$valid" id="form_save" ng-class="{'btn-success': form.$valid}">${ __('Save') }</button>
+      <button class="btn btn-small" ng-click="resetForm($event)">${ __('Reset') }</button>
+      <button class="btn btn-small" ng-click="copyCache($event)">${ __('Copy') }</button>
     </div>
     <div id="_editarea_toggle_button_container" class="pull-right"></div>
 
@@ -121,18 +121,18 @@
 %def rightblock():
 <div>
   <span ng-controller="SourceListCtrl">
-    <h3>{{'Sources'|i18n}}</h3>
+    <h3>${ __('Sources') }</h3>
     <span message-handler="error" message-types="sources.load_error"></span>
     <div>
-      <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
+      <input type="text" ng-model="search" placeholder="${ __('Filter') }..."/>
       <br>
-      <span ng-show="list.length - filtered.length" ng-click="search=''">{{'Not shown sources'|i18n}}: {{list.length - filtered.length}}</span>
+      <span ng-show="list.length - filtered.length" ng-click="search=''">${ __('Not shown sources') }: {{list.length - filtered.length}}</span>
     </div>
     <ul class="vertical-list small">
       <div draggable class="mapproxy_source" ng-repeat="item in filtered = (list | filter:{data.name:search}) | orderBy:'name'" item-data="{{item}}">
         <li class="droppable_name">
             {{item.data.name}}
-            <i class="icon-info-sign pull-right" dialog="confirm" dialog-title="{{'Informations'|i18n}}" dialog-height="300" dialog-text="{{getInfos(item)}}"></i>
+            <i class="icon-info-sign pull-right" dialog="confirm" dialog-title="${ __('Informations') }" dialog-height="300" dialog-text="{{getInfos(item)}}"></i>
         </li>
       </div>
     </ul>
@@ -140,12 +140,12 @@
   </span>
   <hr>
   <span ng-controller="CacheListCtrl">
-    <h3>{{'Caches'|i18n}}</h3>
+    <h3>${ __('Caches') }</h3>
     <span message-handler="error" message-types="caches.load_error"></span>
     <div>
-      <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
+      <input type="text" ng-model="search" placeholder="${ __('Filter') }..."/>
       <br>
-      <span ng-show="list.length - filtered.length" ng-click="search=''">{{'Not shown caches'|i18n}}: {{list.length - filtered.length}}</span>
+      <span ng-show="list.length - filtered.length" ng-click="search=''">${ __('Not shown caches') }: {{list.length - filtered.length}}</span>
     </div>
     <ul class="vertical-list small">
       <div
@@ -155,7 +155,7 @@
         item-data="{{item}}">
         <li class="droppable_name">
           {{item.data.name}}
-          <i class="icon-info-sign pull-right" dialog="confirm" dialog-title="{{'Informations'|i18n}}" dialog-height="300" dialog-text="{{getInfos(item)}}"></i>
+          <i class="icon-info-sign pull-right" dialog="confirm" dialog-title="${ __('Informations') }" dialog-height="300" dialog-text="{{getInfos(item)}}"></i>
         </li>
       </div>
     </ul>
@@ -163,12 +163,12 @@
   </span>
   <hr>
   <div ng-controller="GridListCtrl">
-    <h3>{{'Grids'|i18n}}</h3>
+    <h3>${ __('Grids') }</h3>
     <span message-handler="error" message-types="grids.load_error"></span>
     <div>
-      <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
+      <input type="text" ng-model="search" placeholder="${ __('Filter') }..."/>
       <br>
-      <span ng-show="(list.concat(default_grids)).length - filtered.length" ng-click="search=''">{{'Not shown grids'|i18n}}: {{(list.concat(default_grids)).length - filtered.length}}</span>
+      <span ng-show="(list.concat(default_grids)).length - filtered.length" ng-click="search=''">${ __('Not shown grids') }: {{(list.concat(default_grids)).length - filtered.length}}</span>
     </div>
     <ul class="vertical-list small">
       <div
@@ -180,7 +180,7 @@
           <i ng-show="item._locked || item.default" class="icon-ok"></i>
           <i ng-show="!item._locked && !item.default" class="icon-warning-sign"></i>
           {{item.data.name}}
-          <i class="icon-info-sign pull-right" dialog="confirm" dialog-title="{{'Informations'|i18n}}" dialog-height="300" dialog-text="{{getInfos(item)}}"></i>
+          <i class="icon-info-sign pull-right" dialog="confirm" dialog-title="${ __('Informations') }" dialog-height="300" dialog-text="{{getInfos(item)}}"></i>
         </li>
       </div>
     </ul>
