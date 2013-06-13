@@ -128,16 +128,23 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 if($scope.olmapBinds.singleWMSRequest) {
                     if(layer.visibility) {
                         layer.visibility = false;
-                        $scope.combinedLayer.params.LAYERS.splice(layer.layerSwitcherIdx, 1);
+                        $scope.combinedWMSLayerNames.splice(layer.layerSwitcherIdx, 1);
+                        $scope.combinedWMSLayerNames.splice(layer.layerSwitcherIdx, 0, null);
 
                     } else {
                         layer.visibility = true;
-                        $scope.combinedLayer.params.LAYERS.splice(layer.layerSwitcherIdx, 0, layer.name);
+                        $scope.combinedWMSLayerNames.splice(layer.layerSwitcherIdx, 1);
+                        $scope.combinedWMSLayerNames.splice(layer.layerSwitcherIdx, 0, layer.name);
                     }
                     if($scope.redrawInProgress) {
                         $timeout.cancel($scope.redrawInProgress);
                     }
                     $scope.redrawInProgress = $timeout(function() {
+                        $scope.combinedLayer.params.LAYERS = $.map($scope.combinedWMSLayerNames, function(name) {
+                            if(name != null) {
+                                return name;
+                            }
+                        });
                         $scope.combinedLayer.redraw();
                     }, 1000, false);
                 } else {
@@ -258,7 +265,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 }
             };
             var createCombinedWMSLayer = function(layers, srs, url) {
-                var names = [];
+                $scope.combinedWMSLayerNames = [];
                 var extractLayerNames = function(names, layer) {
                     if(layer.name) {
                         names.push(layer.name)
@@ -274,9 +281,9 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     }
                 };
                 angular.forEach(layers, function(layer) {
-                    extractLayerNames(names, layer)
+                    extractLayerNames($scope.combinedWMSLayerNames, layer)
                 });
-                $scope.combinedLayer = createWMSLayer({'name': names, 'title': 'Combined Layer'}, srs, url);
+                $scope.combinedLayer = createWMSLayer({'name': angular.copy($scope.combinedWMSLayerNames), 'title': 'Combined Layer'}, srs, url);
             };
             var createVectorLayer = function(layer, name) {
                 var newLayer = new OpenLayers.Layer.Vector(name);
