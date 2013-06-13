@@ -142,7 +142,8 @@ class RESTGrids(RESTBase):
     def list(self, project, storage):
         default_grids = {
             'GLOBAL_MERCATOR': {'_id': 'GLOBAL_MERCATOR', 'data': {'name': 'GLOBAL_MERCATOR'}, 'default': True},
-            'GLOBAL_GEODETIC': {'_id': 'GLOBAL_GEODETIC', 'data': {'name': 'GLOBAL_GEODETIC'}, 'default': True}
+            'GLOBAL_GEODETIC': {'_id': 'GLOBAL_GEODETIC', 'data': {'name': 'GLOBAL_GEODETIC'}, 'default': True},
+            'GLOBAL_WEBMERCATOR': {'_id': 'GLOBAL_WEBMERCATOR', 'data': {'name': 'GLOBAL_WEBMERCATOR'}, 'default': True}
         }
         default_grids.update(storage.get_all(self.section, project, with_id=True, with_manual=True, with_locked=True))
         return default_grids
