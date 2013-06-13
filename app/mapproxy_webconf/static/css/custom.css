@@ -502,6 +502,10 @@ div.blockMsg {
     z-index: 1500;
 }
 
+._layerSwitcher .layersDiv i {
+  background-image: url("../img/glyphicons-halflings-white.png");
+}
+
 .toggleLayerSwitcher {
   position: absolute;
 }
