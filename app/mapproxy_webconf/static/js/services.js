@@ -83,7 +83,7 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
         }, _this._errorMessageHandler);
     };
     this.add = function(_item) {
-        if(!_item._manual) {
+        if(_this._model && !_item._manual) {
             _item.data = _this._removeNonModelProperties(_item.data);
         }
         var item = new _this._resource(_item);
@@ -401,7 +401,7 @@ var sourceModel = {
 var defaultsModel = {
     'dpi': undefined,
     'srs': []
-}
+};
 
 var layerService = new MapproxyLayerService('layers', layerModel);
 var globalsService = new MapproxyBaseService('globals', globalsModel);
