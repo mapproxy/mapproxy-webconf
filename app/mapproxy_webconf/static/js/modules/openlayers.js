@@ -79,7 +79,7 @@ constant('DEFAULT_VECTOR_STYLING', {
     }
 }).
 
-directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT_VECTOR_STYLING) {
+directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeout, DEFAULT_VECTOR_STYLING) {
     return {
         restrict: 'A',
         scope: {
@@ -123,6 +123,28 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
             };
             var renderLayerSwitcher = function(layerSwitcherElement) {
                 $($scope.map.div).find('.olMapViewport').append(layerSwitcherElement);
+            };
+            $scope.toggleVisibility = function(layer) {
+                if($scope.olmapBinds.singleWMSRequest) {
+                    if(layer.visibility) {
+                        layer.visibility = false;
+                        $scope.combinedLayer.params.LAYERS.splice(layer.layerSwitcherIdx, 1);
+
+                    } else {
+                        layer.visibility = true;
+                        $scope.combinedLayer.params.LAYERS.splice(layer.layerSwitcherIdx, 0, layer.name);
+                    }
+                    if($scope.redrawInProgress) {
+                        $timeout.cancel($scope.redrawInProgress);
+                    }
+                    $scope.redrawInProgress = $timeout(function() {
+                        $scope.combinedLayer.redraw();
+                    }, 1000, false);
+                } else {
+                    var olLayer = $scope.map.getLayersBy('id', layer.olLayerId)[0]
+                    layer.visibility = !layer.visibility;
+                    olLayer.setVisibility(layer.visibility);
+                }
             };
 
             //Toolbar
@@ -284,23 +306,6 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                 layer.name = name;
                 layer.title = name;
                 $scope.mapLayers.push(newLayer);
-            };
-            $scope.toggleVisibility = function(layer) {
-                if($scope.olmapBinds.singleWMSRequest) {
-                    if(layer.visibility) {
-                        layer.visibility = false;
-                        $scope.combinedLayer.params.LAYERS.splice(layer.layerSwitcherIdx, 1);
-
-                    } else {
-                        layer.visibility = true;
-                        $scope.combinedLayer.params.LAYERS.splice(layer.layerSwitcherIdx, 0, layer.name);
-                    }
-                    $scope.combinedLayer.redraw();
-                } else {
-                    var olLayer = $scope.map.getLayersBy('id', layer.olLayerId)[0]
-                    layer.visibility = !layer.visibility;
-                    olLayer.setVisibility(layer.visibility);
-                }
             };
 
             //Map
