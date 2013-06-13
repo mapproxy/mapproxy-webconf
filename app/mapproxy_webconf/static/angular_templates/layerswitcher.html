@@ -24,6 +24,10 @@
         <div class="dataLayersDiv" ng-show="olmapBinds.layers.wms">
             <div ng-repeat="layer in olmapBinds.layers.wms" ng-include="'layerItem'" ng-show="layer.name || layer.layers"></div>
         </div>
+        <div class="dataLbl" ng-show="olmapBinds.layers.vector">Vector Layer</div>
+        <div class="dataLayersDiv" ng-show="olmapBinds.layers.vector">
+            <div ng-repeat="layer in olmapBinds.layers.vector" ng-include="'layerItem'" ng-show="layer.name || layer.layers"></div>
+        </div>
     </div>
     <div class="toggleLayerSwitcher maximizeDiv olButton" ng-show="!layerSwitcherMaximized"><img id="OpenLayers_Control_MaximizeDiv_innerImage" class="olAlphaImg" style="position: relative;" src="/static/img/layer-switcher-maximize.png" ng-click="layerSwitcherMaximized=true;"></div>
     <div class="toggleLayerSwitcher minimizeDiv olButton" ng-show="layerSwitcherMaximized"><img id="OpenLayers_Control_MinimizeDiv_innerImage" class="olAlphaImg" style="position: relative;" src="/static/img/layer-switcher-minimize.png" ng-click="layerSwitcherMaximized=false;"></div>

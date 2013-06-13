@@ -281,6 +281,8 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                 }
                 layer.olLayerId = newLayer.id;
                 layer.visibility = true;
+                layer.name = name;
+                layer.title = name;
                 $scope.mapLayers.push(newLayer);
             };
             $scope.toggleVisibility = function(layer) {
