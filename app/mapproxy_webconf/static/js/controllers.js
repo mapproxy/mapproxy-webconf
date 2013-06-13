@@ -243,7 +243,7 @@ function TreeCtrl($scope, localize, WMSSources, MessageService) {
             visible: true,
             proj: srs,
             extent: extent,
-            singleRequest: true,
+            singleWMSRequest: true,
             layers: {'wms': wms.data.layer.layers},
             url: wms.data.url
         }

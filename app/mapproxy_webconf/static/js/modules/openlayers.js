@@ -124,16 +124,6 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
             var renderLayerSwitcher = function(layerSwitcherElement) {
                 $($scope.map.div).find('.olMapViewport').append(layerSwitcherElement);
             };
-            var prepareLayerSwitcher = function() {
-                $scope.rasterOverlays = [];
-
-                angular.forEach($scope.layers, function(layer) {
-                    if(layer.displayInLayerSwitcher) {
-                        $scope.rasterOverlays.push(layer);
-                    }
-                });
-                loadLayerSwitcherTemplate($scope);
-            };
 
             //Toolbar
             var initToolbar = function() {
@@ -208,11 +198,10 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                     'featuremodified',
                     null,
                     eventHandlers.noticeChanges);
-
-            }
+            };
 
             //Layers
-            var createBackgroundLayer = function(list, layer, srs) {
+            var createBackgroundLayer = function(layer, srs) {
                 var newLayer = new OpenLayers.Layer.WMS(layer.title, layer.url, {
                         srs: srs,
                         layers: [layer.name]
@@ -221,10 +210,11 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                         ratio: 1.0,
                         isBaseLayer: false
                 });
-                list.push(newLayer);
+                layer.olLayerId = newLayer.id;
+                layer.visibility = true;
                 $scope.mapLayers.push(newLayer);
             };
-            var createWMSLayer = function(list, layer, srs, url) {
+            var createWMSLayer = function(layer, srs, url) {
                 if(layer.name || layer.layers) {
                     olLayers = angular.isArray(layer.name) ? layer.name : [layer.name];
 
@@ -236,32 +226,37 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                       singleTile: true,
                       ratio: 1.0
                     });
-                    newLayer._layers = [];
                     angular.forEach(layer.layers, function(layer) {
-                        createWMSLayer(newLayer._layers, layer, srs, url);
+                        createWMSLayer(layer, srs, url);
                     })
-                    list.push(newLayer);
-                    $scope.mapLayers.push(newLayer)
+                    layer.olLayerId = newLayer.id;
+                    layer.visibility = true;
+                    $scope.mapLayers.push(newLayer);
+                    return newLayer;
                 }
             };
             var createCombinedWMSLayer = function(layers, srs, url) {
-                var extractLayerNames = function(list, layer) {
+                var names = [];
+                var extractLayerNames = function(names, layer) {
                     if(layer.name) {
-                        list.push(layer.name)
+                        names.push(layer.name)
+                        layer.layerSwitcherIdx = $.inArray(layer.name, names)
                     }
                     if(layer.layers) {
                         angular.forEach(layer.layers, function(layer) {
-                            extractLayerNames(list, layer)
+                            extractLayerNames(names, layer)
                         });
                     }
+                    if(layer.name || layer.layers) {
+                        layer.visibility = true;
+                    }
                 };
-                var layerNames = [];
                 angular.forEach(layers, function(layer) {
-                    extractLayerNames(layerNames, layer)
+                    extractLayerNames(names, layer)
                 });
-                createWMSLayer([], {'name': layerNames, 'title': 'Combined Layer'}, srs, url);
+                $scope.combinedLayer = createWMSLayer({'name': names, 'title': 'Combined Layer'}, srs, url);
             };
-            var createVectorLayer = function(list, layer, name) {
+            var createVectorLayer = function(layer, name) {
                 var newLayer = new OpenLayers.Layer.Vector(name);
                 var style = $.extend({}, DEFAULT_VECTOR_STYLING, layer.style);
                 newLayer.styleMap = new OpenLayers.StyleMap(style);
@@ -284,11 +279,26 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                     $scope.drawLayer._maxFeatures = layer.maxFeatures || false;
                     $scope.drawLayer._allowedGeometry = layer.allowedGeometry;
                 }
-                list.push(newLayer);
+                layer.olLayerId = newLayer.id;
+                layer.visibility = true;
                 $scope.mapLayers.push(newLayer);
             };
             $scope.toggleVisibility = function(layer) {
-                layer.setVisibility(!layer.visibility);
+                if($scope.olmapBinds.singleWMSRequest) {
+                    if(layer.visibility) {
+                        layer.visibility = false;
+                        $scope.combinedLayer.params.LAYERS.splice(layer.layerSwitcherIdx, 1);
+
+                    } else {
+                        layer.visibility = true;
+                        $scope.combinedLayer.params.LAYERS.splice(layer.layerSwitcherIdx, 0, layer.name);
+                    }
+                    $scope.combinedLayer.redraw();
+                } else {
+                    var olLayer = $scope.map.getLayersBy('id', layer.olLayerId)[0]
+                    layer.visibility = !layer.visibility;
+                    olLayer.setVisibility(layer.visibility);
+                }
             };
 
             //Map
@@ -318,7 +328,6 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                     $scope.map.destroy();
                     delete $scope.map;
                 }
-                $scope.layers = [];
                 $scope.mapLayers = [];
 
                 $scope.map = new OpenLayers.Map($scope.mapId, {
@@ -349,21 +358,21 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
 
                 if(angular.isDefined($scope.olmapBinds.layers.background)) {
                     angular.forEach($scope.olmapBinds.layers.background, function(layer) {
-                        createBackgroundLayer($scope.rasterBackgroundLayers, layer, $scope.olmapBinds.proj)
+                        createBackgroundLayer(layer, $scope.olmapBinds.proj)
                     });
                 }
                 if(angular.isDefined($scope.olmapBinds.layers.wms)) {
-                    if($scope.olmapBinds.singleRequest) {
+                    if($scope.olmapBinds.singleWMSRequest) {
                         createCombinedWMSLayer($scope.olmapBinds.layers.wms, $scope.olmapBinds.proj, $scope.olmapBinds.url);
                     } else {
                         angular.forEach($scope.olmapBinds.layers.wms, function(layer) {
-                            createWMSLayer($scope.layers, layer, $scope.olmapBinds.proj, $scope.olmapBinds.url);
+                            createWMSLayer(layer, $scope.olmapBinds.proj, $scope.olmapBinds.url);
                         });
                     }
                 }
                 if(angular.isDefined($scope.olmapBinds.layers.vector)) {
                     angular.forEach($scope.olmapBinds.layers.vector, function(layer, name) {
-                        createVectorLayer($scope.layers, layer, name);
+                        createVectorLayer(layer, name);
                     });
                 }
 
@@ -373,7 +382,8 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                     initToolbar();
                 }
                 if($attrs.mapLayerSwitcher) {
-                    prepareLayerSwitcher($scope.map);
+                    loadLayerSwitcherTemplate();
+                    //prepareLayerSwitcher($scope.map);
                 }
                 if(angular.isDefined($scope.dataExtent)) {
                     $scope.map.zoomToExtent($scope.dataExtent)
@@ -409,9 +419,6 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                 $scope.layerSwitcherMaximized = false;
                 $scope.dataExtent = undefined;
                 $scope.mapLayers = [];
-                $scope.layers = [];
-                $scope.rasterBackgroundLayers = [];
-                $scope.rasterOverlays = [];
                 $scope.drawLayer = undefined;
                 $.unblockUI();
                 $scope.olmapBinds.visible = false;
@@ -425,14 +432,10 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, DEFAULT
                 proj: undefined,
                 layers: undefined
             };
-            $scope.rasterBackgroundLayers = [];
             $scope.mapLayers = [];
-            $scope.layers = [];
-            $scope.rasterOverlays = [];
             $scope.drawLayer = [];
 
             $scope.$watch('olmapBinds.visible', function(visible) {
-                console.log('called')
                 if(visible) {
                     prepareMapParameters();
                     $.blockUI({
