@@ -7,4 +7,15 @@
        dialog-text="{{'You made changes in this map. Do you want to keep them?'|i18n}}"
        callback="destroyMap(true)"
        refuse-callback="destroyMap(false)"></i>
+    <div class="_mapScaleResolution"
+         ng-mousedown="$event.stopPropagation();"
+         ng-click="$event.stopPropagation();"
+         ng-dblclick="$event.stopPropagation();"
+         ng-show="olmapBinds.showScaleRes">
+        <span ng-show="!showScale">Resolution</span>
+        <span ng-show="showScale">Scale 1 </span>
+        <span>: </span>
+        <span class="copyArea"></span>
+        <i class="icon-eye-close" ng-click="showScale=!showScale;eventHandlers.updateMapScaleResolution();"></i>
+    </div>
 </div>

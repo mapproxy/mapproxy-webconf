@@ -88,7 +88,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
         transclude: true,
         templateUrl: '/static/angular_templates/openlayersmap.html',
         controller: function($scope, $element, $attrs) {
-            var eventHandlers = {
+            $scope.eventHandlers = {
                 checkMaxFeaturesAfterAddOrActivate: function() {
                     if(this.drawControl._disabled) {
                         this.drawControl.deactivate();
@@ -107,8 +107,13 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 noticeChanges: function() {
                     $scope.unsavedChanges = true;
                     safeApply($scope)
+                },
+                updateMapScaleResolution: function() {
+                    var value = $scope.showScale ? $scope.map.getScale() : $scope.map.getResolution();
+                    $($scope.map.div).find('._mapScaleResolution .copyArea').html(value);
                 }
-            }
+            };
+
             //LayerSwitcher
             var loadLayerSwitcherTemplate = function() {
                 var layerSwitcherTemplate = $templateCache.get("layerswitcher_template");
@@ -205,28 +210,28 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     $scope._draw.events.register(
                         'featureadded',
                         eventData,
-                        eventHandlers.checkMaxFeaturesAfterAddOrActivate);
+                        $scope.eventHandlers.checkMaxFeaturesAfterAddOrActivate);
                     $scope._draw.events.register(
                         'activate',
                         eventData,
-                        eventHandlers.checkMaxFeaturesAfterAddOrActivate);
+                        $scope.eventHandlers.checkMaxFeaturesAfterAddOrActivate);
                     $scope._delete.events.register(
                         'featuredeleted',
                         eventData,
-                        eventHandlers.checkMaxFeaturesAfterDelete);
+                        $scope.eventHandlers.checkMaxFeaturesAfterDelete);
                 }
                 $scope.drawLayer.events.register(
                     'featureadded',
                     null,
-                    eventHandlers.noticeChanges);
+                    $scope.eventHandlers.noticeChanges);
                 $scope._delete.events.register(
                     'featuredeleted',
                     null,
-                    eventHandlers.noticeChanges);
+                    $scope.eventHandlers.noticeChanges);
                 $scope.drawLayer.events.register(
                     'featuremodified',
                     null,
-                    eventHandlers.noticeChanges);
+                    $scope.eventHandlers.noticeChanges);
             };
 
             //Layers
@@ -246,7 +251,6 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
             var createWMSLayer = function(layer, srs, url) {
                 if(layer.name || layer.layers) {
                     olLayers = angular.isArray(layer.name) ? layer.name : [layer.name];
-
                     var newLayer = new OpenLayers.Layer.WMS(layer.title, url, {
                         srs: srs,
                         transparent: !layer.opaque,
@@ -365,6 +369,12 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     delete $scope.map;
                 }
 
+                if($scope.olmapBinds.showScaleRes && $scope.olmapBinds.dpi) {
+                    OpenLayers.DOTS_PER_INCH = $scope.olmapBinds.dpi;
+                } else {
+                    OpenLayers.DOTS_PER_INCH = 72;
+                }
+
                 $scope.map = new OpenLayers.Map($scope.mapId, {
                     projection: $scope.olmapBinds.proj,
                     maxExtent: $scope.olmapBinds.extent,
@@ -392,6 +402,9 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 );
                 $scope.map.addLayer(imageLayer);
 
+                if($scope.olmapBinds.showScaleRes) {
+                    $scope.eventHandlers.updateMapScaleResolution();
+                    $scope.map.events.register('zoomend', null, $scope.eventHandlers.updateMapScaleResolution);
                 }
 
                 if($attrs.mapToolbar && $scope.drawLayer) {

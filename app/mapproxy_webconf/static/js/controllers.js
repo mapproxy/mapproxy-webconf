@@ -206,7 +206,7 @@ function MapProxyConfigCtrl($scope, $http, localize, MessageService) {
     $scope._messageService = MessageService;
 }
 
-function TreeCtrl($scope, localize, WMSSources, MessageService) {
+function TreeCtrl($scope, localize, WMSSources, MessageService, ProjectDefaults) {
 
     var refreshTree = function() {
         $scope.wms_list = WMSSources.list();
@@ -238,14 +238,15 @@ function TreeCtrl($scope, localize, WMSSources, MessageService) {
         var srs = ($.inArray('EPSG:4326', wms.data.layer.srs) != -1 || $.inArray('epsg:4326', wms.data.layer.srs) != -1) ?
             'EPSG:4326' : wms.data.layer.srs[0];
         var extent = wms.data.layer.llbbox;
-
         $scope.olmapBinds = {
             visible: true,
             proj: srs,
             extent: extent,
             singleWMSRequest: true,
+            showScaleRes: true,
             layers: {'wms': wms.data.layer.layers},
-            url: wms.data.url
+            url: wms.data.url,
+            dpi: $scope.defaults.data.dpi
         }
     }
 
@@ -254,6 +255,12 @@ function TreeCtrl($scope, localize, WMSSources, MessageService) {
     $scope.$watch('_messageService.messages.wms_capabilities.delete_success', refreshTree, true);
     $scope.$watch('_messageService.messages.wms_capabilities.add_success', refreshTree, true);
     $scope.$watch('_messageService.messages.wms_capabilities.update_success', refreshTree, true);
+    $scope.$watch('_messageService.messages.defaults.load_success', function() {
+        var defaults = ProjectDefaults.list();
+        if(defaults.length > 0) {
+            $scope.defaults = defaults[0];
+        }
+    });
 
     $scope.$on('olmap.ready', function(scope, map) {
         $scope.map = map;

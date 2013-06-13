@@ -502,12 +502,27 @@ div.blockMsg {
     z-index: 1500;
 }
 
-._layerSwitcher .layersDiv i {
+._layerSwitcher .layersDiv i,
+._mapScaleResolution i {
   background-image: url("../img/glyphicons-halflings-white.png");
 }
 
 .toggleLayerSwitcher {
   position: absolute;
+}
+
+._mapScaleResolution {
+  display: block;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  z-index: 1500;
+  padding: 1px 6px 1px 4px;
+  background-color: darkblue;
+  color: white;
+}
+._mapScaleResolution .copyArea {
+  cursor: text;
 }
 
 /* jquery.ui */
