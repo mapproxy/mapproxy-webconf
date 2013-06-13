@@ -505,3 +505,7 @@ div.blockMsg {
 .toggleLayerSwitcher {
   position: absolute;
 }
+
+.help {
+  cursor: help;
+}

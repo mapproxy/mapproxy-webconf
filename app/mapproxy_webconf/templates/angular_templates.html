@@ -12,7 +12,7 @@
             <label class="control-label" for="{{name}}">
                 <span ng-transclude></span> {{getText()}}
                 <span ng-include="'error_messages'" class="text-error"></span>
-                <i class="pull-right icon-warning-sign" ng-show="warning" tooltip="tooltip" tooltip-content="{{warningMsg()}}"></i>
+                <i class="pull-right icon-warning-sign help" ng-show="warning" tooltip="tooltip" tooltip-content="{{warningMsg()}}"></i>
             </label>
 
         </div>
@@ -24,7 +24,18 @@
         <label class="control-label" for="{{name}}">{{getText()}}:</label>
         <div class="controls">
             <span ng-transclude></span>
-            <i class="pull-right icon-warning-sign" ng-show="warning" tooltip="tooltip" tooltip-content="{{warningMsg()}}"></i>
+            <i class="pull-right icon-warning-sign help" ng-show="warning" tooltip="tooltip" tooltip-content="{{warningMsg()}}"></i>
+            <span ng-include="'error_messages'" class="text-error"></span>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="input_label_toggleable">
+    <div class="control-group" ng-class="{'error': invalid, 'warning': warning}" toggle-group mode="multiShow">
+        <label class="control-label" for="{{name}}" toggle-element="next">{{getText()}}<i class="icon-question-sign pull-right help" tooltip="uncommonInputs"></i></label>
+        <div class="controls" ng-show="false">
+            <span ng-transclude></span>
+            <i class="pull-right icon-warning-sign help" ng-show="warning" tooltip="tooltip" tooltip-content="{{warningMsg()}}"></i>
             <span ng-include="'error_messages'" class="text-error"></span>
         </div>
     </div>

@@ -397,6 +397,9 @@ directive('labeled', function($parse, $templateCache, localize) {
             scope.getText = function() {
                 return attrs.text;
             };
+            scope.infoMsg = function() {
+                return attrs.infoMsg;
+            };
 
             scope.name = attrs.nameFor;
 
