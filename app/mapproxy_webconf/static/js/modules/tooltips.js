@@ -26,9 +26,11 @@ angular.module('mapproxy_gui.tooltips', []).
 factory('tooltipMapper', function($http, $rootScope) {
     var tooltipMapper = {
         tooltips: {},
+        loaded: false,
         loadDict: function(url) {
             $http.get(url, {cache: false}).success(function(data) {
                 tooltipMapper.tooltips = data;
+                tooltipMapper.loaded = true;
                 $rootScope.$broadcast('tooltipsLoaded');
             }); //XXXkai: error handling
         }
@@ -74,6 +76,14 @@ directive('tooltip', function(tooltipMapper) {
                     placement: scope.tooltipPlacement
                 });
             };
+            var initFromService = function() {
+                var tooltipData = tooltipMapper.tooltips[attrs.tooltip];
+                if(angular.isDefined(tooltipData.title)) {
+                    initPopover(tooltipData.content, tooltipData.title);
+                } else {
+                    initTooltip(tooltipData.content);
+                }
+            };
 
             scope.tooltipPlacement = attrs.tooltipPlacement || 'right';
 
@@ -84,15 +94,12 @@ directive('tooltip', function(tooltipMapper) {
                     initTooltip(attrs.tooltipContent);
                 }
             } else {
-                scope.$on('tooltipsLoaded', function() {
-                    var tooltipData = tooltipMapper.tooltips[attrs.tooltip];
-
-                    if(angular.isDefined(tooltipData.title)) {
-                        initPopover(tooltipData.content, tooltipData.title);
-                    } else {
-                        initTooltip(tooltipData.content);
-                    }
-                });
+                var tooltipData;
+                if(tooltipMapper.loaded) {
+                    initFromService();
+                } else {
+                    scope.$on('tooltipsLoaded', initFromService);
+                }
             }
         }
     };

@@ -5,5 +5,8 @@
     },
     "t2": {
         "content": "Go to <b>MapProxy</b> configuration"
+    },
+    "uncommonInputs": {
+        "content": "Diese Option wird in den meisten Fällen nicht benötigt"
     }
 }

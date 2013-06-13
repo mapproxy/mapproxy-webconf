@@ -101,20 +101,30 @@
             <input type="text" id="add_layer_manual" name="add_layer_manual" ng-model="custom.layer_manual" class="input-medium" unique="{{source.data.req.layers}}">
             <button class="btn btn-small" ng-click="addLayerManual($event)" ng-disabled="!custom.layer_manual">{{'Add'|i18n}}</button>
           </div>
-
           <hr class="formLine">
-          <div class="input-append" labeled='input_label' name-for="coverage_bbox" text="{{'Coverage BBOX'|i18n}}">
-            <input type="text" ng-model="source.data.coverage.bbox" id="coverage_bbox" name="coverage_bbox" class="input-medium">
-            <button class="btn btn-small" ng-disabled="!source.data.req.url" ng-click="addCoverage($event)" id="form_load_coverage">{{'Use coverage from WMS'|i18n}}</button>
+          <div labeled='checkbox_label' name-for="req_transparent" text="{{'Transparency'|i18n}}" warning="{{warningLogic.checkImageSettings()}}" warning-msg="{{'Selectet image format(s) not support transparency.'|i18n}}">
+            <input type="checkbox" ng-model="source.data.req.transparent" id="req_transparent" name="req_transparent">
           </div>
-          <div labeled="input_label" name-for="coverage_srs" text="{{'Coverage SRS'|i18n}}">
-            <select class="input-xlarge" ng-model="source.data.coverage.srs" id="coverage_srs" name="coverage_srs" ng-options="srs for srs in defaults.data.srs">
+          <div labeled="input_label" name-for="supported_formats" text="{{'Supported formats'|i18n}}" warning="{{warningLogic.checkImageSettings()}}" warning-msg="{{'Selectet image format(s) not support transparency.'|i18n}}">
+            <select name="supported_formats" id="supported_formats" multiple="multiple" ng-model="source.data.supported_formats">
+              <option value="PNG">PNG</option>
+              <option value="JPEG">JPEG</option>
+              <option value="GIF">GIF</option>
             </select>
           </div>
-          <button class="btn btn-small" ng-disabled="!source.data.coverage.bbox" ng-click="showCoverageInMap()">{{'Show coverage in map'|i18n}}</button>
-          <div ol-map="olmapBinds" map-width="1000" map-height="600" map-hidden="true" map-layer-switcher="true"></div>
           <hr class="formLine">
-          <div labeled="input_label" name-for="supported_srs" text="{{'Supported SRS'|i18n}}">
+          <div labeled='input_label_toggleable' name-for="coverage_bbox" text="{{'Coverage BBOX'|i18n}}">
+            <input type="text" ng-model="source.data.coverage.bbox" id="coverage_bbox" name="coverage_bbox" class="input-medium">
+            <button class="btn btn-small" ng-disabled="!source.data.req.url" ng-click="addCoverage($event)" id="form_load_coverage">{{'Use coverage from WMS'|i18n}}</button>
+            <div labeled="input_label" name-for="coverage_srs" text="{{'Coverage SRS'|i18n}}">
+              <select class="input-xlarge" ng-model="source.data.coverage.srs" id="coverage_srs" name="coverage_srs" ng-options="srs for srs in defaults.data.srs">
+              </select>
+            </div>
+            <button class="btn btn-small" ng-disabled="!source.data.coverage.bbox" ng-click="showCoverageInMap()">{{'Show coverage in map'|i18n}}</button>
+            <div ol-map="olmapBinds" map-width="1000" map-height="600" map-hidden="true" map-layer-switcher="true"></div>
+          </div>
+          <hr class="formLine">
+          <div labeled="input_label_toggleable" name-for="supported_srs" text="{{'Supported SRS'|i18n}}">
             <button class="btn btn-small pull-right" ng-click="loadSRS($event)" ng-disabled="!source.data.req.url">
               {{'Add SRS from WMS'|i18n}}
             </button>
@@ -123,30 +133,17 @@
                 {{srs}}<i class="icon-remove" ng-click="removeSRS($event, srs)"></i>
               </span>
             </div>
-          </div>
-          <div class="input-append" labeled="input_label" name-for="add_srs_manual" text="{{'Manual add SRS'|i18n}}">
-            <input type="text" id="add_srs_manual" name="add_srs_manual" ng-model="custom.srs_manual" class="input-medium">
-            <button class="btn btn-small" ng-click="addSRSManual($event)" ng-disabled="!custom.srs_manual">{{'Add'|i18n}}</button>
-          </div>
-
-          <hr class="formLine">
-          <div labeled='checkbox_label' name-for="req_transparent" text="{{'Transparency'|i18n}}" warning="{{warningLogic.checkImageSettings()}}" warning-msg="{{'Selectet image format(s) not support transparency.'|i18n}}">
-            <input type="checkbox" ng-model="source.data.req.transparent" id="req_transparent" name="req_transparent">
-          </div>
-          <div labeled="input_label" name-for="supported_formats" text="{{'Supported formats'|i18n}}" warning="{{warningLogic.checkImageSettings()}}" warning-msg="{{'Selectet image format(s) not support transparency.'|i18n}}">
-              <select name="supported_formats" id="supported_formats" multiple="multiple" ng-model="source.data.supported_formats">
-                  <option value="PNG">PNG</option>
-                  <option value="JPEG">JPEG</option>
-                  <option value="GIF">GIF</option>
-              </select>
+            <div class="input-append" labeled="input_label" name-for="add_srs_manual" text="{{'Manual add SRS'|i18n}}">
+              <input type="text" id="add_srs_manual" name="add_srs_manual" ng-model="custom.srs_manual" class="input-medium">
+              <button class="btn btn-small" ng-click="addSRSManual($event)" ng-disabled="!custom.srs_manual">{{'Add'|i18n}}</button>
+            </div>
           </div>
           <hr class="formLine">
           <div ng-include src="'${ get_url('static', filepath='angular_templates/min_max_res.html') }'"></div>
-      <hr>
+      <hr class="formLine">
       <div class="pull-left">
         <button class="btn btn-small" ng-click="addSource($event)" ng-disabled="!form.$valid" id="form_save" ng-class="{'btn-success': form.$valid}">{{'Save'|i18n}}</button>
         <button class="btn btn-small" ng-click="resetForm($event)">{{'Reset'|i18n}}</button>
-        <button class="btn btn-small" ng-click="copySource($event)">{{'Copy'|i18n}}</button>
       </div>
       <div id="_editarea_toggle_button_container" class="pull-right">
       </div>

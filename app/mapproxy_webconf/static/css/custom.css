@@ -474,6 +474,10 @@ div.blockMsg {
   margin-left: 10px;
 }
 
+.help {
+  cursor: help;
+}
+
 /* map */
 
 .map-icon-remove {
@@ -521,6 +525,7 @@ div.blockMsg {
   background-color: darkblue;
   color: white;
 }
+
 ._mapScaleResolution .copyArea {
   cursor: text;
 }
