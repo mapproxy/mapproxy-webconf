@@ -316,9 +316,31 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
             };
 
             //Map
-            var prepareMapParameters = function() {
+            var prepareMap = function() {
+                $scope.mapLayers = [];
+
                 if(!($scope.olmapBinds.proj instanceof OpenLayers.Projection)) {
                     $scope.olmapBinds.proj = new OpenLayers.Projection($scope.olmapBinds.proj);
+                }
+
+                if(angular.isDefined($scope.olmapBinds.layers.background)) {
+                    angular.forEach($scope.olmapBinds.layers.background, function(layer) {
+                        createBackgroundLayer(layer, $scope.olmapBinds.proj)
+                    });
+                }
+                if(angular.isDefined($scope.olmapBinds.layers.wms)) {
+                    if($scope.olmapBinds.singleWMSRequest) {
+                        createCombinedWMSLayer($scope.olmapBinds.layers.wms, $scope.olmapBinds.proj, $scope.olmapBinds.url);
+                    } else {
+                        angular.forEach($scope.olmapBinds.layers.wms, function(layer) {
+                            createWMSLayer(layer, $scope.olmapBinds.proj, $scope.olmapBinds.url);
+                        });
+                    }
+                }
+                if(angular.isDefined($scope.olmapBinds.layers.vector)) {
+                    angular.forEach($scope.olmapBinds.layers.vector, function(layer, name) {
+                        createVectorLayer(layer, name);
+                    });
                 }
 
                 if(angular.isUndefined($scope.olmapBinds.extent) && $scope.olmapBinds.proj.getCode() != 'EPSG:4326') {
@@ -342,7 +364,6 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     $scope.map.destroy();
                     delete $scope.map;
                 }
-                $scope.mapLayers = [];
 
                 $scope.map = new OpenLayers.Map($scope.mapId, {
                     projection: $scope.olmapBinds.proj,
@@ -357,7 +378,8 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                             }
                         }),
                         new OpenLayers.Control.PanZoomBar({autoActivate: true})
-                    ]
+                    ],
+                    layers: $scope.mapLayers
                 });
 
                 var imageLayer = new OpenLayers.Layer.Image('Blank',
@@ -370,27 +392,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 );
                 $scope.map.addLayer(imageLayer);
 
-                if(angular.isDefined($scope.olmapBinds.layers.background)) {
-                    angular.forEach($scope.olmapBinds.layers.background, function(layer) {
-                        createBackgroundLayer(layer, $scope.olmapBinds.proj)
-                    });
                 }
-                if(angular.isDefined($scope.olmapBinds.layers.wms)) {
-                    if($scope.olmapBinds.singleWMSRequest) {
-                        createCombinedWMSLayer($scope.olmapBinds.layers.wms, $scope.olmapBinds.proj, $scope.olmapBinds.url);
-                    } else {
-                        angular.forEach($scope.olmapBinds.layers.wms, function(layer) {
-                            createWMSLayer(layer, $scope.olmapBinds.proj, $scope.olmapBinds.url);
-                        });
-                    }
-                }
-                if(angular.isDefined($scope.olmapBinds.layers.vector)) {
-                    angular.forEach($scope.olmapBinds.layers.vector, function(layer, name) {
-                        createVectorLayer(layer, name);
-                    });
-                }
-
-                $scope.map.addLayers($scope.mapLayers);
 
                 if($attrs.mapToolbar && $scope.drawLayer) {
                     initToolbar();
@@ -451,7 +453,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
 
             $scope.$watch('olmapBinds.visible', function(visible) {
                 if(visible) {
-                    prepareMapParameters();
+                    prepareMap();
                     $.blockUI({
                         message: $($element),
                         css: {
