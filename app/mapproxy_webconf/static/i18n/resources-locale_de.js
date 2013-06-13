@@ -733,5 +733,9 @@
     {
         "key": "Supported formats",
         "value": "Unterstütze Bildformate"
+    },
+    {
+        "key": "Resolutions / Scales",
+        "value": "Auflösungen / Maßstäbe"
     }
 ]
