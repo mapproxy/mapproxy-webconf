@@ -397,14 +397,14 @@
         "key": "Paletted",
         "value": "Paletted"
     },
-    {
-        "key": "Edit manual",
-        "value": "Manuell bearbeiten"
-    },
-    {
-        "key": "Back to form edit",
-        "value": "Zurück zum formularbasierten Editieren"
-    },
+    // {
+    //     "key": "Edit manual",
+    //     "value": "Manuell bearbeiten"
+    // },
+    // {
+    //     "key": "Back to form edit",
+    //     "value": "Zurück zum formularbasierten Editieren"
+    // },
     // {
     //     "key": "project overview",
     //     "value": "Projektübersicht"
@@ -569,14 +569,14 @@
     //     "key": "Scales",
     //     "value": "Maßstäbe"
     // },
-    {
-        "key": "Resolution",
-        "value": "Auflösung"
-    },
-    {
-        "key": "Scale",
-        "value": "Maßstab"
-    },
+    // {
+    //     "key": "Resolution",
+    //     "value": "Auflösung"
+    // },
+    // {
+    //     "key": "Scale",
+    //     "value": "Maßstab"
+    // },
     // {
     //     "key": "Level",
     //     "value": "Level"

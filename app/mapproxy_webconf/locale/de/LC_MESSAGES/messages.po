@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2013-06-12 14:53+CEST\n"
-"PO-Revision-Date: 2013-06-12 15:32+0100\n"
+"POT-Creation-Date: 2013-06-13 16:26+CEST\n"
+"PO-Revision-Date: 2013-06-13 16:31+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: \n"
@@ -14,6 +14,55 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
+
+#: mapproxy_webconf/static/angular_templates/editarea.html:2
+#: mapproxy_webconf/static/angular_templates/editarea.html:4
+msgid "Edit manual"
+msgstr "Manuell bearbeiten"
+
+#: mapproxy_webconf/static/angular_templates/editarea.html:14
+#: mapproxy_webconf/static/angular_templates/editarea.html:21
+#: mapproxy_webconf/templates/caches.html:102
+#: mapproxy_webconf/templates/globals.html:45
+#: mapproxy_webconf/templates/grids.html:103
+#: mapproxy_webconf/templates/layers.html:11
+#: mapproxy_webconf/templates/layers.html:79
+#: mapproxy_webconf/templates/project_index.html:25
+#: mapproxy_webconf/templates/services.html:109
+#: mapproxy_webconf/templates/sources.html:147
+msgid "Save"
+msgstr "Speichern"
+
+#: mapproxy_webconf/static/angular_templates/editarea.html:27
+#: mapproxy_webconf/templates/caches.html:103
+#: mapproxy_webconf/templates/grids.html:104
+#: mapproxy_webconf/templates/layers.html:80
+#: mapproxy_webconf/templates/sources.html:148
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+#: mapproxy_webconf/static/angular_templates/editarea.html:36
+#: mapproxy_webconf/static/angular_templates/editarea.html:46
+msgid "Back to form edit"
+msgstr "Zurück zum formularbasierten Editieren"
+
+#: mapproxy_webconf/static/angular_templates/min_max_res.html:4
+#: mapproxy_webconf/templates/grids.html:87
+msgid "Meters"
+msgstr "Meter"
+
+#: mapproxy_webconf/static/angular_templates/min_max_res.html:5
+#: mapproxy_webconf/templates/grids.html:88
+msgid "Degrees"
+msgstr "Grad"
+
+#: mapproxy_webconf/static/angular_templates/min_max_res.html:8
+msgid "Resolution"
+msgstr "Auflösung"
+
+#: mapproxy_webconf/static/angular_templates/min_max_res.html:9
+msgid "Scale"
+msgstr "Maßstab"
 
 #: mapproxy_webconf/templates/angular_templates.html:2
 msgid "This field is required"
@@ -106,24 +155,6 @@ msgstr "Cache"
 msgid "Not shown caches"
 msgstr "Ausgeblendete Caches"
 
-#: mapproxy_webconf/templates/caches.html:102
-#: mapproxy_webconf/templates/globals.html:45
-#: mapproxy_webconf/templates/grids.html:103
-#: mapproxy_webconf/templates/layers.html:11
-#: mapproxy_webconf/templates/layers.html:79
-#: mapproxy_webconf/templates/project_index.html:25
-#: mapproxy_webconf/templates/services.html:109
-#: mapproxy_webconf/templates/sources.html:147
-msgid "Save"
-msgstr "Speichern"
-
-#: mapproxy_webconf/templates/caches.html:103
-#: mapproxy_webconf/templates/grids.html:104
-#: mapproxy_webconf/templates/layers.html:80
-#: mapproxy_webconf/templates/sources.html:148
-msgid "Reset"
-msgstr "Zurücksetzen"
-
 #: mapproxy_webconf/templates/caches.html:104
 #: mapproxy_webconf/templates/grids.html:105
 #: mapproxy_webconf/templates/layers.html:81
@@ -195,14 +226,6 @@ msgstr "Default Grids"
 #: mapproxy_webconf/templates/grids.html:154
 msgid "Resolutions"
 msgstr "Auflösungen"
-
-#: mapproxy_webconf/templates/grids.html:87
-msgid "Meters"
-msgstr "Meter"
-
-#: mapproxy_webconf/templates/grids.html:88
-msgid "Degrees"
-msgstr "Grad"
 
 #: mapproxy_webconf/templates/grids.html:94
 #: mapproxy_webconf/templates/grids.html:155
