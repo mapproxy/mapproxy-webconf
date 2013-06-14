@@ -733,8 +733,6 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
     });
 };
 
-
-
 function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageService, ProjectDefaults, DataShareService) {
 
     var convertResScales = function(url, mode) {
@@ -886,6 +884,26 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         }
         setGrid();
     };
+    $scope.showMap = function(event) {
+        event.preventDefault();
+
+        $scope.olmapBinds = {
+            visible: true,
+            proj: 'EPSG:4326',
+            extent: [7, 51, 10, 54],
+            layers: {
+                'vector': [{
+                    'name': 'Coverage',
+                    'url': $scope.transformGridURL
+                }],
+                'background': [{
+                    title: 'BackgroundLayer',
+                    url: 'http://osm.omniscale.net/proxy/service?',
+                    name: 'osm'
+                }]
+            }
+        }
+    }
 
     $scope.custom = {
         'res_scales': [],
@@ -933,8 +951,6 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         }
     });
 };
-
-
 
 function MapproxyLayerFormCtrl($scope, $http, localize, MapproxySources, MapproxyCaches, MapproxyLayers, MessageService, ProjectDefaults) {
 

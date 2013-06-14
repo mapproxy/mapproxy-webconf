@@ -333,7 +333,27 @@ def transform_bbox():
 
     return {'result': transformed_bbox}
 
+@app.route('/transform_grid', 'POST', name='transform_grid')
+def transform_grid():
+    bbox = map(float, request.forms.get('bbox', '').split(','))
+    srs = request.forms.get('srs', 'EPSG:4326')
+    if bbox:
+        xc = bbox[0] + (bbox[2]-bbox[0]) / 2;
+        yc = bbox[1] + (bbox[3]-bbox[1]) / 2;
+    else:
+        xc = 0
+        yc = 0
 
+    return {"type":"FeatureCollection",
+        "features":[
+            {"type":"Feature",
+                "geometry":{
+                    "type":"Point",
+                    "coordinates":[xc, yc]
+                }
+            }
+        ]
+    }
 
 def init_app(storage_dir):
     app.install(storage.SQLiteStorePlugin(os.path.join(configuration.get('app', 'storage_path'), configuration.get('app', 'sqlite_db'))))

@@ -48,7 +48,7 @@
 %end
 
 %def middleblock():
-<div ng-controller="MapproxyGridFormCtrl" ng-init="calculateTilesURL='${ get_url('calculate_tiles') }'">
+<div ng-controller="MapproxyGridFormCtrl" ng-init="calculateTilesURL='${ get_url('calculate_tiles') }'; transformGridURL='${ get_url('transform_grid') }';">
   <div ng-show="!editareaBinds.visible">
     <h3>{{formTitle|i18n}}</h3>
     <form name="form" id="form" novalidate>
@@ -105,8 +105,10 @@
         <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="grid._locked||grid.default||!form.$valid" id="form_save" ng-class="{'btn-success': form.$valid&&!grid._locked}">{{'Save'|i18n}}</button>
         <button class="btn btn-small" ng-click="resetForm($event)" ng-disabled="grid._locked||grid.default">{{'Reset'|i18n}}</button>
       </div>
+
       <div id="_editarea_toggle_button_container" class="pull-right" ng-show="!grid._locked&&!grid.default"></div>
     </form>
+    <button class="btn btn-small" ng-click="showMap($event)">Show map</button>
   </div>
   <div editarea="editareaBinds" ng-disabled="grid._locked||grid.default"
     yaml-URL="${get_url('json_to_yaml')}"
@@ -117,7 +119,7 @@
     <span message-handler="error" message-types="grids.add_error,grids.update_error,grids.form_error"></span>
   </div>
   <hr>
-    <button
+  <button
     class="pull-right btn btn-small btn-warning"
     dialog="ask"
     dialog-title="{{'Really lock the grid'|i18n}}: {{grid.data.name}}?"
@@ -127,15 +129,15 @@
     ng-show="!(grid._locked||grid.default)"
     id="form_lock">{{'Lock'|i18n}}
   </button>
-    <button
-      class="btn btn-small"
-      ng-show="grid._locked"
-      dialog="ask"
-      dialog-title="{{'Unlock'|i18n}}?"
-      dialog-text="{{'If you unlock this grid it you need to check settings of all caches you use this grid and delete all affacted caches from disk'|i18n}}"
-      callback="unlockGrid()">{{'Unlock'|i18n}}
-    </button>
-
+  <button
+    class="btn btn-small"
+    ng-show="grid._locked"
+    dialog="ask"
+    dialog-title="{{'Unlock'|i18n}}?"
+    dialog-text="{{'If you unlock this grid it you need to check settings of all caches you use this grid and delete all affacted caches from disk'|i18n}}"
+    callback="unlockGrid()">{{'Unlock'|i18n}}
+  </button>
+  <div ol-map="olmapBinds" map-width="1000" map-height="600" map-hidden="true" map-layer-switcher="true"></div>
 </div>
 %end
 

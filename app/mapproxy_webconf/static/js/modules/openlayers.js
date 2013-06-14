@@ -289,8 +289,32 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 });
                 $scope.combinedLayer = createWMSLayer({'name': angular.copy($scope.combinedWMSLayerNames), 'title': 'Combined Layer'}, srs, url);
             };
-            var createVectorLayer = function(layer, name) {
-                var newLayer = new OpenLayers.Layer.Vector(name);
+            var createVectorLayer = function(layer) {
+                var options = {};
+                if(angular.isDefined(layer.url)) {
+                    options = {
+                        protocol: new OpenLayers.Protocol.HTTP({
+                            url: layer.url,
+                            readWithPOST: true,
+                            updateWithPOST: true,
+                            deleteWithPOST: true,
+                            format: new OpenLayers.Format.GeoJSON(),
+                            //headers.Content-Type is overwritten by
+                            //OpenLayers.Protocol.HTTP:202
+                            // headers: {
+                            //     'Content-Type': 'application/json'
+                            // },
+                            //set additional parameter so srs is also send to server
+                            params: {'srs': $scope.olmapBinds.proj}
+                        }),
+                        strategies: [
+                            new OpenLayers.Strategy.BBOX({
+                                ratio: 1
+                            })
+                    ]}
+                }
+
+                var newLayer = new OpenLayers.Layer.Vector(layer.name, options);
                 var style = $.extend({}, DEFAULT_VECTOR_STYLING, layer.style);
                 newLayer.styleMap = new OpenLayers.StyleMap(style);
                 if(angular.isDefined(layer.geometries)) {
@@ -314,8 +338,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 }
                 layer.olLayerId = newLayer.id;
                 layer.visibility = true;
-                layer.name = name;
-                layer.title = name;
+                layer.title = layer.title || layer.name;
                 $scope.mapLayers.push(newLayer);
             };
 
@@ -343,7 +366,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 }
                 if(angular.isDefined($scope.olmapBinds.layers.vector)) {
                     angular.forEach($scope.olmapBinds.layers.vector, function(layer, name) {
-                        createVectorLayer(layer, name);
+                        createVectorLayer(layer);
                     });
                 }
 
