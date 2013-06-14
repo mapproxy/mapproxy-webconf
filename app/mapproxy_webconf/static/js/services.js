@@ -99,7 +99,7 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
                     _this._successMessageHandler(_this._localize.getLocalizedString('Successful added'));
                     if(angular.isDefined(_this._rootScope)) {
                         _this._last = result;
-                        _this.current(true, result);
+                        _this.current(result);
                     }
                 }, _this._errorMessageHandler);
         } else {
@@ -111,7 +111,7 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
                 _this._successMessageHandler(_this._localize.getLocalizedString('Successful updated'));
                 if(angular.isDefined(_this._rootScope)) {
                     _this._last = result;
-                    _this.current(true, result);
+                    _this.current(result);
                 }
             }, _this._errorMessageHandler);
         }
