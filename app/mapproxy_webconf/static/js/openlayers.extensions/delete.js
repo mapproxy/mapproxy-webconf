@@ -57,7 +57,6 @@ OpenLayers.Control.DeleteFeature = OpenLayers.Class(OpenLayers.Control, {
         if (!feature) {
             return false;
         }
-        console.log(feature)
         if(this.selectControl) {
             this.selectControl.unselect(feature);
         }
