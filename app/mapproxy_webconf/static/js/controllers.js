@@ -454,22 +454,24 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
             });
         }
         var srs = $scope.source.data.coverage.srs || 'EPSG:4326';
-
+        var coverage = {
+            'name': 'Coverage',
+            'zoomToDataExtent': angular.isDefined(bbox),
+            'isDrawLayer': true,
+            'maxFeatures': 1,
+            'allowedGeometry': 'bbox'
+        }
+        if(angular.isDefined(bbox)) {
+            coverage['geometries'] = [{
+                'type': 'bbox',
+                'coordinates': bbox
+            }];
+        }
         $scope.olmapBinds = {
             visible: true,
             proj: srs,
             layers: {
-                'vector': [{
-                    'name': 'Coverage',
-                    'zoomToDataExtent': true,
-                    'isDrawLayer': true,
-                    'maxFeatures': 1,
-                    'allowedGeometry': 'bbox',
-                    'geometries': [{
-                        'type': 'bbox',
-                        'coordinates': bbox
-                    }]
-                }],
+                'vector': [coverage],
                 'background': [{
                     title: 'BackgroundLayer',
                     url: 'http://osm.omniscale.net/proxy/service?',

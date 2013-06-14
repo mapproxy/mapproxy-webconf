@@ -120,7 +120,8 @@
               <select class="input-xlarge" ng-model="source.data.coverage.srs" id="coverage_srs" name="coverage_srs" ng-options="srs for srs in defaults.data.srs">
               </select>
             </div>
-            <button class="btn btn-small" ng-disabled="!source.data.coverage.bbox" ng-click="showCoverageInMap()">{{'Show coverage in map'|i18n}}</button>
+            <button class="btn btn-small" ng-show="source.data.coverage.bbox" ng-click="showCoverageInMap()">{{'Show coverage in map'|i18n}}</button>
+            <button class="btn btn-small" ng-show="!source.data.coverage.bbox" ng-click="showCoverageInMap()">{{'Create coverage in map'|i18n}}</button>
           </div>
           <hr class="formLine">
           <div labeled="input_label_toggleable" name-for="supported_srs" text="{{'Supported SRS'|i18n}}">

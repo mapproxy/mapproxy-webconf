@@ -745,5 +745,9 @@
     {
         "key": "Resolutions / Scales",
         "value": "Auflösungen / Maßstäbe"
+    },
+    {
+        "key": "Create coverage in map",
+        "value": "Coverage in Karte erstellen"
     }
 ]
