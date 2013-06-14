@@ -449,9 +449,13 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
         var bbox = $scope.source.data.coverage.bbox;
         if(angular.isString(bbox)) {
             bbox = bbox.split(',');
-            angular.forEach(bbox, function(value, idx) {
-                bbox[idx] = parseFloat(value);
-            });
+            if(bbox[0] != "") {
+                angular.forEach(bbox, function(value, idx) {
+                    bbox[idx] = parseFloat(value);
+                });
+            } else {
+                bbox = undefined;
+            }
         }
         var srs = $scope.source.data.coverage.srs || 'EPSG:4326';
         var coverage = {
