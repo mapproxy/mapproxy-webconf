@@ -84,14 +84,25 @@ directive('tooltip', function(tooltipMapper) {
                     initTooltip(tooltipData.content);
                 }
             };
+            var initFromAttrs = function(content, title) {
+                if(angular.isDefined(title)) {
+                    initPopover(content, title);
+                } else {
+                    initTooltip(content);
+                }
+            }
 
             scope.tooltipPlacement = attrs.tooltipPlacement || 'right';
 
             if(angular.isDefined(attrs.tooltipContent)) {
-                if(angular.isDefined(attrs.tooltipTitle)) {
-                    initPopover(attrs.tooltipContent, attrs.tooltipTitle);
+                if(attrs.tooltipContent != "") {
+                    initFromAttrs(attrs.tooltipContent, attrs.tooltipTitle)
                 } else {
-                    initTooltip(attrs.tooltipContent);
+                    attrs.$observe('tooltipContent', function(val) {
+                        if(angular.isDefined(val) && val!="") {
+                            initFromAttrs(attrs.tooltipContent, attrs.tooltipTitle);
+                        }
+                    });
                 }
             } else {
                 var tooltipData;
