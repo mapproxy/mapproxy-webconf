@@ -167,14 +167,14 @@
     <div>
       <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
       <br>
-      <span ng-show="(list.concat(default_grids)).length - filtered.length" ng-click="search=''">{{'Not shown grids'|i18n}}: {{(list.concat(default_grids)).length - filtered.length}}</span>
+      <span ng-show="(list.concat(defaultGrids)).length - filtered.length" ng-click="search=''">{{'Not shown grids'|i18n}}: {{(list.concat(defaultGrids)).length - filtered.length}}</span>
     </div>
     <ul class="vertical-list small">
       <div
         draggable
         class="mapproxy_grid"
-        ng-repeat="item in filtered = (list.concat(default_grids) | filter: {data.name:search}) | orderBy:'name'"
-        item-data="{{grid}}">
+        ng-repeat="item in filtered = (list.concat(defaultGrids) | filter: {data.name:search}) | orderBy:'name'"
+        item-data="{{item}}">
         <li class="droppable_name" ng-class="{'locked-grid': item._locked}">
           <i ng-show="item._locked || item.default" class="icon-ok"></i>
           <i ng-show="!item._locked && !item.default" class="icon-warning-sign"></i>
