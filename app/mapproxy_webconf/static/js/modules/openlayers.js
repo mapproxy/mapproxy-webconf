@@ -460,9 +460,11 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                         });
                     });
 
-                    safeApply($scope, function() {
-                        $scope.olmapBinds.layers.vector[$scope.drawLayer.name].geometries = newGeometries;
-                    });
+                    angular.forEach($scope.olmapBinds.layers.vector, function(layer) {
+                        if(layer.name == $scope.drawLayer.name) {
+                            layer.geometries = newGeometries;
+                        }
+                    })
                 }
                 if($scope.map instanceof OpenLayers.Map) {
                     $scope.map.destroy();
