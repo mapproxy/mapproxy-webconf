@@ -25,18 +25,16 @@
             </select>
         </div>
         <!-- Add md section -->
-        <div toggle-group mode="multiShow">
-            <h5 toggle-element="next">{{'Meta data'|i18n}}</h5>
-            <span ng-show="false">
+        <div labeled="input_label_toggleable" name-for="wms_md" text="{{'Meta data'|i18n}}">
+            <div id="wms_md">
                 <div labeled="input_label" name-for="wms_md_abstract" text="{{'Abstract'|i18n}}">
                     <textarea ng-model="services.data.wms.md.abstract" id="wms_md_abstract" name="wms_md_abstract"></textarea>
                 </div>
                 <div labeled="input_label" name-for="wms_md_online_resource" text="{{'Online resource'|i18n}}">
                     <input type="text" ng-model="services.data.wms.md.online_resource" id="wms_md_online_resource" name="wms_md_online_resource">
                 </div>
-                <div toggle-group mode="multiShow">
-                    <h5 toggle-element="next">{{'Contact'|i18n}}</h5>
-                    <span ng-show="false">
+                <div labeled="input_label_toggleable" name-for="wms_md_contact" text="{{'Contact'|i18n}}">
+                    <div id="wms_md_contact">
                         <div labeled="input_label" name-for="wms_md_contact_person " text="{{'Person'|i18n}}">
                             <input type="text" ng-model="services.data.wms.md.contact.person" id="wms_md_contact_person" name="wms_md_contact_person">
                         </div>
@@ -74,8 +72,8 @@
                         <div labeled="input_label" name-for="wms_md_access_constraints" text="{{'Access constraints'|i18n}}">
                             <textarea ng-model="services.data.wms.md.access_constraints" id="wms_md_access_constraints" name="wms_md_access_constraints"></textarea>
                         </div>
-                    </span>
-                </span>
+                    </div>
+                </div>
             </div>
         </div>
     </script>
