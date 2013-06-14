@@ -1,34 +1,67 @@
 <script type="text/ng-template" id="layerItem">
-    <i class="icon-plus pull-left" ng-show="layer.layers && layer.layers.length > 0 && !layer.expanded" ng-click="layer.expanded=true;"></i>
-    <i class="icon-minus pull-left" ng-show="layer.layers && layer.layers.length > 0 && layer.expanded" ng-click="layer.expanded=false;"></i>
-    <label for="{{$id}}_{{$index}}">
-        <input type="checkbox" id="{{$id}}_{{$index}}" ng-checked="layer.visibility" ng-click="toggleVisibility(layer)">{{layer.title}}
-    </label>
-    <span ng-show="layer.expanded">
-        <div ng-repeat="layer in layer.layers" style="margin-left:5px" ng-include="'layerItem'" ng-show="layer.name || layer.layers"></div>
-    </span>
+  <i class="icon-plus pull-left"
+     ng-show="layer.layers && layer.layers.length > 0 && !layer.expanded"
+     ng-click="layer.expanded=true;">
+  </i>
+  <i class="icon-minus pull-left"
+     ng-show="layer.layers && layer.layers.length > 0 && layer.expanded"
+     ng-click="layer.expanded=false;">
+  </i>
+  <label for="{{$id}}_{{$index}}">
+    <input type="checkbox"
+           id="{{$id}}_{{$index}}"
+           ng-checked="layer.visibility"
+           ng-click="toggleVisibility(layer)"/>
+    {{layer.title}}
+  </label>
+  <span ng-show="layer.expanded">
+    <div ng-repeat="layer in layer.layers"
+         style="margin-left:5px"
+         ng-include="'layerItem'"
+         ng-show="layer.name || layer.layers">
+    </div>
+  </span>
 </script>
 
-<div
-    class="_layerSwitcher pull-right olControlLayerSwitcher"
-    ng-mousedown="$event.stopPropagation();"
-    ng-click="$event.stopPropagation();"
-    ng-dblclick="$event.stopPropagation();">
-    <div class="layersDiv" ng-show="layerSwitcherMaximized">
-        <div class="baseLbl" ng-show="olmapBinds.layers.background">Background Layer</div>
-        <div class="baseLayersDiv" ng-show="olmapBinds.layers.background">
-            <div ng-repeat="layer in olmapBinds.layers.background" ng-include="'layerItem'" ng-show="layer.name || layer.layers"></div>
-        </div>
-
-        <div class="dataLbl" ng-show="olmapBinds.layers.wms">WMS Layer</div>
-        <div class="dataLayersDiv" ng-show="olmapBinds.layers.wms">
-            <div ng-repeat="layer in olmapBinds.layers.wms" ng-include="'layerItem'" ng-show="layer.name || layer.layers"></div>
-        </div>
-        <div class="dataLbl" ng-show="olmapBinds.layers.vector">Vector Layer</div>
-        <div class="dataLayersDiv" ng-show="olmapBinds.layers.vector">
-            <div ng-repeat="layer in olmapBinds.layers.vector" ng-include="'layerItem'" ng-show="layer.name || layer.layers"></div>
-        </div>
+<div class="_layerSwitcher pull-right olControlLayerSwitcher"
+     ng-mousedown="$event.stopPropagation();"
+     ng-click="$event.stopPropagation();"
+     ng-dblclick="$event.stopPropagation();">
+  <div class="layersDiv" ng-show="layerSwitcherMaximized">
+    <div class="baseLbl" ng-show="olmapBinds.layers.background">Background Layer</div>
+    <div class="baseLayersDiv" ng-show="olmapBinds.layers.background">
+      <div ng-repeat="layer in olmapBinds.layers.background"
+           ng-include="'layerItem'"
+           ng-show="layer.name || layer.layers">
+      </div>
     </div>
-    <div class="toggleLayerSwitcher maximizeDiv olButton" ng-show="!layerSwitcherMaximized"><img id="OpenLayers_Control_MaximizeDiv_innerImage" class="olAlphaImg" style="position: relative;" src="/static/img/layer-switcher-maximize.png" ng-click="layerSwitcherMaximized=true;"></div>
-    <div class="toggleLayerSwitcher minimizeDiv olButton" ng-show="layerSwitcherMaximized"><img id="OpenLayers_Control_MinimizeDiv_innerImage" class="olAlphaImg" style="position: relative;" src="/static/img/layer-switcher-minimize.png" ng-click="layerSwitcherMaximized=false;"></div>
+    <div class="dataLbl" ng-show="olmapBinds.layers.wms">WMS Layer</div>
+    <div class="dataLayersDiv" ng-show="olmapBinds.layers.wms">
+      <div ng-repeat="layer in olmapBinds.layers.wms"
+           ng-include="'layerItem'"
+           ng-show="layer.name || layer.layers">
+      </div>
+    </div>
+    <div class="dataLbl" ng-show="olmapBinds.layers.vector">Vector Layer</div>
+    <div class="dataLayersDiv" ng-show="olmapBinds.layers.vector">
+      <div ng-repeat="layer in olmapBinds.layers.vector"
+           ng-include="'layerItem'"
+           ng-show="layer.name || layer.layers">
+      </div>
+    </div>
+  </div>
+  <div class="toggleLayerSwitcher maximizeDiv olButton" ng-show="!layerSwitcherMaximized">
+    <img id="OpenLayers_Control_MaximizeDiv_innerImage"
+         class="olAlphaImg"
+         style="position: relative;"
+         src="/static/img/layer-switcher-maximize.png"
+         ng-click="layerSwitcherMaximized=true;"/>
+  </div>
+  <div class="toggleLayerSwitcher minimizeDiv olButton" ng-show="layerSwitcherMaximized">
+    <img id="OpenLayers_Control_MinimizeDiv_innerImage"
+         class="olAlphaImg"
+         style="position: relative;"
+         src="/static/img/layer-switcher-minimize.png"
+         ng-click="layerSwitcherMaximized=false;"/>
+  </div>
 </div>

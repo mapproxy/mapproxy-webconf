@@ -2,8 +2,8 @@
   <div ng-controller="GridListCtrl">
     <button class="btn btn-small btn-add pull-right" ng-click="newItem()">
       <span class="icon-plus-sign icon-white" ></span>
-      {{'Create new grid'|i18n}}</button>
-
+      {{'Create new grid'|i18n}}
+    </button>
     <h3>{{'User defined grids'|i18n}}</h3>
     <span message-handler="success" message-types="grids.delete_success"></span>
     <span message-handler="error" message-types="grids.load_error,grids.delete_error"></span>
@@ -13,9 +13,10 @@
       <span ng-show="list.length - filtered.length" ng-click="search=''">{{'Not shown grids'|i18n}}: {{list.length - filtered.length}}</span>
     </div>
     <ul class="vertical-list">
-       <div class="{{isSelected(item)}}" ng-repeat="item in filtered = (list | filter: {data.name:search}) | orderBy:'name'"
-        ng-click="editItem($event, item)">
-         <li>
+      <div class="{{isSelected(item)}}"
+            ng-repeat="item in filtered = (list | filter: {data.name:search}) | orderBy:'name'"
+            ng-click="editItem($event, item)">
+        <li>
           <i ng-show="item._manual" class="icon-pencil"></i>
           <i ng-show="item._locked || item.default" class="icon-ok"></i>
           {{item.data.name}}
@@ -37,10 +38,14 @@
       </div>
     </ul>
     <h3>{{'Default grids'|i18n}}</h3>
-     <ul class="vertical-list">
-       <div class="{{isSelected(item)}}" ng-repeat="item in defaultGrids | orderBy:'name'"
-        ng-click="editItem($event, item)">
-         <li>{{item.data.name}}<i class="icon-share" ng-click="copyItem($event, item)"></i></li>
+    <ul class="vertical-list">
+      <div class="{{isSelected(item)}}"
+           ng-repeat="item in defaultGrids | orderBy:'name'"
+           ng-click="editItem($event, item)">
+        <li>
+          {{item.data.name}}
+          <i class="icon-share" ng-click="copyItem($event, item)"></i>
+        </li>
       </div>
     </ul>
     <span ng-show="false">{{filtered.length}}</span>
@@ -48,120 +53,240 @@
 %end
 
 %def middleblock():
-<div ng-controller="MapproxyGridFormCtrl" ng-init="calculateTilesURL='${ get_url('calculate_tiles') }'; transformGridURL='${ get_url('transform_grid') }';">
-  <div ng-show="!editareaBinds.visible">
-    <h3>{{formTitle|i18n}}</h3>
-    <form name="form" id="form" novalidate>
-      <!-- name -->
-      <div labeled="input_label" name-for="name" text="{{'Name'|i18n}}">
+  <div ng-controller="MapproxyGridFormCtrl"
+       ng-init="calculateTilesURL='${ get_url('calculate_tiles') }'; transformGridURL='${ get_url('transform_grid') }';">
+    <div ng-show="!editareaBinds.visible">
+      <h3>{{formTitle|i18n}}</h3>
+      <form name="form" id="form" novalidate>
+        <!-- name -->
+        <div labeled="input_label" name-for="name" text="{{'Name'|i18n}}">
           <input required type="text" ng-model="grid.data.name" id="name" ng-disabled="grid._locked||grid.default" name="name"/>
-      </div>
-      <!-- SRS -->
-      <div labeled="input_label" name-for="srs" text="{{'SRS'|i18n}}">
-           <select ng-model="grid.data.srs" id="srs" ng-options="srs for srs in defaults.data.srs" ng-disabled="grid._locked||grid.default" name="srs">
+        </div>
+        <!-- SRS -->
+        <div labeled="input_label" name-for="srs" text="{{'SRS'|i18n}}">
+          <select ng-model="grid.data.srs"
+                  id="srs"
+                  ng-options="srs for srs in defaults.data.srs"
+                  ng-disabled="grid._locked||grid.default"
+                  name="srs">
           </select>
-      </div>
-      <hr>
-      <!-- BBox -->
-      <div labeled="input_label" name-for="bbox_0" text="{{'BBox'|i18n}}">
-          <input type="number" ng-model="grid.data.bbox[0]" class="input-mini" id="bbox_0" ng-disabled="grid._locked||grid.default" name="bbox_0"/>
-          <input type="number" ng-model="grid.data.bbox[1]" class="input-mini" id="bbox_1" ng-disabled="grid._locked||grid.default" name="bbox_1"/>
-          <input type="number" ng-model="grid.data.bbox[2]" class="input-mini" id="bbox_2" ng-disabled="grid._locked||grid.default" name="bbox_2"/>
-          <input type="number" ng-model="grid.data.bbox[3]" class="input-mini" id="bbox_3" ng-disabled="grid._locked||grid.default" name="bbox_3"/>
-      </div>
-      <!-- BBox SRS -->
-      <div labeled="input_label" name-for="bbox_srs" text="{{'BBox SRS'|i18n}}">
-          <select ng-model="grid.data.bbox_srs" id="bbox_srs" ng-options="srs for srs in defaults.data.srs" ng-disabled="grid._locked||grid.default" name="bbox_srs">
+        </div>
+        <hr class="formLine">
+        <!-- BBox -->
+        <div labeled="input_label" name-for="bbox_0" text="{{'BBox'|i18n}}">
+          <input type="number"
+                 ng-model="grid.data.bbox[0]"
+                 class="input-mini"
+                 id="bbox_0"
+                 ng-disabled="grid._locked||grid.default"
+                 name="bbox_0"/>
+          <input type="number"
+                 ng-model="grid.data.bbox[1]"
+                 class="input-mini"
+                 id="bbox_1"
+                 ng-disabled="grid._locked||grid.default"
+                 name="bbox_1"/>
+          <input type="number"
+                 ng-model="grid.data.bbox[2]"
+                 class="input-mini"
+                 id="bbox_2"
+                 ng-disabled="grid._locked||grid.default"
+                 name="bbox_2"/>
+          <input type="number"
+                 ng-model="grid.data.bbox[3]"
+                 class="input-mini"
+                 id="bbox_3"
+                 ng-disabled="grid._locked||grid.default"
+                 name="bbox_3"/>
+        </div>
+        <!-- BBox SRS -->
+        <div labeled="input_label" name-for="bbox_srs" text="{{'BBox SRS'|i18n}}">
+          <select ng-model="grid.data.bbox_srs"
+                  id="bbox_srs"
+                  ng-options="srs for srs in defaults.data.srs"
+                  ng-disabled="grid._locked||grid.default"
+                  name="bbox_srs">
           </select>
-      </div>
-      <hr>
-      <!-- origin -->
-      <div labeled="input_label" name-for="origin" text="{{'Origin'|i18n}}">
-          <select ng-model="grid.data.origin" id="origin" ng-disabled="grid._locked||grid.default" name="origin">
-              <option value="sw">SW / LL</option>
-              <option value="nw">NW / UL</option>
+        </div>
+        <hr class="formLine">
+        <!-- origin -->
+        <div labeled="input_label" name-for="origin" text="{{'Origin'|i18n}}">
+          <select ng-model="grid.data.origin"
+                  id="origin"
+                  ng-disabled="grid._locked||grid.default"
+                  name="origin">
+            <option value="sw">SW / LL</option>
+            <option value="nw">NW / UL</option>
           </select>
-      </div>
-      <hr>
-      <h5 class="normal">{{'Resolutions'|i18n}}:</h5>
-      <!-- units to calculate -->
-      <div class="btn-group switch pull-right" ng-model="grid.data.units" data-toggle-name="is_private" data-toggle="buttons-radio" >
-          <button type="button" ng-click="grid.data.units='m'" class="btn btn-small" ng-class="{'active': grid.data.units=='m'}" data-toggle="button" ng-disabled="grid._locked||grid.default">{{'Meters'|i18n}}</button>
-          <button type="button" ng-click="grid.data.units='d'" class="btn btn-small" ng-class="{'active': grid.data.units=='d'}" data-toggle="button" ng-disabled="grid._locked||grid.default">{{'Degrees'|i18n}}</button>
-      </div>
-
-      <!-- res / scales -->
-      <div class="btn-group switch" data-toggle="buttons-radio">
-        <button type="button" class="btn btn-small" ng-class="{'active': custom.resSelected}" ng-click="getResolutions('${get_url('scales_to_res')}')" ng-disabled="grid._locked||grid.default">{{'Resolutions'|i18n}}</button>
-        <button type="button" class="btn btn-small" ng-class="{'active': !custom.resSelected}" ng-click="getScales('${get_url('res_to_scales')}')" ng-disabled="grid._locked||grid.default">{{'Scales'|i18n}}</button>
-      </div>
-
-      <div extendable-input-list="custom.res_scales" list-prefix="Level" ng-disabled="grid._locked||grid.default" parent-form="form"></div>
-      <hr>
-      <button class="btn btn-small" ng-click="calculateTiles()" ng-disabled="!grid.data.srs">{{'Calculate tiles'|i18n}}</button>
-      <hr>
-      <!-- buttons -->
-      <div class="pull-left">
-        <button class="btn btn-small" ng-click="addGrid($event)" ng-disabled="grid._locked||grid.default||!form.$valid" id="form_save" ng-class="{'btn-success': form.$valid&&!grid._locked}">{{'Save'|i18n}}</button>
-        <button class="btn btn-small" ng-click="resetForm($event)" ng-disabled="grid._locked||grid.default">{{'Reset'|i18n}}</button>
-      </div>
-
-      <div id="_editarea_toggle_button_container" class="pull-right" ng-show="!grid._locked&&!grid.default"></div>
-    </form>
-    <button class="btn btn-small" ng-click="showMap($event)">Show map</button>
+        </div>
+        <hr>
+        <h5 class="normal">{{'Resolutions'|i18n}}:</h5>
+        <!-- units to calculate -->
+        <div class="btn-group switch pull-right"
+             ng-model="grid.data.units"
+             data-toggle-name="is_private"
+             data-toggle="buttons-radio">
+          <button type="button"
+                  ng-click="grid.data.units='m'"
+                  class="btn btn-small"
+                  ng-class="{'active': grid.data.units=='m'}"
+                  data-toggle="button"
+                  ng-disabled="grid._locked||grid.default">
+            {{'Meters'|i18n}}
+          </button>
+          <button type="button"
+                  ng-click="grid.data.units='d'"
+                  class="btn btn-small"
+                  ng-class="{'active': grid.data.units=='d'}"
+                  data-toggle="button"
+                  ng-disabled="grid._locked||grid.default">
+            {{'Degrees'|i18n}}
+          </button>
+        </div>
+        <!-- res / scales -->
+        <div class="btn-group switch" data-toggle="buttons-radio">
+          <button type="button"
+                  class="btn btn-small"
+                  ng-class="{'active': custom.resSelected}"
+                  ng-click="getResolutions('${get_url('scales_to_res')}')"
+                  ng-disabled="grid._locked||grid.default">
+            {{'Resolutions'|i18n}}
+          </button>
+          <button type="button"
+                  class="btn btn-small"
+                  ng-class="{'active': !custom.resSelected}"
+                  ng-click="getScales('${get_url('res_to_scales')}')"
+                  ng-disabled="grid._locked||grid.default">
+            {{'Scales'|i18n}}
+          </button>
+        </div>
+        <div extendable-input-list="custom.res_scales"
+             list-prefix="Level"
+             ng-disabled="grid._locked||grid.default"
+             parent-form="form">
+        </div>
+        <hr class="formLine">
+        <button class="btn btn-small"
+                ng-click="calculateTiles()"
+                ng-disabled="!grid.data.srs">
+          {{'Calculate tiles'|i18n}}
+        </button>
+        <hr class="formLine">
+        <!-- buttons -->
+        <div class="pull-left">
+          <button class="btn btn-small"
+                  ng-click="addGrid($event)"
+                  ng-disabled="grid._locked||grid.default||!form.$valid"
+                  id="form_save"
+                  ng-class="{'btn-success': form.$valid&&!grid._locked}">
+            {{'Save'|i18n}}
+          </button>
+          <button class="btn btn-small"
+                  ng-click="resetForm($event)"
+                  ng-disabled="grid._locked||grid.default">
+            {{'Reset'|i18n}}
+          </button>
+        </div>
+        <div id="_editarea_toggle_button_container"
+             class="pull-right"
+             ng-show="!grid._locked&&!grid.default">
+        </div>
+        <button class="btn btn-small"
+                ng-click="showMap($event)"
+                ng-disabled="false">
+          Show map
+        </button>
+      </form>
+    </div>
+    <div editarea="editareaBinds"
+         ng-disabled="grid._locked||grid.default"
+         yaml-URL="${get_url('json_to_yaml')}"
+         json-URL="${get_url('yaml_to_json')}"
+         keep-empty-fields="name">
+    </div>
+    <div class="clear">
+      <span message-handler="success"
+            message-types="grids.add_success,grids.update_success">
+      </span>
+      <span message-handler="error"
+            message-types="grids.add_error,grids.update_error,grids.form_error">
+      </span>
+    </div>
+    <hr class="formLine">
+    <button class="pull-right btn btn-small btn-warning"
+            dialog="ask"
+            dialog-title="{{'Really lock the grid'|i18n}}: {{grid.data.name}}?"
+            dialog-text="{{'If you lock the grid, you won\'t be able to edit it again'|i18n}}"
+            callback="lockGrid()"
+            ng-disabled="form.$dirty||editareaBinds.dirty"
+            ng-show="!(grid._locked||grid.default)"
+            id="form_lock">
+      {{'Lock'|i18n}}
+    </button>
+    <button class="btn btn-small"
+            ng-show="grid._locked"
+            dialog="ask"
+            dialog-title="{{'Unlock'|i18n}}?"
+            dialog-text="{{'If you unlock this grid it you need to check settings of all caches you use this grid and delete all affacted caches from disk'|i18n}}"
+            callback="unlockGrid()">
+      {{'Unlock'|i18n}}
+    </button>
+    <div ol-map="olmapBinds" map-width="1000" map-height="600" map-hidden="true" map-layer-switcher="true"></div>
   </div>
-  <div editarea="editareaBinds" ng-disabled="grid._locked||grid.default"
-    yaml-URL="${get_url('json_to_yaml')}"
-    json-URL="${get_url('yaml_to_json')}"
-    keep-empty-fields="name"></div>
-  <div class="clear">
-    <span message-handler="success" message-types="grids.add_success,grids.update_success"></span>
-    <span message-handler="error" message-types="grids.add_error,grids.update_error,grids.form_error"></span>
-  </div>
-  <hr>
-  <button
-    class="pull-right btn btn-small btn-warning"
-    dialog="ask"
-    dialog-title="{{'Really lock the grid'|i18n}}: {{grid.data.name}}?"
-    dialog-text="{{'If you lock the grid, you won\'t be able to edit it again'|i18n}}"
-    callback="lockGrid()"
-    ng-disabled="form.$dirty||editareaBinds.dirty"
-    ng-show="!(grid._locked||grid.default)"
-    id="form_lock">{{'Lock'|i18n}}
-  </button>
-  <button
-    class="btn btn-small"
-    ng-show="grid._locked"
-    dialog="ask"
-    dialog-title="{{'Unlock'|i18n}}?"
-    dialog-text="{{'If you unlock this grid it you need to check settings of all caches you use this grid and delete all affacted caches from disk'|i18n}}"
-    callback="unlockGrid()">{{'Unlock'|i18n}}
-  </button>
-  <div ol-map="olmapBinds" map-width="1000" map-height="600" map-hidden="true" map-layer-switcher="true"></div>
-</div>
 %end
 
 %def rightblock():
-<div ng-controller="DisplayCalculatedTilesCtrl">
-  <table class="table" ng-show="calculatedTiles">
-    <thead>
-      <tr>
-        <th><span class="text-center">{{'Level'|i18n}}</span></th>
-        <th ng-show="calculatedTiles[0].resolution"><span class="pull-right">{{'Resolutions'|i18n}}</span></th>
-        <th ng-show="calculatedTiles[0].scale"><span class="pull-left">{{'Scales'|i18n}}</span></th>
-        <th><span class="pull-right">{{'Total tiles'|i18n}}</span></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr ng-repeat="row in calculatedTiles | orderBy:'level'">
-        <td>{{row.level}}</td>
-        <td ng-show="row.resolution"><span class="pull-right">{{row.resolution | number:9}}</span></td>
-        <td ng-show="row.scale"><span class="pull-left">1 : {{row.scale | number}}</span></td>
-        <td tooltip="popover" tooltip-placement="right" tooltip-title="{{'Tiles X * Tiles Y'|i18n}}" tooltip-content="{{row.tiles_in_x|number}} * {{row.tiles_in_y|number}}"><span class="pull-right">{{row.total_tiles | number}}</span></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+  <div ng-controller="DisplayCalculatedTilesCtrl">
+    <table class="table" ng-show="calculatedTiles">
+      <thead>
+        <tr>
+          <th>
+            <span class="text-center">
+              {{'Level'|i18n}}
+            </span>
+          </th>
+          <th ng-show="calculatedTiles[0].resolution">
+            <span class="pull-right">
+              {{'Resolutions'|i18n}}
+            </span>
+          </th>
+          <th ng-show="calculatedTiles[0].scale">
+            <span class="pull-left">
+              {{'Scales'|i18n}}
+            </span>
+          </th>
+          <th>
+            <span class="pull-right">
+              {{'Total tiles'|i18n}}
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="row in calculatedTiles | orderBy:'level'">
+          <td>{{row.level}}</td>
+          <td ng-show="row.resolution">
+            <span class="pull-right">
+              {{row.resolution | number:9}}
+            </span>
+          </td>
+          <td ng-show="row.scale">
+            <span class="pull-left">
+              1 : {{row.scale | number}}
+            </span>
+          </td>
+          <td tooltip="popover"
+              tooltip-placement="right"
+              tooltip-title="{{'Tiles X * Tiles Y'|i18n}}"
+              tooltip-content="{{row.tiles_in_x|number}} * {{row.tiles_in_y|number}}">
+            <span class="pull-right">
+              {{row.total_tiles | number}}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 %end
 
 %rebase base_config leftblock=leftblock, middleblock=middleblock, rightblock=rightblock, project=get('project'), language=get('language'), active='grids'

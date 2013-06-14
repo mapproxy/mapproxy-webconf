@@ -66,8 +66,8 @@
     </script>
     %include angular_templates
   </head>
-<body>
-  <div id="wrapper">
+  <body>
+    <div id="wrapper">
       <div class="navbar navbar-static-top">
         <div class="navbar-inner">
           <div class="container">
@@ -81,23 +81,22 @@
       </div><!-- /.navbar -->
       <div class="sitebar-wrapper">
         <div class="shadow"></div>
-           <div class="sitebar container">
-             % if defined('site_navbar'):
-               %site_navbar()
-             % end
-            </div>
-         </div>
-        <div class="container content">
-            <div class="row-fluid">
-            % if defined('content'):
-              %content()
-            % end
-           </div>
-         </div>
-       <footer>
-          &copy; 2013 - Omniscale GmbH & Co. KG
-       </footer>
-   </div>
-
-</body>
+        <div class="sitebar container">
+          % if defined('site_navbar'):
+            %site_navbar()
+          % end
+        </div>
+      </div>
+      <div class="container content">
+        <div class="row-fluid">
+          % if defined('content'):
+            %content()
+          % end
+        </div>
+      </div>
+      <footer>
+        &copy; 2013 - Omniscale GmbH & Co. KG
+      </footer>
+    </div>
+  </body>
 </html>

@@ -5,32 +5,37 @@
         <h3>{{'project'|i18n}}: ${name}</h3>
         <h4>{{'settings'|i18n}}</h4>
         <div class="pull-left" tooltip="t1" tooltip-placement="left">
-          <a href="${ get_url('project_index', project=name) }" class="btn btn-small">{{'Goto default settings'|i18n}}</a>
+          <a href="${ get_url('project_index', project=name) }" class="btn btn-small">
+            {{'Goto default settings'|i18n}}
+          </a>
         </div>
         <div class="pull-right" tooltip="t2" tooltip-placement="top">
-          <a href="${ get_url('configuration', project=name) }" class="btn btn-small">{{'To configuration'|i18n}} &rarr;</a>
+          <a href="${ get_url('configuration', project=name) }" class="btn btn-small">
+            {{'To configuration'|i18n}} &rarr;
+          </a>
         </div>
         <div style="clear:both"></div>
         <hr>
         <h4>{{'status mapproxy configuration'|i18n}}</h4>
         %if data['valid']:
-            <div class="alert alert-block alert-success ">
+          <div class="alert alert-block alert-success ">
             <h4 class="alert-heading">
               {{'The mapproxy configuration of this project is valid'|i18n}}
             </h4>
           </div>
         %else:
-            <div class="alert alert-block alert-error ">
-              <h4 class"alert-heading" style="margin-bottom: 10px">
-                {{'Attention'|i18n}}:
-                {{'The mapproxy configuration of this project is invalid'|i18n}}</h4>
-              <p style="margin-bottom: 10px">{{'following errors are recorded'|i18n}}:</p>
+          <div class="alert alert-block alert-error ">
+            <h4 class"alert-heading" style="margin-bottom: 10px">
+              {{'Attention'|i18n}}:
+              {{'The mapproxy configuration of this project is invalid'|i18n}}
+            </h4>
+            <p style="margin-bottom: 10px">{{'following errors are recorded'|i18n}}:</p>
             <ul>
               %for msg in data['errors']:
                 <li>${msg}</li>
               %end
             </ul>
-            </div>
+          </div>
         %end
       </div>
     %end
