@@ -79,7 +79,7 @@ constant('DEFAULT_VECTOR_STYLING', {
     }
 }).
 
-directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeout, DEFAULT_VECTOR_STYLING) {
+directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeout, DEFAULT_VECTOR_STYLING, TRANSFORM_BBOX_URL) {
     return {
         restrict: 'A',
         scope: {
@@ -371,7 +371,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 }
 
                 if(angular.isUndefined($scope.olmapBinds.extent) && $scope.olmapBinds.proj.getCode() != 'EPSG:4326') {
-                    $http.post($rootScope.TRANSFORM_BBOX_URL, {
+                    $http.post(TRANSFORM_BBOX_URL, {
                         "bbox": [-180, -90, 180, 90],
                         "sourceSRS": "EPSG:4326",
                         "destSRS": $scope.olmapBinds.proj.getCode()
