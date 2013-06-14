@@ -369,6 +369,7 @@ ul.vertical-list div.selected li i.icon-share {
     background-color: #999999;
 }
 
+.toggle-element,
 .accordion_wms_source {
     cursor: pointer;
 }

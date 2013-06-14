@@ -310,6 +310,7 @@ directive('toggleElement', function() {
         require: '^toggleGroup',
         link: function(scope, element, attrs, toggleGroupCTRL) {
             toggleGroupCTRL.addElement(element);
+            $(element).addClass('toggle-element');
             $(element).click(function() {
                 toggleGroupCTRL.getToggleFunc()(element, scope.$index);
             });
