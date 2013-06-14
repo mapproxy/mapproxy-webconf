@@ -121,7 +121,6 @@
               </select>
             </div>
             <button class="btn btn-small" ng-disabled="!source.data.coverage.bbox" ng-click="showCoverageInMap()">{{'Show coverage in map'|i18n}}</button>
-            <div ol-map="olmapBinds" map-width="1000" map-height="600" map-hidden="true" map-layer-switcher="true"></div>
           </div>
           <hr class="formLine">
           <div labeled="input_label_toggleable" name-for="supported_srs" text="{{'Supported SRS'|i18n}}">
@@ -148,6 +147,7 @@
       <div id="_editarea_toggle_button_container" class="pull-right">
       </div>
     </fieldset>
+    <div ol-map="olmapBinds" map-width="1000" map-height="600" map-hidden="true" map-layer-switcher="true"></div>
   </form>
   <div editarea="editareaBinds"
       yaml-URL="${get_url('json_to_yaml')}"
