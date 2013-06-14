@@ -609,8 +609,20 @@ directive('editarea', function($http, MessageService) {
                     scope.editareaBinds.dirty = false;
                     scope.editareaErrorMsg = undefined;
                     loadYAML();
+                    scope.unregisterValueWatch = scope.$watch('editareaBinds.editareaValue.data', function(newValue, oldValue) {
+                        if(scope.editareaBinds.visible && !angular.equals(newValue, oldValue)) {
+                            scope.editareaBinds.dirty = false;
+                            scope.editareaErrorMsg = undefined;
+                            loadYAML();
+                        }
+                    });
+                } else {
+                    if(angular.isDefined(scope.unregisterValueWatch)) {
+                        scope.unregisterValueWatch();
+                    }
                 }
             }, true);
+
 
             //move the editarea togglebutton
             var _toggleButtonContainer = $('#_editarea_toggle_button_container');
