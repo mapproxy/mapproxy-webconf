@@ -292,10 +292,14 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
             var createVectorLayer = function(layer, options) {
                 options = options || {};
 
-                var newLayer = new OpenLayers.Layer.Vector(layer.name, options);
-                var style = $.extend(true, {}, DEFAULT_VECTOR_STYLING, layer.style);
+                if(!angular.isDefined(options.styleMap)) {
+                    options.styleMap = new OpenLayers.StyleMap($.extend(true,
+                        {}, DEFAULT_VECTOR_STYLING, layer.style
+                    ));
+                }
 
-                newLayer.styleMap = new OpenLayers.StyleMap(style);
+                var newLayer = new OpenLayers.Layer.Vector(layer.name, options);
+
                 if(angular.isDefined(layer.geometries)) {
                     angular.forEach(layer.geometries, function(geometry) {
                         switch(geometry.type) {
