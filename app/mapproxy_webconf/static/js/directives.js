@@ -657,7 +657,15 @@ var toggleGroupCtrl = function($scope, $element) {
     };
 
     this.multiShow = function(element, index) {
-        if(toToggle(element).toggle().css('display') != 'none') {
+        // show and hide element
+        toToggle(element).toggle();
+
+        // show and hide icons
+        var controlIocns = $(element.context.firstElementChild).children();
+        $(controlIocns).first().toggle()
+        $(controlIocns).last().toggle()
+
+        if(element.css('display') != 'none') {
             openElements.push(index);
         } else {
             var idx = $.inArray(index, openElements);
