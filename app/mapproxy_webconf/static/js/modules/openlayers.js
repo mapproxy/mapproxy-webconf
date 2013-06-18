@@ -153,9 +153,8 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                         $scope.combinedLayer.redraw();
                     }, 1000, false);
                 } else {
-                    var olLayer = $scope.map.getLayersBy('id', layer.olLayerId)[0]
                     layer.visibility = !layer.visibility;
-                    olLayer.setVisibility(layer.visibility);
+                    layer.olLayer.setVisibility(layer.visibility);
                 }
             };
 
@@ -244,7 +243,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                         ratio: 1.0,
                         isBaseLayer: false
                 });
-                layer.olLayerId = newLayer.id;
+                layer.olLayer = newLayer;
                 layer.visibility = true;
                 $scope.mapLayers.push(newLayer);
             };
@@ -262,7 +261,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     angular.forEach(layer.layers, function(layer) {
                         createWMSLayer(layer, srs, url);
                     })
-                    layer.olLayerId = newLayer.id;
+                    layer.olLayer = newLayer;
                     layer.visibility = true;
                     $scope.mapLayers.push(newLayer);
                     return newLayer;
@@ -336,7 +335,8 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     $scope.drawLayer._maxFeatures = layer.maxFeatures || false;
                     $scope.drawLayer._allowedGeometry = layer.allowedGeometry;
                 }
-                layer.olLayerId = newLayer.id;
+
+                layer.olLayer = newLayer;
                 layer.visibility = true;
                 layer.title = layer.title || layer.name;
                 $scope.mapLayers.push(newLayer);
