@@ -245,6 +245,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 });
                 layer.olLayer = newLayer;
                 layer.visibility = true;
+
                 $scope.mapLayers.push(newLayer);
             };
             var createWMSLayer = function(layer, srs, url) {
@@ -293,6 +294,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
 
                 var newLayer = new OpenLayers.Layer.Vector(layer.name, options);
                 var style = $.extend(true, {}, DEFAULT_VECTOR_STYLING, layer.style);
+
                 newLayer.styleMap = new OpenLayers.StyleMap(style);
                 if(angular.isDefined(layer.geometries)) {
                     angular.forEach(layer.geometries, function(geometry) {
@@ -501,17 +503,18 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
             });
 
             return {
+                createVectorLayer: createVectorLayer,
                 registerExtension: registerExtension,
+                olmapBinds: $scope.olmapBinds
+            };
         },
         link: function(scope, element, attrs) {
             scope.mapId = 'ol_map_' + scope.$id;
-
             //setup map element
             element.find('#_olmapTemp')
                 .attr('id', scope.mapId)
                 .css('width', attrs.mapWidth)
                 .css('height', attrs.mapHeight);
-
 
             if(!scope.olmapBinds.visible) {
                 $(element).hide();
