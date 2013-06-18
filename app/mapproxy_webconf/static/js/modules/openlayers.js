@@ -347,6 +347,11 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                         createVectorLayer(layer);
                     });
                 }
+                if(angular.isDefined($scope.extensions.layers)) {
+                    angular.forEach($scope.extensions.layers, function(func) {
+                        func();
+                    });
+                }
 
                 if(angular.isUndefined($scope.olmapBinds.extent) && $scope.olmapBinds.proj.getCode() != 'EPSG:4326') {
                     $http.post(TRANSFORM_BBOX_URL, {
@@ -413,7 +418,11 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 }
                 if($attrs.mapLayerSwitcher) {
                     loadLayerSwitcherTemplate();
-                    //prepareLayerSwitcher($scope.map);
+                }
+                if(angular.isDefined($scope.extensions.map)) {
+                    angular.forEach($scope.extensions.map, function(func) {
+                        func($scope.map);
+                    });
                 }
                 if(angular.isDefined($scope.dataExtent)) {
                     $scope.map.zoomToExtent($scope.dataExtent)
@@ -457,7 +466,15 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 safeApply($scope);
             };
 
+            var registerExtension = function(type, func) {
+                if(angular.isDefined($scope.extensions[type])) {
+                    $scope.extensions[type].push(func);
+                } else {
+                    $scope.extensions[type] = [func];
+                }
+            }
             //Directive initialization
+            $scope.extensions = {};
             $scope.olmapBinds = {
                 visible: $attrs.MapHidden || false,
                 extent: undefined,
@@ -480,6 +497,9 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     });
                 }
             });
+
+            return {
+                registerExtension: registerExtension,
         },
         link: function(scope, element, attrs) {
             scope.mapId = 'ol_map_' + scope.$id;
