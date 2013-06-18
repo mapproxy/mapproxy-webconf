@@ -533,7 +533,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
 }).
 
 
-directive('olGridExtension', function(TRANSFORM_GRID_URL) {
+directive('olGridExtension', function(TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING) {
     return {
         restrict: 'A',
         require: '^olMap',
@@ -555,12 +555,8 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL) {
                 $scope.layer.olLayer.strategies[0].update({force: true});
             }
             $scope._layer = {
-                'name': 'Coverage',
-                'style': {
-                    'default': {
-                        'fillOpacity': 0,
-                        'strokeColor': '#000'
-            }}};
+                'name': 'Coverage'
+            };
             $scope.gridLevel = 0;
             $scope.maxLevel = 20;
         },
@@ -568,6 +564,7 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL) {
             olMapCtrl.registerExtension('layers', function() {
                 scope.layer = angular.copy(scope._layer);
                 var gridData = scope.olGridData();
+
                 if(angular.isDefined(gridData.res) && angular.isArray(gridData.res) && gridData.res.length > 0) {
                     scope.maxLevel = gridData.res.length;
                 } else if(angular.isDefined(gridData.scales) && angular.isArray(gridData.scales) && gridData.scales.length > 0) {
@@ -575,6 +572,7 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL) {
                 } else {
                     scope.maxLevel = 20;
                 }
+
                 var options = {
                     protocol: new OpenLayers.Protocol.HTTP({
                         url: TRANSFORM_GRID_URL,
@@ -587,8 +585,32 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL) {
                     strategies: [
                         new OpenLayers.Strategy.BBOX({
                             ratio: 1
-                        })
-                ]};
+                    })],
+                    styleMap: new OpenLayers.StyleMap({
+                        "default": new OpenLayers.Style($.extend(true, {}, DEFAULT_VECTOR_STYLING['default'], {
+                            'fillOpacity': 0,
+                            'strokeColor': '#000',
+                            'pointRadius': 0
+                        }), {
+                        rules: [
+                            new OpenLayers.Rule({
+                                filter: new OpenLayers.Filter.Function({
+                                    evaluate: function(attrs) {
+                                        return angular.isDefined(attrs.x) && angular.isDefined(attrs.y);
+                                }}),
+                                symbolizer: {
+                                    'labelOutlineWidth': 0,
+                                    'label': "${x} x ${y}"
+                            }}),
+                            new OpenLayers.Rule({
+                                filter: new OpenLayers.Filter.Function({
+                                    evaluate: function(attrs) {
+                                        return !(angular.isDefined(attrs.x) && angular.isDefined(attrs.y));
+                                }})
+                            })
+                        ]})
+                    })
+                };
                 olMapCtrl.createVectorLayer(scope.layer, options);
 
                 if(angular.isDefined(olMapCtrl.olmapBinds.layers.vector)) {
