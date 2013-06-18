@@ -357,7 +357,6 @@ def transform_grid():
     srs = request.forms.get('srs', None)
     bbox_srs = request.forms.get('bbox_srs', None)
 
-
     res = request.forms.get('res', None)
     if res:
         res = map(float, res.split(','))
@@ -389,7 +388,6 @@ def transform_grid():
 
     if  feature_count> 2500:
         response.status = 400
-        print feature_count
         return {'error': 'to many tiles (%s)' % feature_count}
 
     features = []
