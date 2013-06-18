@@ -553,7 +553,7 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL) {
                         'strokeColor': '#000'
             }}};
             $scope.gridLevel = 0;
-            $scope.maxLevel = 19;
+            $scope.maxLevel = 20;
         },
         link: function(scope, element, attrs, olMapCtrl) {
             olMapCtrl.registerExtension('layers', function() {
@@ -562,6 +562,8 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL) {
                     scope.maxLevel = gridData.res.length;
                 } else if(angular.isDefined(gridData.scales) && angular.isArray(gridData.scales) && gridData.scales.length > 0) {
                     scope.maxLevel = gridData.scales.length;
+                } else {
+                    scope.maxLevel = 20;
                 }
                 var options = {
                     protocol: new OpenLayers.Protocol.HTTP({
