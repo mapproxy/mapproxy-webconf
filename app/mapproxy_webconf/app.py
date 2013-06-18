@@ -369,6 +369,9 @@ def transform_grid():
 
     tilegrid = tile_grid(srs=srs, bbox=grid_bbox, bbox_srs=bbox_srs, origin=origin)
 
+    if grid_bbox is None:
+        grid_bbox = tilegrid.bbox
+
     print 'bbox', bbox
     print 'grid_bbox', grid_bbox
 
