@@ -933,6 +933,19 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         dirty: false
     };
 
+    $scope.olmapBinds = {
+        visible: false,
+        proj: 'EPSG:4326',
+        extent: [-180, -90, 180, 90],
+        layers: {
+            'background': [{
+                title: 'BackgroundLayer',
+                url: 'http://osm.omniscale.net/proxy/service?',
+                name: 'osm'
+            }]
+        }
+    }
+
     MapproxyGrids.current($scope.grid);
 
     $scope.$on('grids.current', setGrid);
