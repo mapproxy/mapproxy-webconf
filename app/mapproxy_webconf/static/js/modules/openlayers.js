@@ -288,30 +288,8 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 });
                 $scope.combinedLayer = createWMSLayer({'name': angular.copy($scope.combinedWMSLayerNames), 'title': 'Combined Layer'}, srs, url);
             };
-            var createVectorLayer = function(layer) {
-                var options = {};
-                if(angular.isDefined(layer.url)) {
-                    options = {
-                        protocol: new OpenLayers.Protocol.HTTP({
-                            url: layer.url,
-                            readWithPOST: true,
-                            updateWithPOST: true,
-                            deleteWithPOST: true,
-                            format: new OpenLayers.Format.GeoJSON(),
-                            //headers.Content-Type is overwritten by
-                            //OpenLayers.Protocol.HTTP:202
-                            // headers: {
-                            //     'Content-Type': 'application/json'
-                            // },
-                            //set additional parameter so srs is also send to server
-                            params: {'srs': $scope.olmapBinds.proj}
-                        }),
-                        strategies: [
-                            new OpenLayers.Strategy.BBOX({
-                                ratio: 1
-                            })
-                    ]}
-                }
+            var createVectorLayer = function(layer, options) {
+                options = options || {};
 
                 var newLayer = new OpenLayers.Layer.Vector(layer.name, options);
                 var style = $.extend(true, {}, DEFAULT_VECTOR_STYLING, layer.style);
