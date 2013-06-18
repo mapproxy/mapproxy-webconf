@@ -536,3 +536,13 @@ div.blockMsg {
 .ui-front {
   z-index: 1050;
 }
+
+/* info dialog */
+dl.info-horizontal dt {
+  width: 100px;
+  float: left;
+}
+
+dl.info-horizontal dd {
+    marign-left: 100px;
+}
