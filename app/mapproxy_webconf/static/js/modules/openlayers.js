@@ -521,4 +521,68 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
             }
         }
     }
+}).
+
+
+directive('olGridExtension', function(TRANSFORM_GRID_URL) {
+    return {
+        restrict: 'A',
+        require: '^olMap',
+        transclude: false,
+        scope: {
+            olGridData: '=olGridExtension'
+        },
+        controller: function($scope, $element, $attrs) {
+            // check why range-filter not work
+            $scope.levels = function() {
+                var levels = [];
+                for(var i = 0; i < $scope.maxLevel; i++) {
+                    levels.push(i);
+                }
+                return levels;
+            }
+            $scope.updateLevel = function() {
+                $scope.layer.olLayer.protocol.params.level = $scope.gridLevel;
+                $scope.layer.olLayer.strategies[0].update({force: true});
+            }
+            $scope.layer = {
+                'name': 'Coverage',
+                'style': {
+                    'default': {
+                        'fillOpacity': 0,
+                        'strokeColor': '#000'
+            }}};
+            $scope.gridLevel = 0;
+            $scope.maxLevel = 19;
+        },
+        link: function(scope, element, attrs, olMapCtrl) {
+            olMapCtrl.registerExtension('layers', function() {
+                var options = {
+                    protocol: new OpenLayers.Protocol.HTTP({
+                        url: TRANSFORM_GRID_URL,
+                        readWithPOST: true,
+                        updateWithPOST: true,
+                        deleteWithPOST: true,
+                        format: new OpenLayers.Format.GeoJSON(),
+                        params: $.extend({}, scope.olGridData(), {'level': scope.gridLevel})
+                    }),
+                    strategies: [
+                        new OpenLayers.Strategy.BBOX({
+                            ratio: 1
+                        })
+                ]};
+                olMapCtrl.createVectorLayer(scope.layer, options);
+
+                if(angular.isDefined(olMapCtrl.olmapBinds.layers.vector)) {
+                    olMapCtrl.olmapBinds.layers.vector.push(scope.layer);
+                } else {
+                    olMapCtrl.olmapBinds.layers.vector = [scope.layer];
+                }
+            });
+
+            olMapCtrl.registerExtension('map', function(map) {
+                $(map.div).find('.olMapViewport').append(element);
+            });
+        }
+    }
 });
