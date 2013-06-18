@@ -465,6 +465,11 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 $scope.drawLayer = undefined;
                 $.unblockUI();
                 $scope.olmapBinds.visible = false;
+                if(angular.isDefined($scope.extensions.destroy)) {
+                    angular.forEach($scope.extensions.destroy, function(func) {
+                        func();
+                    });
+                }
                 safeApply($scope);
             };
 
@@ -545,7 +550,7 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL) {
                 $scope.layer.olLayer.protocol.params.level = $scope.gridLevel;
                 $scope.layer.olLayer.strategies[0].update({force: true});
             }
-            $scope.layer = {
+            $scope._layer = {
                 'name': 'Coverage',
                 'style': {
                     'default': {
@@ -557,6 +562,7 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL) {
         },
         link: function(scope, element, attrs, olMapCtrl) {
             olMapCtrl.registerExtension('layers', function() {
+                scope.layer = angular.copy(scope._layer);
                 var gridData = scope.olGridData();
                 if(angular.isDefined(gridData.res) && angular.isArray(gridData.res) && gridData.res.length > 0) {
                     scope.maxLevel = gridData.res.length;
@@ -590,6 +596,12 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL) {
 
             olMapCtrl.registerExtension('map', function(map) {
                 $(map.div).find('.olMapViewport').append(element);
+            });
+
+            olMapCtrl.registerExtension('destroy', function() {
+                scope.gridLevel = 0;
+                scope.maxLevel = 20;
+                delete scope.layer;
             });
         }
     }
