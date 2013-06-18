@@ -325,24 +325,41 @@ directive('dialog', function($parse, localize) {
         link: function(scope, element, attrs) {
             scope.openDialog = function(event) {
                 event.stopPropagation();
-                var buttons = {};
+                var buttons = [];
                 switch(attrs.dialog) {
                     case 'ask':
-                        buttons[localize.getLocalizedString('Yes')] = function() {
-                            $(this).dialog("close");
-                            scope.confirmCallback(scope);
-                        };
-                        buttons[localize.getLocalizedString('No')] = function() {
-                            $(this).dialog("close");
-                            if(angular.isFunction(scope.refuseCallback)) {
-                                scope.refuseCallback(scope);
+                        buttons = [
+                            {
+                                'text': localize.getLocalizedString('Yes'),
+                                'class': 'btn btn-small',
+                                'click': function() {
+                                    $(this).dialog("close");
+                                    scope.confirmCallback(scope);
+                                }
+
+                            },
+                            {
+                                'text': localize.getLocalizedString('No'),
+                                'class': 'btn btn-small',
+                                'click': function() {
+                                    $(this).dialog("close");
+                                    if(angular.isFunction(scope.refuseCallback)) {
+                                        scope.refuseCallback(scope);
+                                    }
+                                }
                             }
-                        };
+                        ]
                         break;
                     case 'confirm':
-                        buttons[localize.getLocalizedString('OK')] = function() {
-                            $(this).dialog("close");
-                        }
+                        buttons = [
+                            {
+                                'text': localize.getLocalizedString('OK'),
+                                'class': 'btn btn-small',
+                                'click': function() {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        ]
                         break;
                 }
                 scope.dialog.attr('title', attrs.dialogTitle);
@@ -350,7 +367,7 @@ directive('dialog', function($parse, localize) {
                 scope.dialog.dialog({
                     resizeable: false,
                     width: attrs.dialogWidth || 400,
-                    height: attrs.dialogHeight || 200,
+                    height: 'auto',
                     modal: true,
                     buttons: buttons
                 });
