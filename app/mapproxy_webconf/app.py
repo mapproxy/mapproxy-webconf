@@ -404,6 +404,17 @@ def transform_grid():
                     ]]
                 }
             })
+            features.append({
+                "type": "Feature",
+                "properties": {
+                    "x": tile[0],
+                    "y": tile[1]
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [x0 + (x1-x0) /2, y0 + (y1-y0)/2]
+                }
+            })
 
     return {"type":"FeatureCollection",
         "features": features
