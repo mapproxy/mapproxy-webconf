@@ -54,7 +54,7 @@
 
 %def middleblock():
   <div ng-controller="MapproxyGridFormCtrl"
-       ng-init="calculateTilesURL='${ get_url('calculate_tiles') }'; transformGridURL='${ get_url('transform_grid') }';">
+       ng-init="calculateTilesURL='${ get_url('calculate_tiles') }'">
     <div ng-show="!editareaBinds.visible">
       <h3>{{formTitle|i18n}}</h3>
       <form name="form" id="form" novalidate>
