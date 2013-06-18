@@ -306,15 +306,9 @@ ul.vertical-list li i.icon-remove,
 ul.vertical-list li i.icon-share {
     float: right;
     cursor: pointer;
-    opacity: 0.25;
     margin-right: 4px;
     margin-top: 4px;
     height: 20px; // make clickable area bigger
-}
-
-ul.vertical-list li i.icon-remove:hover,
-ul.vertical-list li i.icon-share:hover {
-    opacity: 0.9;
 }
 
 ul.vertical-list div.selected li i.icon-remove {
@@ -346,12 +340,6 @@ ul.vertical-list div.selected li i.icon-share {
 
 .insertable-list .label .icon-remove {
     float: right;
-    cursor: pointer;
-    opacity: 0.25;
-}
-
-.insertable-list .label .icon-remove:hover {
-    opacity: 0.9;
 }
 
 .insertable-list .label:hover {
@@ -386,7 +374,6 @@ ul.vertical-list div.selected li i.icon-share {
     cursor: pointer;
     margin-top: -1.8em;
     margin-right: 0.5em;
-    opacity: 0.25;
 }
 
 .accordion-heading i.icon-refresh {
@@ -394,12 +381,6 @@ ul.vertical-list div.selected li i.icon-share {
 }
 .accordion-heading i.icon-globe {
     margin-right: 4em;
-}
-
-.accordion-heading i.icon-globe:hover,
-.accordion-heading i.icon-refresh:hover,
-.accordion-heading i.icon-remove:hover {
-    opacity: 0.9;
 }
 
 .accordion-inner {
@@ -425,11 +406,22 @@ input.droppable-active, div.droppable-active {
     border: 1px solid red;
 }
 
-.badge .icon-remove {
+.icon-remove,
+.icon-question-sign,
+.icon-info-sign,
+.icon-share,
+.icon-globe,
+.icon-refresh {
     cursor: pointer;
     opacity: 0.5;
 }
-.badge .icon-remove:hover {
+
+.icon-remove:hover ,
+.icon-question-sign:hover,
+.icon-info-sign:hover,
+.icon-share:hover,
+.icon-globe:hover,
+.icon-refresh:hover {
     opacity: 0.9;
 }
 
