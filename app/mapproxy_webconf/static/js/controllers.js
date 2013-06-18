@@ -895,13 +895,15 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         $scope.olmapBinds.visible = true;
     }
     $scope.provideGridData = function() {
-        return {
+        var gridData = {
             'srs': 'EPSG:4326',
             'bbox_srs': $scope.grid.data.bbox_srs,
-            'origin': $scope.grid.data.origin,
-            'grid_bbox': $scope.grid.data.bbox,
-            'level': 5
+            'origin': $scope.grid.data.origin
         };
+        if(!isEmpty($scope.grid.data.bbox)) {
+            gridData.grid_bbox = $scope.grid.data.bbox;
+        }
+        return gridData;
     }
 
     $scope.custom = {
