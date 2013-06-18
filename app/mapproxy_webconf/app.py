@@ -7,7 +7,7 @@ from xml.etree.ElementTree import ParseError
 from mapproxy.client import http
 from mapproxy.script.scales import scale_to_res, res_to_scale
 from mapproxy.srs import SRS
-from mapproxy.grid import TileGrid
+from mapproxy.grid import tile_grid
 
 from . import bottle
 from . import config
@@ -305,12 +305,12 @@ def calculate_tiles():
     if res is None and scales is not None:
         res = [round(scale_to_res(scale, dpi, units), 9) for scale in scales]
 
-    tile_grid = TileGrid(srs=srs, bbox=bbox, res=res, origin=origin, name=name)
+    tilegrid = tile_grid(srs=srs, bbox=bbox, res=res, origin=origin, name=name)
 
     result = []
     res_scale = 'resolution' if scales is None else 'scale'
-    for level, res in enumerate(tile_grid.resolutions):
-        tiles_in_x, tiles_in_y = tile_grid.grid_sizes[level]
+    for level, res in enumerate(tilegrid.resolutions):
+        tiles_in_x, tiles_in_y = tilegrid.grid_sizes[level]
         total_tiles = tiles_in_x * tiles_in_y
         result.append({
             'level': level,
