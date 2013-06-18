@@ -473,14 +473,16 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     $scope.extensions[type] = [func];
                 }
             }
+
             //Directive initialization
             $scope.extensions = {};
-            $scope.olmapBinds = {
+            $scope.olmapBinds = $.extend(true, {
                 visible: $attrs.MapHidden || false,
                 extent: undefined,
                 proj: undefined,
                 layers: undefined
-            };
+            }, $scope.olmapBinds);
+
             $scope.mapLayers = [];
             $scope.drawLayer = [];
 
