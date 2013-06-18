@@ -335,24 +335,78 @@ def transform_bbox():
 
 @app.route('/transform_grid', 'POST', name='transform_grid')
 def transform_grid():
-    bbox = map(float, request.forms.get('bbox', '').split(','))
-    srs = request.forms.get('srs', 'EPSG:4326')
+    bbox = request.forms.get('bbox', '').split(',')
     if bbox:
-        xc = bbox[0] + (bbox[2]-bbox[0]) / 2;
-        yc = bbox[1] + (bbox[3]-bbox[1]) / 2;
+        bbox = map(float, bbox)
     else:
-        xc = 0
-        yc = 0
+        bbox = None
+
+    grid_bbox =request.forms.get('grid_bbox', None)
+
+    if grid_bbox:
+        grid_bbox = grid_bbox.split(',')
+        if grid_bbox:
+            grid_bbox = map(float, grid_bbox)
+    else:
+        grid_bbox = None
+
+    level = request.forms.get('level', None)
+    if level:
+        level = int(level)
+
+    srs = request.forms.get('srs', None)
+    bbox_srs = request.forms.get('bbox_srs', None)
+    # res = map(float, request.forms.get('res', '').split(','))
+    # if not res:
+    #     res = None
+
+    # scales = map(float, request.forms.get('scales', '').split(','))
+    # if not scales:
+    #     scales = None
+    # unit = request.forms.get('unit', 'm')
+
+    origin = request.forms.get('origin', 'll')
+
+    tilegrid = tile_grid(srs=srs, bbox=grid_bbox, bbox_srs=bbox_srs, origin=origin)
+
+    print 'bbox', bbox
+    print 'grid_bbox', grid_bbox
+
+    bbox = [
+        max(grid_bbox[0], bbox[0]),
+        max(grid_bbox[1], bbox[1]),
+        min(grid_bbox[2], bbox[2]),
+        min(grid_bbox[3], bbox[3])
+    ]
+
+    print 'new bbox', bbox
+
+    _bbox, size, tiles = tilegrid.get_affected_level_tiles(bbox=bbox, level=level)
+
+    feature_count = size[0] * size[1]
+
+    if  feature_count> 2500:
+        response.status = 400
+        print feature_count
+        return {'error': 'to many tiles (%s)' % feature_count}
+
+    features = []
+
+    for tile in tiles:
+        if tile:
+            x0, y0, x1, y1 = tilegrid.tile_bbox(tile)
+            features.append({
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [[
+                        [x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0, y0]
+                    ]]
+                }
+            })
 
     return {"type":"FeatureCollection",
-        "features":[
-            {"type":"Feature",
-                "geometry":{
-                    "type":"Point",
-                    "coordinates":[xc, yc]
-                }
-            }
-        ]
+        "features": features
     }
 
 def init_app(storage_dir):
