@@ -904,6 +904,10 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
             gridData.grid_bbox = $scope.grid.data.bbox;
         }
         addScalesResTo(gridData);
+        if(angular.isDefined(gridData.scales)) {
+            gridData.units = $scope.grid.data.units;
+            gridData.dpi = $scope.defaults.data.dpi;
+        }
         return gridData;
     }
 

@@ -560,6 +560,8 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL) {
                 var gridData = scope.olGridData();
                 if(angular.isDefined(gridData.res) && angular.isArray(gridData.res) && gridData.res.length > 0) {
                     scope.maxLevel = gridData.res.length;
+                } else if(angular.isDefined(gridData.scales) && angular.isArray(gridData.scales) && gridData.scales.length > 0) {
+                    scope.maxLevel = gridData.scales.length;
                 }
                 var options = {
                     protocol: new OpenLayers.Protocol.HTTP({

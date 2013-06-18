@@ -356,14 +356,18 @@ def transform_grid():
 
     srs = request.forms.get('srs', None)
     bbox_srs = request.forms.get('bbox_srs', None)
-    res = map(float, request.forms.get('res', '').split(','))
-    if not res:
-        res = None
 
-    # scales = map(float, request.forms.get('scales', '').split(','))
-    # if not scales:
-    #     scales = None
-    # unit = request.forms.get('unit', 'm')
+
+    res = request.forms.get('res', None)
+    if res:
+        res = map(float, res.split(','))
+
+    scales = request.forms.get('scales', None)
+    if scales:
+        scales = map(float, scales.split(','))
+        units = 1 if request.forms.get('units', 'm') == 'm' else 111319.4907932736
+        dpi = float(request.forms.get('dpi', (2.54/(0.00028 * 100))))
+        res = [scale_to_res(scale, dpi, units) for scale in scales]
 
     origin = request.forms.get('origin', 'll')
 
