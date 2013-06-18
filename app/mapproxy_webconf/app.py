@@ -356,9 +356,9 @@ def transform_grid():
 
     srs = request.forms.get('srs', None)
     bbox_srs = request.forms.get('bbox_srs', None)
-    # res = map(float, request.forms.get('res', '').split(','))
-    # if not res:
-    #     res = None
+    res = map(float, request.forms.get('res', '').split(','))
+    if not res:
+        res = None
 
     # scales = map(float, request.forms.get('scales', '').split(','))
     # if not scales:
@@ -367,13 +367,10 @@ def transform_grid():
 
     origin = request.forms.get('origin', 'll')
 
-    tilegrid = tile_grid(srs=srs, bbox=grid_bbox, bbox_srs=bbox_srs, origin=origin)
+    tilegrid = tile_grid(srs=srs, bbox=grid_bbox, bbox_srs=bbox_srs, origin=origin, res=res)
 
     if grid_bbox is None:
         grid_bbox = tilegrid.bbox
-
-    print 'bbox', bbox
-    print 'grid_bbox', grid_bbox
 
     bbox = [
         max(grid_bbox[0], bbox[0]),
@@ -381,8 +378,6 @@ def transform_grid():
         min(grid_bbox[2], bbox[2]),
         min(grid_bbox[3], bbox[3])
     ]
-
-    print 'new bbox', bbox
 
     _bbox, size, tiles = tilegrid.get_affected_level_tiles(bbox=bbox, level=level)
 

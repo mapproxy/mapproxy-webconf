@@ -557,6 +557,10 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL) {
         },
         link: function(scope, element, attrs, olMapCtrl) {
             olMapCtrl.registerExtension('layers', function() {
+                var gridData = scope.olGridData();
+                if(angular.isDefined(gridData.res) && angular.isArray(gridData.res) && gridData.res.length > 0) {
+                    scope.maxLevel = gridData.res.length;
+                }
                 var options = {
                     protocol: new OpenLayers.Protocol.HTTP({
                         url: TRANSFORM_GRID_URL,
@@ -564,7 +568,7 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL) {
                         updateWithPOST: true,
                         deleteWithPOST: true,
                         format: new OpenLayers.Format.GeoJSON(),
-                        params: $.extend({}, scope.olGridData(), {'level': scope.gridLevel})
+                        params: $.extend({}, gridData, {'level': scope.gridLevel})
                     }),
                     strategies: [
                         new OpenLayers.Strategy.BBOX({

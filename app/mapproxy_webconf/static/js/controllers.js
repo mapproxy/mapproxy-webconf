@@ -903,6 +903,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         if(!isEmpty($scope.grid.data.bbox)) {
             gridData.grid_bbox = $scope.grid.data.bbox;
         }
+        addScalesResTo(gridData);
         return gridData;
     }
 
@@ -911,6 +912,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         'resSelected': false
     };
     $scope.grid = angular.copy({'data': MapproxyGrids.model});
+
     $scope.formTitle = 'New grid';
 
     $scope.editareaBinds = {
