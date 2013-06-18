@@ -754,14 +754,14 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         }
     };
 
-    var addScalesResToGrid = function() {
+    var addScalesResTo = function(obj) {
         if($scope.custom.res_scales.length > 0) {
             if($scope.custom.resSelected) {
-                delete $scope.grid.data.scales;
-                $scope.grid.data.res = $scope.custom.res_scales;
+                delete obj.scales;
+                obj.res = $scope.custom.res_scales;
             } else {
-                delete $scope.grid.data.res;
-                $scope.grid.data.scales = $scope.custom.res_scales
+                delete obj.res;
+                obj.scales = $scope.custom.res_scales
             }
         }
     };
@@ -817,7 +817,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
             event.preventDefault();
         }
         if(!$scope.editareaBinds.save) {
-            addScalesResToGrid();
+            addScalesResTo($scope.grid.data);
         }
 
         $scope.grid = clearData($scope.grid);
@@ -943,7 +943,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
 
     $scope.$watch('editareaBinds.visible', function(visible) {
         if(visible) {
-            addScalesResToGrid();
+            addScalesResToGrid($scope.grid.data);
             $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.grid);
         }
     }, true);
