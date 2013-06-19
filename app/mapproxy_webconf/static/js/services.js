@@ -386,6 +386,7 @@ var gridModel = {
     'scales': []
 };
 var sourceModel = {
+    'type': 'wms',
     'name': undefined,
     'req': {
         'url': undefined,
