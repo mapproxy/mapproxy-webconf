@@ -628,7 +628,10 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING
                         ]})
                     }),
                 };
-                olMapCtrl.createVectorLayer(scope.layer, options);
+                var olLayer = olMapCtrl.createVectorLayer(scope.layer, options);
+                olLayer.events.register('added', null, function() {
+                    this.protocol.params['map_srs'] = this.projection.getCode();
+                });
 
                 if(angular.isDefined(olMapCtrl.olmapBinds.layers.vector)) {
                     olMapCtrl.olmapBinds.layers.vector.push(scope.layer);
