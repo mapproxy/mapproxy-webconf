@@ -144,6 +144,8 @@ class RESTGrids(RESTBase):
             'GLOBAL_GEODETIC': {'_id': 'GLOBAL_GEODETIC', 'default': True, 'data': {
                 'name': 'GLOBAL_GEODETIC',
                 'srs': 'EPSG:4326',
+                'bbox': [-180, -90, 180, 90],
+                'origin': 'sw',
                 'res': [
                     1.40625,
                     0.703125,
@@ -170,6 +172,8 @@ class RESTGrids(RESTBase):
             'GLOBAL_MERCATOR': {'_id': 'GLOBAL_MERCATOR', 'default': True, 'data': {
                 'name': 'GLOBAL_MERCATOR',
                 'srs': 'EPSG:900913',
+                'bbox': [-20037508.342789244, -20037508.342789244, 20037508.342789244, 20037508.342789244],
+                'origin': 'sw',
                 'res': [
                     156543.03392804097,
                     78271.51696402048,
@@ -196,6 +200,7 @@ class RESTGrids(RESTBase):
             'GLOBAL_WEBMERCATOR': {'_id': 'GLOBAL_WEBMERCATOR', 'default': True, 'data': {
                 'name': 'GLOBAL_WEBMERCATOR',
                 'srs': 'EPSG:3857',
+                'bbox': [-20037508.342789244, -20037508.342789244, 20037508.342789244, 20037508.342789244],
                 'origin': 'nw',
                 'res': [
                     156543.03392804097,
