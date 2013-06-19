@@ -638,6 +638,9 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING
             });
 
             olMapCtrl.registerExtension('map', function(map) {
+                map.events.register('zoomend', null, function() {
+                    scope.updateLevel();
+                });
                 $(map.div).find('.olMapViewport').append(element);
             });
 
