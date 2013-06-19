@@ -488,6 +488,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
             };
             $scope.mapLayers = [];
             $scope.drawLayer = [];
+            $scope.showScale = true;
 
             $scope.$watch('olmapBinds.visible', function(visible) {
                 if(visible) {
