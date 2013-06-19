@@ -6,7 +6,7 @@ from xml.etree.ElementTree import ParseError
 
 from mapproxy.client import http
 from mapproxy.script.scales import scale_to_res, res_to_scale
-from mapproxy.srs import SRS
+from mapproxy.srs import SRS, generate_envelope_points
 from mapproxy.grid import tile_grid
 
 from . import bottle
@@ -409,24 +409,129 @@ def transform_bbox():
 
 @app.route('/transform_grid', 'POST', name='transform_grid')
 def transform_grid():
-    bbox = map(float, request.forms.get('bbox', '').split(','))
-    srs = request.forms.get('srs', 'EPSG:4326')
-    if bbox:
-        xc = bbox[0] + (bbox[2]-bbox[0]) / 2;
-        yc = bbox[1] + (bbox[3]-bbox[1]) / 2;
+    view_bbox = request.forms.get('bbox', '').split(',')
+    if view_bbox:
+        view_bbox = map(float, view_bbox)
     else:
-        xc = 0
-        yc = 0
+        view_bbox = None
+
+    grid_bbox =request.forms.get('grid_bbox', None)
+
+    if grid_bbox:
+        grid_bbox = grid_bbox.split(',')
+        if grid_bbox:
+            grid_bbox = map(float, grid_bbox)
+    else:
+        grid_bbox = None
+
+    level = request.forms.get('level', None)
+    if level:
+        level = int(level)
+
+    grid_srs = request.forms.get('srs', None)
+    if grid_srs:
+        grid_srs = SRS(grid_srs)
+
+    grid_bbox_srs = request.forms.get('bbox_srs', None)
+    if grid_bbox_srs:
+        grid_bbox_srs = SRS(grid_bbox_srs)
+
+    map_srs = request.forms.get('map_srs', None)
+    if map_srs:
+        map_srs = SRS(map_srs)
+
+    res = request.forms.get('res', None)
+    if res:
+        res = map(float, res.split(','))
+
+    scales = request.forms.get('scales', None)
+    if scales:
+        scales = map(float, scales.split(','))
+        units = 1 if request.forms.get('units', 'm') == 'm' else 111319.4907932736
+        dpi = float(request.forms.get('dpi', (2.54/(0.00028 * 100))))
+        res = [scale_to_res(scale, dpi, units) for scale in scales]
+
+    origin = request.forms.get('origin', 'll')
+
+    tilegrid = tile_grid(srs=grid_srs, bbox=grid_bbox, bbox_srs=grid_bbox_srs, origin=origin, res=res)
+
+    if grid_bbox is None:
+        grid_bbox = tilegrid.bbox
+    else:
+        grid_bbox = grid_bbox_srs.transform_bbox_to(grid_srs, grid_bbox) if grid_bbox_srs and grid_srs else grid_bbox
+
+    if map_srs and grid_srs:
+        view_bbox = map_srs.transform_bbox_to(grid_srs, view_bbox)
+
+    view_bbox = [
+        max(grid_bbox[0], view_bbox[0]),
+        max(grid_bbox[1], view_bbox[1]),
+        min(grid_bbox[2], view_bbox[2]),
+        min(grid_bbox[3], view_bbox[3])
+    ]
+
+    tiles_bbox, size, tiles = tilegrid.get_affected_level_tiles(bbox=view_bbox, level=level)
+
+    feature_count = size[0] * size[1]
+    features = []
+
+    if feature_count > 1000:
+        polygon = generate_envelope_points(tiles_bbox, 128)
+        polygon = list(grid_srs.transform_to(map_srs, polygon)) if map_srs and grid_srs else list(polygon)
+
+        features.append({
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [list(point) for point in polygon] + [list(polygon[0])]
+                ]
+            },
+            "properties": {
+                "message": "Too many tiles. Please zoom in."
+            }
+        })
+    else:
+        for tile in tiles:
+            if tile:
+                x, y, z = tile
+                polygon = generate_envelope_points(tilegrid.tile_bbox(tile), 16)
+                polygon = list(grid_srs.transform_to(map_srs, polygon)) if map_srs and grid_srs else list(polygon)
+
+                new_feature = {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [
+                            [list(point) for point in polygon] + [list(polygon[0])]
+                        ]
+                    }
+                }
+                if feature_count == 1:
+                    xc0, yc0, xc1, yc1 = grid_srs.transform_bbox_to(map_srs, view_bbox) if map_srs and grid_srs else view_bbox
+                    features.append({
+                        "type": "Feature",
+                        "properties": {
+                            "x": x,
+                            "y": y,
+                            "z": z
+                        },
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [xc0 + (xc1-xc0) /2, yc0 + (yc1-yc0)/2]
+
+                        }
+                    })
+                elif feature_count <= 100:
+                    new_feature["properties"] = {
+                        "x": x,
+                        "y": y,
+                        "z": z
+                    }
+                features.append(new_feature)
 
     return {"type":"FeatureCollection",
-        "features":[
-            {"type":"Feature",
-                "geometry":{
-                    "type":"Point",
-                    "coordinates":[xc, yc]
-                }
-            }
-        ]
+        "features": features
     }
 
 def init_app(storage_dir):

@@ -154,9 +154,8 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                         $scope.combinedLayer.redraw();
                     }, 1000, false);
                 } else {
-                    var olLayer = $scope.map.getLayersBy('id', layer.olLayerId)[0]
                     layer.visibility = !layer.visibility;
-                    olLayer.setVisibility(layer.visibility);
+                    layer.olLayer.setVisibility(layer.visibility);
                 }
             };
 
@@ -246,8 +245,9 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                         ratio: 1.0,
                         isBaseLayer: false
                 });
-                layer.olLayerId = newLayer.id;
+                layer.olLayer = newLayer;
                 layer.visibility = true;
+
                 $scope.mapLayers.push(newLayer);
             };
             var createWMSLayer = function(layer, srs, url) {
@@ -264,7 +264,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     angular.forEach(layer.layers, function(layer) {
                         createWMSLayer(layer, srs, url);
                     })
-                    layer.olLayerId = newLayer.id;
+                    layer.olLayer = newLayer;
                     layer.visibility = true;
                     $scope.mapLayers.push(newLayer);
                     return newLayer;
@@ -291,34 +291,17 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 });
                 $scope.combinedLayer = createWMSLayer({'name': angular.copy($scope.combinedWMSLayerNames), 'title': 'Combined Layer'}, srs, url);
             };
-            var createVectorLayer = function(layer) {
-                var options = {};
-                if(angular.isDefined(layer.url)) {
-                    options = {
-                        protocol: new OpenLayers.Protocol.HTTP({
-                            url: layer.url,
-                            readWithPOST: true,
-                            updateWithPOST: true,
-                            deleteWithPOST: true,
-                            format: new OpenLayers.Format.GeoJSON(),
-                            //headers.Content-Type is overwritten by
-                            //OpenLayers.Protocol.HTTP:202
-                            // headers: {
-                            //     'Content-Type': 'application/json'
-                            // },
-                            //set additional parameter so srs is also send to server
-                            params: {'srs': $scope.olmapBinds.proj}
-                        }),
-                        strategies: [
-                            new OpenLayers.Strategy.BBOX({
-                                ratio: 1
-                            })
-                    ]}
+            var createVectorLayer = function(layer, options) {
+                options = options || {};
+
+                if(!angular.isDefined(options.styleMap)) {
+                    options.styleMap = new OpenLayers.StyleMap($.extend(true,
+                        {}, DEFAULT_VECTOR_STYLING, layer.style
+                    ));
                 }
 
                 var newLayer = new OpenLayers.Layer.Vector(layer.name, options);
-                var style = $.extend({}, DEFAULT_VECTOR_STYLING, layer.style);
-                newLayer.styleMap = new OpenLayers.StyleMap(style);
+
                 if(angular.isDefined(layer.geometries)) {
                     angular.forEach(layer.geometries, function(geometry) {
                         switch(geometry.type) {
@@ -338,10 +321,12 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     $scope.drawLayer._maxFeatures = layer.maxFeatures || false;
                     $scope.drawLayer._allowedGeometry = layer.allowedGeometry;
                 }
-                layer.olLayerId = newLayer.id;
+
+                layer.olLayer = newLayer;
                 layer.visibility = true;
                 layer.title = layer.title || layer.name;
                 $scope.mapLayers.push(newLayer);
+                return newLayer;
             };
 
             //Map
@@ -369,6 +354,11 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 if(angular.isDefined($scope.olmapBinds.layers.vector)) {
                     angular.forEach($scope.olmapBinds.layers.vector, function(layer, name) {
                         createVectorLayer(layer);
+                    });
+                }
+                if(angular.isDefined($scope.extensions.layers)) {
+                    angular.forEach($scope.extensions.layers, function(func) {
+                        func();
                     });
                 }
 
@@ -437,7 +427,11 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 }
                 if($attrs.mapLayerSwitcher) {
                     loadLayerSwitcherTemplate();
-                    //prepareLayerSwitcher($scope.map);
+                }
+                if(angular.isDefined($scope.extensions.map)) {
+                    angular.forEach($scope.extensions.map, function(func) {
+                        func($scope.map);
+                    });
                 }
                 if(angular.isDefined($scope.dataExtent)) {
                     $scope.map.zoomToExtent($scope.dataExtent)
@@ -468,6 +462,11 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                         }
                     })
                 }
+                if(angular.isDefined($scope.extensions.destroy)) {
+                    angular.forEach($scope.extensions.destroy, function(func) {
+                        func($scope.map);
+                    });
+                }
                 if($scope.map instanceof OpenLayers.Map) {
                     $scope.map.destroy();
                     delete $scope.map;
@@ -478,16 +477,27 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 $scope.drawLayer = undefined;
                 $.unblockUI();
                 $scope.olmapBinds.visible = false;
+
                 safeApply($scope);
             };
 
+            var registerExtension = function(type, func) {
+                if(angular.isDefined($scope.extensions[type])) {
+                    $scope.extensions[type].push(func);
+                } else {
+                    $scope.extensions[type] = [func];
+                }
+            }
+
             //Directive initialization
-            $scope.olmapBinds = {
+            $scope.extensions = {};
+            $scope.olmapBinds = $.extend(true, {
                 visible: $attrs.MapHidden || false,
                 extent: undefined,
                 proj: undefined,
                 layers: undefined
-            };
+            }, $scope.olmapBinds);
+
             $scope.mapLayers = [];
             $scope.drawLayer = [];
 
@@ -504,20 +514,147 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     });
                 }
             });
+
+            return {
+                createVectorLayer: createVectorLayer,
+                registerExtension: registerExtension,
+                olmapBinds: $scope.olmapBinds
+            };
         },
         link: function(scope, element, attrs) {
             scope.mapId = 'ol_map_' + scope.$id;
-
             //setup map element
             element.find('#_olmapTemp')
                 .attr('id', scope.mapId)
                 .css('width', attrs.mapWidth)
                 .css('height', attrs.mapHeight);
 
-
             if(!scope.olmapBinds.visible) {
                 $(element).hide();
             }
+        }
+    }
+}).
+
+
+directive('olGridExtension', function(TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING) {
+    return {
+        restrict: 'A',
+        require: '^olMap',
+        transclude: false,
+        scope: {
+            olGridData: '=olGridExtension'
+        },
+        controller: function($scope, $element, $attrs) {
+            // check why range-filter not work
+            $scope.levels = function() {
+                var levels = [];
+                for(var i = 0; i < $scope.maxLevel; i++) {
+                    levels.push(i);
+                }
+                return levels;
+            }
+            $scope.updateLevel = function() {
+                $scope.layer.olLayer.protocol.params.level = $scope.gridLevel;
+                $scope.layer.olLayer.strategies[0].update({force: true});
+            }
+            $scope._layer = {
+                'name': 'Coverage'
+            };
+            $scope.gridLevel = 0;
+            $scope.maxLevel = 20;
+        },
+        link: function(scope, element, attrs, olMapCtrl) {
+            olMapCtrl.registerExtension('layers', function() {
+                scope.layer = angular.copy(scope._layer);
+                var gridData = scope.olGridData();
+
+                if(angular.isDefined(gridData.res) && angular.isArray(gridData.res) && gridData.res.length > 0) {
+                    scope.maxLevel = gridData.res.length;
+                } else if(angular.isDefined(gridData.scales) && angular.isArray(gridData.scales) && gridData.scales.length > 0) {
+                    scope.maxLevel = gridData.scales.length;
+                } else {
+                    scope.maxLevel = 20;
+                }
+
+                var options = {
+                    protocol: new OpenLayers.Protocol.HTTP({
+                        url: TRANSFORM_GRID_URL,
+                        readWithPOST: true,
+                        updateWithPOST: true,
+                        deleteWithPOST: true,
+                        format: new OpenLayers.Format.GeoJSON(),
+                        params: $.extend({}, gridData, {'level': scope.gridLevel})
+                    }),
+                    strategies: [
+                        new OpenLayers.Strategy.BBOX({
+                            ratio: 1
+                    })],
+                    styleMap: new OpenLayers.StyleMap({
+                        "default": new OpenLayers.Style($.extend(true, {}, DEFAULT_VECTOR_STYLING['default'], {
+                            'fillOpacity': 0.25,
+                            'fillColor': '#bbb',
+                            'strokeColor': '#888',
+                            'fontColor': '#666',
+                            'pointRadius': 0,
+                            'labelOutlineWidth': 0
+                        }), {
+                        rules: [
+                            new OpenLayers.Rule({
+                                filter: new OpenLayers.Filter.Function({
+                                    evaluate: function(attrs) {
+                                        return angular.isDefined(attrs.x) && angular.isDefined(attrs.y) && angular.isDefined(attrs.z);
+                                }}),
+                                symbolizer: {
+                                    'label': "${z} / ${x} / ${y}"
+                                }
+                            }),
+                            new OpenLayers.Rule({
+                                filter: new OpenLayers.Filter.Function({
+                                    evaluate: function(attrs) {
+                                        return angular.isDefined(attrs.message);
+                                }}),
+                                symbolizer: {
+                                    'label': "${message}"
+                                }
+                            }),
+                            new OpenLayers.Rule({
+                                filter: new OpenLayers.Filter.Function({
+                                    evaluate: function(attrs) {
+                                        return (!(angular.isDefined(attrs.x) && angular.isDefined(attrs.y) && angular.isDefined(attrs.z)) && !angular.isDefined(attrs.message))
+                                    }
+                                })
+                            })
+                        ]})
+                    }),
+                };
+                var olLayer = olMapCtrl.createVectorLayer(scope.layer, options);
+                olLayer.events.register('added', null, function() {
+                    this.protocol.params['map_srs'] = this.projection.getCode();
+                });
+
+                if(angular.isDefined(olMapCtrl.olmapBinds.layers.vector)) {
+                    olMapCtrl.olmapBinds.layers.vector.push(scope.layer);
+                } else {
+                    olMapCtrl.olmapBinds.layers.vector = [scope.layer];
+                }
+            });
+
+            olMapCtrl.registerExtension('map', function(map) {
+                map.events.register('zoomend', null, function() {
+                    scope.updateLevel();
+                });
+                $(map.div).find('.olMapViewport').append(element);
+            });
+
+            olMapCtrl.registerExtension('destroy', function(map) {
+                scope.gridLevel = 0;
+                scope.maxLevel = 20;
+                var layerList = olMapCtrl.olmapBinds.layers.vector;
+                var layerIdx = layerList.indexOf(scope.layer);
+                layerList.splice(layerIdx, 1)
+                delete scope.layer;
+            });
         }
     }
 });

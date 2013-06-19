@@ -764,14 +764,14 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         }
     };
 
-    var addScalesResToGrid = function() {
+    var addScalesResTo = function(obj) {
         if($scope.custom.res_scales.length > 0) {
             if($scope.custom.resSelected) {
-                delete $scope.grid.data.scales;
-                $scope.grid.data.res = $scope.custom.res_scales;
+                delete obj.scales;
+                obj.res = $scope.custom.res_scales;
             } else {
-                delete $scope.grid.data.res;
-                $scope.grid.data.scales = $scope.custom.res_scales
+                delete obj.res;
+                obj.scales = $scope.custom.res_scales
             }
         }
     };
@@ -827,7 +827,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
             event.preventDefault();
         }
         if(!$scope.editareaBinds.save) {
-            addScalesResToGrid();
+            addScalesResTo($scope.grid.data);
         }
 
         $scope.grid = clearData($scope.grid);
@@ -902,23 +902,23 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
     };
     $scope.showMap = function(event) {
         event.preventDefault();
-
-        $scope.olmapBinds = {
-            visible: true,
-            proj: 'EPSG:4326',
-            extent: [7, 51, 10, 54],
-            layers: {
-                'vector': [{
-                    'name': 'Coverage',
-                    'url': $scope.transformGridURL
-                }],
-                'background': [{
-                    title: 'BackgroundLayer',
-                    url: 'http://osm.omniscale.net/proxy/service?',
-                    name: 'osm'
-                }]
-            }
+        $scope.olmapBinds.visible = true;
+    }
+    $scope.provideGridData = function() {
+        var gridData = {
+            'srs': $scope.grid.data.srs,
+            'bbox_srs': $scope.grid.data.bbox_srs,
+            'origin': $scope.grid.data.origin
+        };
+        if(!isEmpty($scope.grid.data.bbox)) {
+            gridData.grid_bbox = $scope.grid.data.bbox;
         }
+        addScalesResTo(gridData);
+        if(angular.isDefined(gridData.scales)) {
+            gridData.units = $scope.grid.data.units;
+            gridData.dpi = $scope.defaults.data.dpi;
+        }
+        return gridData;
     }
 
     $scope.custom = {
@@ -926,6 +926,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         'resSelected': false
     };
     $scope.grid = angular.copy({'data': MapproxyGrids.model});
+
     $scope.formTitle = 'New grid';
 
     $scope.editareaBinds = {
@@ -933,6 +934,19 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         visible: false,
         dirty: false
     };
+
+    $scope.olmapBinds = {
+        visible: false,
+        proj: 'EPSG:4326',
+        extent: [-180, -90, 180, 90],
+        layers: {
+            'background': [{
+                title: 'BackgroundLayer',
+                url: 'http://osm.omniscale.net/proxy/service?',
+                name: 'osm'
+            }]
+        }
+    }
 
     MapproxyGrids.current($scope.grid);
 
@@ -947,14 +961,13 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
 
     $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
         if(isVisible) {
-            addScalesResToGrid();
+            addScalesResTo($scope.grid.data);
             $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.grid);
         }
         if(wasVisible && !isVisible) {
             $scope.addGrid();
         }
     });
-
 
     $scope._messageService = MessageService;
 

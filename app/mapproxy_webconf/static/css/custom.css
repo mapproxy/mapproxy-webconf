@@ -544,6 +544,12 @@ div.blockMsg {
 }
 
 
+._gridLevelSelect {
+  position: absolute;
+  left: 100px;
+  z-index: 1500;
+}
+
 /* jquery.ui */
 .ui-front {
   z-index: 1050;

@@ -53,7 +53,7 @@
 
 %def middleblock():
   <div ng-controller="MapproxyGridFormCtrl"
-       ng-init="calculateTilesURL='${ get_url('calculate_tiles') }'; transformGridURL='${ get_url('transform_grid') }';">
+       ng-init="calculateTilesURL='${ get_url('calculate_tiles') }'">
     <div ng-show="!editareaBinds.visible">
       <h3>{{formTitle|i18n}}</h3>
       <form name="form" id="form" novalidate>
@@ -238,7 +238,17 @@
             callback="unlockGrid()">
       {{'Unlock'|i18n}}
     </button>
-    <div ol-map="olmapBinds" map-width="1000" map-height="600" map-hidden="true" map-layer-switcher="true"></div>
+    <div ol-map="olmapBinds" map-width="1000" map-height="600" map-hidden="true" map-layer-switcher="true">
+      <select ol-grid-extension="provideGridData"
+              class="_gridLevelSelect"
+              ng-model="gridLevel"
+              ng-change="updateLevel()"
+              ng-mousedown="$event.stopPropagation();"
+              ng-click="$event.stopPropagation();"
+              ng-dblclick="$event.stopPropagation();"
+              ng-options="level for level in levels()">
+      </select>
+    </div>
   </div>
 %end
 
