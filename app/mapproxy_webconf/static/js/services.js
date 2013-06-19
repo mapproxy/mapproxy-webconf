@@ -396,7 +396,9 @@ var sourceModel = {
         'bbox': undefined,
         'srs': undefined
     },
-    'supported_formats': []
+    'supported_formats': [],
+    'min_res_scale': undefined,
+    'max_res_scale': undefined
 };
 var defaultsModel = {
     'dpi': undefined,
