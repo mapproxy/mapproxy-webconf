@@ -280,7 +280,6 @@ ul.vertical-list > div:first-child  {
 
 ul.vertical-list div:hover,
 ul.vertical-list div:focus
-/*ul.vertical-list div:hover li i.icon-remove*/
 {
   background-color: #eeeeee;
 }
@@ -413,16 +412,31 @@ input.droppable-active, div.droppable-active {
 .icon-globe,
 .icon-refresh {
     cursor: pointer;
-    opacity: 0.5;
+    opacity: 0.1;
 }
 
-.icon-remove:hover ,
+.vertical-list li:hover .icon-share:hover,
+.vertical-list li:hover .icon-remove:hover,
+.vertical-list li:hover .icon-info-sign:hover,
+.accordion-heading i.icon-globe:hover,
+.accordion-heading i.icon-refresh:hover,
+.accordion-heading i.icon-remove:hover,
+.icon-remove:hover,
 .icon-question-sign:hover,
 .icon-info-sign:hover,
 .icon-share:hover,
 .icon-globe:hover,
 .icon-refresh:hover {
     opacity: 0.9;
+}
+.accordion-heading i.icon-globe,
+.accordion-heading i.icon-refresh,
+.accordion-heading i.icon-remove,
+.vertical-list li:hover .icon-info-sign,
+.vertical-list li:hover .icon-share,
+.vertical-list li:hover .icon-remove,
+.icon-ok {
+    opacity: 0.5;
 }
 
 .switch {
