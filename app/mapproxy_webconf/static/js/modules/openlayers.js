@@ -461,6 +461,11 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                         }
                     })
                 }
+                if(angular.isDefined($scope.extensions.destroy)) {
+                    angular.forEach($scope.extensions.destroy, function(func) {
+                        func($scope.map);
+                    });
+                }
                 if($scope.map instanceof OpenLayers.Map) {
                     $scope.map.destroy();
                     delete $scope.map;
@@ -471,11 +476,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 $scope.drawLayer = undefined;
                 $.unblockUI();
                 $scope.olmapBinds.visible = false;
-                if(angular.isDefined($scope.extensions.destroy)) {
-                    angular.forEach($scope.extensions.destroy, function(func) {
-                        func();
-                    });
-                }
+
                 safeApply($scope);
             };
 
