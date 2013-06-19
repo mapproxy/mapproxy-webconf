@@ -215,6 +215,15 @@ input[type="color"]:focus,
     }
 
 
+.input-large {
+  width: 200px
+}
+
+.input-xlarge {
+  width: 350px;
+}
+
+
 /* config page options */
 .middleblock {
     border-left: 1px solid #ccc;

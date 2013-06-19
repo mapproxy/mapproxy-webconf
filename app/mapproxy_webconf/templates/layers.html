@@ -24,7 +24,7 @@
           message-types="layers.load_error,layers.delete_error,layers.updateStructur_error">
     </span>
     <div>
-      <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
+      <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..." class="input-large"/>
       <span ng-show="list.length - filtered.length" ng-click="search=''">
         {{'Not shown layers'|i18n}}: {{list.length - filtered.length}}
       </span>

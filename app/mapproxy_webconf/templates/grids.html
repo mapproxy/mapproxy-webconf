@@ -8,8 +8,7 @@
     <span message-handler="success" message-types="grids.delete_success"></span>
     <span message-handler="error" message-types="grids.load_error,grids.delete_error"></span>
     <div>
-      <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
-      <br>
+      <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..." class="input-large"/ >
       <span ng-show="list.length - filtered.length" ng-click="search=''">{{'Not shown grids'|i18n}}: {{list.length - filtered.length}}</span>
     </div>
     <ul class="vertical-list">
@@ -60,7 +59,7 @@
       <form name="form" id="form" novalidate>
         <!-- name -->
         <div labeled="input_label" name-for="name" text="{{'Name'|i18n}}">
-          <input required type="text" ng-model="grid.data.name" id="name" ng-disabled="grid._locked||grid.default" name="name"/>
+          <input required type="text" ng-model="grid.data.name" id="name" ng-disabled="grid._locked||grid.default" name="name" class="input-large"/>
         </div>
         <!-- SRS -->
         <div labeled="input_label" name-for="srs" text="{{'SRS'|i18n}}">
@@ -76,25 +75,25 @@
         <div labeled="input_label" name-for="bbox_0" text="{{'BBox'|i18n}}">
           <input type="number"
                  ng-model="grid.data.bbox[0]"
-                 class="input-mini"
+                 class="input-large"
                  id="bbox_0"
                  ng-disabled="grid._locked||grid.default"
                  name="bbox_0"/>
           <input type="number"
                  ng-model="grid.data.bbox[1]"
-                 class="input-mini"
+                 class="input-large"
                  id="bbox_1"
                  ng-disabled="grid._locked||grid.default"
                  name="bbox_1"/>
           <input type="number"
                  ng-model="grid.data.bbox[2]"
-                 class="input-mini"
+                 class="input-large"
                  id="bbox_2"
                  ng-disabled="grid._locked||grid.default"
                  name="bbox_2"/>
           <input type="number"
                  ng-model="grid.data.bbox[3]"
-                 class="input-mini"
+                 class="input-large"
                  id="bbox_3"
                  ng-disabled="grid._locked||grid.default"
                  name="bbox_3"/>
