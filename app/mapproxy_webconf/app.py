@@ -409,11 +409,11 @@ def transform_bbox():
 
 @app.route('/transform_grid', 'POST', name='transform_grid')
 def transform_grid():
-    bbox = request.forms.get('bbox', '').split(',')
-    if bbox:
-        bbox = map(float, bbox)
+    view_bbox = request.forms.get('bbox', '').split(',')
+    if view_bbox:
+        view_bbox = map(float, view_bbox)
     else:
-        bbox = None
+        view_bbox = None
 
     grid_bbox =request.forms.get('grid_bbox', None)
 
@@ -428,8 +428,17 @@ def transform_grid():
     if level:
         level = int(level)
 
-    srs = request.forms.get('srs', None)
-    bbox_srs = request.forms.get('bbox_srs', None)
+    grid_srs = request.forms.get('srs', None)
+    if grid_srs:
+        grid_srs = SRS(grid_srs)
+
+    grid_bbox_srs = request.forms.get('bbox_srs', None)
+    if grid_bbox_srs:
+        grid_bbox_srs = SRS(grid_bbox_srs)
+
+    map_srs = request.forms.get('map_srs', None)
+    if map_srs:
+        map_srs = SRS(map_srs)
 
     res = request.forms.get('res', None)
     if res:
@@ -444,51 +453,79 @@ def transform_grid():
 
     origin = request.forms.get('origin', 'll')
 
-    tilegrid = tile_grid(srs=srs, bbox=grid_bbox, bbox_srs=bbox_srs, origin=origin, res=res)
+    tilegrid = tile_grid(srs=grid_srs, bbox=grid_bbox, bbox_srs=grid_bbox_srs, origin=origin, res=res)
 
     if grid_bbox is None:
         grid_bbox = tilegrid.bbox
+    else:
+        grid_bbox = grid_bbox_srs.transform_bbox_to(grid_srs, grid_bbox)
 
-    bbox = [
-        max(grid_bbox[0], bbox[0]),
-        max(grid_bbox[1], bbox[1]),
-        min(grid_bbox[2], bbox[2]),
-        min(grid_bbox[3], bbox[3])
+    if map_srs and grid_srs:
+        view_bbox = map_srs.transform_bbox_to(grid_srs, view_bbox)
+
+    view_bbox = [
+        max(grid_bbox[0], view_bbox[0]),
+        max(grid_bbox[1], view_bbox[1]),
+        min(grid_bbox[2], view_bbox[2]),
+        min(grid_bbox[3], view_bbox[3])
     ]
 
-    _bbox, size, tiles = tilegrid.get_affected_level_tiles(bbox=bbox, level=level)
+    tiles_bbox, size, tiles = tilegrid.get_affected_level_tiles(bbox=view_bbox, level=level)
 
     feature_count = size[0] * size[1]
-
-    if  feature_count> 2500:
-        response.status = 400
-        return {'error': 'to many tiles (%s)' % feature_count}
-
     features = []
 
-    for tile in tiles:
-        if tile:
-            x0, y0, x1, y1 = tilegrid.tile_bbox(tile)
-            features.append({
-                "type": "Feature",
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [[
-                        [x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0, y0]
-                    ]]
+    if feature_count > 1000:
+        x0, y0, x1, y1 = grid_srs.transform_bbox_to(map_srs, tiles_bbox) if map_srs and grid_srs else tiles_bbox
+
+        features.append({
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[
+                    [x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0, y0]
+                ]]
+            },
+            "properties": {
+                "message": "Too many tiles. Please zoom in."
+            }
+        })
+    else:
+        for tile in tiles:
+            if tile:
+                x, y, z = tile
+                x0, y0, x1, y1 = grid_srs.transform_bbox_to(map_srs, tilegrid.tile_bbox(tile)) if map_srs and grid_srs else tilegrid.tile_bbox(tile)
+                new_feature = {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [[
+                            [x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0, y0]
+                        ]]
+                    }
                 }
-            })
-            features.append({
-                "type": "Feature",
-                "properties": {
-                    "x": tile[0],
-                    "y": tile[1]
-                },
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [x0 + (x1-x0) /2, y0 + (y1-y0)/2]
-                }
-            })
+                if feature_count == 1:
+                    xc0, yc0, xc1, yc1 = grid_srs.transform_bbox_to(map_srs, view_bbox) if map_srs and grid_srs else view_bbox
+                    features.append({
+                        "type": "Feature",
+                        "properties": {
+                            "x": x,
+                            "y": y,
+                            "z": z
+                        },
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [xc0 + (xc1-xc0) /2, yc0 + (yc1-yc0)/2]
+
+                        }
+                    })
+                elif feature_count <= 100:
+                    new_feature["properties"] = {
+                        "x": x,
+                        "y": y,
+                        "z": z
+                    }
+                features.append(new_feature)
 
     return {"type":"FeatureCollection",
         "features": features
