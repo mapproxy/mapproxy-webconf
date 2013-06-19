@@ -76,12 +76,12 @@ h6 {
     margin: 0;
 }
 
-textarea {
+textarea.edit-manual {
     background-color: #3A3740;
     color: white;
 }
 
-textarea.input-xlarge {
+textarea.edit-manual {
     width: 97%;
 }
 
@@ -541,4 +541,14 @@ div.blockMsg {
 /* jquery.ui */
 .ui-front {
   z-index: 1050;
+}
+
+/* info dialog */
+dl.info-horizontal dt {
+  width: 100px;
+  float: left;
+}
+
+dl.info-horizontal dd {
+    marign-left: 100px;
 }

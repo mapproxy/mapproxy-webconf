@@ -573,6 +573,11 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
             $scope.addSource();
         }
     }, true);
+    $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
+        if(wasVisible && !isVisible) {
+            $scope.addSource();
+        }
+    });
 
     MapproxySources.current($scope.source);
 
@@ -727,6 +732,11 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
             $scope.addCache();
         }
     }, true);
+    $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
+        if(wasVisible && !isVisible) {
+            $scope.addCache();
+        }
+    });
 
     $scope.$watch('cache', function() {
         $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.cache);
@@ -949,12 +959,15 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         }
     }, true);
 
-    $scope.$watch('editareaBinds.visible', function(visible) {
-        if(visible) {
-            addScalesResToGrid($scope.grid.data);
+    $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
+        if(isVisible) {
+            addScalesResTo($scope.grid.data);
             $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.grid);
         }
-    }, true);
+        if(wasVisible && !isVisible) {
+            $scope.addGrid();
+        }
+    });
 
     $scope._messageService = MessageService;
 
@@ -1114,6 +1127,11 @@ function MapproxyLayerFormCtrl($scope, $http, localize, MapproxySources, Mapprox
             $scope.defaults = defaults[0];
         }
     });
+    $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
+        if(wasVisible && !isVisible) {
+            $scope.addLayer();
+        }
+    });
 
     $scope.$watch('editareaBinds.save', function(save) {
         if(save) {
@@ -1217,6 +1235,11 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareSer
             $scope.save();
         }
     }, true);
+    $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
+        if(wasVisible && !isVisible) {
+            $scope.save();
+        }
+    });
 
     $scope.$watch('globals', function() {
             $scope.editareaBinds.editareaValue = $scope.globals;

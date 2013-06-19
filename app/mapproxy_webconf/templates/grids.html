@@ -120,50 +120,53 @@
           </select>
         </div>
         <hr>
-        <h5 class="normal">{{'Resolutions'|i18n}}:</h5>
+        <div labeled='input_label_toggleable'
+            name-for="coverage_bbox"
+            text="{{'Resolutions'|i18n}}">
         <!-- units to calculate -->
-        <div class="btn-group switch pull-right"
-             ng-model="grid.data.units"
-             data-toggle-name="is_private"
-             data-toggle="buttons-radio">
-          <button type="button"
-                  ng-click="grid.data.units='m'"
-                  class="btn btn-small"
-                  ng-class="{'active': grid.data.units=='m'}"
-                  data-toggle="button"
-                  ng-disabled="grid._locked||grid.default">
-            {{'Meters'|i18n}}
-          </button>
-          <button type="button"
-                  ng-click="grid.data.units='d'"
-                  class="btn btn-small"
-                  ng-class="{'active': grid.data.units=='d'}"
-                  data-toggle="button"
-                  ng-disabled="grid._locked||grid.default">
-            {{'Degrees'|i18n}}
-          </button>
-        </div>
-        <!-- res / scales -->
-        <div class="btn-group switch" data-toggle="buttons-radio">
-          <button type="button"
-                  class="btn btn-small"
-                  ng-class="{'active': custom.resSelected}"
-                  ng-click="getResolutions('${get_url('scales_to_res')}')"
-                  ng-disabled="grid._locked||grid.default">
-            {{'Resolutions'|i18n}}
-          </button>
-          <button type="button"
-                  class="btn btn-small"
-                  ng-class="{'active': !custom.resSelected}"
-                  ng-click="getScales('${get_url('res_to_scales')}')"
-                  ng-disabled="grid._locked||grid.default">
-            {{'Scales'|i18n}}
-          </button>
-        </div>
-        <div extendable-input-list="custom.res_scales"
-             list-prefix="Level"
-             ng-disabled="grid._locked||grid.default"
-             parent-form="form">
+          <div class="btn-group switch pull-right"
+               ng-model="grid.data.units"
+               data-toggle-name="is_private"
+               data-toggle="buttons-radio">
+            <button type="button"
+                    ng-click="grid.data.units='m'"
+                    class="btn btn-small"
+                    ng-class="{'active': grid.data.units=='m'}"
+                    data-toggle="button"
+                    ng-disabled="grid._locked||grid.default">
+              {{'Meters'|i18n}}
+            </button>
+            <button type="button"
+                    ng-click="grid.data.units='d'"
+                    class="btn btn-small"
+                    ng-class="{'active': grid.data.units=='d'}"
+                    data-toggle="button"
+                    ng-disabled="grid._locked||grid.default">
+              {{'Degrees'|i18n}}
+            </button>
+          </div>
+
+          <!-- res / scales -->
+          <div class="btn-group switch" data-toggle="buttons-radio">
+            <button type="button"
+                    class="btn btn-small"
+                    ng-class="{'active': custom.resSelected}"
+                    ng-click="getResolutions('${get_url('scales_to_res')}')"
+                    ng-disabled="grid._locked||grid.default">
+              {{'Resolutions'|i18n}}
+            </button>
+            <button type="button"
+                    class="btn btn-small"
+                    ng-class="{'active': !custom.resSelected}"
+                    ng-click="getScales('${get_url('res_to_scales')}')"
+                    ng-disabled="grid._locked||grid.default">
+              {{'Scales'|i18n}}
+            </button>
+          </div>
+          <div extendable-input-list="custom.res_scales"
+               list-prefix="Level"
+               ng-disabled="grid._locked||grid.default"
+               parent-form="form">
         </div>
         <hr class="formLine">
         <button class="btn btn-small"
@@ -171,6 +174,8 @@
                 ng-disabled="!grid.data.srs">
           {{'Calculate tiles'|i18n}}
         </button>
+        </div>
+
         <hr class="formLine">
         <!-- buttons -->
         <div class="pull-left">

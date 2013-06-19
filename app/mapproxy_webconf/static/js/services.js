@@ -383,9 +383,11 @@ var gridModel = {
     'bbox_srs': undefined,
     'origin': undefined,
     'res': [],
-    'scales': []
+    'scales': [],
+    'units': 'm'
 };
 var sourceModel = {
+    'type': 'wms',
     'name': undefined,
     'req': {
         'url': undefined,
@@ -396,7 +398,9 @@ var sourceModel = {
         'bbox': undefined,
         'srs': undefined
     },
-    'supported_formats': []
+    'supported_formats': [],
+    'min_res_scale': undefined,
+    'max_res_scale': undefined
 };
 var defaultsModel = {
     'dpi': undefined,

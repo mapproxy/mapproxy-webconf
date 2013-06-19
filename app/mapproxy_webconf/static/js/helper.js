@@ -70,16 +70,13 @@ var safeApply = function(scope, fn) {
 };
 
 var generateInfoDialogContent = function(data, localize) {
-    var message = '<div class="form-horizontal pull-left">';
-
+    var message = '<div><dl class="info-horizontal">';
     angular.forEach(data, function(value, key) {
-        var elem = '<div class="control-group">';
-        elem += '<label class="control-label" for="_' + key + '">' + localize.getLocalizedString(key) + ':</label>';
-        elem += '<div class="controls"><span id="_' + key + '">' + value + '</span></div>';
-        elem += '</div>';
+        var elem = '<dt>' + localize.getLocalizedString(key) + ':</dt>';
+        elem += '<dd>' + value + '</dd>';
         message += elem;
     });
 
-    message += '</div>';
+    message += '</dl></div>';
     return message;
 };

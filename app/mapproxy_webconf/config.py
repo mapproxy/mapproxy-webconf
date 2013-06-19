@@ -86,7 +86,7 @@ def validate(mapproxy_conf):
             grids = cache.get('grids', False)
             if grids:
                 for grid in grids:
-                    known_grids = ['GLOBAL_MERCATOR', 'GLOBAL_GEODETIC']
+                    known_grids = ['GLOBAL_MERCATOR', 'GLOBAL_GEODETIC', 'GLOBAL_WEBMERCATOR']
                     if grids_conf:
                         known_grids += grids_conf.keys()
                     if grid not in known_grids:

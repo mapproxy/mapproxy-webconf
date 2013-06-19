@@ -185,7 +185,8 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 $scope._modify = new OpenLayers.Control.ModifyFeature($scope.drawLayer, {
                     displayClass: "olControlModifyFeature",
                     mode: OpenLayers.Control.ModifyFeature.RESIZE |
-                          OpenLayers.Control.ModifyFeature.DRAG
+                          OpenLayers.Control.ModifyFeature.DRAG |
+                          OpenLayers.Control.ModifyFeature.RESHAPE
                 });
                 $scope._delete = new OpenLayers.Control.DeleteFeature($scope.drawLayer, {
                     displayClass: "olControlDeleteFeature",
@@ -496,6 +497,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
 
             $scope.mapLayers = [];
             $scope.drawLayer = [];
+            $scope.showScale = true;
 
             $scope.$watch('olmapBinds.visible', function(visible) {
                 if(visible) {
