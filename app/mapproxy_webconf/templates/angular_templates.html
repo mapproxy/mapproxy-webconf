@@ -41,7 +41,8 @@
   <div class="control-group" ng-class="{'error': invalid, 'warning': warning}" toggle-group mode="multiShow">
     <label class="control-label"
            for="{{name}}"
-           toggle-element="next">
+           toggle-element="next"
+           set-focus>
       {{getText()}}
       <i class="icon-question-sign pull-right help" tooltip="uncommonInputs"></i>
     </label>
