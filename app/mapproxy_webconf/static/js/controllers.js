@@ -906,7 +906,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
     }
     $scope.provideGridData = function() {
         var gridData = {
-            'srs': 'EPSG:4326',
+            'srs': $scope.grid.data.srs,
             'bbox_srs': $scope.grid.data.bbox_srs,
             'origin': $scope.grid.data.origin
         };
