@@ -28,6 +28,7 @@
               name="wms_srs">
       </select>
     </div>
+    <hr>
     <!-- Add md section -->
     <div labeled="input_label_toggleable" name-for="wms_md" text="{{'Meta data'|i18n}}">
       <div id="wms_md">
@@ -43,6 +44,7 @@
                  id="wms_md_online_resource"
                  name="wms_md_online_resource"/>
         </div>
+        <hr>
         <div labeled="input_label_toggleable" name-for="wms_md_contact" text="{{'Contact'|i18n}}">
           <div id="wms_md_contact">
             <div labeled="input_label" name-for="wms_md_contact_person " text="{{'Person'|i18n}}">
@@ -149,6 +151,7 @@
   <div ng-controller="MapproxyServicesCtrl">
     <form name="form">
       <div ng-include src="template"></div>
+      <hr>
       <button class="btn btn-small"
               ng-click="save($event)"
               ng-disabled="!form.$valid"

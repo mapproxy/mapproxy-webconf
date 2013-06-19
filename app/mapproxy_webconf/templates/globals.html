@@ -59,6 +59,7 @@
     <h3 ng-show="globals._manual || editareaBinds.visible">{{'Globals'|i18n}}</h3>
     <form name="form" novalidate ng-show="!editareaBinds.visible">
       <div ng-include src="template"></div>
+      <hr>
       <button class="btn btn-small"
               ng-click="save($event)"
               ng-disabled="!form.$valid"

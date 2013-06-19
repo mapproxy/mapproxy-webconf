@@ -387,6 +387,7 @@ var gridModel = {
     'units': 'm'
 };
 var sourceModel = {
+    'type': 'wms',
     'name': undefined,
     'req': {
         'url': undefined,
