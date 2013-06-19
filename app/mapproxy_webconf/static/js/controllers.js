@@ -778,7 +778,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
 
     var setGrid = function() {
         $scope.grid = MapproxyGrids.current();
-
+        DataShareService.data('clearCalculatedTiles', true);
         if(angular.isDefined($scope.grid.data.scales)) {
             $scope.custom.res_scales = angular.copy($scope.grid.data.scales);
             $scope.custom.resSelected = false;
@@ -1398,4 +1398,7 @@ function DisplayCalculatedTilesCtrl($scope, DataShareService) {
     $scope.$on('dss.calculatedTiles', function() {
         $scope.calculatedTiles = DataShareService.data('calculatedTiles');
     });
-}
+    $scope.$on('dss.clearCalculatedTiles', function() {
+        $scope.calculatedTiles = undefined;
+    });
+};
