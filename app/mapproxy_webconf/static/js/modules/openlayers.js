@@ -594,8 +594,8 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING
                         "default": new OpenLayers.Style($.extend(true, {}, DEFAULT_VECTOR_STYLING['default'], {
                             'fillOpacity': 0.25,
                             'fillColor': '#bbb',
-                            'strokeColor': '#999',
-                            'fontColor': '#777',
+                            'strokeColor': '#888',
+                            'fontColor': '#666',
                             'pointRadius': 0,
                             'labelOutlineWidth': 0
                         }), {
