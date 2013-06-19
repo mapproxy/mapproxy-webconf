@@ -383,7 +383,8 @@ var gridModel = {
     'bbox_srs': undefined,
     'origin': undefined,
     'res': [],
-    'scales': []
+    'scales': [],
+    'units': 'm'
 };
 var sourceModel = {
     'name': undefined,
