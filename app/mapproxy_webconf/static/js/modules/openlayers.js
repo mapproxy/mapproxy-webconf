@@ -592,28 +592,41 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING
                     })],
                     styleMap: new OpenLayers.StyleMap({
                         "default": new OpenLayers.Style($.extend(true, {}, DEFAULT_VECTOR_STYLING['default'], {
-                            'fillOpacity': 0,
-                            'strokeColor': '#000',
-                            'pointRadius': 0
+                            'fillOpacity': 0.25,
+                            'fillColor': '#bbb',
+                            'strokeColor': '#999',
+                            'fontColor': '#777',
+                            'pointRadius': 0,
+                            'labelOutlineWidth': 0
                         }), {
                         rules: [
                             new OpenLayers.Rule({
                                 filter: new OpenLayers.Filter.Function({
                                     evaluate: function(attrs) {
-                                        return angular.isDefined(attrs.x) && angular.isDefined(attrs.y);
+                                        return angular.isDefined(attrs.x) && angular.isDefined(attrs.y) && angular.isDefined(attrs.z);
                                 }}),
                                 symbolizer: {
-                                    'labelOutlineWidth': 0,
-                                    'label': "${x} x ${y}"
-                            }}),
+                                    'label': "${z} / ${x} / ${y}"
+                                }
+                            }),
                             new OpenLayers.Rule({
                                 filter: new OpenLayers.Filter.Function({
                                     evaluate: function(attrs) {
-                                        return !(angular.isDefined(attrs.x) && angular.isDefined(attrs.y));
-                                }})
+                                        return angular.isDefined(attrs.message);
+                                }}),
+                                symbolizer: {
+                                    'label': "${message}"
+                                }
+                            }),
+                            new OpenLayers.Rule({
+                                filter: new OpenLayers.Filter.Function({
+                                    evaluate: function(attrs) {
+                                        return (!(angular.isDefined(attrs.x) && angular.isDefined(attrs.y) && angular.isDefined(attrs.z)) && !angular.isDefined(attrs.message))
+                                    }
+                                })
                             })
                         ]})
-                    })
+                    }),
                 };
                 olMapCtrl.createVectorLayer(scope.layer, options);
 
