@@ -86,19 +86,23 @@
           </div>
         </div>
       </div>
-      <div labeled="input_label" name-for="format" text="{{'Format'|i18n}}">
-        <select class="input-xlarge" ng-model="cache.data.format" id="format" name="format">
-          <option value="mixed">Mixed</option>
-          <option value="image/png">Image/PNG</option>
-          <option value="image/jpeg">Image/JPEG</option>
-        </select>
+      <hr>
+      <div labeled='input_label_toggleable' text="{{'Format'|i18n}}">
+        <div labeled="input_label" name-for="format" text="{{'Format'|i18n}}">
+          <select class="input-xlarge" ng-model="cache.data.format" id="format" name="format">
+            <option value="mixed">Mixed</option>
+            <option value="image/png">Image/PNG</option>
+            <option value="image/jpeg">Image/JPEG</option>
+          </select>
+        </div>
+        <div labeled="input_label" name-for="request_format" text="{{'Request format'|i18n}}">
+          <select class="input-xlarge" ng-model="cache.data.request_format" id="request_format" name="request_format">
+            <option value="image/png">Image/PNG</option>
+            <option value="image/jpeg">Image/JPEG</option>
+          </select>
+        </div>
       </div>
-      <div labeled="input_label" name-for="request_format" text="{{'Request format'|i18n}}">
-        <select class="input-xlarge" ng-model="cache.data.request_format" id="request_format" name="request_format">
-          <option value="image/png">Image/PNG</option>
-          <option value="image/jpeg">Image/JPEG</option>
-        </select>
-      </div>
+      <hr>
       <div class="pull-left">
         <button class="btn btn-small"
                 ng-click="addCache($event)"

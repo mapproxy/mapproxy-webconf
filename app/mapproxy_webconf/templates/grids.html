@@ -109,7 +109,10 @@
         </div>
         <hr class="formLine">
         <!-- origin -->
-        <div labeled="input_label" name-for="origin" text="{{'Origin'|i18n}}">
+        <div labeled='input_label_toggleable'
+            name-for="origin"
+            text="{{'Origin'|i18n}}">
+        <div>
           <select ng-model="grid.data.origin"
                   id="origin"
                   ng-disabled="grid._locked||grid.default"
@@ -118,9 +121,9 @@
             <option value="nw">NW / UL</option>
           </select>
         </div>
+        </div>
         <hr>
         <div labeled='input_label_toggleable'
-            name-for="coverage_bbox"
             text="{{'Resolutions'|i18n}}">
         <!-- units to calculate -->
           <div class="btn-group switch pull-right"
