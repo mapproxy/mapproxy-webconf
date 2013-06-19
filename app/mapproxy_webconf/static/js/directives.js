@@ -313,6 +313,9 @@ directive('toggleElement', function() {
             $(element).addClass('toggle-element');
             $(element).click(function() {
                 toggleGroupCTRL.getToggleFunc()(element, scope.$index);
+                if(angular.isDefined(attrs.$attr.setFocus)) {
+                    scope.focusFirst();
+                }
             });
         }
     }
@@ -710,6 +713,11 @@ var toggleGroupCtrl = function($scope, $element) {
             default:
                 return this.hideOther;
         }
+    };
+    $scope.focusFirst = function() {
+        $($element)
+            .find(':input:not(:checkbox):not(:button):not(:radio):first')
+            .focus();
     };
     $scope.isOpen = function() {
         if(openElements.length == 0) {

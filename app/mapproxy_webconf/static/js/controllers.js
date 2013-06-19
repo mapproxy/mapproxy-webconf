@@ -573,6 +573,11 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
             $scope.addSource();
         }
     }, true);
+    $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
+        if(wasVisible && !isVisible) {
+            $scope.addSource();
+        }
+    });
 
     MapproxySources.current($scope.source);
 
@@ -727,6 +732,11 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
             $scope.addCache();
         }
     }, true);
+    $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
+        if(wasVisible && !isVisible) {
+            $scope.addCache();
+        }
+    });
 
     $scope.$watch('cache', function() {
         $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.cache);
@@ -768,7 +778,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
 
     var setGrid = function() {
         $scope.grid = MapproxyGrids.current();
-
+        DataShareService.data('clearCalculatedTiles', true);
         if(angular.isDefined($scope.grid.data.scales)) {
             $scope.custom.res_scales = angular.copy($scope.grid.data.scales);
             $scope.custom.resSelected = false;
@@ -935,12 +945,16 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         }
     }, true);
 
-    $scope.$watch('editareaBinds.visible', function(visible) {
-        if(visible) {
+    $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
+        if(isVisible) {
             addScalesResToGrid();
             $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.grid);
         }
-    }, true);
+        if(wasVisible && !isVisible) {
+            $scope.addGrid();
+        }
+    });
+
 
     $scope._messageService = MessageService;
 
@@ -1100,6 +1114,11 @@ function MapproxyLayerFormCtrl($scope, $http, localize, MapproxySources, Mapprox
             $scope.defaults = defaults[0];
         }
     });
+    $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
+        if(wasVisible && !isVisible) {
+            $scope.addLayer();
+        }
+    });
 
     $scope.$watch('editareaBinds.save', function(save) {
         if(save) {
@@ -1203,6 +1222,11 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareSer
             $scope.save();
         }
     }, true);
+    $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
+        if(wasVisible && !isVisible) {
+            $scope.save();
+        }
+    });
 
     $scope.$watch('globals', function() {
             $scope.editareaBinds.editareaValue = $scope.globals;
@@ -1361,4 +1385,7 @@ function DisplayCalculatedTilesCtrl($scope, DataShareService) {
     $scope.$on('dss.calculatedTiles', function() {
         $scope.calculatedTiles = DataShareService.data('calculatedTiles');
     });
-}
+    $scope.$on('dss.clearCalculatedTiles', function() {
+        $scope.calculatedTiles = undefined;
+    });
+};
