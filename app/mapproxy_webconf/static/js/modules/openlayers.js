@@ -647,9 +647,12 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING
                 $(map.div).find('.olMapViewport').append(element);
             });
 
-            olMapCtrl.registerExtension('destroy', function() {
+            olMapCtrl.registerExtension('destroy', function(map) {
                 scope.gridLevel = 0;
                 scope.maxLevel = 20;
+                var layerList = olMapCtrl.olmapBinds.layers.vector;
+                var layerIdx = layerList.indexOf(scope.layer);
+                layerList.splice(layerIdx, 1)
                 delete scope.layer;
             });
         }
