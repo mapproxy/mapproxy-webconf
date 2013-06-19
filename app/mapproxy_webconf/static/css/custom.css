@@ -503,6 +503,7 @@ div.blockMsg {
     top: 5px;
     right: 5px;
     z-index: 1500;
+    opacity: 1.0;
 }
 
 .olControlLayerSwitcher {
