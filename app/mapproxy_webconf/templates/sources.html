@@ -7,17 +7,17 @@
   <div class="pull-right">
     <!-- konflikt mit bootstrap -->
     <button class="btn btn-small btn-add pull-right" ng-click="newItem()">
-      <span class="icon-plus-sign icon-white" ></span> ${ __('Create new source') }
+      <span class="icon-plus-sign icon-white" ></span> ${ _('Create new source') }
     </button>
   </div>
-  <h3>${ __('Sources') }</h3>
+  <h3>${ _('Sources') }</h3>
   <span message-handler="success" message-types="sources.delete_success"></span>
   <span message-handler="error" message-types="sources.load_error,sources.delete_error"></span>
   <div>
-    <input type="text" ng-model="search" placeholder="${ __('Filter') }..."/>
+    <input type="text" ng-model="search" placeholder="${ _('Filter') }..."/>
     <br>
     <span ng-show="list.length - filtered.length" ng-click="search=''">
-      ${ __('Not shown sources') }: {{list.length - filtered.length}}
+      ${ _('Not shown sources') }: {{list.length - filtered.length}}
     </span>
   </div>
   <ul class="vertical-list">
@@ -28,16 +28,16 @@
         {{item.data.name}}
         <i ng-show="!hasDependencies(item)" class="icon-remove"
           dialog="ask"
-          dialog-title="${ __('Confirm!') }"
-          dialog-text="${ __('Really remove source:') } {{source.data.name}}?"
+          dialog-title="${ _('Confirm!') }"
+          dialog-text="${ _('Really remove source:') } {{source.data.name}}?"
           callback="removeItem($event, item)">
         </i>
         <i ng-show="hasDependencies(item)" class="icon-remove"
           dialog="confirm"
           dialog-width="600"
           dialog-heiht="300"
-          dialog-title="${ __('Confirm!') }"
-          dialog-text="${ __('Can not remove source:') } {{item.data.name}}<br>${ __('Dependencies are:') }<br>{{getDependencies(item)}}">
+          dialog-title="${ _('Confirm!') }"
+          dialog-text="${ _('Can not remove source:') } {{item.data.name}}<br>${ _('Dependencies are:') }<br>{{getDependencies(item)}}">
         </i>
          <i class="icon-share" ng-click="copyItem($event, item)"></i>
       </li>
@@ -58,14 +58,14 @@
         <div
           style="display:none;"
           id="confirm_url_change_dialog"
-          title="${ __('Confirm!') }">
-            <p>${ __('Replace service URL deletes all layers depends to it!') }</p>
+          title="${ _('Confirm!') }">
+            <p>${ _('Replace service URL deletes all layers depends to it!') }</p>
         </div>
         <div ng-show="true">
-          <div labeled="input_label" name-for="name" text="${ __('Name') }">
+          <div labeled="input_label" name-for="name" text="${ _('Name') }">
             <input class="input-xlarge" type="text" required ng-model="source.data.name" id="name" name="name"/>
           </div>
-          <div id="source_wms_url" labeled="input_label" name-for="req_url" text="${ __('URL') }">
+          <div id="source_wms_url" labeled="input_label" name-for="req_url" text="${ _('URL') }">
             <input
               id="req_url"
               name="req_url"
@@ -81,7 +81,7 @@
             />
           </div>
 
-          <div labeled="input_label" name-for="req_layer" text="${ __('Layer') }" >
+          <div labeled="input_label" name-for="req_layer" text="${ _('Layer') }" >
             <div droppable sortable required accepts="wms_layer" allow-array="true"
                 ng-model="source.data.req.layers"
                 name="req_layers"
@@ -97,26 +97,26 @@
                 </div>
             </div>
           </div>
-          <div class="input-append" labeled="input_label" name-for="add_layer_manual" text="${ __('Manual add layer') }">
+          <div class="input-append" labeled="input_label" name-for="add_layer_manual" text="${ _('Manual add layer') }">
             <input type="text" id="add_layer_manual" name="add_layer_manual" ng-model="custom.layer_manual" class="input-medium" unique="{{source.data.req.layers}}">
-            <button class="btn btn-small" ng-click="addLayerManual($event)" ng-disabled="!custom.layer_manual">${ __('Add') }</button>
+            <button class="btn btn-small" ng-click="addLayerManual($event)" ng-disabled="!custom.layer_manual">${ _('Add') }</button>
           </div>
 
           <hr class="formLine">
-          <div class="input-append" labeled='input_label' name-for="coverage_bbox" text="${ __('Coverage BBOX') }">
+          <div class="input-append" labeled='input_label' name-for="coverage_bbox" text="${ _('Coverage BBOX') }">
             <input type="text" ng-model="source.data.coverage.bbox" id="coverage_bbox" name="coverage_bbox" class="input-medium">
-            <button class="btn btn-small" ng-disabled="!source.data.req.url" ng-click="addCoverage($event)" id="form_load_coverage">${ __('Use coverage from WMS') }</button>
+            <button class="btn btn-small" ng-disabled="!source.data.req.url" ng-click="addCoverage($event)" id="form_load_coverage">${ _('Use coverage from WMS') }</button>
           </div>
-          <div labeled="input_label" name-for="coverage_srs" text="${ __('Coverage SRS') }">
+          <div labeled="input_label" name-for="coverage_srs" text="${ _('Coverage SRS') }">
             <select class="input-xlarge" ng-model="source.data.coverage.srs" id="coverage_srs" name="coverage_srs" ng-options="srs for srs in defaults.data.srs">
             </select>
           </div>
-          <button class="btn btn-small" ng-disabled="!source.data.coverage.bbox" ng-click="showCoverageInMap()">${ __('Show coverage in map') }</button>
+          <button class="btn btn-small" ng-disabled="!source.data.coverage.bbox" ng-click="showCoverageInMap()">${ _('Show coverage in map') }</button>
           <div ol-map="olmapBinds" map-width="1000" map-height="600" map-hidden="true" map-layer-switcher="true"></div>
           <hr class="formLine">
-          <div labeled="input_label" name-for="supported_srs" text="${ __('Supported SRS') }">
+          <div labeled="input_label" name-for="supported_srs" text="${ _('Supported SRS') }">
             <button class="btn btn-small pull-right" ng-click="loadSRS($event)" ng-disabled="!source.data.req.url">
-              ${ __('Add SRS from WMS') }
+              ${ _('Add SRS from WMS') }
             </button>
             <div name="supported_srs" id="supported_srs" class="well well-small input-large">
               <span class="badge" ng-repeat="srs in source.data.supported_srs">
@@ -124,16 +124,16 @@
               </span>
             </div>
           </div>
-          <div class="input-append" labeled="input_label" name-for="add_srs_manual" text="${ __('Manual add SRS') }">
+          <div class="input-append" labeled="input_label" name-for="add_srs_manual" text="${ _('Manual add SRS') }">
             <input type="text" id="add_srs_manual" name="add_srs_manual" ng-model="custom.srs_manual" class="input-medium">
-            <button class="btn btn-small" ng-click="addSRSManual($event)" ng-disabled="!custom.srs_manual">${ __('Add') }</button>
+            <button class="btn btn-small" ng-click="addSRSManual($event)" ng-disabled="!custom.srs_manual">${ _('Add') }</button>
           </div>
 
           <hr class="formLine">
-          <div labeled='checkbox_label' name-for="req_transparent" text="${ __('Transparency') }" warning="{{warningLogic.checkImageSettings()}}" warning-msg="${ ('Selectet image format(s) not support transparency.') }">
+          <div labeled='checkbox_label' name-for="req_transparent" text="${ _('Transparency') }" warning="{{warningLogic.checkImageSettings()}}" warning-msg="${ ('Selectet image format(s) not support transparency.') }">
             <input type="checkbox" ng-model="source.data.req.transparent" id="req_transparent" name="req_transparent">
           </div>
-          <div labeled="input_label" name-for="supported_formats" text="${ __('Supported formats') }" warning="{{warningLogic.checkImageSettings()}}" warning-msg="${ ('Selectet image format(s) not support transparency.') }">
+          <div labeled="input_label" name-for="supported_formats" text="${ _('Supported formats') }" warning="{{warningLogic.checkImageSettings()}}" warning-msg="${ ('Selectet image format(s) not support transparency.') }">
               <select name="supported_formats" id="supported_formats" multiple="multiple" ng-model="source.data.supported_formats">
                   <option value="PNG">PNG</option>
                   <option value="JPEG">JPEG</option>
@@ -144,9 +144,9 @@
           <div ng-include src="'${ get_url('static', filepath='angular_templates/min_max_res.html') }'"></div>
       <hr>
       <div class="pull-left">
-        <button class="btn btn-small" ng-click="addSource($event)" ng-disabled="!form.$valid" id="form_save" ng-class="{'btn-success': form.$valid}">${ __('Save') }</button>
-        <button class="btn btn-small" ng-click="resetForm($event)">${ __('Reset') }</button>
-        <button class="btn btn-small" ng-click="copySource($event)">${ __('Copy') }</button>
+        <button class="btn btn-small" ng-click="addSource($event)" ng-disabled="!form.$valid" id="form_save" ng-class="{'btn-success': form.$valid}">${ _('Save') }</button>
+        <button class="btn btn-small" ng-click="resetForm($event)">${ _('Reset') }</button>
+        <button class="btn btn-small" ng-click="copySource($event)">${ _('Copy') }</button>
       </div>
       <div id="_editarea_toggle_button_container" class="pull-right">
       </div>
@@ -163,7 +163,7 @@
 
 %def rightblock():
 <div ng-controller="TreeCtrl">
-  <h3>${ __('Available WMS') }</h3>
+  <h3>${ _('Available WMS') }</h3>
   <script type="text/ng-template"  id="wms_layer_renderer">
 
       <div ng-click="show_infos(layer)" class="label droppable_name">
@@ -190,17 +190,17 @@
         <div class="accordion-toggle">{{wms.data.title}}</div>
         <i class="icon-globe" ng-click="showMap($event, wms)"></i>
         <i class="icon-refresh"  ng-click="refreshCapabilities($event, wms)"></i>
-        <i class="icon-remove" dialog="ask" dialog-title="${ __('Confirm!') }" dialog-text="${ __('Really remove WMS:') } {{wms.data.title}}?" callback="removeCapabilities(wms)"></i>
+        <i class="icon-remove" dialog="ask" dialog-title="${ _('Confirm!') }" dialog-text="${ _('Really remove WMS:') } {{wms.data.title}}?" callback="removeCapabilities(wms)"></i>
       </div>
       <div class="accordion-body" ng-show="isOpen()">
         <div class="accordion-inner">
-          <h6>${ __('Infos') }</h6>
+          <h6>${ _('Infos') }</h6>
           <div class="accordion_wms_source wms_source" draggable item-data="{{wms}}">
             <div class="droppable_name label">
-              ${ __('URL') }: {{wms.data.url}}
+              ${ _('URL') }: {{wms.data.url}}
             </div>
           </div>
-          <h6>${ __('Layers') }</h6>
+          <h6>${ _('Layers') }</h6>
           <div
             ng-repeat="layer in wms.data.layer.layers"
             ng-include="'wms_layer_renderer'"
@@ -218,9 +218,9 @@
   <div message-handler="error" message-types="wms_capabilities.load_error,wms_capabilities.delete_error,wms_capabilities.update_error"></div>
   <hr>
   <form name="form" novalidate>
-    <div class="input-append" labeled="input_label" name-for="url"  text="${ __('Load WMS') }">
+    <div class="input-append" labeled="input_label" name-for="url"  text="${ _('Load WMS') }">
       <input type="url" required name="url" ng-model="capabilities.url" id="url" unique="{{wms_urls}}">
-      <button class="btn btn-small" ng-click="addCapabilities()" ng-disabled="!form.$valid">${ __('Add') }</button>
+      <button class="btn btn-small" ng-click="addCapabilities()" ng-disabled="!form.$valid">${ _('Add') }</button>
     </div>
     <div message-handler="success" message-types="wms_capabilities.add_success"></div>
     <div message-handler="error" message-types="wms_capabilities.add_error"></div>

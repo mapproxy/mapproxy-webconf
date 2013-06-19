@@ -9,10 +9,14 @@ def runserver_command(host='localhost', port=8080):
     app.run(host=host, port=port, debug=True, reloader=True)
 
 
-# regex with grep:
-# grep -E "__\('(.*)'\)" -r -o *
-def extract_command():
+def babel_refresh_command():
     "Extract messages"
-    sh('pygettext -a -v -k __ -d messages -o mapproxy_webconf/locale/messages.pot mapproxy_webconf/\*.py mapproxy_webconf/templates/\*.html mapproxy_webconf/static/angular_templates/\*.html')
+    sh("pybabel extract -F babel.cfg -o mapproxy_webconf/locale/messages.pot mapproxy_webconf")
+    sh('pybabel update -i mapproxy_webconf/locale/messages.pot -d mapproxy_webconf/locale')
+
+def babel_compile_command():
+    "Compile messages"
+    sh('pybabel compile -d mapproxy_webconf/locale')
+
 if __name__ == '__main__':
     scriptine.run()

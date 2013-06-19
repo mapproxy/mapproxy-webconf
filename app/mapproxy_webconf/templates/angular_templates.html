@@ -1,9 +1,9 @@
 <script type="text/ng-template" id="error_messages">
-    <div ng-show="!angularElement.$pristine && angularElement.$error.required">${ __('This field is required') }</div>
-    <div ng-show="!angularElement.$pristine && angularElement.$error.url">${ __('Invalid URL') }</div>
-    <div ng-show="!angularElement.$pristine && angularElement.$error.number">${ __('Invalid number') }</div>
-    <div ng-show="!angularElement.$pristine && angularElement.$error.float">${ __('Invalid float') }</div>
-    <div ng-show="!angularElement.$pristine && angularElement.$error.integer">${ __('Invalid integer') }</div>
+    <div ng-show="!angularElement.$pristine && angularElement.$error.required">${ _('This field is required') }</div>
+    <div ng-show="!angularElement.$pristine && angularElement.$error.url">${ _('Invalid URL') }</div>
+    <div ng-show="!angularElement.$pristine && angularElement.$error.number">${ _('Invalid number') }</div>
+    <div ng-show="!angularElement.$pristine && angularElement.$error.float">${ _('Invalid float') }</div>
+    <div ng-show="!angularElement.$pristine && angularElement.$error.integer">${ _('Invalid integer') }</div>
 </script>
 
 <script type="text/ng-template" id="checkbox_label">
@@ -40,7 +40,7 @@
 <script type="text/ng-template" id="error">
     <span class='text-error' ng-show='false'>
         <i class='icon-remove-circle'></i>
-        <strong>${ __('An error occured') }</strong>
+        <strong>${ _('An error occured') }</strong>
         <p>{{message}}</p>
     </span>
 </script>

@@ -6,17 +6,17 @@
 <div ng-controller="LayerListCtrl">
   <button class="btn btn-small btn-add pull-right" ng-click="newItem()">
     <span class="icon-plus-sign icon-white" ></span>
-    ${ __('Create new layer') }
+    ${ _('Create new layer') }
   </button>
-  <button class="btn btn-small pull-right" id="layer_list_save" ng-click="updateLayerTree()" style="margin-right:1em;" ng-disabled="!listChanged()" ng-class="{'btn-success': _listChanged}">${ __('Save') }</button>
+  <button class="btn btn-small pull-right" id="layer_list_save" ng-click="updateLayerTree()" style="margin-right:1em;" ng-disabled="!listChanged()" ng-class="{'btn-success': _listChanged}">${ _('Save') }</button>
 
-  <h3>${ __('Layer') }</h3>
+  <h3>${ _('Layer') }</h3>
   <span message-handler="success" message-types="layers.delete_success,layers.updateStructur_success"></span>
   <span message-handler="error" message-types="layers.load_error,layers.delete_error,layers.updateStructur_error"></span>
   <div>
-    <input type="text" ng-model="search" placeholder="${ __('Filter') }..."/>
+    <input type="text" ng-model="search" placeholder="${ _('Filter') }..."/>
     <br>
-    <span ng-show="list.length - filtered.length" ng-click="search=''">${ __('Not shown layers') }: {{list.length - filtered.length}}</span>
+    <span ng-show="list.length - filtered.length" ng-click="search=''">${ _('Not shown layers') }: {{list.length - filtered.length}}</span>
   </div>
   <div>
     <ul class="vertical-list">
@@ -30,8 +30,8 @@
           {{item.data.title}} ({{item.data.name}})
           <i class="icon-remove pull-right"
             dialog="ask"
-            dialog-title="${ __('Confirm!') }"
-            dialog-text="${ __('Really remove layer:') } {{item.data.title}} ({{item.data.name}})?"
+            dialog-title="${ _('Confirm!') }"
+            dialog-text="${ _('Really remove layer:') } {{item.data.title}} ({{item.data.name}})?"
             callback="removeItem($event, item)"></i>
           <i class="icon-share" ng-click="copyItem($event, item)"></i>
         </li>
@@ -47,15 +47,15 @@
   <form name="form" novalidate ng-show="!editareaBinds.visible">
     <h3>{{formTitle|i18n}}</h3>
     <!-- name -->
-    <div labeled="input_label" name-for="layer_name" text="${ __('Name') }">
+    <div labeled="input_label" name-for="layer_name" text="${ _('Name') }">
       <input required type="text" required ng-model="layer.data.name" class="input-xlarge" id="layer_name" name="layer_name"/>
     </div>
     <!-- title -->
-    <div labeled="input_label" name-for="layer_title" text="${ __('Title') }">
+    <div labeled="input_label" name-for="layer_title" text="${ _('Title') }">
       <input required type="text" required ng-model="layer.data.title" class="input-xlarge" id="layer_title" name="layer_title"/>
     </div>
     <!-- sources -->
-    <div labeled="input_label" name-for="sources" text="${ __('Sources') }">
+    <div labeled="input_label" name-for="sources" text="${ _('Sources') }">
       <div
         droppable
         sortable
@@ -76,9 +76,9 @@
     <div ng-include src="'${ get_url('static', filepath='angular_templates/min_max_res.html') }'"></div>
 
     <div class="pull-left">
-      <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!form.$valid" id="form_save" ng-class="{'btn-success': form.$valid}">${ __('Save') }</button>
-      <button class="btn btn-small" ng-click="resetForm()">${ __('Reset') }</button>
-      <button class="btn btn-small" ng-click="copyLayer($event)">${ __('Copy') }</button>
+      <button class="btn btn-small" ng-click="addLayer()" ng-disabled="!form.$valid" id="form_save" ng-class="{'btn-success': form.$valid}">${ _('Save') }</button>
+      <button class="btn btn-small" ng-click="resetForm()">${ _('Reset') }</button>
+      <button class="btn btn-small" ng-click="copyLayer($event)">${ _('Copy') }</button>
     </div>
     <div id="_editarea_toggle_button_container" class="pull-right"></div>
   </form>
@@ -96,12 +96,12 @@
 %def rightblock():
   <div>
     <span ng-controller="SourceListCtrl">
-      <h3>${ __('Sources') }</h3>
+      <h3>${ _('Sources') }</h3>
       <span message-handler="error" message-types="sources.load_error"></span>
       <div>
-        <input type="text" ng-model="search" placeholder="${ __('Filter') }..."/>
+        <input type="text" ng-model="search" placeholder="${ _('Filter') }..."/>
         <br>
-        <span ng-show="list.length - filtered.length" ng-click="search=''">${ __('Not shown sources') }: {{list.length - filtered.length}}</span>
+        <span ng-show="list.length - filtered.length" ng-click="search=''">${ _('Not shown sources') }: {{list.length - filtered.length}}</span>
       </div>
       <ul class="vertical-list small">
           <div
@@ -111,7 +111,7 @@
               item-data="{{item}}">
               <li class="droppable_name">
                 {{item.data.name}}
-                <i class="icon-info-sign pull-right" dialog="confirm" dialog-title="${ __('Informations') }" dialog-height="300" dialog-text="{{getInfos(item)}}"></i>
+                <i class="icon-info-sign pull-right" dialog="confirm" dialog-title="${ _('Informations') }" dialog-height="300" dialog-text="{{getInfos(item)}}"></i>
               </li>
           </div>
       </ul>
@@ -119,12 +119,12 @@
     </span>
     <hr>
     <span ng-controller="CacheListCtrl">
-      <h3>${ __('Caches') }</h3>
+      <h3>${ _('Caches') }</h3>
       <span message-handler="error" message-types="caches.load_error"></span>
       <div>
-        <input type="text" ng-model="search" placeholder="${ __('Filter') }..."/>
+        <input type="text" ng-model="search" placeholder="${ _('Filter') }..."/>
         <br>
-        <span ng-show="list.length - filtered.length" ng-click="search=''">${ __('Not shown caches') }: {{list.length - filtered.length}}</span>
+        <span ng-show="list.length - filtered.length" ng-click="search=''">${ _('Not shown caches') }: {{list.length - filtered.length}}</span>
       </div>
       <ul class="vertical-list small">
           <div
@@ -134,7 +134,7 @@
               item-data="{{item}}">
               <li class="droppable_name">
                 {{item.data.name}}
-                <i class="icon-info-sign pull-right" dialog="confirm" dialog-title="${ __('Informations') }" dialog-height="300" dialog-text="{{getInfos(item)}}"></i>
+                <i class="icon-info-sign pull-right" dialog="confirm" dialog-title="${ _('Informations') }" dialog-height="300" dialog-text="{{getInfos(item)}}"></i>
               </li>
           </div>
       </ul>

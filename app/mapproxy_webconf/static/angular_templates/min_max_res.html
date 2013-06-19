@@ -1,12 +1,12 @@
 <div>
-  <div labeled="input_label" name-for="units" text="${ __('Map units') }">
+  <div labeled="input_label" name-for="units" text="${ _('Map units') }">
     <div class="btn-group switch pull-right" ng-model="custom.units" data-toggle-name="is_private" data-toggle="buttons-radio" id="units">
-      <button type="button" ng-click="custom.units='m'" class="btn btn-small" ng-class="{'active': custom.units=='m'}" data-toggle="button">${ __('Meters') }</button>
-      <button type="button" ng-click="custom.units='d'" class="btn btn-small" ng-class="{'active': custom.units=='d'}" data-toggle="button">${ __('Degrees') }</button>
+      <button type="button" ng-click="custom.units='m'" class="btn btn-small" ng-class="{'active': custom.units=='m'}" data-toggle="button">${ _('Meters') }</button>
+      <button type="button" ng-click="custom.units='d'" class="btn btn-small" ng-class="{'active': custom.units=='d'}" data-toggle="button">${ _('Degrees') }</button>
     </div>
     <div class="btn-group switch" data-toggle="buttons-radio">
-      <button type="button" class="btn btn-small" ng-class="{'active': custom.resSelected}" ng-click="getResolution()">${ __('Resolution') }</button>
-      <button type="button" class="btn btn-small" ng-class="{'active': !custom.resSelected}" ng-click="getScale()">${ __('Scale') }</button>
+      <button type="button" class="btn btn-small" ng-class="{'active': custom.resSelected}" ng-click="getResolution()">${ _('Resolution') }</button>
+      <button type="button" class="btn btn-small" ng-class="{'active': !custom.resSelected}" ng-click="getScale()">${ _('Scale') }</button>
     </div>
     <div labeled="input_label" name-for="min_res" text="{{custom.min_resLabel|i18n}}">
       <input type="text" float id="min_res" name="min_res" ng-model="custom.min_res" class="input-medium">

@@ -1,14 +1,14 @@
 %def leftblock():
-  <h4>${ __('Project defaults') }</h4>
-  <p>${ __('infotext_default_settings') }</p>
+  <h4>${ _('Project defaults') }</h4>
+  <p>${ _('infotext_default_settings') }</p>
   <hr>
   <form ng-controller="ProjectDefaultsCtrl" name="form">
     <fieldset>
-      <div labeled="input_label" name-for="dpi" text="${ __('DPI') }">
+      <div labeled="input_label" name-for="dpi" text="${ _('DPI') }">
         <input float name="dpi" id="dpi" class="input-small" ng-model="defaults.data.dpi" type="number">
       </div>
       <hr>
-      <div labeled="input_label" name-for="default_srs" text="${ __('SRS') }">
+      <div labeled="input_label" name-for="default_srs" text="${ _('SRS') }">
         <div name="default_srs" id="default_srs" class="well well-small">
           <span class="badge" ng-repeat="srs in defaults.data.srs">{{srs}}
             <i class="icon-remove" ng-click="removeSRS($event, srs)"></i>
@@ -16,16 +16,16 @@
         </div>
       </div>
 
-      <div class="input-append" labeled="input_label" name-for="new_srs" text="${ __('Add SRS') }">
+      <div class="input-append" labeled="input_label" name-for="new_srs" text="${ _('Add SRS') }">
         <input type="text" id="new_srs" name="new_srs" class="input-small" ng-model="custom.newSRS">
-        <button class="btn btn-small" ng-click="addSRS($event)" ng-disabled="!custom.newSRS">${ __('Add') }</button>
+        <button class="btn btn-small" ng-click="addSRS($event)" ng-disabled="!custom.newSRS">${ _('Add') }</button>
       </div>
       <hr>
       <div class="pull-left">
-        <button class="btn btn-small" ng-click="save($event)" ng-disabled="!form.$valid" ng-class="{'btn-success': form.$valid}">${ __('Save') }</button>
+        <button class="btn btn-small" ng-click="save($event)" ng-disabled="!form.$valid" ng-class="{'btn-success': form.$valid}">${ _('Save') }</button>
       </div>
       <div class="pull-right">
-       <a href="${ get_url('configuration', project=project) }" class="btn btn-small">${ __('To configuration') } &rarr;</a>
+       <a href="${ get_url('configuration', project=project) }" class="btn btn-small">${ _('To configuration') } &rarr;</a>
       </div>
     </fieldset>
     <div>

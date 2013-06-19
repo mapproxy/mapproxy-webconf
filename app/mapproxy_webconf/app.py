@@ -27,7 +27,7 @@ SimpleTemplate.defaults["get_url"] = app.get_url
 try:
     translation = gettext.translation('messages', os.path.join(os.path.dirname(os.path.realpath(__file__)), 'locale'), ['de'])
     translation.install()
-    SimpleTemplate.defaults["__"] = translation.gettext
+    SimpleTemplate.defaults["_"] = translation.gettext
 
 except IOError as e:
     print e
