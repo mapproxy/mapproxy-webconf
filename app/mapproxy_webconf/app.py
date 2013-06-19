@@ -6,7 +6,7 @@ from xml.etree.ElementTree import ParseError
 
 from mapproxy.client import http
 from mapproxy.script.scales import scale_to_res, res_to_scale
-from mapproxy.srs import SRS
+from mapproxy.srs import SRS, generate_envelope_points
 from mapproxy.grid import tile_grid
 
 from . import bottle
@@ -458,7 +458,7 @@ def transform_grid():
     if grid_bbox is None:
         grid_bbox = tilegrid.bbox
     else:
-        grid_bbox = grid_bbox_srs.transform_bbox_to(grid_srs, grid_bbox)
+        grid_bbox = grid_bbox_srs.transform_bbox_to(grid_srs, grid_bbox) if grid_bbox_srs and grid_srs else grid_bbox
 
     if map_srs and grid_srs:
         view_bbox = map_srs.transform_bbox_to(grid_srs, view_bbox)
@@ -476,15 +476,16 @@ def transform_grid():
     features = []
 
     if feature_count > 1000:
-        x0, y0, x1, y1 = grid_srs.transform_bbox_to(map_srs, tiles_bbox) if map_srs and grid_srs else tiles_bbox
+        polygon = generate_envelope_points(tiles_bbox, 128)
+        polygon = list(grid_srs.transform_to(map_srs, polygon)) if map_srs and grid_srs else list(polygon)
 
         features.append({
             "type": "Feature",
             "geometry": {
                 "type": "Polygon",
-                "coordinates": [[
-                    [x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0, y0]
-                ]]
+                "coordinates": [
+                    [list(point) for point in polygon] + [list(polygon[0])]
+                ]
             },
             "properties": {
                 "message": "Too many tiles. Please zoom in."
@@ -494,14 +495,16 @@ def transform_grid():
         for tile in tiles:
             if tile:
                 x, y, z = tile
-                x0, y0, x1, y1 = grid_srs.transform_bbox_to(map_srs, tilegrid.tile_bbox(tile)) if map_srs and grid_srs else tilegrid.tile_bbox(tile)
+                polygon = generate_envelope_points(tilegrid.tile_bbox(tile), 16)
+                polygon = list(grid_srs.transform_to(map_srs, polygon)) if map_srs and grid_srs else list(polygon)
+
                 new_feature = {
                     "type": "Feature",
                     "geometry": {
                         "type": "Polygon",
-                        "coordinates": [[
-                            [x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0, y0]
-                        ]]
+                        "coordinates": [
+                            [list(point) for point in polygon] + [list(polygon[0])]
+                        ]
                     }
                 }
                 if feature_count == 1:
