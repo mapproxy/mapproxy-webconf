@@ -30,7 +30,7 @@
           dialog-width="600"
           dialog-height="300"
           dialog-title="Confirm!"
-          dialog-text="${ __('Can not remove cache:'|i18n}} {{item.data.name}}<br>{{'Dependencies are:') }<br>{{getDependencies(item)}}">
+          dialog-text="${ __('Can not remove cache:') } {{item.data.name}}<br>${ __('Dependencies are:') }<br>{{getDependencies(item)}}">
         </i>
         <i class="icon-share" ng-click="copyItem($event, item)"></i>
       </li>
