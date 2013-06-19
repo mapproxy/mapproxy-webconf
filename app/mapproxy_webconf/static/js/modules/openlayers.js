@@ -325,6 +325,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 layer.visibility = true;
                 layer.title = layer.title || layer.name;
                 $scope.mapLayers.push(newLayer);
+                return newLayer;
             };
 
             //Map
