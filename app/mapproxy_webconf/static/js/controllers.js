@@ -885,6 +885,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         var data = {
             'srs': $scope.grid.data.srs,
             'bbox': $scope.grid.data.bbox,
+            'bbox_srs': $scope.grid.data.bbox_srs,
             'name': $scope.grid.data.name,
             'dpi': $scope.defaults.data.dpi
         };
