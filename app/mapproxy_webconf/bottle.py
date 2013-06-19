@@ -3038,9 +3038,9 @@ class SimpleTemplate(BaseTemplate):
                 elif cmd == 'include':
                     p = cline.split(None, 2)[1:]
                     if len(p) == 2:
-                        code("_=_include(%s, _stdout, %s)" % (repr(p[0]), p[1]))
+                        code("_tmp = _include(%s, _stdout, %s)" % (repr(p[0]), p[1]))
                     elif p:
-                        code("_=_include(%s, _stdout)" % repr(p[0]))
+                        code("_tmp = _include(%s, _stdout)" % repr(p[0]))
                     else: # Empty %include -> reverse of %rebase
                         code("_printlist(_base)")
                 elif cmd == 'rebase':
