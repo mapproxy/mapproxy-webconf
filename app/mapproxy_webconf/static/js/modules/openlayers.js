@@ -394,6 +394,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     projection: $scope.olmapBinds.proj,
                     maxExtent: $scope.olmapBinds.extent,
                     units: $scope.olmapBinds.proj.units,
+                    theme: null,
                     controls: [
                         new OpenLayers.Control.Navigation({
                             documentDrag: true,
