@@ -23,6 +23,7 @@ LANGUAGE = configuration.get('app', 'language')
 app = bottle.Bottle()
 bottle.TEMPLATE_PATH = [os.path.join(os.path.dirname(__file__), 'templates')]
 SimpleTemplate.defaults["get_url"] = app.get_url
+SimpleTemplate.defaults["demo"] = configuration.get_bool('app', 'demo')
 
 try:
     translation = gettext.translation('messages', os.path.join(os.path.dirname(os.path.realpath(__file__)), 'locale'), ['de'])

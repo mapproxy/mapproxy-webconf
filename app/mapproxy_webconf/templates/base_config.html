@@ -4,6 +4,7 @@
       ${ _('Configuration') }
     </h2>
   </a>
+  % if not demo:
   <div ng-controller="MapProxyConfigCtrl" class="pull-right">
     <div>
       <button class="btn btn-small" ng-click="writeMapProxyConfig($event)">
@@ -13,6 +14,9 @@
     <div message-handler="success" message-types="mapproxy_config.success"></div>
     <div message-handler="error" message-types="mapproxy_config.error"></div>
   </div>
+  % else:
+    <p class="text-error pull-right"> ${ _('demo project - create mapproxy config not possible') }</p>
+  % end
   <ul class="nav nav-tabs tab-menu">
     %navigation("sources", _('Sources'))
     %navigation("grids", _('Grids'))
