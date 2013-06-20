@@ -12,11 +12,8 @@
        ng-click="$event.stopPropagation();"
        ng-dblclick="$event.stopPropagation();"
        ng-show="olmapBinds.showScaleRes">
-    <span ng-show="!showScale">Resolution</span>
-    <span ng-show="showScale">Scale 1 </span>
-    <span>: </span>
-    <span class="copyArea"></span>
-    <i class="icon-eye-close pointer" ng-click="showScale=!showScale;eventHandlers.updateMapScaleResolution();"></i>
+    <div>Resolution <span class="resolutionArea"></span></div>
+    <div>Scale 1:<span class="scaleArea"></span>  (<span class="dpi"></span> DPI)</div>
   </div>
   <span ng-transclude></span>
 </div>

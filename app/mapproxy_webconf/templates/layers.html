@@ -24,7 +24,7 @@
           message-types="layers.load_error,layers.delete_error,layers.updateStructur_error">
     </span>
     <div>
-      <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
+      <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..." class="input-large"/>
       <span ng-show="list.length - filtered.length" ng-click="search=''">
         {{'Not shown layers'|i18n}}: {{list.length - filtered.length}}
       </span>
@@ -128,20 +128,20 @@
 
 %def rightblock():
   <div>
-    <span ng-controller="SourceListCtrl">
-      <h3>{{'Sources'|i18n}}</h3>
-      <span message-handler="error" message-types="sources.load_error"></span>
+    <span ng-controller="CacheListCtrl">
+      <h3>{{'Caches'|i18n}}</h3>
+      <span message-handler="error" message-types="caches.load_error"></span>
       <div>
         <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
         <br>
         <span ng-show="list.length - filtered.length" ng-click="search=''">
-          {{'Not shown sources'|i18n}}: {{list.length - filtered.length}}
+          {{'Not shown caches'|i18n}}: {{list.length - filtered.length}}
         </span>
       </div>
       <ul class="vertical-list small">
         <div draggable
-             class="mapproxy_source"
-             ng-repeat="item in filtered = (list |filter:{data.name:search}) | orderBy:'name'"
+             class="mapproxy_cache"
+             ng-repeat="item in filtered = (list | filter:{data.name:search}) | orderBy:'name'"
              item-data="{{item}}">
           <li class="droppable_name">
             {{item.data.name}}
@@ -157,20 +157,20 @@
       <span ng-show="false">{{filtered.length}}</span>
     </span>
     <hr>
-    <span ng-controller="CacheListCtrl">
-      <h3>{{'Caches'|i18n}}</h3>
-      <span message-handler="error" message-types="caches.load_error"></span>
+    <span ng-controller="SourceListCtrl">
+      <h3>{{'Sources'|i18n}}</h3>
+      <span message-handler="error" message-types="sources.load_error"></span>
       <div>
         <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
         <br>
         <span ng-show="list.length - filtered.length" ng-click="search=''">
-          {{'Not shown caches'|i18n}}: {{list.length - filtered.length}}
+          {{'Not shown sources'|i18n}}: {{list.length - filtered.length}}
         </span>
       </div>
       <ul class="vertical-list small">
         <div draggable
-             class="mapproxy_cache"
-             ng-repeat="item in filtered = (list | filter:{data.name:search}) | orderBy:'name'"
+             class="mapproxy_source"
+             ng-repeat="item in filtered = (list |filter:{data.name:search}) | orderBy:'name'"
              item-data="{{item}}">
           <li class="droppable_name">
             {{item.data.name}}

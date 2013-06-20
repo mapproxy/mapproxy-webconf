@@ -363,6 +363,8 @@ def calculate_tiles():
     name = data.get('name', None)
     srs = data.get('srs', None)
     bbox = data.get('bbox', None)
+    bbox_srs = data.get('bbox_srs', None)
+
     if bbox is not None and not all(bbox):
         bbox = None
     dpi = float(data.get('dpi', (2.54/(0.00028 * 100))))
@@ -379,7 +381,7 @@ def calculate_tiles():
     if res is None and scales is not None:
         res = [round(scale_to_res(scale, dpi, units), 9) for scale in scales]
 
-    tilegrid = tile_grid(srs=srs, bbox=bbox, res=res, origin=origin, name=name)
+    tilegrid = tile_grid(srs=srs, bbox=bbox, bbox_srs=bbox_srs, res=res, origin=origin, name=name)
 
     result = []
     res_scale = 'resolution' if scales is None else 'scale'

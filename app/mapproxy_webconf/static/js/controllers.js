@@ -885,6 +885,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         var data = {
             'srs': $scope.grid.data.srs,
             'bbox': $scope.grid.data.bbox,
+            'bbox_srs': $scope.grid.data.bbox_srs,
             'name': $scope.grid.data.name,
             'dpi': $scope.defaults.data.dpi
         };
@@ -1255,15 +1256,10 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareSer
 };
 
 function MapproxyServicesChooserCtrl($scope, DataShareService) {
-    $scope.getClasses = function(service) {
-        var classes = "";
+    $scope.setSelected = function(service) {
         if(service == $scope.selected) {
-            classes += 'selected';
+            return 'selected';
         }
-        if(angular.isDefined($scope.services.data[service].active) && $scope.services.data[service].active) {
-            classes += ' active';
-        }
-        return classes;
     };
 
     $scope.show = function(service) {
@@ -1273,7 +1269,6 @@ function MapproxyServicesChooserCtrl($scope, DataShareService) {
     $scope.$on('dss.services', function() {
         $scope.services = DataShareService.data('services');
     });
-
     $scope.selected = 'wms';
 };
 

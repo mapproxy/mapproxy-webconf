@@ -109,8 +109,9 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     safeApply($scope)
                 },
                 updateMapScaleResolution: function() {
-                    var value = $scope.showScale ? $scope.map.getScale() : $scope.map.getResolution();
-                    $($scope.map.div).find('._mapScaleResolution .copyArea').html(value);
+                    $($scope.map.div).find('._mapScaleResolution .resolutionArea').html($scope.map.getResolution());
+                    $($scope.map.div).find('._mapScaleResolution .scaleArea').html($scope.map.getScale())
+                    $($scope.map.div).find('._mapScaleResolution .dpi').html($scope.olmapBinds.dpi)
                 }
             };
 
@@ -499,7 +500,6 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
 
             $scope.mapLayers = [];
             $scope.drawLayer = [];
-            $scope.showScale = true;
 
             $scope.$watch('olmapBinds.visible', function(visible) {
                 if(visible) {

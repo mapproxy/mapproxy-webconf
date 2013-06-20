@@ -9,7 +9,7 @@
     <span message-handler="success" message-types="caches.delete_success"></span>
     <span message-handler="error" message-types="caches.load_error,caches.delete_error"></span>
     <div>
-      <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
+      <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..." class="input-large"/>
       <br>
       <span ng-show="list.length - filtered.length" ng-click="search=''">
         {{'Not shown caches'|i18n}}: {{list.length - filtered.length}}
@@ -86,19 +86,23 @@
           </div>
         </div>
       </div>
-      <div labeled="input_label" name-for="format" text="{{'Format'|i18n}}">
-        <select class="input-xlarge" ng-model="cache.data.format" id="format" name="format">
-          <option value="mixed">Mixed</option>
-          <option value="image/png">Image/PNG</option>
-          <option value="image/jpeg">Image/JPEG</option>
-        </select>
+      <hr>
+      <div labeled='input_label_toggleable' text="{{'Format'|i18n}}">
+        <div labeled="input_label" name-for="format" text="{{'Format'|i18n}}">
+          <select class="input-xlarge" ng-model="cache.data.format" id="format" name="format">
+            <option value="mixed">Mixed</option>
+            <option value="image/png">Image/PNG</option>
+            <option value="image/jpeg">Image/JPEG</option>
+          </select>
+        </div>
+        <div labeled="input_label" name-for="request_format" text="{{'Request format'|i18n}}">
+          <select class="input-xlarge" ng-model="cache.data.request_format" id="request_format" name="request_format">
+            <option value="image/png">Image/PNG</option>
+            <option value="image/jpeg">Image/JPEG</option>
+          </select>
+        </div>
       </div>
-      <div labeled="input_label" name-for="request_format" text="{{'Request format'|i18n}}">
-        <select class="input-xlarge" ng-model="cache.data.request_format" id="request_format" name="request_format">
-          <option value="image/png">Image/PNG</option>
-          <option value="image/jpeg">Image/JPEG</option>
-        </select>
-      </div>
+      <hr>
       <div class="pull-left">
         <button class="btn btn-small"
                 ng-click="addCache($event)"
@@ -129,7 +133,7 @@
       <h3>{{'Sources'|i18n}}</h3>
       <span message-handler="error" message-types="sources.load_error"></span>
       <div>
-        <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
+        <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..." class="input-large"/>
         <br>
         <span ng-show="list.length - filtered.length" ng-click="search=''">
           {{'Not shown sources'|i18n}}: {{list.length - filtered.length}}
@@ -158,7 +162,7 @@
       <h3>{{'Caches'|i18n}}</h3>
       <span message-handler="error" message-types="caches.load_error"></span>
       <div>
-        <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
+        <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..." class="input-large"/>
         <br>
         <span ng-show="list.length - filtered.length"
               ng-click="search=''">
@@ -188,7 +192,7 @@
       <h3>{{'Grids'|i18n}}</h3>
       <span message-handler="error" message-types="grids.load_error"></span>
       <div>
-        <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..."/>
+        <input type="text" ng-model="search" placeholder="{{'Filter'|i18n}}..." class="input-large"/>
         <br>
         <span ng-show="(list.concat(defaultGrids)).length - filtered.length"
               ng-click="search=''">
