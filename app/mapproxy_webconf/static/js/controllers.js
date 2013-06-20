@@ -105,7 +105,6 @@ function SourceListCtrl($injector, $scope, localize, MapproxySources) {
         if(angular.isDefined(source.data.req.transparent)) {
             data['Transparency'] = (source.data.req.transparent ? 'Yes' : 'No');
         }
-
         return generateInfoDialogContent(data, localize);
     };
 };
@@ -136,7 +135,6 @@ function CacheListCtrl($injector, $scope, localize, MapproxyCaches, MapproxySour
         if(angular.isDefined(cache.data.format)) {
             data['Format'] = cache.data.format;
         }
-
         return generateInfoDialogContent(data, localize);
     };
 };

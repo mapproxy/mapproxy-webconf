@@ -171,10 +171,9 @@
           <li class="droppable_name">
             {{item.data.name}}
             <i class="icon-info-sign pull-right"
-               dialog="confirm"
-               dialog-title="${ _('Informations') }"
-               dialog-height="300"
-               dialog-text="{{getInfos(item)}}">
+               tooltip="tooltip"
+               tooltip-placement="left"
+               tooltip-content"{{getInfos(item)}}">
             </i>
           </li>
         </div>
@@ -201,10 +200,9 @@
           <li class="droppable_name">
             {{item.data.name}}
             <i class="icon-info-sign pull-right"
-               dialog="confirm"
-               dialog-title="${ _('Informations') }"
-               dialog-height="300"
-               dialog-text="{{getInfos(item)}}">
+               tooltip="tooltip"
+               tooltip-placement="left"
+               tooltip-content="{{getInfos(item)}}">
             </i>
           </li>
         </div>
@@ -233,10 +231,9 @@
             <i ng-show="!item._locked && !item.default" class="icon-warning-sign"></i>
             {{item.data.name}}
             <i class="icon-info-sign pull-right"
-               dialog="confirm"
-               dialog-title="${ _('Informations') }"
-               dialog-height="300"
-               dialog-text="{{getInfos(item)}}">
+               tooltip="tooltip"
+               tooltip-placement="left"
+               tooltip-content="{{getInfos(item)}}">
             </i>
           </li>
         </div>
