@@ -25,7 +25,7 @@ class YAMLStorePlugin(object):
             if not isinstance(other, YAMLStorePlugin):
                 continue
             if other.keyword == self.keyword:
-                raise PluginError("Found another YAMLStore plugin with conflicting settings (non-unique keyword).")
+                raise PluginError(_("Found another YAMLStore plugin with conflicting settings (non-unique keyword)."))
 
     def apply(self, callback, context):
         conf = context['config'].get('yamlstorage') or {}
@@ -89,7 +89,7 @@ class SQLiteStorePlugin(object):
             if not isinstance(other, SQLiteStorePlugin):
                 continue
             if other.keyword == self.keyword:
-                raise PluginError("Found another SQLiteStore plugin with conflicting settings (non-unique keyword).")
+                raise PluginError(_("Found another SQLiteStore plugin with conflicting settings (non-unique keyword)."))
 
     def apply(self, callback, context):
         conf = context['config'].get('sqlitestore') or {}

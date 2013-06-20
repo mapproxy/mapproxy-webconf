@@ -59,17 +59,17 @@ def validate(mapproxy_conf):
     errors = []
     sources_conf = conf_dict.get('sources', False)
     if not sources_conf:
-        errors.append('Missing sources section')
+        errors.append(_('Missing sources section'))
     else:
         for name, source in sources_conf.items():
             if source.get('type', False) == 'wms':
                 if source.get('req', False):
                     if not source['req'].get('url', False):
-                        errors.append('Missing "url" for source %s' % name)
+                        errors.append(_('Missing "url" for source %(source)s', source=name))
                     if not source['req'].get('layers', False):
-                        errors.append('Missing "layers" for source %s' % name)
+                        errors.append(_('Missing "layers" for source %(source)s', source=name))
                 else:
-                    errors.append('Missing "req" for source %s' % name)
+                    errors.append(_('Missing "req" for source %(source)s', source=name))
 
     grids_conf = conf_dict.get('grids', False)
 
@@ -80,9 +80,9 @@ def validate(mapproxy_conf):
             if sources:
                 for source in sources:
                     if not sources_conf:
-                        errors.append('Source %s for cache %s not found in config' % (source, name))
+                        errors.append(_('Source %(source)s for cache %(cache)s not found in config', source=source, cache=name))
                     elif source not in sources_conf.keys():
-                        errors.append('Source %s for cache %s not found in config' % (source, name))
+                        errors.append(_('Source %(source)s for cache %(cache)s not found in config', source=source, cache=name))
             grids = cache.get('grids', False)
             if grids:
                 for grid in grids:
@@ -90,16 +90,16 @@ def validate(mapproxy_conf):
                     if grids_conf:
                         known_grids += grids_conf.keys()
                     if grid not in known_grids:
-                        errors.append('Grid %s for cache %s not found in config' % (grid, name))
+                        errors.append(_('Grid %(grid)s for cache %(cache)s not found in config', grid=grid, cache=name))
 
     layers_conf = conf_dict.get('layers', False)
     if not layers_conf:
-        errors.append('Missing layers section')
+        errors.append(_('Missing layers section'))
     else:
         for layer in layers_conf:
             sources = layer.get('sources', False)
             if not sources:
-                errors.append('Missing sources for layer %s' % layer['name'])
+                errors.append(_('Missing sources for layer %(layer)s', layer=layer['name']))
             else:
                 for source in sources:
                     found = False
@@ -108,11 +108,11 @@ def validate(mapproxy_conf):
                     elif sources_conf and source in sources_conf.keys():
                         found = True
                     if not found:
-                        errors.append('Source %s for layer %s neither found in caches- nor in sources-section' % (source, layer['name']))
+                        errors.append(_('Source %(source)s for layer %(layer)s neither found in caches- nor in sources-section', source=source, layer=layer['name']))
 
     services_conf = conf_dict.get('services', False)
     if not services_conf:
-        errors.append('Missing services section')
+        errors.append(_('Missing services section'))
 
     if not errors:
         return (None, True)
@@ -158,7 +158,7 @@ def mapproxy_conf_from_storage(storage, project):
                 try:
                     grid[1]['res'] = [round(scale_to_res(float(scale), dpi, units), 9) for scale in grid[1]['scales']]
                 except ValueError:
-                    raise ConfigError('grid %s contains invalid value in scales section' % grid[1].get('name', ''))
+                    raise ConfigError(_('grid %(grid)s contains invalid value in scales section', grid=grid[1].get('name', '')))
                 del grid[1]['scales']
             try:
                 del grid[1]['units']
@@ -198,7 +198,7 @@ def clear_min_max_res_scales(data_elements, element_type, defaults):
                 try:
                     data_element[mapproxy_conf_key] = round(scale_to_res(float(data_element[key]), dpi, units), 9)
                 except ValueError:
-                    raise ConfigError('%s %s contains invalid value in %s item' % (element_type, data_element.get('name', ''), key))
+                    raise ConfigError(_('%(type)s %(name)s contains invalid value in %(item)s item', type=element_type, name=data_element.get('name', ''), item=key))
                 del data_element[key]
         try:
             del data_element['units']

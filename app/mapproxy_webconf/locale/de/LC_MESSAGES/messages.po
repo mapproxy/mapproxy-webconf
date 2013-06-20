@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-06-20 13:35+0200\n"
-"PO-Revision-Date: 2013-06-20 13:53+0100\n"
+"POT-Creation-Date: 2013-06-20 15:18+0200\n"
+"PO-Revision-Date: 2013-06-20 15:43+0100\n"
 "Last-Translator: \n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -17,32 +17,134 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: mapproxy_webconf/templates/base.html:86
+#: mapproxy_webconf/app.py:97
+#: mapproxy_webconf/app.py:123
+msgid "missing URL"
+msgstr "Keine URL vorhanden"
+
+#: mapproxy_webconf/app.py:102
+msgid "no capabilities document found"
+msgstr "Kein Capabilities-Dokument gefunden"
+
+#: mapproxy_webconf/app.py:106
+msgid "invalid URL"
+msgstr "Ungültige URL"
+
+#: mapproxy_webconf/app.py:319
+msgid "creating mapproxy config successful"
+msgstr "MapProxy Konfiguration erfolgreich erstellt"
+
+#: mapproxy_webconf/app.py:322
+msgid "creating mapproxy config failed"
+msgstr "Erstellen der MapProxy Konfiguration fehlgeschlagen"
+
+#: mapproxy_webconf/app.py:348
+msgid "creating yaml failed"
+msgstr "Erstellen der YAML fehlgeschlagen"
+
+#: mapproxy_webconf/app.py:357
+msgid "parsing yaml failed"
+msgstr "Lesen der YAML fehlgeschlagen"
+
+#: mapproxy_webconf/app.py:517
+msgid "Too many tiles. Please zoom in."
+msgstr "Zu viele Kacheln. Bitte Zoomen Sie weiter hinein."
+
+#: mapproxy_webconf/config.py:62
+msgid "Missing sources section"
+msgstr "Sources Abschnitt fehlt"
+
+#: mapproxy_webconf/config.py:68
+#, python-format
+msgid "Missing \"url\" for source %(source)s"
+msgstr "Für die Source %(source)s fehlt der Parameter \"url\""
+
+#: mapproxy_webconf/config.py:70
+#, python-format
+msgid "Missing \"layers\" for source %(source)s"
+msgstr "Für die Source %(source)s fehlt der Parameter \"layers\""
+
+#: mapproxy_webconf/config.py:72
+#, python-format
+msgid "Missing \"req\" for source %(source)s"
+msgstr "Für die Source %(source)s fehlt der Parameter \"req\""
+
+#: mapproxy_webconf/config.py:83
+#: mapproxy_webconf/config.py:85
+#, python-format
+msgid "Source %(source)s for cache %(cache)s not found in config"
+msgstr "Source \"%(source)s\" für den Cache \"%(cache)s\" nicht gefunden"
+
+#: mapproxy_webconf/config.py:93
+#, python-format
+msgid "Grid %(grid)s for cache %(cache)s not found in config"
+msgstr "Grid \"%(grid)s\" für den Cache \"%(cache)s\" nicht gefunden"
+
+#: mapproxy_webconf/config.py:97
+msgid "Missing layers section"
+msgstr "Der Abschnitt \"layers\" fehlt"
+
+#: mapproxy_webconf/config.py:102
+#, python-format
+msgid "Missing sources for layer %(layer)s"
+msgstr "Für den Layer \"%(layer)s\" fehlt der Parameter \"sources\""
+
+#: mapproxy_webconf/config.py:111
+#, python-format
+msgid "Source %(source)s for layer %(layer)s neither found in caches- nor in sources-section"
+msgstr "Für den Layer \"%(layer)s\" wurde die Source \"%(source)s\" weder unter Caches noch unter Sources gefunden"
+
+#: mapproxy_webconf/config.py:115
+msgid "Missing services section"
+msgstr "Der Abschnitt \"services\" fehlt"
+
+#: mapproxy_webconf/config.py:161
+#, python-format
+msgid "grid %(grid)s contains invalid value in scales section"
+msgstr "Das Grid \"%(grid)s\" beinhaltet ungültige Werte im \"scales\" Abschnitt"
+
+#: mapproxy_webconf/config.py:201
+#, python-format
+msgid "%(type)s %(name)s contains invalid value in %(item)s item"
+msgstr "Der Wert für %(item)s im Abschnitt %(type)s %(name)s ist ungültig"
+
+#: mapproxy_webconf/storage.py:28
+msgid "Found another YAMLStore plugin with conflicting settings (non-unique keyword)."
+msgstr "Es besteht ein Konflikt in der Konfiguration mit einem anderen YAMLStore plugin (nicht eindeutiges Schlüsselwort)."
+
+#: mapproxy_webconf/storage.py:92
+msgid "Found another SQLiteStore plugin with conflicting settings (non-unique keyword)."
+msgstr "Es besteht ein Konflikt in der Konfiguration mit einem anderen SQLiteStore plugin (nicht eindeutiges Schlüsselwort):"
+
+#: mapproxy_webconf/templates/base.html:85
 msgid "Projects"
 msgstr "Projekte"
 
-#: mapproxy_webconf/templates/base.html:87
+#: mapproxy_webconf/templates/base.html:86
 #: mapproxy_webconf/templates/base_config.html:4
 msgid "Configuration"
 msgstr "Konfiguration"
 
-#: mapproxy_webconf/templates/base_config.html:10
+#: mapproxy_webconf/templates/base_config.html:11
 msgid "create configuration"
 msgstr "Konfiguration erstellen"
+
+#: mapproxy_webconf/templates/base_config.html:18
+msgid "demo project - create mapproxy config not possible"
+msgstr "Demo Projekt - Erstellen der MapProxy Konfiguration ist nicht möglich"
 
 #: mapproxy_webconf/templates/caches.html:5
 msgid "Create new cache"
 msgstr "Neuen Cache erstellen"
 
 #: mapproxy_webconf/templates/caches.html:8
-#: mapproxy_webconf/templates/angular/translation_service.html:33
 msgid "Cache"
 msgstr "Cache"
 
 #: mapproxy_webconf/templates/caches.html:12
 #: mapproxy_webconf/templates/caches.html:161
-#: mapproxy_webconf/templates/caches.html:190
-#: mapproxy_webconf/templates/caches.html:220
+#: mapproxy_webconf/templates/caches.html:189
+#: mapproxy_webconf/templates/caches.html:218
 #: mapproxy_webconf/templates/grids.html:11
 #: mapproxy_webconf/templates/layers.html:27
 #: mapproxy_webconf/templates/layers.html:136
@@ -52,7 +154,7 @@ msgid "Filter"
 msgstr "Filter"
 
 #: mapproxy_webconf/templates/caches.html:15
-#: mapproxy_webconf/templates/caches.html:194
+#: mapproxy_webconf/templates/caches.html:193
 #: mapproxy_webconf/templates/layers.html:139
 msgid "Not shown caches"
 msgstr "Ausgeblendete Caches"
@@ -98,7 +200,6 @@ msgstr "Cache bearbeiten"
 #: mapproxy_webconf/templates/grids.html:63
 #: mapproxy_webconf/templates/layers.html:62
 #: mapproxy_webconf/templates/sources.html:71
-#: mapproxy_webconf/templates/angular/translation_service.html:18
 msgid "Name"
 msgstr "Name"
 
@@ -108,20 +209,17 @@ msgstr "Name"
 #: mapproxy_webconf/templates/layers.html:80
 #: mapproxy_webconf/templates/layers.html:162
 #: mapproxy_webconf/templates/sources.html:14
-#: mapproxy_webconf/templates/angular/translation_service.html:22
 msgid "Sources"
 msgstr "Sources"
 
 #: mapproxy_webconf/templates/caches.html:99
-#: mapproxy_webconf/templates/caches.html:217
+#: mapproxy_webconf/templates/caches.html:215
 #: mapproxy_webconf/templates/config_index.html:11
-#: mapproxy_webconf/templates/angular/translation_service.html:23
 msgid "Grids"
 msgstr "Grids"
 
 #: mapproxy_webconf/templates/caches.html:115
 #: mapproxy_webconf/templates/caches.html:116
-#: mapproxy_webconf/templates/angular/translation_service.html:24
 msgid "Format"
 msgstr "Format"
 
@@ -156,21 +254,13 @@ msgstr "Zurücksetzen"
 msgid "Not shown sources"
 msgstr "Ausgeblendete Sources"
 
-#: mapproxy_webconf/templates/caches.html:176
-#: mapproxy_webconf/templates/caches.html:206
-#: mapproxy_webconf/templates/caches.html:238
-#: mapproxy_webconf/templates/layers.html:151
-#: mapproxy_webconf/templates/layers.html:180
-msgid "Informations"
-msgstr "Informationen"
-
-#: mapproxy_webconf/templates/caches.html:187
+#: mapproxy_webconf/templates/caches.html:186
 #: mapproxy_webconf/templates/config_index.html:9
 #: mapproxy_webconf/templates/layers.html:133
 msgid "Caches"
 msgstr "Caches"
 
-#: mapproxy_webconf/templates/caches.html:224
+#: mapproxy_webconf/templates/caches.html:222
 #: mapproxy_webconf/templates/grids.html:12
 msgid "Not shown grids"
 msgstr "Ausgeblendete Grids"
@@ -203,7 +293,6 @@ msgstr "Definieren der Grids die MapProxy verwendet um die gecachten Kacheln aus
 
 #: mapproxy_webconf/templates/config_index.html:13
 #: mapproxy_webconf/templates/sources.html:300
-#: mapproxy_webconf/templates/angular/translation_service.html:20
 msgid "Layers"
 msgstr "Layers"
 
@@ -279,7 +368,6 @@ msgstr "Default Grid"
 #: mapproxy_webconf/templates/grids.html:67
 #: mapproxy_webconf/templates/project_index.html:15
 #: mapproxy_webconf/templates/services.html:25
-#: mapproxy_webconf/templates/angular/translation_service.html:25
 msgid "SRS"
 msgstr "SRS"
 
@@ -296,7 +384,6 @@ msgid "Calculate tiles"
 msgstr "Kachelanzahl berechnen"
 
 #: mapproxy_webconf/templates/grids.html:122
-#: mapproxy_webconf/templates/angular/translation_service.html:27
 msgid "Origin"
 msgstr "Orientierung"
 
@@ -392,6 +479,11 @@ msgstr "Layer bearbeiten"
 msgid "Title"
 msgstr "Titel"
 
+#: mapproxy_webconf/templates/layers.html:151
+#: mapproxy_webconf/templates/layers.html:180
+msgid "Informations"
+msgstr "Informationen"
+
 #: mapproxy_webconf/templates/project_index.html:6
 msgid "Project defaults"
 msgstr "Defaultwerte des Projekts"
@@ -452,7 +544,11 @@ msgstr "Die MapProxy-Konfiguration für dieses Projekts ist nicht lauffähig"
 msgid "following errors are recorded"
 msgstr "Bei der Überprüfung sind folgende Fehler aufgetreten"
 
-#: mapproxy_webconf/templates/projects.html:47
+#: mapproxy_webconf/templates/projects.html:44
+msgid "demo - you dont see all projects"
+msgstr "Demo - Projekte sind nicht sichtbar"
+
+#: mapproxy_webconf/templates/projects.html:52
 msgid "project overview"
 msgstr "Projektübersicht"
 
@@ -574,7 +670,6 @@ msgstr "Das Ersetzen der Service-URL führt zum leeren der Layerliste!"
 
 #: mapproxy_webconf/templates/sources.html:79
 #: mapproxy_webconf/templates/sources.html:297
-#: mapproxy_webconf/templates/angular/translation_service.html:19
 msgid "URL"
 msgstr "URL"
 
@@ -583,7 +678,6 @@ msgid "Manual add layer"
 msgstr "Layer manuell hinzufügen"
 
 #: mapproxy_webconf/templates/sources.html:130
-#: mapproxy_webconf/templates/angular/translation_service.html:21
 msgid "Transparency"
 msgstr "Transparenz"
 
@@ -726,99 +820,80 @@ msgstr "Änderungen behalten?"
 msgid "You made changes in this map. Do you want to keep them?"
 msgstr "Sie haben Änderungen in der Karte vorgenommen. Möchten Sie diese Änderungen behalten?"
 
-#: mapproxy_webconf/templates/angular/translation_service.html:6
-msgid "Change URL"
-msgstr "URL ändern"
+#~ msgid "Change URL"
+#~ msgstr "URL ändern"
 
-#: mapproxy_webconf/templates/angular/translation_service.html:7
-msgid "Keep URL"
-msgstr "URL beibehalten"
+#~ msgid "Keep URL"
+#~ msgstr "URL beibehalten"
 
-#: mapproxy_webconf/templates/angular/translation_service.html:8
-msgid "Change url and insert layer"
-msgstr "URL ändern und Layer einfügen"
+#~ msgid "Change url and insert layer"
+#~ msgstr "URL ändern und Layer einfügen"
 
-#: mapproxy_webconf/templates/angular/translation_service.html:9
-msgid "Keep url and reject layer"
-msgstr "URL behalten und Layer nicht einfügen"
+#~ msgid "Keep url and reject layer"
+#~ msgstr "URL behalten und Layer nicht einfügen"
 
-#: mapproxy_webconf/templates/angular/translation_service.html:10
-msgid "Name required."
-msgstr "Name wird benötigt."
+#~ msgid "Name required."
+#~ msgstr "Name wird benötigt."
 
-#: mapproxy_webconf/templates/angular/translation_service.html:11
-msgid "Name already exists in sources"
-msgstr "Für den angegebenen Namen existiert bereits eine Source"
+#~ msgid "Name already exists in sources"
+#~ msgstr "Für den angegebenen Namen existiert bereits eine Source"
 
-#: mapproxy_webconf/templates/angular/translation_service.html:12
-msgid "Name already exists in caches"
-msgstr "Für den angegebenen Namen existiert bereits ein Cache"
+#~ msgid "Name already exists in caches"
+#~ msgstr "Für den angegebenen Namen existiert bereits ein Cache"
 
-#: mapproxy_webconf/templates/angular/translation_service.html:13
-msgid "Name already exists."
-msgstr "Der angegebene Name existiert bereits."
+#~ msgid "Name already exists."
+#~ msgstr "Der angegebene Name existiert bereits."
 
-#: mapproxy_webconf/templates/angular/translation_service.html:14
-msgid "Yes"
-msgstr "Ja"
+#~ msgid "Yes"
+#~ msgstr "Ja"
 
-#: mapproxy_webconf/templates/angular/translation_service.html:15
-msgid "No"
-msgstr "Nein"
+#~ msgid "No"
+#~ msgstr "Nein"
 
-#: mapproxy_webconf/templates/angular/translation_service.html:16
-msgid "OK"
-msgstr "OK"
+#~ msgid "OK"
+#~ msgstr "OK"
 
-#: mapproxy_webconf/templates/angular/translation_service.html:17
-msgid "You have unsaved changes in this form. Realy leave the page and disgard unsaved changes?"
-msgstr "Es gibt ungespeicherte Änderungen. Wirklich die Seiter verlassen und die Änderungen verwerfen?"
+#~ msgid ""
+#~ "You have unsaved changes in this "
+#~ "form. Realy leave the page and "
+#~ "disgard unsaved changes?"
+#~ msgstr ""
+#~ "Es gibt ungespeicherte Änderungen. Wirklich"
+#~ " die Seiter verlassen und die "
+#~ "Änderungen verwerfen?"
 
-#: mapproxy_webconf/templates/angular/translation_service.html:26
-msgid "Coverage"
-msgstr "Coverage"
+#~ msgid "Coverage"
+#~ msgstr "Coverage"
 
-#: mapproxy_webconf/templates/angular/translation_service.html:28
-msgid "Demo"
-msgstr "Demo"
+#~ msgid "Demo"
+#~ msgstr "Demo"
 
-#: mapproxy_webconf/templates/angular/translation_service.html:29
-msgid "KML"
-msgstr "KML"
+#~ msgid "KML"
+#~ msgstr "KML"
 
-#: mapproxy_webconf/templates/angular/translation_service.html:30
-msgid "TMS"
-msgstr "TMS"
+#~ msgid "TMS"
+#~ msgstr "TMS"
 
-#: mapproxy_webconf/templates/angular/translation_service.html:31
-msgid "WMS"
-msgstr "WMS"
+#~ msgid "WMS"
+#~ msgstr "WMS"
 
-#: mapproxy_webconf/templates/angular/translation_service.html:32
-msgid "WMTS"
-msgstr "WMTS"
+#~ msgid "WMTS"
+#~ msgstr "WMTS"
 
-#: mapproxy_webconf/templates/angular/translation_service.html:34
-msgid "Image"
-msgstr "Image"
+#~ msgid "Image"
+#~ msgstr "Image"
 
-#: mapproxy_webconf/templates/angular/translation_service.html:35
-msgid "Load complete"
-msgstr "Laden erfolgreich"
+#~ msgid "Load complete"
+#~ msgstr "Laden erfolgreich"
 
-#: mapproxy_webconf/templates/angular/translation_service.html:36
-msgid "Successful added"
-msgstr "Erfolgreich hinzugefügt"
+#~ msgid "Successful added"
+#~ msgstr "Erfolgreich hinzugefügt"
 
-#: mapproxy_webconf/templates/angular/translation_service.html:37
-msgid "Successful updated"
-msgstr "Erfolgreich aktualisiert"
+#~ msgid "Successful updated"
+#~ msgstr "Erfolgreich aktualisiert"
 
-#: mapproxy_webconf/templates/angular/translation_service.html:38
-msgid "Successful deleted"
-msgstr "Erfolgreich gelöscht"
+#~ msgid "Successful deleted"
+#~ msgstr "Erfolgreich gelöscht"
 
-#: mapproxy_webconf/templates/angular/translation_service.html:39
-msgid "Structure successful updated"
-msgstr "Struktur erfolgreich aktualisiert"
-
+#~ msgid "Structure successful updated"
+#~ msgstr "Struktur erfolgreich aktualisiert"

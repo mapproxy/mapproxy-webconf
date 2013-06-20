@@ -94,16 +94,16 @@ class RESTWMSCapabilities(RESTBase):
         cap = {}
         if not url:
             response.status = 400
-            return {'error': 'missing URL'}
+            return {'error': _('missing URL')}
         try:
             cap['data'] = parse_capabilities_url(url)
         except ParseError:
             response.status = 400
-            return {'error': 'no capabilities document found'}
+            return {'error': _('no capabilities document found')}
         except (http.HTTPClientError, ):
             response.status = 400
             # TODO
-            return {'error': 'invalid URL'}
+            return {'error': _('invalid URL')}
 
         search = """%%"url": "%s"%%""" % cap['data']['url']
         id = storage.exists_in_data(self.section, project, search)
@@ -120,7 +120,7 @@ class RESTWMSCapabilities(RESTBase):
         url = request.json.get('data', {}).get('url')
         if not url:
             response.status = 400
-            return {'error': 'missing URL'}
+            return {'error': _('missing URL')}
         cap = {}
         cap['data'] = parse_capabilities_url(url)
         storage.update(id, self.section, project, cap)
@@ -316,10 +316,10 @@ def write_config(project, storage):
     mapproxy_conf = config.mapproxy_conf_from_storage(storage, project)
     try:
         config.write_mapproxy_yaml(mapproxy_conf, os.path.join(configuration.get('app', 'output_path'), project + '.yaml'))
-        return {'success': 'creating mapproxy config successful'}
+        return {'success': _('creating mapproxy config successful')}
     except:
         response.status = 400
-        return {'error': 'creating mapproxy config failed'}
+        return {'error': _('creating mapproxy config failed')}
 
 
 @app.route('/static/<filepath:path>', name='static')
@@ -345,7 +345,7 @@ def create_yaml():
         return yaml.safe_dump(data, default_flow_style=False)
     except yaml.YAMLError:
         response.status = 400
-        return {'error': 'creating yaml failed'}
+        return {'error': _('creating yaml failed')}
 
 @app.route('/json', 'POST', name='yaml_to_json')
 def create_json():
@@ -354,7 +354,7 @@ def create_json():
         return yaml.load(data['yaml'])
     except yaml.YAMLError:
         response.status = 400
-        return {'error': 'parsing yaml failed'}
+        return {'error': _('parsing yaml failed')}
 
 @app.route('/res', 'POST', name='scales_to_res')
 @app.route('/scales', 'POST', name='res_to_scales')
@@ -420,7 +420,7 @@ def transform_bbox():
     bbox = request.json.get('bbox')
     source_srs = request.json.get('sourceSRS')
     dest_srs = request.json.get('destSRS')
-
+    print source_srs, dest_srs
     source = SRS(source_srs)
     dest = SRS(dest_srs)
     transformed_bbox = source.transform_bbox_to(dest, bbox)
@@ -473,7 +473,12 @@ def transform_grid():
 
     origin = request.forms.get('origin', 'll')
 
-    tilegrid = tile_grid(srs=grid_srs, bbox=grid_bbox, bbox_srs=grid_bbox_srs, origin=origin, res=res)
+    try:
+        tilegrid = tile_grid(srs=grid_srs, bbox=grid_bbox, bbox_srs=grid_bbox_srs, origin=origin, res=res)
+    except ValueError as e:
+        response.status = 400
+        return {"error": e.message}
+
 
     if grid_bbox is None:
         grid_bbox = tilegrid.bbox
@@ -499,6 +504,7 @@ def transform_grid():
         polygon = generate_envelope_points(grid_srs.align_bbox(tiles_bbox), 128)
         polygon = list(grid_srs.transform_to(map_srs, polygon)) if map_srs and grid_srs else list(polygon)
 
+
         features.append({
             "type": "Feature",
             "geometry": {
@@ -508,7 +514,7 @@ def transform_grid():
                 ]
             },
             "properties": {
-                "message": "Too many tiles. Please zoom in."
+                "message": _("Too many tiles. Please zoom in.")
             }
         })
     else:
@@ -516,7 +522,9 @@ def transform_grid():
             if tile:
                 x, y, z = tile
                 polygon = generate_envelope_points(grid_srs.align_bbox(tilegrid.tile_bbox(tile)), 16)
+                print polygon
                 polygon = list(grid_srs.transform_to(map_srs, polygon)) if map_srs and grid_srs else list(polygon)
+                print polygon
 
                 new_feature = {
                     "type": "Feature",
