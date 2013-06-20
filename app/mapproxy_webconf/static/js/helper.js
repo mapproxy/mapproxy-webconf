@@ -69,10 +69,10 @@ var safeApply = function(scope, fn) {
   }
 };
 
-var generateInfoDialogContent = function(data, localize) {
+var generateInfoDialogContent = function(data, TranslationService) {
     var message = '<div><dl class="info-horizontal">';
     angular.forEach(data, function(value, key) {
-        var elem = '<dt>' + localize.getLocalizedString(key) + ':</dt>';
+        var elem = '<dt>' + TranslationService.translate(key) + ':</dt>';
         elem += '<dd>' + value + '</dd>';
         message += elem;
     });

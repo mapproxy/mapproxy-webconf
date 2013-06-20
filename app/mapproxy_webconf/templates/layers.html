@@ -56,7 +56,8 @@
   <div ng-controller="MapproxyLayerFormCtrl"
        ng-init="custom.scalesToResURL='${get_url('scales_to_res')}';custom.resToScalesURL='${get_url('res_to_scales')}';">
     <form name="form" novalidate ng-show="!editareaBinds.visible">
-      <h3>{{formTitle|i18n}}</h3>
+      <h3 ng-show="formTitle=='new'">${ _('New layer') }</h3>
+      <h3 ng-show="formTitle=='edit'">${ _('Edit layer') }</h3>
       <!-- name -->
       <div labeled="input_label" name-for="layer_name" text="${ _('Name') }">
         <input required

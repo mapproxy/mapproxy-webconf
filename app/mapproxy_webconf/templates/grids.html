@@ -55,7 +55,9 @@
   <div ng-controller="MapproxyGridFormCtrl"
        ng-init="calculateTilesURL='${ get_url('calculate_tiles') }'">
     <div ng-show="!editareaBinds.visible">
-      <h3>{{formTitle|i18n}}</h3>
+      <h3 ng-show="formTitle=='new'">${ _('New grid') }</h3>
+      <h3 ng-show="formTitle=='edit'">${ _('Edit grid') }</h3>
+      <h3 ng-show="formTitle=='default'">${ _('Default grid') }</h3>
       <form name="form" id="form" novalidate>
         <!-- name -->
         <div labeled="input_label" name-for="name" text="${ _('Name') }">

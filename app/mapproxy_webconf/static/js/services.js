@@ -45,7 +45,7 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
         });
         if(loadComplete) {
             angular.forEach(_this._items, _this._addDependencies);
-            _this._successMessageHandler(_this._localize.getLocalizedString('Load complete'));
+            _this._successMessageHandler(_this._translationService.translate('Load complete'));
         }
     };
     this._removeNonModelProperties = function(data) {
@@ -96,7 +96,7 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
                     result._section = _this._section;
                     _this._addDependencies(result);
                     _this._items[result._id] = result;
-                    _this._successMessageHandler(_this._localize.getLocalizedString('Successful added'));
+                    _this._successMessageHandler(_this._translationService.translate('Successful added'));
                     if(angular.isDefined(_this._rootScope)) {
                         _this._last = result;
                         _this.current(result);
@@ -108,7 +108,7 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
                 result._section = _this._section;
                 _this._addDependencies(result);
                 _this._items[result._id] = result;
-                _this._successMessageHandler(_this._localize.getLocalizedString('Successful updated'));
+                _this._successMessageHandler(_this._translationService.translate('Successful updated'));
                 if(angular.isDefined(_this._rootScope)) {
                     _this._last = result;
                     _this.current(result);
@@ -121,7 +121,7 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
         _this._action = 'delete';
         item.$delete({action: _this._section, id: item._id}, function(result) {
             delete(_this._items[result._id]);
-            _this._successMessageHandler(_this._localize.getLocalizedString('Successful deleted'));
+            _this._successMessageHandler(_this._translationService.translate('Successful deleted'));
         }, _this._errorMessageHandler);
     };
     this.list = function() {
@@ -166,15 +166,15 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
     this.error = function() {
         return _this._error_msg;
     }
-    this.return_func = function($rootScope, MapproxyResource, MessageService, localize) {
+    this.return_func = function($rootScope, MapproxyResource, MessageService, TranslationService) {
         _this._rootScope = $rootScope;
         _this._resource = MapproxyResource;
         _this._messageService = MessageService;
-        _this._localize = localize;
+        _this._translationService = TranslationService;
         _this._rootScope.$on(_this._section + '.load_finished', _this._waitForLoadComplete);
         angular.forEach(_this._dependencies, function(dependency) {
             _this._rootScope.$on(dependency._section + '.load_finished', _this._waitForLoadComplete)
-            dependency.return_func(_this._rootScope, _this._resource, _this._messageService, _this._localize);
+            dependency.return_func(_this._rootScope, _this._resource, _this._messageService, _this._translationService);
         });
         if(!_this._loadingInProgress && !_this._loaded) {
             _this.load();
@@ -241,7 +241,7 @@ var MapproxyLayerService = function(_section, _model, _dependencies) {
         });
         to_update = new _this._resource({'tree': to_update});
         to_update.$update({action: _this._section}, function(result) {
-            _this._successMessageHandler(_this._localize.getLocalizedString('Structure successful updated'));
+            _this._successMessageHandler(_this._translationService.translate('Structure successful updated'));
         }, _this._errorMessageHandler);
     };
 
@@ -330,7 +330,7 @@ WMSSourceService = function(_section) {
         item.$update({action: _this._section, id: item._id}, function(result) {
             _this._items[result._id] = result;
             _this._last = result;
-            _this._successMessageHandler(_this._localize.getLocalizedString('Successful updated'));
+            _this._successMessageHandler(_this._translationService.translate('Successful updated'));
         }, _this._errorMessageHandler);
     };
 
@@ -445,4 +445,21 @@ service('DataShareService', function($rootScope) {
             }
         }
     }
+}).
+
+factory('TranslationService', function($http) {
+    var translationService = {
+        translations: {},
+        loaded: false,
+        loadDict: function(url) {
+            $http.get(url, {cache: false}).success(function(data) {
+                translationService.translations = data;
+                translationService.loaded = true;
+            }); //XXXkai: error handling
+        },
+        translate: function(key) {
+            return translationService.translations[key];
+        }
+    }
+    return translationService;
 });

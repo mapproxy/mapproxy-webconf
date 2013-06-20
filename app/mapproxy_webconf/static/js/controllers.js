@@ -90,7 +90,7 @@ function BaseListCtrl($scope, MessageService, service, _section) {
     }, true);
 };
 
-function SourceListCtrl($injector, $scope, localize, MapproxySources) {
+function SourceListCtrl($injector, $scope, TranslationService, MapproxySources) {
     //http://jsfiddle.net/mhevery/u6s88/12/
     $injector.invoke(BaseListCtrl, this, {$scope: $scope, service: MapproxySources, _section: 'sources'});
 
@@ -106,11 +106,11 @@ function SourceListCtrl($injector, $scope, localize, MapproxySources) {
             data['Transparency'] = (source.data.req.transparent ? 'Yes' : 'No');
         }
 
-        return generateInfoDialogContent(data, localize);
+        return generateInfoDialogContent(data, TranslationService);
     };
 };
 
-function CacheListCtrl($injector, $scope, localize, MapproxyCaches, MapproxySources, MapproxyGrids) {
+function CacheListCtrl($injector, $scope, TranslationService, MapproxyCaches, MapproxySources, MapproxyGrids) {
 
     $injector.invoke(BaseListCtrl, this, {$scope: $scope, service: MapproxyCaches, _section: 'caches'});
 
@@ -137,11 +137,11 @@ function CacheListCtrl($injector, $scope, localize, MapproxyCaches, MapproxySour
             data['Format'] = cache.data.format;
         }
 
-        return generateInfoDialogContent(data, localize);
+        return generateInfoDialogContent(data, TranslationService);
     };
 };
 
-function GridListCtrl($injector, $scope, localize, MapproxyGrids) {
+function GridListCtrl($injector, $scope, TranslationService, MapproxyGrids) {
 
     $injector.invoke(BaseListCtrl, this, {$scope: $scope, service: MapproxyGrids, _section: 'grids'});
 
@@ -174,11 +174,11 @@ function GridListCtrl($injector, $scope, localize, MapproxyGrids) {
             data['Origin'] = grid.data.origin;
         }
 
-        return generateInfoDialogContent(data, localize);
+        return generateInfoDialogContent(data, TranslationService);
     };
 };
 
-function LayerListCtrl($injector, $scope, localize, MapproxyLayers) {
+function LayerListCtrl($injector, $scope, MapproxyLayers) {
 
     $injector.invoke(BaseListCtrl, this, {$scope: $scope, service: MapproxyLayers, _section: 'layers'});
 
@@ -192,7 +192,7 @@ function LayerListCtrl($injector, $scope, localize, MapproxyLayers) {
     };
 };
 
-function MapProxyConfigCtrl($scope, $http, localize, MessageService) {
+function MapProxyConfigCtrl($scope, $http, MessageService) {
     $scope.writeMapProxyConfig = function(event) {
         var url = "/conf/base/write_config";
         $http.post(url)
@@ -206,7 +206,7 @@ function MapProxyConfigCtrl($scope, $http, localize, MessageService) {
     $scope._messageService = MessageService;
 }
 
-function TreeCtrl($scope, localize, WMSSources, MessageService, ProjectDefaults) {
+function TreeCtrl($scope, WMSSources, MessageService, ProjectDefaults) {
 
     var refreshTree = function() {
         $scope.wms_list = WMSSources.list();
@@ -269,22 +269,22 @@ function TreeCtrl($scope, localize, WMSSources, MessageService, ProjectDefaults)
     $scope.capabilities = {};
 };
 
-function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSources, ProjectDefaults, MessageService, MapproxyCaches) {
+function MapproxySourceFormCtrl($scope, $http, TranslationService, MapproxySources, WMSSources, ProjectDefaults, MessageService, MapproxyCaches) {
 
     var setSource = function() {
         $scope.source = MapproxySources.current();
         $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.source);
         //if equal, we have a clean new source
         if(angular.equals($scope.source.data, MapproxySources.model)) {
-            $scope.formTitle = 'New source';
+            $scope.formTitle = 'new';
             if(angular.isDefined($scope.defaults.data.srs)) {
                 $scope.source.data.supported_srs = angular.copy($scope.defaults.data.srs);
             }
         //the only case, we have a not clean source without name is after copy one
         } else if(angular.isUndefined($scope.source.data.name)) {
-            $scope.formTitle = 'New source';
+            $scope.formTitle = 'new';
         } else {
-            $scope.formTitle = 'Edit source';
+            $scope.formTitle = 'edit';
         }
 
         extractMinMaxRes($scope, $scope.source);
@@ -332,13 +332,13 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
             callback(true);
         } else  {
             var buttons = {};
-            buttons[localize.getLocalizedString('Change URL')] = function() {
+            buttons[TranslationService.translate('Change URL')] = function() {
                 $(this).dialog("close");
                 $scope.source.data.req.layers = undefined;
                 $scope.$apply();
                 callback(true);
             };
-            buttons[localize.getLocalizedString('Keep URL')] = function() {
+            buttons[TranslationService.translate('Keep URL')] = function() {
                 $(this).dialog("close");
                 callback(false);
             };
@@ -369,14 +369,14 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
         }
         if(urlReplaceAsk) {
             var buttons = {};
-            buttons[localize.getLocalizedString("Change url and insert layer")] = function() {
+            buttons[TranslationService.translate("Change url and insert layer")] = function() {
                 $(this).dialog("close");
                 $scope.source.data.req.url = new_data.sourceURL;
                 $scope.source.data.req.layers = undefined;
                 $scope.$apply();
                 callback(true);
             };
-            buttons[localize.getLocalizedString("Keep url and reject layer")] = function() {
+            buttons[TranslationService.translate("Keep url and reject layer")] = function() {
                 $(this).dialog("close");
                 callback(false);
             };
@@ -401,7 +401,7 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
 
         var errorMsg = false;
         if(angular.isUndefined($scope.source.data.name)) {
-            errorMsg = localize.getLocalizedString("Name required.");
+            errorMsg = TranslationService.translate("Name required.");
         } else {
             //found is the section of element with $scope.source.data.name if found
             var found = nameExistInService(
@@ -410,7 +410,7 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
                 MapproxySources,
                 [MapproxySources, MapproxyCaches]);
             if(found) {
-                errorMsg = localize.getLocalizedString('Name already exists in ' + found)
+                errorMsg = TranslationService.translate('Name already exists in ' + found)
             }
         }
         if(errorMsg) {
@@ -421,7 +421,7 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
                 insertMinMaxRes($scope, $scope.source);
             }
             MapproxySources.add($scope.source);
-            $scope.formTitle = 'Edit source';
+            $scope.formTitle = 'edit';
             $scope.form.$setPristine();
             $scope.editareaBinds.dirty = false;
             $scope.editareaBinds.save = false;
@@ -533,8 +533,6 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
     $scope.getResolution = function() {
         if(!$scope.custom.resSelected) {
             $scope.custom.resSelected = true;
-            $scope.custom.min_resLabel = 'min_res';
-            $scope.custom.max_resLabel = 'max_res';
             convertMinMaxRes($scope, $http, $scope.custom.scalesToResURL, 'to_res');
             safeApply($scope);
         }
@@ -542,8 +540,6 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
     $scope.getScale = function() {
         if($scope.custom.resSelected) {
             $scope.custom.resSelected = false;
-            $scope.custom.min_resLabel = 'min_res_scale';
-            $scope.custom.max_resLabel = 'max_res_scale';
             convertMinMaxRes($scope, $http, $scope.custom.resToScalesURL, 'to_scale');
             safeApply($scope);
         }
@@ -552,14 +548,12 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {
         'units': 'm',
-        'resSelected': false,
-        'min_resLabel': 'min_res',
-        'max_resLabel': 'max_res'
+        'resSelected': false
     };
     $scope.defaults = {'data': ProjectDefaults.model};
 
     $scope.source = {'data': MapproxySources.model};
-    $scope.formTitle = 'New source';
+    $scope.formTitle = 'new';
 
     $scope.editareaBinds = {
         editareaValue: $scope.prepareForEditarea($scope.source),
@@ -598,12 +592,12 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
 
     $(window).on('beforeunload', function() {
         if($scope.form.$dirty || $scope.editareaBinds.dirty) {
-            return localize.getLocalizedString(PAGE_LEAVE_MSG);
+            return TranslationService.translate(PAGE_LEAVE_MSG);
         }
     });
 };
 
-function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches, MapproxyGrids, MessageService) {
+function MapproxyCacheFormCtrl($scope, TranslationService, MapproxySources, MapproxyCaches, MapproxyGrids, MessageService) {
 
     var refreshGrids = function() {
         $scope.available_grids = MapproxyGrids.list();
@@ -614,9 +608,9 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.cache);
 
         if(angular.equals($scope.cache.data, MapproxyCaches.model) || angular.isUndefined($scope.cache.data.name)) {
-            $scope.formTitle = 'New cache';
+            $scope.formTitle = 'new';
         } else {
-            $scope.formTitle = 'Edit cache';
+            $scope.formTitle = 'edit';
         }
 
         $scope.form.$setPristine();
@@ -675,7 +669,7 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
 
         var errorMsg = false;
         if(angular.isUndefined($scope.cache.data.name)) {
-            errorMsg = localize.getLocalizedString("Name required.");
+            errorMsg = TranslationService.translate("Name required.");
         } else {
             //found is the section of element with $scope.cache.data.name if found
             var found = nameExistInService(
@@ -684,7 +678,7 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
                 MapproxyCaches,
                 [MapproxySources, MapproxyCaches]);
             if(found) {
-                errorMsg = localize.getLocalizedString('Name already exists in ' + found)
+                errorMsg = TranslationService.translate('Name already exists in ' + found)
             }
         }
         if(errorMsg) {
@@ -692,7 +686,7 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         } else {
             $scope.cache._manual = $scope.editareaBinds.visible;
             MapproxyCaches.add($scope.cache);
-            $scope.formTitle = 'Edit cache';
+            $scope.formTitle = 'edit';
             $scope.form.$setPristine();
             $scope.editareaBinds.dirty = false;
             $scope.editareaBinds.save = false;
@@ -710,7 +704,7 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
     };
 
     $scope.cache = {'data': MapproxyCaches.model}
-    $scope.formTitle = 'New cache';
+    $scope.formTitle = 'new';
 
     $scope.editareaBinds = {
         editareaValue: $scope.prepareForEditarea($scope.cache),
@@ -744,12 +738,12 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
 
     $(window).on('beforeunload', function() {
         if($scope.form.$dirty || $scope.editareaBinds.dirty) {
-            return localize.getLocalizedString(PAGE_LEAVE_MSG);
+            return TranslationService.translate(PAGE_LEAVE_MSG);
         }
     });
 };
 
-function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageService, ProjectDefaults, DataShareService) {
+function MapproxyGridFormCtrl($scope, $http, TranslationService, MapproxyGrids, MessageService, ProjectDefaults, DataShareService) {
 
     var convertResScales = function(url, mode) {
         if($scope.custom.res_scales.length > 0) {
@@ -797,15 +791,15 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         }
 
         if(angular.equals($scope.grid.data, MapproxyGrids.model)) {
-            $scope.formTitle = 'New grid';
+            $scope.formTitle = 'new';
         } else if(angular.isUndefined($scope.grid.data.name)) {
-            $scope.formTitle = 'New grid';
+            $scope.formTitle = 'new';
         } else {
-            $scope.formTitle = 'Edit grid';
+            $scope.formTitle = 'edit';
         }
 
         if($scope.grid.default) {
-            $scope.formTitle = 'Default grid';
+            $scope.formTitle = 'default';
             $scope.editareaBinds.visible = false;
         } else {
             $scope.form.$setPristine();
@@ -834,21 +828,21 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
 
         var errorMsg = false;
         if(angular.isUndefined($scope.grid.data.name)) {
-            errorMsg = localize.getLocalizedString("Name required.");
+            errorMsg = TranslationService.translate("Name required.");
         } else if(nameExistInService(
             $scope.grid.data.name,
             $scope.grid._id,
             MapproxyGrids,
             [MapproxyGrids]
         )) {
-            errorMsg = localize.getLocalizedString("Name already exists.");
+            errorMsg = TranslationService.translate("Name already exists.");
         }
         if(errorMsg) {
             MessageService.message('grids', 'form_error', errorMsg);
         } else {
             $scope.grid._manual = $scope.editareaBinds.visible;
             MapproxyGrids.add($scope.grid);
-            $scope.formTitle = 'Edit grid';
+            $scope.formTitle = 'edit';
             $scope.form.$setPristine();
             $scope.editareaBinds.dirty = false;
             $scope.editareaBinds.save = false;
@@ -930,7 +924,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
     };
     $scope.grid = angular.copy({'data': MapproxyGrids.model});
 
-    $scope.formTitle = 'New grid';
+    $scope.formTitle = 'new';
 
     $scope.editareaBinds = {
         editareaValue: $scope.prepareForEditarea($scope.grid),
@@ -982,21 +976,21 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
 
     $(window).on('beforeunload', function() {
         if($scope.form.$dirty || $scope.editareaBinds.dirty) {
-            return localize.getLocalizedString(PAGE_LEAVE_MSG);
+            return TranslationService.translate(PAGE_LEAVE_MSG);
         }
     });
 };
 
-function MapproxyLayerFormCtrl($scope, $http, localize, MapproxySources, MapproxyCaches, MapproxyLayers, MessageService, ProjectDefaults) {
+function MapproxyLayerFormCtrl($scope, $http, TranslationService, MapproxySources, MapproxyCaches, MapproxyLayers, MessageService, ProjectDefaults) {
 
     var setLayer = function() {
         $scope.layer = MapproxyLayers.current();
         if(angular.equals($scope.layer.data, MapproxyLayers.model)) {
-            $scope.formTitle = 'New layer';
+            $scope.formTitle = 'new';
         } else if(angular.isUndefined($scope.layer.data.name)) {
-            $scope.formTitle = 'New layer';
+            $scope.formTitle = 'new';
         } else {
-            $scope.formTitle = 'Edit layer';
+            $scope.formTitle = 'edit';
         }
 
         $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.layer);
@@ -1045,14 +1039,14 @@ function MapproxyLayerFormCtrl($scope, $http, localize, MapproxySources, Mapprox
 
         var errorMsg = false;
         if(angular.isUndefined($scope.layer.data.name)) {
-            errorMsg = localize.getLocalizedString("Name required.");
+            errorMsg = TranslationService.translate("Name required.");
         } else if(nameExistInService(
             $scope.layer.data.name,
             $scope.layer._id,
             MapproxyLayers,
             [MapproxyLayers]
         )) {
-            errorMsg = localize.getLocalizedString("Name already exists.");
+            errorMsg = TranslationService.translate("Name already exists.");
         }
         if(errorMsg) {
             MessageService.message('layers', 'form_error', errorMsg);
@@ -1062,7 +1056,7 @@ function MapproxyLayerFormCtrl($scope, $http, localize, MapproxySources, Mapprox
                 insertMinMaxRes($scope, $scope.layer);
             }
             MapproxyLayers.add($scope.layer);
-            $scope.formTitle = 'Edit layer';
+            $scope.formTitle = 'edit';
             $scope.form.$setPristine();
             $scope.editareaBinds.dirty = false;
             $scope.editareaBinds.save = false;
@@ -1087,8 +1081,6 @@ function MapproxyLayerFormCtrl($scope, $http, localize, MapproxySources, Mapprox
     $scope.getResolution = function() {
         if(!$scope.custom.resSelected) {
             $scope.custom.resSelected = true;
-            $scope.custom.min_resLabel = 'min_res';
-            $scope.custom.max_resLabel = 'max_res';
             convertMinMaxRes($scope, $http, $scope.custom.scalesToResURL, 'to_res');
             safeApply($scope);
         }
@@ -1096,8 +1088,6 @@ function MapproxyLayerFormCtrl($scope, $http, localize, MapproxySources, Mapprox
     $scope.getScale = function() {
         if($scope.custom.resSelected) {
             $scope.custom.resSelected = false;
-            $scope.custom.min_resLabel = 'min_res_scale';
-            $scope.custom.max_resLabel = 'max_res_scale';
             convertMinMaxRes($scope, $http, $scope.custom.resToScalesURL, 'to_scale');
             safeApply($scope);
         }
@@ -1105,14 +1095,12 @@ function MapproxyLayerFormCtrl($scope, $http, localize, MapproxySources, Mapprox
 
     $scope.custom = {
         'units': 'm',
-        'resSelected': false,
-        'min_resLabel': 'min_res',
-        'max_resLabel': 'max_res'
+        'resSelected': false
     };
     $scope.defaults = {'data': ProjectDefaults.model};
     $scope.layer = angular.copy({'data': MapproxyLayers.model});
     MapproxyLayers.current($scope.layer);
-    $scope.formTitle = 'New layer';
+    $scope.formTitle = 'new';
 
     $scope.editareaBinds = {
         editareaValue: $scope.prepareForEditarea($scope.layer),
@@ -1148,12 +1136,15 @@ function MapproxyLayerFormCtrl($scope, $http, localize, MapproxySources, Mapprox
 
     $(window).on('beforeunload', function() {
         if($scope.form.$dirty || $scope.editareaBinds.dirty) {
-            return localize.getLocalizedString(PAGE_LEAVE_MSG);
+            return TranslationService.translate(PAGE_LEAVE_MSG);
         }
     });
 };
 
-function MapproxyGlobalsChooserCtrl($scope, DataShareService) {
+function MapproxyGlobalsChooserCtrl($scope, DataShareService, TranslationService) {
+    $scope.translate = function(text) {
+        return TranslationService.translate(text);
+    };
     $scope.getClasses = function(global) {
         var classes = "";
         if(global == $scope.selected) {
@@ -1179,7 +1170,7 @@ function MapproxyGlobalsChooserCtrl($scope, DataShareService) {
     $scope._editarea_visible = false;
 };
 
-function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareService, MessageService) {
+function MapproxyGlobalsFormCtrl($scope, TranslationService, MapproxyGlobals, DataShareService, MessageService) {
     var setGlobals = function() {
         var globals = MapproxyGlobals.list();
         if(globals.length > 0) {
@@ -1250,12 +1241,15 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareSer
 
     $(window).on('beforeunload', function() {
         if($scope.form.$dirty || $scope.editareaBinds.dirty) {
-            return localize.getLocalizedString(PAGE_LEAVE_MSG);
+            return TranslationService.translate(PAGE_LEAVE_MSG);
         }
     });
 };
 
-function MapproxyServicesChooserCtrl($scope, DataShareService) {
+function MapproxyServicesChooserCtrl($scope, TranslationService, DataShareService) {
+    $scope.translate = function(text) {
+        return TranslationService.translate(text);
+    };
     $scope.setSelected = function(service) {
         if(service == $scope.selected) {
             return 'selected';
@@ -1272,7 +1266,7 @@ function MapproxyServicesChooserCtrl($scope, DataShareService) {
     $scope.selected = 'wms';
 };
 
-function MapproxyServicesCtrl($scope, localize, MapproxyServices, DataShareService, MessageService, ProjectDefaults) {
+function MapproxyServicesCtrl($scope, TranslationService, MapproxyServices, DataShareService, MessageService, ProjectDefaults) {
     var setServices = function() {
         var services = MapproxyServices.list();
         if(services.length > 0) {
@@ -1325,7 +1319,7 @@ function MapproxyServicesCtrl($scope, localize, MapproxyServices, DataShareServi
 
     $(window).on('beforeunload', function() {
         if($scope.form.$dirty) {
-            return localize.getLocalizedString(PAGE_LEAVE_MSG);
+            return TranslationService.translate(PAGE_LEAVE_MSG);
         }
     });
 };
@@ -1373,7 +1367,7 @@ function ProjectDefaultsCtrl($scope, ProjectDefaults, MessageService) {
 
     $(window).on('beforeunload', function() {
         if($scope.form.$dirty) {
-            return localize.getLocalizedString(PAGE_LEAVE_MSG);
+            return TranslationService.translate(PAGE_LEAVE_MSG);
         }
     });
 };

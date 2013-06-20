@@ -70,7 +70,8 @@
 %def middleblock():
   <div ng-controller="MapproxyCacheFormCtrl">
     <form name="form" ng-model="cache" ng-show="!editareaBinds.visible">
-      <h3>{{formTitle|i18n}}</h3>
+      <h3 ng-show="formTitle=='new'">${ _('New cache') }</h3>
+      <h3 ng-show="formTitle=='edit'">${ _('Edit cache') }</h3>
       <!-- name -->
       <div labeled="input_label" name-for="cache_name" text="${ _('Name') }">
           <input required class="input-xlarge" type="text" ng-model="cache.data.name" id="cache_name" name="cache_name"/>

@@ -25,7 +25,7 @@
  * to manipulate by controller but by directive
  */
 
-angular.module('mapproxy_gui.directives', ['localization']).
+angular.module('mapproxy_gui.directives', []).
 directive('sortable', function() {
     return {
         restrict: 'A',
@@ -321,7 +321,7 @@ directive('toggleElement', function() {
     }
 }).
 
-directive('dialog', function($parse, localize) {
+directive('dialog', function($parse, TranslationService) {
     return {
         restrict: 'A',
         scope: 'element',
@@ -333,7 +333,7 @@ directive('dialog', function($parse, localize) {
                     case 'ask':
                         buttons = [
                             {
-                                'text': localize.getLocalizedString('Yes'),
+                                'text': TranslationService.translate('Yes'),
                                 'class': 'btn btn-small',
                                 'click': function() {
                                     $(this).dialog("close");
@@ -342,7 +342,7 @@ directive('dialog', function($parse, localize) {
 
                             },
                             {
-                                'text': localize.getLocalizedString('No'),
+                                'text': TranslationService.translate('No'),
                                 'class': 'btn btn-small',
                                 'click': function() {
                                     $(this).dialog("close");
@@ -356,7 +356,7 @@ directive('dialog', function($parse, localize) {
                     case 'confirm':
                         buttons = [
                             {
-                                'text': localize.getLocalizedString('OK'),
+                                'text': TranslationService.translate('OK'),
                                 'class': 'btn btn-small',
                                 'click': function() {
                                     $(this).dialog("close");
@@ -390,7 +390,7 @@ directive('dialog', function($parse, localize) {
     labeled must point to existing template!
     labeled="[template]"
 */
-directive('labeled', function($parse, $templateCache, localize) {
+directive('labeled', function($parse, $templateCache) {
     return {
         restrict: 'A',
         replace: true,
@@ -524,7 +524,6 @@ directive('extendableInputList', function($timeout, EXTENDABLE_INPUT_LIST_TEMPLA
                     scope.items = angular.copy(scope.extendableInputListBinds);
                 }
             });
-            //need to use observe, cause i18n
             attrs.$observe('listPrefix', function(val) {
                 if(angular.isDefined(val)) {
                     scope.listPrefix = val + ' ';

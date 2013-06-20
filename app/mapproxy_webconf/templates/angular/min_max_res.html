@@ -33,7 +33,7 @@
       ${ _('Scale') }
     </button>
   </div>
-  <div labeled="input_label" name-for="min_res" text="{{custom.min_resLabel|i18n}}">
+  <div labeled="input_label" name-for="min_res" text="${ _('min_res') }" ng-show="custom.resSelected">
     <input type="text"
            float
            id="min_res"
@@ -41,7 +41,23 @@
            ng-model="custom.min_res"
            class="input-medium"/>
   </div>
-  <div labeled="input_label" name-for="max_res" text="{{custom.max_resLabel|i18n}}">
+  <div labeled="input_label" name-for="max_res" text="${ _('max_res') }" ng-show="custom.resSelected">
+    <input type="text"
+           float
+           id="max_res"
+           ng-model="custom.max_res"
+           class="input-medium"
+           name="max_res"/>
+  </div>
+  <div labeled="input_label" name-for="min_res" text="${ _('min_scale') }" ng-show="!custom.resSelected">
+    <input type="text"
+           float
+           id="min_res"
+           name="min_res"
+           ng-model="custom.min_res"
+           class="input-medium"/>
+  </div>
+  <div labeled="input_label" name-for="max_res" text="${ _('max_scale') }" ng-show="!custom.resSelected">
     <input type="text"
            float
            id="max_res"
