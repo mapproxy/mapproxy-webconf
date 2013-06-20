@@ -107,7 +107,13 @@
                   name="bbox_srs">
           </select>
         </div>
-        <hr class="formLine">
+        <hr>
+          <button class="btn btn-small"
+                ng-click="calculateTiles()"
+                ng-disabled="!grid.data.srs">
+          {{'Calculate tiles'|i18n}}
+         </button>
+        <hr>
         <!-- origin -->
         <div labeled='input_label_toggleable'
             name-for="origin"
@@ -170,12 +176,6 @@
                ng-disabled="grid._locked||grid.default"
                parent-form="form">
         </div>
-        <hr class="formLine">
-        <button class="btn btn-small"
-                ng-click="calculateTiles()"
-                ng-disabled="!grid.data.srs">
-          {{'Calculate tiles'|i18n}}
-        </button>
         </div>
         <hr class="formLine">
         <div labeled="input_label"
