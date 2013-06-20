@@ -310,8 +310,12 @@ directive('toggleElement', function() {
         require: '^toggleGroup',
         link: function(scope, element, attrs, toggleGroupCTRL) {
             toggleGroupCTRL.addElement(element);
+            $(element).addClass('toggle-element');
             $(element).click(function() {
                 toggleGroupCTRL.getToggleFunc()(element, scope.$index);
+                if(angular.isDefined(attrs.$attr.setFocus)) {
+                    scope.focusFirst();
+                }
             });
         }
     }
@@ -324,21 +328,41 @@ directive('dialog', function($parse, localize) {
         link: function(scope, element, attrs) {
             scope.openDialog = function(event) {
                 event.stopPropagation();
-                var buttons = {};
+                var buttons = [];
                 switch(attrs.dialog) {
                     case 'ask':
-                        buttons[localize.getLocalizedString('Yes')] = function() {
-                            $(this).dialog("close");
-                            scope.callback(scope);
-                        };
-                        buttons[localize.getLocalizedString('No')] = function() {
-                            $(this).dialog("close");
-                        };
+                        buttons = [
+                            {
+                                'text': localize.getLocalizedString('Yes'),
+                                'class': 'btn btn-small',
+                                'click': function() {
+                                    $(this).dialog("close");
+                                    scope.confirmCallback(scope);
+                                }
+
+                            },
+                            {
+                                'text': localize.getLocalizedString('No'),
+                                'class': 'btn btn-small',
+                                'click': function() {
+                                    $(this).dialog("close");
+                                    if(angular.isFunction(scope.refuseCallback)) {
+                                        scope.refuseCallback(scope);
+                                    }
+                                }
+                            }
+                        ]
                         break;
                     case 'confirm':
-                        buttons[localize.getLocalizedString('OK')] = function() {
-                            $(this).dialog("close");
-                        }
+                        buttons = [
+                            {
+                                'text': localize.getLocalizedString('OK'),
+                                'class': 'btn btn-small',
+                                'click': function() {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        ]
                         break;
                 }
                 scope.dialog.attr('title', attrs.dialogTitle);
@@ -346,13 +370,14 @@ directive('dialog', function($parse, localize) {
                 scope.dialog.dialog({
                     resizeable: false,
                     width: attrs.dialogWidth || 400,
-                    height: attrs.dialogHeight || 200,
+                    height: 'auto',
                     modal: true,
                     buttons: buttons
                 });
             };
             scope.dialog_id = scope.$id;
-            scope.callback = $parse(attrs.callback);
+            scope.confirmCallback = $parse(attrs.callback);
+            scope.refuseCallback = attrs.refuseCallback ? $parse(attrs.refuseCallback) : false;
             scope.dialog = $('<div style="display:none;" id="dialog_' + scope.dialog_id +'"><p></p></div>');
             element.after(scope.dialog);
 
@@ -396,6 +421,9 @@ directive('labeled', function($parse, $templateCache, localize) {
             };
             scope.getText = function() {
                 return attrs.text;
+            };
+            scope.infoMsg = function() {
+                return attrs.infoMsg;
             };
 
             scope.name = attrs.nameFor;
@@ -601,8 +629,20 @@ directive('editarea', function($http, MessageService) {
                     scope.editareaBinds.dirty = false;
                     scope.editareaErrorMsg = undefined;
                     loadYAML();
+                    scope.unregisterValueWatch = scope.$watch('editareaBinds.editareaValue.data', function(newValue, oldValue) {
+                        if(scope.editareaBinds.visible && !angular.equals(newValue, oldValue)) {
+                            scope.editareaBinds.dirty = false;
+                            scope.editareaErrorMsg = undefined;
+                            loadYAML();
+                        }
+                    });
+                } else {
+                    if(angular.isDefined(scope.unregisterValueWatch)) {
+                        scope.unregisterValueWatch();
+                    }
                 }
             }, true);
+
 
             //move the editarea togglebutton
             var _toggleButtonContainer = $('#_editarea_toggle_button_container');
@@ -611,318 +651,6 @@ directive('editarea', function($http, MessageService) {
             }
         }
     };
-}).
-
-directive('olMap', function($compile, $http, $templateCache, $rootScope) {
-    return {
-        restrict: 'A',
-        scope: {
-            olmapBinds: '=olMap'
-        },
-        transclude: true,
-        link: function(scope, element, attrs) {
-            //Default OpenLayers vector style
-            //OpenLayers.Feature.Vector.style
-            var default_vector_styling = {
-                'default': {
-                    fillColor: "#ee9900",
-                    fillOpacity: 0.4,
-                    hoverFillColor: "white",
-                    hoverFillOpacity: 0.8,
-                    strokeColor: "#ee9900",
-                    strokeOpacity: 1,
-                    strokeWidth: 1,
-                    strokeLinecap: "round",
-                    strokeDashstyle: "solid",
-                    hoverStrokeColor: "red",
-                    hoverStrokeOpacity: 1,
-                    hoverStrokeWidth: 0.2,
-                    pointRadius: 6,
-                    hoverPointRadius: 1,
-                    hoverPointUnit: "%",
-                    pointerEvents: "visiblePainted",
-                    cursor: "inherit",
-                    fontColor: "#000000",
-                    labelAlign: "cm",
-                    labelOutlineColor: "white",
-                    labelOutlineWidth: 3
-                },
-                'select': {
-                    fillColor: "blue",
-                    fillOpacity: 0.4,
-                    hoverFillColor: "white",
-                    hoverFillOpacity: 0.8,
-                    strokeColor: "blue",
-                    strokeOpacity: 1,
-                    strokeWidth: 2,
-                    strokeLinecap: "round",
-                    strokeDashstyle: "solid",
-                    hoverStrokeColor: "red",
-                    hoverStrokeOpacity: 1,
-                    hoverStrokeWidth: 0.2,
-                    pointRadius: 6,
-                    hoverPointRadius: 1,
-                    hoverPointUnit: "%",
-                    pointerEvents: "visiblePainted",
-                    cursor: "pointer",
-                    fontColor: "#000000",
-                    labelAlign: "cm",
-                    labelOutlineColor: "white",
-                    labelOutlineWidth: 3
-
-                },
-                'temporary': {
-                    fillColor: "#66cccc",
-                    fillOpacity: 0.2,
-                    hoverFillColor: "white",
-                    hoverFillOpacity: 0.8,
-                    strokeColor: "#66cccc",
-                    strokeOpacity: 1,
-                    strokeLinecap: "round",
-                    strokeWidth: 2,
-                    strokeDashstyle: "solid",
-                    hoverStrokeColor: "red",
-                    hoverStrokeOpacity: 1,
-                    hoverStrokeWidth: 0.2,
-                    pointRadius: 6,
-                    hoverPointRadius: 1,
-                    hoverPointUnit: "%",
-                    pointerEvents: "visiblePainted",
-                    cursor: "inherit",
-                    fontColor: "#000000",
-                    labelAlign: "cm",
-                    labelOutlineColor: "white",
-                    labelOutlineWidth: 3
-
-                },
-                'delete': {
-                    display: "none"
-                }
-            };
-
-            var loadLayerSwitcherTemplate = function() {
-                var layerSwitcherTemplate = $templateCache.get("layerswitcher_template");
-                if(angular.isUndefined(layerSwitcherTemplate)) {
-                    $http.get('/static/angular_templates/layerswitcher.html').success(function(layerSwitcherTemplate) {
-                        $templateCache.put('layerswitcher_template', layerSwitcherTemplate);
-                        renderLayerSwitcher($compile(layerSwitcherTemplate)(scope));
-                    });
-                } else {
-                    renderLayerSwitcher($compile(layerSwitcherTemplate)(scope));
-                }
-            };
-            var renderLayerSwitcher = function(layerSwitcherElement) {
-                $(scope.map.div).find('.olMapViewport').append(layerSwitcherElement);
-            };
-            var prepareLayerSwitcher = function() {
-                scope.rasterOverlays = [];
-
-                angular.forEach(scope.layers, function(layer) {
-                    if(layer.displayInLayerSwitcher) {
-                        scope.rasterOverlays.push(layer);
-                    }
-                });
-                loadLayerSwitcherTemplate(scope);
-            };
-
-            var createBackgroundLayer = function(list, layer, srs) {
-                var newLayer = new OpenLayers.Layer.WMS(layer.title, layer.url, {
-                        srs: srs,
-                        layers: [layer.name]
-                    }, {
-                        singleTile: true,
-                        ratio: 1.0,
-                        isBaseLayer: false
-                });
-                list.push(newLayer);
-                scope.mapLayers.push(newLayer);
-            };
-
-            var createWMSLayer = function(list, layer, srs, url) {
-                if(layer.name || layer.layers) {
-                    var newLayer = new OpenLayers.Layer.WMS(layer.title, url, {
-                        srs: srs,
-                        transparent: !layer.opaque,
-                        layers: [layer.name]
-                    }, {
-                      singleTile: true,
-                      ratio: 1.0
-                    });
-                    newLayer._layers = [];
-                    angular.forEach(layer.layers, function(layer) {
-                        createWMSLayer(newLayer._layers, layer, srs, url);
-                    })
-                    list.push(newLayer);
-                    scope.mapLayers.push(newLayer)
-                }
-            };
-
-            var createVectorLayer = function(list, layer) {
-                var newLayer = new OpenLayers.Layer.Vector(layer.name);
-                var style = $.extend({}, default_vector_styling, layer.style);
-                newLayer.styleMap = new OpenLayers.StyleMap(style);
-                if(angular.isDefined(layer.geometries)) {
-                    angular.forEach(layer.geometries, function(geometry) {
-                        switch(geometry.type) {
-                            case 'bbox':
-                                var bbox = new OpenLayers.Bounds(geometry.coordinates);
-                                var feature = new OpenLayers.Feature.Vector(bbox.toGeometry());
-                                newLayer.addFeatures([feature]);
-                                break;
-                        }
-                    })
-                }
-                if(layer.zoomToDataExtent) {
-                    scope.dataExtent = newLayer.getDataExtent();
-                }
-                list.push(newLayer);
-                scope.mapLayers.push(newLayer);
-            };
-
-            var prepareMapParameters = function() {
-                if(!(scope.olmapBinds.proj instanceof OpenLayers.Projection)) {
-                    scope.olmapBinds.proj = new OpenLayers.Projection(scope.olmapBinds.proj);
-                }
-
-                if(angular.isUndefined(scope.olmapBinds.extent) && scope.olmapBinds.proj.getCode() != 'EPSG:4326') {
-                    $http.post($rootScope.TRANSFORM_BBOX_URL, {
-                        "bbox": [-180, -90, 180, 90],
-                        "sourceSRS": "EPSG:4326",
-                        "destSRS": scope.olmapBinds.proj.getCode()
-                    }).success(function(response) {
-                        scope.olmapBinds.extent = new OpenLayers.Bounds(response.result);
-                        createMap();
-                    });
-                } else {
-                    if(!(scope.olmapBinds.extent instanceof OpenLayers.Bounds)) {
-                        scope.olmapBinds.extent = new OpenLayers.Bounds(scope.olmapBinds.extent || [-180, -90, 180, 90]);
-                    }
-                    createMap();
-                }
-            }
-
-            var createMap = function() {
-                if(scope.map instanceof OpenLayers.Map) {
-                    scope.map.destroy();
-                    delete scope.map;
-                }
-                scope.layers = [];
-                scope.mapLayers = [];
-
-                scope.map = new OpenLayers.Map(scope.mapId, {
-                    projection: scope.olmapBinds.proj,
-                    maxExtent: scope.olmapBinds.extent,
-                    units: scope.olmapBinds.proj.units,
-                    controls: [
-                        new OpenLayers.Control.Navigation({
-                            documentDrag: true,
-                            dragPanOptions: {
-                                interval: 1,
-                                enableKinetic: true
-                            }
-                        }),
-                        new OpenLayers.Control.PanZoomBar({autoActivate: true})
-                    ]
-                });
-
-                var imageLayer = new OpenLayers.Layer.Image('Blank',
-                    OpenLayers.ImgPath+'/blank.gif',
-                    scope.olmapBinds.extent,
-                    new OpenLayers.Size(500, 500), {
-                        isBaseLayer: true,
-                        displayInLayerSwitcher: false
-                    }
-                );
-                scope.map.addLayer(imageLayer);
-
-                if(angular.isDefined(scope.olmapBinds.layers.background)) {
-                    angular.forEach(scope.olmapBinds.layers.background, function(layer) {
-                        createBackgroundLayer(scope.rasterBackgroundLayers, layer, scope.olmapBinds.proj)
-                    });
-                }
-                if(angular.isDefined(scope.olmapBinds.layers.wms)) {
-                    angular.forEach(scope.olmapBinds.layers.wms, function(layer) {
-                        createWMSLayer(scope.layers, layer, scope.olmapBinds.proj, scope.olmapBinds.url);
-                    });
-                }
-                if(angular.isDefined(scope.olmapBinds.layers.vector)) {
-                    angular.forEach(scope.olmapBinds.layers.vector, function(layer) {
-                        createVectorLayer(scope.layers, layer);
-                    });
-                }
-
-                scope.map.addLayers(scope.mapLayers);
-
-                if(attrs.mapLayerSwitcher) {
-                    prepareLayerSwitcher(scope.map);
-                }
-                if(angular.isDefined(scope.dataExtent)) {
-                    scope.map.zoomToExtent(scope.dataExtent)
-                } else {
-                    scope.map.zoomToMaxExtent();
-                }
-            };
-
-            scope.toggleVisibility = function(layer) {
-                layer.setVisibility(!layer.visibility);
-            }
-
-            scope.destroyMap = function() {
-                if(scope.map instanceof OpenLayers.Map) {
-                    scope.map.destroy();
-                    delete scope.map;
-                }
-                scope.layerSwitcherMaximized = false;
-                scope.dataExtent = undefined;
-                scope.mapLayers = [];
-                scope.layers = [];
-                scope.rasterBackgroundLayers = [];
-                scope.rasterOverlays = [];
-                $.unblockUI();
-                scope.olmapBinds.visible = false;
-            };
-
-            scope.olmapBinds = {
-                visible: attrs.MapHidden || false,
-                extent: undefined,
-                proj: undefined,
-                layers: undefined
-            };
-            scope.rasterBackgroundLayers = [];
-
-            scope.mapId = 'ol_map_' + scope.$id;
-            //setup map element and add to element
-            var mapElement = $('<div></div>')
-                .attr('id', scope.mapId)
-                .css('width', attrs.mapWidth)
-                .css('height', attrs.mapHeight);
-
-            var closeButton = angular.element('<i ng-click="destroyMap()"></i>')
-                .addClass('icon-remove map-icon-remove');
-            $compile(closeButton)(scope);
-
-            mapElement.append(closeButton);
-            element.append(mapElement);
-
-            if(!scope.olmapBinds.visible) {
-                $(element).hide();
-            }
-
-            scope.$watch('olmapBinds.visible', function(visible) {
-                if(visible) {
-                    prepareMapParameters();
-                    $.blockUI({
-                        message: $(element),
-                        css: {
-                            top:  ($(window).height() - attrs.mapHeight) /2 + 'px',
-                            left: ($(window).width() - attrs.mapWidth) /2 + 'px',
-                            width: attrs.mapWidth
-                        }
-                    });
-                }
-            }, true);
-        }
-    }
 });
 
 /* Controller for directives */
@@ -949,7 +677,15 @@ var toggleGroupCtrl = function($scope, $element) {
     };
 
     this.multiShow = function(element, index) {
-        if(toToggle(element).toggle().css('display') != 'none') {
+        // show and hide element
+        toToggle(element).toggle();
+
+        // show and hide icons
+        var controlIocns = $(element.context.firstElementChild).children();
+        $(controlIocns).first().toggle()
+        $(controlIocns).last().toggle()
+
+        if(element.css('display') != 'none') {
             openElements.push(index);
         } else {
             var idx = $.inArray(index, openElements);
@@ -977,6 +713,11 @@ var toggleGroupCtrl = function($scope, $element) {
             default:
                 return this.hideOther;
         }
+    };
+    $scope.focusFirst = function() {
+        $($element)
+            .find(':input:not(:checkbox):not(:button):not(:radio):first')
+            .focus();
     };
     $scope.isOpen = function() {
         if(openElements.length == 0) {

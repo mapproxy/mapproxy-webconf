@@ -26,9 +26,11 @@ angular.module('mapproxy_gui.tooltips', []).
 factory('tooltipMapper', function($http, $rootScope) {
     var tooltipMapper = {
         tooltips: {},
+        loaded: false,
         loadDict: function(url) {
             $http.get(url, {cache: false}).success(function(data) {
                 tooltipMapper.tooltips = data;
+                tooltipMapper.loaded = true;
                 $rootScope.$broadcast('tooltipsLoaded');
             }); //XXXkai: error handling
         }
@@ -74,25 +76,41 @@ directive('tooltip', function(tooltipMapper) {
                     placement: scope.tooltipPlacement
                 });
             };
+            var initFromService = function() {
+                var tooltipData = tooltipMapper.tooltips[attrs.tooltip];
+                if(angular.isDefined(tooltipData.title)) {
+                    initPopover(tooltipData.content, tooltipData.title);
+                } else {
+                    initTooltip(tooltipData.content);
+                }
+            };
+            var initFromAttrs = function(content, title) {
+                if(angular.isDefined(title)) {
+                    initPopover(content, title);
+                } else {
+                    initTooltip(content);
+                }
+            }
 
             scope.tooltipPlacement = attrs.tooltipPlacement || 'right';
 
             if(angular.isDefined(attrs.tooltipContent)) {
-                if(angular.isDefined(attrs.tooltipTitle)) {
-                    initPopover(attrs.tooltipContent, attrs.tooltipTitle);
+                if(attrs.tooltipContent != "") {
+                    initFromAttrs(attrs.tooltipContent, attrs.tooltipTitle)
                 } else {
-                    initTooltip(attrs.tooltipContent);
+                    attrs.$observe('tooltipContent', function(val) {
+                        if(angular.isDefined(val) && val!="") {
+                            initFromAttrs(attrs.tooltipContent, attrs.tooltipTitle);
+                        }
+                    });
                 }
             } else {
-                scope.$on('tooltipsLoaded', function() {
-                    var tooltipData = tooltipMapper.tooltips[attrs.tooltip];
-
-                    if(angular.isDefined(tooltipData.title)) {
-                        initPopover(tooltipData.content, tooltipData.title);
-                    } else {
-                        initTooltip(tooltipData.content);
-                    }
-                });
+                var tooltipData;
+                if(tooltipMapper.loaded) {
+                    initFromService();
+                } else {
+                    scope.$on('tooltipsLoaded', initFromService);
+                }
             }
         }
     };

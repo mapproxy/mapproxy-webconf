@@ -7,8 +7,8 @@ from xml.etree.ElementTree import ParseError
 
 from mapproxy.client import http
 from mapproxy.script.scales import scale_to_res, res_to_scale
-from mapproxy.srs import SRS
-from mapproxy.grid import TileGrid
+from mapproxy.srs import SRS, generate_envelope_points
+from mapproxy.grid import tile_grid
 
 from . import bottle
 from . import config
@@ -150,8 +150,93 @@ class RESTGrids(RESTBase):
 
     def list(self, project, storage):
         default_grids = {
-            'GLOBAL_MERCATOR': {'_id': 'GLOBAL_MERCATOR', 'data': {'name': 'GLOBAL_MERCATOR'}, 'default': True},
-            'GLOBAL_GEODETIC': {'_id': 'GLOBAL_GEODETIC', 'data': {'name': 'GLOBAL_GEODETIC'}, 'default': True}
+            'GLOBAL_GEODETIC': {'_id': 'GLOBAL_GEODETIC', 'default': True, 'data': {
+                'name': 'GLOBAL_GEODETIC',
+                'srs': 'EPSG:4326',
+                'bbox': [-180, -90, 180, 90],
+                'bbox_srs': 'EPSG:4326',
+                'origin': 'sw',
+                'res': [
+                    1.40625,
+                    0.703125,
+                    0.3515625,
+                    0.17578125,
+                    0.087890625,
+                    0.0439453125,
+                    0.02197265625,
+                    0.010986328125,
+                    0.0054931640625,
+                    0.00274658203125,
+                    0.001373291015625,
+                    0.0006866455078125,
+                    0.00034332275390625,
+                    0.000171661376953125,
+                    0.0000858306884765625,
+                    0.00004291534423828125,
+                    0.000021457672119140625,
+                    0.000010728836059570312,
+                    0.000005364418029785156,
+                    0.000002682209014892578,
+                ]
+            }},
+            'GLOBAL_MERCATOR': {'_id': 'GLOBAL_MERCATOR', 'default': True, 'data': {
+                'name': 'GLOBAL_MERCATOR',
+                'srs': 'EPSG:900913',
+                'bbox': [-20037508.342789244, -20037508.342789244, 20037508.342789244, 20037508.342789244],
+                'bbox_srs': 'EPSG:900913',
+                'origin': 'sw',
+                'res': [
+                    156543.03392804097,
+                    78271.51696402048,
+                    39135.75848201024,
+                    19567.87924100512,
+                    9783.93962050256,
+                    4891.96981025128,
+                    2445.98490512564,
+                    1222.99245256282,
+                    611.49622628141,
+                    305.748113140705,
+                    152.8740565703525,
+                    76.43702828517625,
+                    38.21851414258813,
+                    19.109257071294063,
+                    9.554628535647032,
+                    4.777314267823516,
+                    2.388657133911758,
+                    1.194328566955879,
+                    0.5971642834779395,
+                    0.29858214173896974,
+                ]
+            }},
+            'GLOBAL_WEBMERCATOR': {'_id': 'GLOBAL_WEBMERCATOR', 'default': True, 'data': {
+                'name': 'GLOBAL_WEBMERCATOR',
+                'srs': 'EPSG:3857',
+                'bbox': [-20037508.342789244, -20037508.342789244, 20037508.342789244, 20037508.342789244],
+                'bbox_srs': 'EPSG:3857',
+                'origin': 'nw',
+                'res': [
+                    156543.03392804097,
+                    78271.51696402048,
+                    39135.75848201024,
+                    19567.87924100512,
+                    9783.93962050256,
+                    4891.96981025128,
+                    2445.98490512564,
+                    1222.99245256282,
+                    611.49622628141,
+                    305.748113140705,
+                    152.8740565703525,
+                    76.43702828517625,
+                    38.21851414258813,
+                    19.109257071294063,
+                    9.554628535647032,
+                    4.777314267823516,
+                    2.388657133911758,
+                    1.194328566955879,
+                    0.5971642834779395,
+                    0.29858214173896974,
+                ]
+            }}
         }
         default_grids.update(storage.get_all(self.section, project, with_id=True, with_manual=True, with_locked=True))
         return default_grids
@@ -287,6 +372,8 @@ def calculate_tiles():
     name = data.get('name', None)
     srs = data.get('srs', None)
     bbox = data.get('bbox', None)
+    bbox_srs = data.get('bbox_srs', None)
+
     if bbox is not None and not all(bbox):
         bbox = None
     dpi = float(data.get('dpi', (2.54/(0.00028 * 100))))
@@ -303,12 +390,12 @@ def calculate_tiles():
     if res is None and scales is not None:
         res = [round(scale_to_res(scale, dpi, units), 9) for scale in scales]
 
-    tile_grid = TileGrid(srs=srs, bbox=bbox, res=res, origin=origin, name=name)
+    tilegrid = tile_grid(srs=srs, bbox=bbox, bbox_srs=bbox_srs, res=res, origin=origin, name=name)
 
     result = []
     res_scale = 'resolution' if scales is None else 'scale'
-    for level, res in enumerate(tile_grid.resolutions):
-        tiles_in_x, tiles_in_y = tile_grid.grid_sizes[level]
+    for level, res in enumerate(tilegrid.resolutions):
+        tiles_in_x, tiles_in_y = tilegrid.grid_sizes[level]
         total_tiles = tiles_in_x * tiles_in_y
         result.append({
             'level': level,
@@ -331,7 +418,132 @@ def transform_bbox():
 
     return {'result': transformed_bbox}
 
+@app.route('/transform_grid', 'POST', name='transform_grid')
+def transform_grid():
+    view_bbox = request.forms.get('bbox', '').split(',')
+    if view_bbox:
+        view_bbox = map(float, view_bbox)
+    else:
+        view_bbox = None
 
+    grid_bbox =request.forms.get('grid_bbox', None)
+
+    if grid_bbox:
+        grid_bbox = grid_bbox.split(',')
+        if grid_bbox:
+            grid_bbox = map(float, grid_bbox)
+    else:
+        grid_bbox = None
+
+    level = request.forms.get('level', None)
+    if level:
+        level = int(level)
+
+    grid_srs = request.forms.get('srs', None)
+    if grid_srs:
+        grid_srs = SRS(grid_srs)
+
+    grid_bbox_srs = request.forms.get('bbox_srs', None)
+    if grid_bbox_srs:
+        grid_bbox_srs = SRS(grid_bbox_srs)
+
+    map_srs = request.forms.get('map_srs', None)
+    if map_srs:
+        map_srs = SRS(map_srs)
+
+    res = request.forms.get('res', None)
+    if res:
+        res = map(float, res.split(','))
+
+    scales = request.forms.get('scales', None)
+    if scales:
+        scales = map(float, scales.split(','))
+        units = 1 if request.forms.get('units', 'm') == 'm' else 111319.4907932736
+        dpi = float(request.forms.get('dpi', (2.54/(0.00028 * 100))))
+        res = [scale_to_res(scale, dpi, units) for scale in scales]
+
+    origin = request.forms.get('origin', 'll')
+
+    tilegrid = tile_grid(srs=grid_srs, bbox=grid_bbox, bbox_srs=grid_bbox_srs, origin=origin, res=res)
+
+    if grid_bbox is None:
+        grid_bbox = tilegrid.bbox
+    else:
+        grid_bbox = grid_bbox_srs.transform_bbox_to(grid_srs, grid_bbox) if grid_bbox_srs and grid_srs else grid_bbox
+
+    if map_srs and grid_srs:
+        view_bbox = map_srs.transform_bbox_to(grid_srs, view_bbox)
+
+    view_bbox = [
+        max(grid_bbox[0], view_bbox[0]),
+        max(grid_bbox[1], view_bbox[1]),
+        min(grid_bbox[2], view_bbox[2]),
+        min(grid_bbox[3], view_bbox[3])
+    ]
+
+    tiles_bbox, size, tiles = tilegrid.get_affected_level_tiles(bbox=view_bbox, level=level)
+
+    feature_count = size[0] * size[1]
+    features = []
+
+    if feature_count > 1000:
+        polygon = generate_envelope_points(grid_srs.align_bbox(tiles_bbox), 128)
+        polygon = list(grid_srs.transform_to(map_srs, polygon)) if map_srs and grid_srs else list(polygon)
+
+        features.append({
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [list(point) for point in polygon] + [list(polygon[0])]
+                ]
+            },
+            "properties": {
+                "message": "Too many tiles. Please zoom in."
+            }
+        })
+    else:
+        for tile in tiles:
+            if tile:
+                x, y, z = tile
+                polygon = generate_envelope_points(grid_srs.align_bbox(tilegrid.tile_bbox(tile)), 16)
+                polygon = list(grid_srs.transform_to(map_srs, polygon)) if map_srs and grid_srs else list(polygon)
+
+                new_feature = {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [
+                            [list(point) for point in polygon] + [list(polygon[0])]
+                        ]
+                    }
+                }
+                if feature_count == 1:
+                    xc0, yc0, xc1, yc1 = grid_srs.transform_bbox_to(map_srs, view_bbox) if map_srs and grid_srs else view_bbox
+                    features.append({
+                        "type": "Feature",
+                        "properties": {
+                            "x": x,
+                            "y": y,
+                            "z": z
+                        },
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [xc0 + (xc1-xc0) /2, yc0 + (yc1-yc0)/2]
+
+                        }
+                    })
+                elif feature_count <= 100:
+                    new_feature["properties"] = {
+                        "x": x,
+                        "y": y,
+                        "z": z
+                    }
+                features.append(new_feature)
+
+    return {"type":"FeatureCollection",
+        "features": features
+    }
 
 def init_app(storage_dir):
     app.install(storage.SQLiteStorePlugin(os.path.join(configuration.get('app', 'storage_path'), configuration.get('app', 'sqlite_db'))))

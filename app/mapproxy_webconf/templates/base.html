@@ -4,6 +4,7 @@
     <title>Mapproxy GUI</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="${ get_url('static', filepath='css/openlayers.css') }">
+    <link rel="stylesheet" href="${ get_url('static', filepath='css/toolbar.css') }">
     <link rel="stylesheet" href="${ get_url('static', filepath='css/bootstrap.css') }">
     <link rel="stylesheet" href="${ get_url('static', filepath='css/bootstrap-responsive.css') }">
     <link rel="stylesheet" href="${ get_url('static', filepath='css/jquery-ui-1.10.0.bootstrap.css') }">
@@ -29,6 +30,8 @@
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/localize.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/bootstrap.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/OpenLayers-2.12.js') }"></script>
+    <script type="text/javascript" src="${ get_url('static', filepath='js/openlayers.extensions/delete.js') }"></script>
+    <script type="text/javascript" src="${ get_url('static', filepath='js/openlayers.extensions/string.format.js') }"></script>
 
     <!-- site libs -->
     <script type="text/javascript" src="${ get_url('static', filepath='js/helper.js') }"></script>
@@ -38,6 +41,7 @@
     <script type="text/javascript" src="${ get_url('static', filepath='js/modules/messages.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/modules/tooltips.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/directives.js') }"></script>
+    <script type="text/javascript" src="${ get_url('static', filepath='js/modules/openlayers.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/controllers.js') }"></script>
     % if defined('jsblock') and hasattr(jsblock, '__call__'):
       %jsblock()
@@ -51,48 +55,50 @@
         OpenLayers.ImgPath = "${ get_url('static', filepath='img/') }";
 
       /* add directives and services*/
-        var app = angular.module('mapproxy_gui', ['angular.extensions', 'localization', 'mapproxy_gui.directives', 'mapproxy_gui.services', 'mapproxy_gui.validators', 'mapproxy_gui.messages', 'mapproxy_gui.tooltips']);
+        var app = angular.module('mapproxy_gui', ['angular.extensions', 'localization', 'mapproxy_gui.directives', 'mapproxy_gui.services', 'mapproxy_gui.validators', 'mapproxy_gui.messages', 'mapproxy_gui.tooltips', 'mapproxy_gui.openlayers']);
 
       /* Set globals */
+        angular.module('mapproxy_gui.openlayers').value('TRANSFORM_BBOX_URL', "${ get_url('transform_bbox') }");
+        angular.module('mapproxy_gui.openlayers').value('TRANSFORM_GRID_URL', "${ get_url('transform_grid') }");
         app.run(function($rootScope, tooltipMapper) {
           tooltipMapper.loadDict("${ get_url('static', filepath='resources/tooltip_dict.js') }");
           $rootScope.LANGUAGE = '${ language }';
-          $rootScope.TRANSFORM_BBOX_URL = "${ get_url('transform_bbox') }";
         });
+
     </script>
     %include angular_templates
   </head>
-<body>
-  <div id="wrapper">
-    <div class="navbar navbar-static-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="brand" href="/">MPG</a>
-          <ul class="nav">
-            <li><a href="${ get_url('projects') }">${ _('Projects') }</a></li>
-            <li><a href="${ get_url('configuration', project='base') }">${ _('Configuration') }</a></li>
-          </ul>
+  <body>
+    <div id="wrapper">
+      <div class="navbar navbar-static-top">
+        <div class="navbar-inner">
+          <div class="container">
+            <a class="brand" href="/">MPG</a>
+            <ul class="nav">
+              <li><a href="${ get_url('projects') }">${ _('Projects') }</a></li>
+              <li><a href="${ get_url('configuration', project='base') }">${ _('Configuration') }</a></li>
+            </ul>
+          </div>
+        </div>
+      </div><!-- /.navbar -->
+      <div class="sitebar-wrapper">
+        <div class="shadow"></div>
+        <div class="sitebar container">
+          % if defined('site_navbar'):
+            %site_navbar()
+          % end
         </div>
       </div>
-    </div><!-- /.navbar -->
-    <div class="sitebar-wrapper">
-      <div class="shadow"></div>
-      <div class="sitebar container">
-        % if defined('site_navbar'):
-          %site_navbar()
-        % end
+      <div class="container content">
+        <div class="row-fluid">
+          % if defined('content'):
+            %content()
+          % end
+        </div>
       </div>
+      <footer>
+        &copy; 2013 - Omniscale GmbH & Co. KG
+      </footer>
     </div>
-    <div class="container content">
-      <div class="row-fluid">
-        % if defined('content'):
-          %content()
-        % end
-      </div>
-    </div>
-    <footer>
-      &copy; 2013 - Omniscale GmbH & Co. KG
-    </footer>
-  </div>
-</body>
+  </body>
 </html>

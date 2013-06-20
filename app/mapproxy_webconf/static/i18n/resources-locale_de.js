@@ -658,6 +658,14 @@
     //     "value": "Kachelanzahl berechnen"
     // },
     {
+        "key": "Keep changes?",
+        "value": "Änderungen behalten?"
+    },
+    {
+        "key": "You made changes in this map. Do you want to keep them?",
+        "value": "Sie haben Änderungen in der Karte vorgenommen. Möchten Sie diese Änderungen behalten?"
+    },
+    {
         "key": "Informations",
         "value": "Informationen"
     },
@@ -732,5 +740,13 @@
     {
         "key": "Supported formats",
         "value": "Unterstütze Bildformate"
+    },
+    {
+        "key": "Resolutions / Scales",
+        "value": "Auflösungen / Maßstäbe"
+    },
+    {
+        "key": "Create coverage in map",
+        "value": "Coverage in Karte erstellen"
     }
 ]

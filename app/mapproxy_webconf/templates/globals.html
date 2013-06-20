@@ -1,59 +1,87 @@
 %def leftblock():
-    <div ng-controller="MapproxyGlobalsChooserCtrl" ng-show="!_editarea_visible">
-        <h3>${ _('Globals') }</h3>
-        <ul class="vertical-list">
-            <div class="{{getClasses(global)}}"
-                ng-repeat="(global, data) in globals.data"
-                ng-click="show(global)">
-                <li>{{global|i18n}}</li>
-            </div>
-        </ul>
-    </div>
-    <hr>
-    <div id="_editarea_toggle_button_container"></div>
+  <div ng-controller="MapproxyGlobalsChooserCtrl" ng-show="!_editarea_visible">
+    <h3>${ _('Globals') }</h3>
+    <ul class="vertical-list">
+      <div class="{{getClasses(global)}}"
+           ng-repeat="(global, data) in globals.data"
+           ng-click="show(global)">
+        <li>{{global|i18n}}</li>
+      </div>
+    </ul>
+  </div>
+  <hr>
+  <div id="_editarea_toggle_button_container"></div>
 %end
 
 %def middleblock():
-<script type="text/ng-template" id="cache.html">
+  <script type="text/ng-template" id="cache.html">
     <h3>${ _('cache') }</h3>
     <div labeled="input_label" name-for="cache_meta_size" text="${ _('Meta size') }">
-        <input type="number" min=0 ng-model="globals.data.cache.meta_size[0]" class="input-mini" id="cache_meta_size" name="cache_meta_size"/>
-        <input type="number" min=0 ng-model="globals.data.cache.meta_size[1]" class="input-mini" id="cache_meta_size_1" name="cache_meta_size_1"/>
+      <input type="number"
+             min=0
+             ng-model="globals.data.cache.meta_size[0]"
+             class="input-mini"
+             id="cache_meta_size"
+             name="cache_meta_size"/>
+      <input type="number"
+             min=0
+             ng-model="globals.data.cache.meta_size[1]"
+             class="input-mini"
+             id="cache_meta_size_1"
+             name="cache_meta_size_1"/>
     </div>
     <div labeled="input_label" name-for="cache_meta_buffer" text="${ _('Meta buffer') }">
-        <input type="number" min=1 ng-model="globals.data.cache.meta_buffer" id="cache_meta_buffer" name="cache_meta_buffer">
+      <input type="number"
+             min=1
+             ng-model="globals.data.cache.meta_buffer"
+             id="cache_meta_buffer"
+             name="cache_meta_buffer"/>
     </div>
-</script>
-<script type="text/ng-template" id="image.html">
+  </script>
+  <script type="text/ng-template" id="image.html">
     <h3>${ _('image') }</h3>
-    <div labeled="input_label" name-for="image_resampling_method" text="${ _('Resampling method') }">
-        <select ng-model="globals.data.image.resampling_method" id="image_resampling_method" name="image_resampling_method">
-            <option value="nearest">Nearest</option>
-            <option value="bilinear">Bilinear</option>
-            <option value="bicubic">Bicubic</option>
-        </select>
+    <div labeled="input_label"
+         name-for="image_resampling_method"
+         text="${ _('Resampling method') }">
+      <select ng-model="globals.data.image.resampling_method"
+              id="image_resampling_method"
+              name="image_resampling_method">
+        <option value="nearest">Nearest</option>
+        <option value="bilinear">Bilinear</option>
+        <option value="bicubic">Bicubic</option>
+      </select>
     </div>
     <div labeled="checkbox_label" name-for="image_paletted" text="${ _('Paletted') }">
-        <input type="checkbox" ng-model="globals.data.image.paletted" id="image_paletted" name="image_paletted">
+      <input type="checkbox" ng-model="globals.data.image.paletted" id="image_paletted" name="image_paletted">
     </div>
-</script>
-<div ng-controller="MapproxyGlobalsFormCtrl">
+  </script>
+  <div ng-controller="MapproxyGlobalsFormCtrl">
     <h3 ng-show="globals._manual || editareaBinds.visible">${ _('Globals') }</h3>
     <form name="form" novalidate ng-show="!editareaBinds.visible">
-        <div ng-include src="template"></div>
-
-        <button class="btn btn-small" ng-click="save($event)" ng-disabled="!form.$valid" id="form_save" ng-class="{'btn-success': form.$valid}">${ _('Save') }</button>
+      <div ng-include src="template"></div>
+      <hr>
+      <button class="btn btn-small"
+              ng-click="save($event)"
+              ng-disabled="!form.$valid"
+              id="form_save"
+              ng-class="{'btn-success': form.$valid}">
+        ${ _('Save') }
+      </button>
     </form>
     <hr ng-show="!editareaBinds.visible">
     <div editarea="editareaBinds"
-        yaml-URL="${get_url('json_to_yaml')}"
-        json-URL="${get_url('yaml_to_json')}">
+         yaml-URL="${get_url('json_to_yaml')}"
+         json-URL="${get_url('yaml_to_json')}">
     </div>
     <div>
-        <span message-handler="success" message-types="globals.add_success,globals.update_success"></span>
-        <span message-handler="error" message-types="globals.load_error,globals.add_error,globals.update_error,globals.form_error"></span>
+      <span message-handler="success"
+            message-types="globals.add_success,globals.update_success">
+      </span>
+      <span message-handler="error"
+            message-types="globals.load_error,globals.add_error,globals.update_error,globals.form_error">
+      </span>
     </div>
-</div>
+  </div>
 %end
 
 %def rightblock():

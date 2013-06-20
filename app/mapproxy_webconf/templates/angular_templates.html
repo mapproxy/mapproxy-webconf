@@ -1,46 +1,80 @@
 <script type="text/ng-template" id="error_messages">
-    <div ng-show="!angularElement.$pristine && angularElement.$error.required">${ _('This field is required') }</div>
-    <div ng-show="!angularElement.$pristine && angularElement.$error.url">${ _('Invalid URL') }</div>
-    <div ng-show="!angularElement.$pristine && angularElement.$error.number">${ _('Invalid number') }</div>
-    <div ng-show="!angularElement.$pristine && angularElement.$error.float">${ _('Invalid float') }</div>
-    <div ng-show="!angularElement.$pristine && angularElement.$error.integer">${ _('Invalid integer') }</div>
+  <div ng-show="!angularElement.$pristine && angularElement.$error.required">${ _('This field is required') }</div>
+  <div ng-show="!angularElement.$pristine && angularElement.$error.url">${ _('Invalid URL') }</div>
+  <div ng-show="!angularElement.$pristine && angularElement.$error.number">${ _('Invalid number') }</div>
+  <div ng-show="!angularElement.$pristine && angularElement.$error.float">${ _('Invalid float') }</div>
+  <div ng-show="!angularElement.$pristine && angularElement.$error.integer">${ _('Invalid integer') }</div>
 </script>
 
 <script type="text/ng-template" id="checkbox_label">
-    <div class="control-group" ng-class="{'error': invalid, 'warning': warning}">
-        <div class="controls">
-            <label class="control-label" for="{{name}}">
-                <span ng-transclude></span> {{getText()}}
-                <span ng-include="'error_messages'" class="text-error"></span>
-                <i class="pull-right icon-warning-sign" ng-show="warning" tooltip="tooltip" tooltip-content="{{warningMsg()}}"></i>
-            </label>
-
-        </div>
+  <div class="control-group" ng-class="{'error': invalid, 'warning': warning}">
+    <div class="controls">
+      <label class="control-label" for="{{name}}">
+        <span ng-transclude></span> {{getText()}}
+        <span ng-include="'error_messages'" class="text-error"></span>
+        <i class="pull-right icon-warning-sign help"
+           ng-show="warning"
+           tooltip="tooltip"
+           tooltip-content="{{warningMsg()}}">
+        </i>
+      </label>
     </div>
+  </div>
 </script>
 
 <script type="text/ng-template" id="input_label">
-    <div class="control-group" ng-class="{'error': invalid, 'warning': warning}">
-        <label class="control-label" for="{{name}}">{{getText()}}:</label>
-        <div class="controls">
-            <span ng-transclude></span>
-            <i class="pull-right icon-warning-sign" ng-show="warning" tooltip="tooltip" tooltip-content="{{warningMsg()}}"></i>
-            <span ng-include="'error_messages'" class="text-error"></span>
-        </div>
+  <div class="control-group" ng-class="{'error': invalid, 'warning': warning}">
+    <label class="control-label" for="{{name}}">{{getText()}}:</label>
+    <div class="controls">
+      <span ng-transclude></span>
+      <i class="pull-right icon-warning-sign help"
+         ng-show="warning"
+         tooltip="tooltip"
+         tooltip-content="{{warningMsg()}}">
+      </i>
+      <span ng-include="'error_messages'" class="text-error"></span>
     </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="input_label_toggleable">
+
+  <div class="control-group" ng-class="{'error': invalid, 'warning': warning}" toggle-group mode="multiShow">
+    <label class="control-label"
+           for="{{name}}"
+           toggle-element="next"
+           set-focus>
+      <span class="control-icons">
+        <i class="icon-chevron-right"></i>
+        <i class="icon-chevron-down" ng-show=false></i>
+      </span>
+      {{getText()}}
+      <i class="icon-question-sign pull-right help" tooltip="uncommonInputs"></i>
+    </label>
+
+    <div class="controls" ng-show="false">
+      <span ng-transclude></span>
+      <i class="pull-right icon-warning-sign help"
+         ng-show="warning"
+         tooltip="tooltip"
+         tooltip-content="{{warningMsg()}}">
+      </i>
+      <span ng-include="'error_messages'" class="text-error"></span>
+    </div>
+  </div>
 </script>
 
 <script type="text/ng-template" id="success">
-    <span class='text-success save_ok' ng-show='false'>
-        <i class='icon-ok'></i>
-        <strong>{{message}}</strong>
-    </span>
+  <span class='text-success save_ok' ng-show='false'>
+    <i class='icon-ok'></i>
+    <strong>{{message}}</strong>
+  </span>
 </script>
 
 <script type="text/ng-template" id="error">
-    <span class='text-error' ng-show='false'>
-        <i class='icon-remove-circle'></i>
-        <strong>${ _('An error occured') }</strong>
-        <p>{{message}}</p>
-    </span>
+  <span class='text-error' ng-show='false'>
+    <i class='icon-remove-circle'></i>
+    <strong>${ _('An error occured') }</strong>
+    <p>{{message}}</p>
+  </span>
 </script>

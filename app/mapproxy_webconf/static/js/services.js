@@ -83,7 +83,7 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
         }, _this._errorMessageHandler);
     };
     this.add = function(_item) {
-        if(!_item._manual) {
+        if(_this._model && !_item._manual) {
             _item.data = _this._removeNonModelProperties(_item.data);
         }
         var item = new _this._resource(_item);
@@ -99,7 +99,7 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
                     _this._successMessageHandler(_this._localize.getLocalizedString('Successful added'));
                     if(angular.isDefined(_this._rootScope)) {
                         _this._last = result;
-                        _this.current(true, result);
+                        _this.current(result);
                     }
                 }, _this._errorMessageHandler);
         } else {
@@ -111,7 +111,7 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
                 _this._successMessageHandler(_this._localize.getLocalizedString('Successful updated'));
                 if(angular.isDefined(_this._rootScope)) {
                     _this._last = result;
-                    _this.current(true, result);
+                    _this.current(result);
                 }
             }, _this._errorMessageHandler);
         }
@@ -383,9 +383,11 @@ var gridModel = {
     'bbox_srs': undefined,
     'origin': undefined,
     'res': [],
-    'scales': []
+    'scales': [],
+    'units': 'm'
 };
 var sourceModel = {
+    'type': 'wms',
     'name': undefined,
     'req': {
         'url': undefined,
@@ -396,12 +398,14 @@ var sourceModel = {
         'bbox': undefined,
         'srs': undefined
     },
-    'supported_formats': []
+    'supported_formats': [],
+    'min_res_scale': undefined,
+    'max_res_scale': undefined
 };
 var defaultsModel = {
     'dpi': undefined,
     'srs': []
-}
+};
 
 var layerService = new MapproxyLayerService('layers', layerModel);
 var globalsService = new MapproxyBaseService('globals', globalsModel);

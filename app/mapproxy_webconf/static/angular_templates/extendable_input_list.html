@@ -1,45 +1,52 @@
 <ul class="extendableInputList">
-    <div ng-repeat="item in extendableInputListBinds">
-        <li>
-            <form name="_eilForm" class="form-horizontal">
-                <div labeled="input_label" name-for="eil_item" text="{{listPrefix}} {{$index}}" form-name="_eilForm">
-                    <input type="text" class="_extendableInputListItem inputField input-medium" float
-                    ng-blur="update()"
-                    ng-click="focusOn(this)"
-                    ng-model="items[$index]"
-                    ng-disabled="ngDisabled"
-                    id="eil_item"
-                    name="eil_item">
-                    <i class="icon-remove" ng-click="remove($index)" ng-show="!ngDisabled"></i>
-                </div>
-            </form>
-        </li>
-    </div>
-
-    <div>
-        <li class="form-horizontal">
-            <div labeled="input_label" name-for="_extendableInputListNewInput" text="{{listPrefix}} {{extendableInputListBinds.length}}">
-                <input type="text" class="_extendableInputListItem inputField input-medium" float
-                    id="_extendableInputListNewInput"
-                    name="_extendableInputListNewInput"
-                    ng-blur="blured=true;waitForFocus();"
-                    ng-change="showNext=true"
-                    ng-model="items[extendableInputListBinds.length]"
-                    ng-disabled="ngDisabled">
-            </div>
-        </li>
-    </div>
-
-    <div ng-show="showNext">
-        <li class="form-horizontal">
-            <div labeled="input_label" name-for="extendableInputListDummyInput" text="{{listPrefix}} {{extendableInputListBinds.length + 1}}">
-            <input type="text" class="_extendableInputListItem inputField input-medium" float
-                ng-focus="update()"
-                ng-model="items[extendableInputListBinds.length + 1]"
-                ng-disabled="ngDisabled"
-                name="extendableInputListDummyInput"
-                id="extendableInputListDummyInput">
-            </div>
-        </li>
-    </div>
+  <div ng-repeat="item in extendableInputListBinds">
+    <li>
+      <form name="_eilForm" class="form-horizontal">
+        <div labeled="input_label"
+             name-for="eil_item"
+             text="{{listPrefix}} {{$index}}"
+             form-name="_eilForm">
+          <input type="text"
+                 class="_extendableInputListItem inputField input-medium"
+                 float
+                 ng-blur="update()"
+                 ng-click="focusOn(this)"
+                 ng-model="items[$index]"
+                 ng-disabled="ngDisabled"
+                 id="eil_item"
+                 name="eil_item"/>
+          <i class="icon-remove" ng-click="remove($index)" ng-show="!ngDisabled"></i>
+        </div>
+      </form>
+    </li>
+  </div>
+  <div>
+    <li class="form-horizontal">
+      <div labeled="input_label" name-for="_extendableInputListNewInput" text="{{listPrefix}} {{extendableInputListBinds.length}}">
+          <input type="text"
+                 class="_extendableInputListItem inputField input-medium"
+                 float
+                 id="_extendableInputListNewInput"
+                 name="_extendableInputListNewInput"
+                 ng-blur="blured=true;waitForFocus();"
+                 ng-change="showNext=true"
+                 ng-model="items[extendableInputListBinds.length]"
+                 ng-disabled="ngDisabled"/>
+      </div>
+    </li>
+  </div>
+  <div ng-show="showNext">
+    <li class="form-horizontal">
+      <div labeled="input_label" name-for="extendableInputListDummyInput" text="{{listPrefix}} {{extendableInputListBinds.length + 1}}">
+        <input type="text"
+               class="_extendableInputListItem inputField input-medium"
+               float
+               ng-focus="update()"
+               ng-model="items[extendableInputListBinds.length + 1]"
+               ng-disabled="ngDisabled"
+               name="extendableInputListDummyInput"
+               id="extendableInputListDummyInput"/>
+      </div>
+    </li>
+  </div>
 </ul>

@@ -206,7 +206,7 @@ function MapProxyConfigCtrl($scope, $http, localize, MessageService) {
     $scope._messageService = MessageService;
 }
 
-function TreeCtrl($scope, localize, WMSSources, MessageService) {
+function TreeCtrl($scope, localize, WMSSources, MessageService, ProjectDefaults) {
 
     var refreshTree = function() {
         $scope.wms_list = WMSSources.list();
@@ -238,13 +238,15 @@ function TreeCtrl($scope, localize, WMSSources, MessageService) {
         var srs = ($.inArray('EPSG:4326', wms.data.layer.srs) != -1 || $.inArray('epsg:4326', wms.data.layer.srs) != -1) ?
             'EPSG:4326' : wms.data.layer.srs[0];
         var extent = wms.data.layer.llbbox;
-
         $scope.olmapBinds = {
             visible: true,
             proj: srs,
             extent: extent,
+            singleWMSRequest: true,
+            showScaleRes: true,
             layers: {'wms': wms.data.layer.layers},
-            url: wms.data.url
+            url: wms.data.url,
+            dpi: $scope.defaults.data.dpi
         }
     }
 
@@ -253,6 +255,12 @@ function TreeCtrl($scope, localize, WMSSources, MessageService) {
     $scope.$watch('_messageService.messages.wms_capabilities.delete_success', refreshTree, true);
     $scope.$watch('_messageService.messages.wms_capabilities.add_success', refreshTree, true);
     $scope.$watch('_messageService.messages.wms_capabilities.update_success', refreshTree, true);
+    $scope.$watch('_messageService.messages.defaults.load_success', function() {
+        var defaults = ProjectDefaults.list();
+        if(defaults.length > 0) {
+            $scope.defaults = defaults[0];
+        }
+    });
 
     $scope.$on('olmap.ready', function(scope, map) {
         $scope.map = map;
@@ -441,32 +449,47 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
         var bbox = $scope.source.data.coverage.bbox;
         if(angular.isString(bbox)) {
             bbox = bbox.split(',');
-            angular.forEach(bbox, function(value, idx) {
-                bbox[idx] = parseFloat(value);
-            });
+            if(bbox[0] != "") {
+                angular.forEach(bbox, function(value, idx) {
+                    bbox[idx] = parseFloat(value);
+                });
+            } else {
+                bbox = undefined;
+            }
         }
         var srs = $scope.source.data.coverage.srs || 'EPSG:4326';
-
+        var coverage = {
+            'name': 'Coverage',
+            'zoomToDataExtent': angular.isDefined(bbox),
+            'isDrawLayer': true,
+            'maxFeatures': 1,
+            'allowedGeometry': 'bbox'
+        }
+        if(angular.isDefined(bbox)) {
+            coverage['geometries'] = [{
+                'type': 'bbox',
+                'coordinates': bbox
+            }];
+        }
         $scope.olmapBinds = {
             visible: true,
             proj: srs,
             layers: {
-                'vector': [{
-                    'name': 'Coverage',
-                    'zoomToDataExtent': true,
-                    'geometries': [{
-                        'type': 'bbox',
-                        'coordinates': bbox
-                    }]
-                }],
+                'vector': [coverage],
                 'background': [{
                     title: 'BackgroundLayer',
                     url: 'http://osm.omniscale.net/proxy/service?',
                     name: 'osm'
                 }]
             }
-        }
-    }
+        };
+        var unregisterCoverageWatch = $scope.$watch('olmapBinds.layers.vector[0].geometries', function(newValue, oldValue) {
+            if(!angular.equals(newValue, oldValue)) {
+                $scope.source.data.coverage.bbox = newValue[0].coordinates;
+                unregisterCoverageWatch();
+            }
+        }, true);
+    };
     $scope.resetForm = function(event) {
         if(!angular.isUndefined(event)) {
             event.preventDefault();
@@ -550,6 +573,11 @@ function MapproxySourceFormCtrl($scope, $http, localize, MapproxySources, WMSSou
             $scope.addSource();
         }
     }, true);
+    $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
+        if(wasVisible && !isVisible) {
+            $scope.addSource();
+        }
+    });
 
     MapproxySources.current($scope.source);
 
@@ -704,6 +732,11 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
             $scope.addCache();
         }
     }, true);
+    $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
+        if(wasVisible && !isVisible) {
+            $scope.addCache();
+        }
+    });
 
     $scope.$watch('cache', function() {
         $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.cache);
@@ -715,8 +748,6 @@ function MapproxyCacheFormCtrl($scope, localize, MapproxySources, MapproxyCaches
         }
     });
 };
-
-
 
 function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageService, ProjectDefaults, DataShareService) {
 
@@ -733,21 +764,21 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         }
     };
 
-    var addScalesResToGrid = function() {
+    var addScalesResTo = function(obj) {
         if($scope.custom.res_scales.length > 0) {
             if($scope.custom.resSelected) {
-                delete $scope.grid.data.scales;
-                $scope.grid.data.res = $scope.custom.res_scales;
+                delete obj.scales;
+                obj.res = $scope.custom.res_scales;
             } else {
-                delete $scope.grid.data.res;
-                $scope.grid.data.scales = $scope.custom.res_scales
+                delete obj.res;
+                obj.scales = $scope.custom.res_scales
             }
         }
     };
 
     var setGrid = function() {
         $scope.grid = MapproxyGrids.current();
-
+        DataShareService.data('clearCalculatedTiles', true);
         if(angular.isDefined($scope.grid.data.scales)) {
             $scope.custom.res_scales = angular.copy($scope.grid.data.scales);
             $scope.custom.resSelected = false;
@@ -796,7 +827,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
             event.preventDefault();
         }
         if(!$scope.editareaBinds.save) {
-            addScalesResToGrid();
+            addScalesResTo($scope.grid.data);
         }
 
         $scope.grid = clearData($scope.grid);
@@ -854,6 +885,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         var data = {
             'srs': $scope.grid.data.srs,
             'bbox': $scope.grid.data.bbox,
+            'bbox_srs': $scope.grid.data.bbox_srs,
             'name': $scope.grid.data.name,
             'dpi': $scope.defaults.data.dpi
         };
@@ -869,12 +901,35 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         }
         setGrid();
     };
+    $scope.showMap = function(event) {
+        event.preventDefault();
+        $scope.olmapBinds.proj = $scope.custom.mapSRS;
+        $scope.olmapBinds.visible = true;
+    }
+    $scope.provideGridData = function() {
+        var gridData = {
+            'srs': $scope.grid.data.srs,
+            'bbox_srs': $scope.grid.data.bbox_srs,
+            'origin': $scope.grid.data.origin
+        };
+        if(!isEmpty($scope.grid.data.bbox)) {
+            gridData.grid_bbox = $scope.grid.data.bbox;
+        }
+        addScalesResTo(gridData);
+        if(angular.isDefined(gridData.scales)) {
+            gridData.units = $scope.grid.data.units;
+            gridData.dpi = $scope.defaults.data.dpi;
+        }
+        return gridData;
+    }
 
     $scope.custom = {
         'res_scales': [],
-        'resSelected': false
+        'resSelected': false,
+        'mapSRS': 'EPSG:4326'
     };
     $scope.grid = angular.copy({'data': MapproxyGrids.model});
+
     $scope.formTitle = 'New grid';
 
     $scope.editareaBinds = {
@@ -882,6 +937,18 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         visible: false,
         dirty: false
     };
+
+    $scope.olmapBinds = {
+        visible: false,
+        proj: $scope.custom.mapSRS,
+        layers: {
+            'background': [{
+                title: 'BackgroundLayer',
+                url: 'http://osm.omniscale.net/proxy/service?',
+                name: 'osm'
+            }]
+        }
+    }
 
     MapproxyGrids.current($scope.grid);
 
@@ -894,12 +961,15 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         }
     }, true);
 
-    $scope.$watch('editareaBinds.visible', function(visible) {
-        if(visible) {
-            addScalesResToGrid();
+    $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
+        if(isVisible) {
+            addScalesResTo($scope.grid.data);
             $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.grid);
         }
-    }, true);
+        if(wasVisible && !isVisible) {
+            $scope.addGrid();
+        }
+    });
 
     $scope._messageService = MessageService;
 
@@ -916,8 +986,6 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
         }
     });
 };
-
-
 
 function MapproxyLayerFormCtrl($scope, $http, localize, MapproxySources, MapproxyCaches, MapproxyLayers, MessageService, ProjectDefaults) {
 
@@ -1061,6 +1129,11 @@ function MapproxyLayerFormCtrl($scope, $http, localize, MapproxySources, Mapprox
             $scope.defaults = defaults[0];
         }
     });
+    $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
+        if(wasVisible && !isVisible) {
+            $scope.addLayer();
+        }
+    });
 
     $scope.$watch('editareaBinds.save', function(save) {
         if(save) {
@@ -1164,6 +1237,11 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareSer
             $scope.save();
         }
     }, true);
+    $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
+        if(wasVisible && !isVisible) {
+            $scope.save();
+        }
+    });
 
     $scope.$watch('globals', function() {
             $scope.editareaBinds.editareaValue = $scope.globals;
@@ -1178,15 +1256,10 @@ function MapproxyGlobalsFormCtrl($scope, localize, MapproxyGlobals, DataShareSer
 };
 
 function MapproxyServicesChooserCtrl($scope, DataShareService) {
-    $scope.getClasses = function(service) {
-        var classes = "";
+    $scope.setSelected = function(service) {
         if(service == $scope.selected) {
-            classes += 'selected';
+            return 'selected';
         }
-        if(angular.isDefined($scope.services.data[service].active) && $scope.services.data[service].active) {
-            classes += ' active';
-        }
-        return classes;
     };
 
     $scope.show = function(service) {
@@ -1196,7 +1269,6 @@ function MapproxyServicesChooserCtrl($scope, DataShareService) {
     $scope.$on('dss.services', function() {
         $scope.services = DataShareService.data('services');
     });
-
     $scope.selected = 'wms';
 };
 
@@ -1322,4 +1394,7 @@ function DisplayCalculatedTilesCtrl($scope, DataShareService) {
     $scope.$on('dss.calculatedTiles', function() {
         $scope.calculatedTiles = DataShareService.data('calculatedTiles');
     });
-}
+    $scope.$on('dss.clearCalculatedTiles', function() {
+        $scope.calculatedTiles = undefined;
+    });
+};

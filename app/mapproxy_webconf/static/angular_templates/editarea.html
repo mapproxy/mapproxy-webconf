@@ -1,53 +1,53 @@
 <div>
-    <button class='btn btn-small' ng-show="!editareaBinds.visible" ng-click='editareaBinds.visible=true;' id='_editarea_toggle_button'>${ _('Edit manual') }</button>
-    <div ng-show='editareaBinds.visible'>
-        <h3>${ _('Edit manual') }</h3>
-        <textarea class='input-xlarge' id='_editarea' ng-disabled="ngDisabled"></textarea>
-        <div class="pull-left">
-            <button
-                ng-show='!editareaBinds.editareaValue._manual'
-                ng-disabled="ngDisabled"
-                dialog="ask" dialog-title="${ _('Confirm!') }"
-                dialog-text="${ _('If you save the manual edition, you wont be able to edit it in the above form again. Realy save the manual edition?') }"
-                callback='save()'
-                class='btn btn-small'>
-                ${ _('Save') }
-            </button>
-            <button
-                ng-click='save()'
-                ng-show='editareaBinds.editareaValue._manual'
-                ng-disabled="ngDisabled"
-                class='btn btn-small'>
-                ${ _('Save') }
-            </button>
-            <button
-                ng-click='reset()'
-                ng-disabled="ngDisabled"
-                class='btn btn-small'>
-                ${ _('Reset') }
-            </button>
-        </div>
-        <div class="pull-right">
-            <button
-                ng-click='leaveEditarea()'
-                ng-disabled="ngDisabled"
-                ng-show='!editareaBinds.editareaValue._manual'
-                class='btn btn-small'>
-                ${ _('Back to form edit') }
-            </button>
-            <button
-                ng-show='editareaBinds.editareaValue._manual'
-                ng-disabled="ngDisabled"
-                class='btn btn-small'
-                dialog="ask"
-                dialog-title="${ _('Really go back to form editing') }?"
-                dialog-text="${ _('If you go back to form editing, you will loose all configurations which are not represented by form fields') }"
-                callback="leaveEditarea(true)">
-                ${ _('Back to form edit') }
-            </button>
-        </div>
-        <div class='text-center'>
-            <span message-handler="error" message-types="editarea.error"></span>
-        </div>
+  <button class='btn btn-small'
+          ng-show="!editareaBinds.visible"
+          ng-click='editareaBinds.visible=true;'
+          id='_editarea_toggle_button'>
+    ${ _('Edit manual') }
+  </button>
+  <div ng-show='editareaBinds.visible'>
+    <h3>${ _('Edit manual') }</h3>
+    <textarea class='input-xlarge' id='_editarea' ng-disabled="ngDisabled"></textarea>
+    <div class="pull-left">
+      <button ng-show='!editareaBinds.editareaValue._manual'
+              ng-disabled="ngDisabled"
+              dialog="ask" dialog-title="${ _('Confirm!') }"
+              dialog-text="${ _('If you save the manual edition, you wont be able to edit it in the above form again. Realy save the manual edition?') }"
+              callback='save()'
+              class='btn btn-small'>
+        ${ _('Save') }
+      </button>
+      <button ng-click='save()'
+              ng-show='editareaBinds.editareaValue._manual'
+              ng-disabled="ngDisabled"
+              class='btn btn-small'>
+        ${ _('Save') }
+      </button>
+      <button ng-click='reset()'
+              ng-disabled="ngDisabled"
+              class='btn btn-small'>
+        ${ _('Reset') }
+      </button>
     </div>
+    <div class="pull-right">
+      <button ng-click='leaveEditarea()'
+              ng-disabled="ngDisabled"
+              ng-show='!editareaBinds.editareaValue._manual'
+              class='btn btn-small'>
+        ${ _('Back to form edit') }
+      </button>
+      <button ng-show='editareaBinds.editareaValue._manual'
+              ng-disabled="ngDisabled"
+              class='btn btn-small'
+              dialog="ask"
+              dialog-title="${ _('Really go back to form editing') }?"
+              dialog-text="${ _('If you go back to form editing, you will loose all configurations which are not represented by form fields') }"
+              callback="leaveEditarea(true)">
+        ${ _('Back to form edit') }
+      </button>
+    </div>
+    <div class='text-center'>
+      <span message-handler="error" message-types="editarea.error"></span>
+    </div>
+  </div>
 </div>

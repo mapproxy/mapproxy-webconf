@@ -1,45 +1,44 @@
 %def site_navbar():
-    <a href="${ get_url('configuration', project='base') }">
-      <h2 class="pull-left tab-menu-header">
-        ${ _('Configuration') }
-      </h2>
-    </a>
-    <div ng-controller="MapProxyConfigCtrl" class="pull-right">
-      <div>
-          <button class="btn btn-small" ng-click="writeMapProxyConfig($event)">
-            ${ _('create configuration') }
-          </button>
-      </div>
-      <div message-handler="success" message-types="mapproxy_config.success"></div>
-      <div message-handler="error" message-types="mapproxy_config.error"></div>
+  <a href="${ get_url('configuration', project='base') }">
+    <h2 class="pull-left tab-menu-header">
+      ${ _('Configuration') }
+    </h2>
+  </a>
+  <div ng-controller="MapProxyConfigCtrl" class="pull-right">
+    <div>
+      <button class="btn btn-small" ng-click="writeMapProxyConfig($event)">
+        ${ _('create configuration') }
+      </button>
     </div>
-    <ul class="nav nav-tabs tab-menu">
-      %navigation("sources", _('Sources'))
-      %navigation("grids",  _('Grids'))
-      %navigation("caches", _('Caches'))
-      %navigation("layers", _('Layers'))
-      %navigation("services", _('Services'))
-      %navigation("globals", _('Globals'))
-    </ul>
-
+    <div message-handler="success" message-types="mapproxy_config.success"></div>
+    <div message-handler="error" message-types="mapproxy_config.error"></div>
+  </div>
+  <ul class="nav nav-tabs tab-menu">
+    %navigation("sources", "${ _('Sources') }")
+    %navigation("grids", "${ _('Grids') }")
+    %navigation("caches", "${ _('Caches') }" )
+    %navigation("layers", "${ _('Layers') }" )
+    %navigation("services", "${ _('Services') }" )
+    %navigation("globals", "${ _('Globals') }")
+  </ul>
 % end
 
 %def content():
   % if not defined('base_content'):
     % if defined('leftblock'):
-    <div class="span3 leftblock">
-      %leftblock()
-    </div>
+      <div class="span3 leftblock">
+        %leftblock()
+      </div>
     % end
     % if defined('middleblock'):
-    <div class="span5 middleblock">
-      %middleblock()
-    </div>
+      <div class="span5 middleblock">
+        %middleblock()
+      </div>
     % end
     % if defined('rightblock'):
-    <div class="span4 rightblock">
-      %rightblock()
-    </div>
+      <div class="span4 rightblock">
+        %rightblock()
+      </div>
     % end
   % else:
     %base_content()

@@ -1,21 +1,21 @@
 %def content():
-<div class="span5">
-<p>${ _('The MapProxy configuration is grouped into sections, each configures a different aspect of MapProxy. These are the following sections:') }</p>
-  <dl>
-    <dt>${ _('Globals') }</dt>
-    <dd>${ _('Internals of MapProxy and default values that are used in the other configuration sections.') }</dd>
-    <dt>${ _('Sources') }</dt>
-    <dd>${ _('Define where MapProxy can retrieve new data.') }</dd>
-    <dt>${ _('Caches') }</dt>
-    <dd>${ _('Configure the internal caches.') }</dd>
-    <dt>${ _('Grids') }</dt>
-    <dd>${ _('Define the grids that MapProxy uses to aligns cached images.') }</dd>
-    <dt>${ _('Layers') }</dt>
-    <dd>${ _('Configure the layers that MapProxy offers. Each layer can consist of multiple sources and caches.') }</dd>
-    <dt>${ _('Services') }</dt>
-    <dd>${ _('The services MapProxy offers, e.g. WMS or TMS.') }</dd>
-  </dl>
-</div>
+  <div class="span5">
+  <p>${ _('The MapProxy configuration is grouped into sections, each configures a different aspect of MapProxy. These are the following sections:') }</p>
+    <dl>
+      <dt>${ _('Globals') }</dt>
+      <dd>${ _('Internals of MapProxy and default values that are used in the other configuration sections.') }</dd>
+      <dt>${ _('Sources') }</dt>
+      <dd>${ _('Define where MapProxy can retrieve new data.') }</dd>
+      <dt>${ _('Caches') }</dt>
+      <dd>${ _('Configure the internal caches.') }</dd>
+      <dt>${ _('Grids') }</dt>
+      <dd>${ _('Define the grids that MapProxy uses to aligns cached images.') }</dd>
+      <dt>${ _('Layers') }</dt>
+      <dd>${ _('Configure the layers that MapProxy offers. Each layer can consist of multiple sources and caches.') }</dd>
+      <dt>${ _('Services') }</dt>
+      <dd>${ _('The services MapProxy offers, e.g. WMS or TMS.') }</dd>
+    </dl>
+  </div>
 %end
 
 %rebase base_config base_content=content, project=get('project'), language=get('language')
