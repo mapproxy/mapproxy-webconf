@@ -1330,17 +1330,6 @@ function MapproxyServicesCtrl($scope, localize, MapproxyServices, DataShareServi
     });
 };
 
-function MapproxyConfigCtrl($scope, $http) {
-
-    $scope.mapproxy_yaml = undefined;
-    $scope.yaml_written = false;
-
-    $http.get('/conf/base/yaml').success(function(result) {
-        $scope.mapproxy_yaml = result;
-        $scope.yaml_written = true;
-    });
-};
-
 function ProjectDefaultsCtrl($scope, ProjectDefaults, MessageService) {
     var setDefaults = function() {
         var defaults = ProjectDefaults.list();
