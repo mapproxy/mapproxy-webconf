@@ -175,6 +175,21 @@
           {{'Calculate tiles'|i18n}}
         </button>
         </div>
+        <hr class="formLine">
+        <div labeled="input_label"
+             name-for="map_srs"
+             text="Map SRS">
+          <select ng-options="srs for srs in defaults.data.srs"
+                  id="map_srs"
+                  name="map_srs"
+                  ng-model="custom.mapSRS">
+          </select>
+          <button class="btn btn-small"
+                  ng-click="showMap($event)"
+                  ng-disabled="false">
+            Show map
+          </button>
+        </div>
 
         <hr class="formLine">
         <!-- buttons -->
@@ -196,11 +211,6 @@
              class="pull-right"
              ng-show="!grid._locked&&!grid.default">
         </div>
-        <button class="btn btn-small"
-                ng-click="showMap($event)"
-                ng-disabled="false">
-          Show map
-        </button>
       </form>
     </div>
     <div editarea="editareaBinds"

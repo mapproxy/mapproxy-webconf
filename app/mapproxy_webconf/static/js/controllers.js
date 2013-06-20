@@ -902,6 +902,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
     };
     $scope.showMap = function(event) {
         event.preventDefault();
+        $scope.olmapBinds.proj = $scope.custom.mapSRS;
         $scope.olmapBinds.visible = true;
     }
     $scope.provideGridData = function() {
@@ -923,7 +924,8 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
 
     $scope.custom = {
         'res_scales': [],
-        'resSelected': false
+        'resSelected': false,
+        'mapSRS': 'EPSG:4326'
     };
     $scope.grid = angular.copy({'data': MapproxyGrids.model});
 
@@ -937,8 +939,7 @@ function MapproxyGridFormCtrl($scope, $http, localize, MapproxyGrids, MessageSer
 
     $scope.olmapBinds = {
         visible: false,
-        proj: 'EPSG:4326',
-        extent: [-180, -90, 180, 90],
+        proj: $scope.custom.mapSRS,
         layers: {
             'background': [{
                 title: 'BackgroundLayer',
