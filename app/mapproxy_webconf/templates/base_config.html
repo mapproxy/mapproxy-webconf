@@ -1,5 +1,5 @@
 %def site_navbar():
-  <a href="${ get_url('configuration', project='base') }">
+  <a href="${ get_url('configuration', project=project) }">
     <h2 class="pull-left tab-menu-header">
       ${ _('Configuration') }
     </h2>
@@ -56,4 +56,4 @@
   </li>
 %end
 
-%rebase base content=content, site_navbar=site_navbar, language=get('language'), jsblock=get('jsblock')
+%rebase base content=content, site_navbar=site_navbar, language=get('language'), jsblock=get('jsblock'), project=get('project')

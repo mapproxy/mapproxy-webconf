@@ -53,6 +53,7 @@
 
       /* Set OpenLayers ImgPath */
         OpenLayers.ImgPath = "${ get_url('static', filepath='img/') }";
+        var PROJECT = '${ project }';
 
       /* add directives and services*/
         var app = angular.module('mapproxy_gui', ['angular.extensions', 'localization', 'mapproxy_gui.directives', 'mapproxy_gui.services', 'mapproxy_gui.validators', 'mapproxy_gui.messages', 'mapproxy_gui.tooltips', 'mapproxy_gui.openlayers']);
@@ -82,7 +83,7 @@
             <a class="brand" href="/">MPG</a>
             <ul class="nav">
               <li><a href="${ get_url('projects') }">${ _('Projects') }</a></li>
-              <li><a href="${ get_url('configuration', project='base') }">${ _('Configuration') }</a></li>
+              <li><a href="${ get_url('configuration', project=project) }">${ _('Configuration') }</a></li>
             </ul>
           </div>
         </div>
