@@ -53,7 +53,6 @@
 
       /* Set OpenLayers ImgPath */
         OpenLayers.ImgPath = "${ get_url('static', filepath='img/') }";
-        var PROJECT = '${ project }';
 
       /* add directives and services*/
         var app = angular.module('mapproxy_gui', ['angular.extensions', 'localization', 'mapproxy_gui.directives', 'mapproxy_gui.services', 'mapproxy_gui.validators', 'mapproxy_gui.messages', 'mapproxy_gui.tooltips', 'mapproxy_gui.openlayers']);
@@ -70,6 +69,7 @@
         app.run(function($rootScope, tooltipMapper) {
           tooltipMapper.loadDict("${ get_url('static', filepath='resources/tooltip_dict.js') }");
           $rootScope.LANGUAGE = '${ language }';
+          $rootScope.PROJECT = '${ project }';
         });
 
     </script>
