@@ -40,32 +40,31 @@
       </div>
     </ul>
     <span ng-show="false">{{mapproxy_caches.length - filtered.length}}</span>
+    <ul class="vertical-list">
+      <div class="{{isSelected(item)}}" ng-repeat="item in filtered = (list | filter:{data.name:search}) | orderBy:'name'"
+        ng-click="editItem($event, item)">
+        <li>
+          <i ng-show="item._manual" class="icon-pencil"></i>
+          {{item.data.name}}
+          <i ng-show="!hasDependencies(item)" class="icon-remove"
+             dialog="ask"
+             dialog-title="${ _('Confirm!') }"
+             dialog-text="${ _('Really remove cache:') } {{item.data.name}}?"
+             callback="removeItem($event, item)">
+          </i>
+          <i ng-show="hasDependencies(item)" class="icon-remove"
+            dialog="confirm"
+            dialog-width="600"
+            dialog-height="300"
+            dialog-title="Confirm!"
+            dialog-text="${ _('Can not remove cache:') } {{item.data.name}}<br>${ _('Dependencies are:') }<br>{{getDependencies(item)}}">
+          </i>
+          <i class="icon-share" ng-click="copyItem($event, item)"></i>
+        </li>
+      </div>
+    </ul>
+    <span ng-show="false">{{mapproxy_caches.length - filtered.length}}</span>
   </div>
-  <ul class="vertical-list">
-    <div class="{{isSelected(item)}}" ng-repeat="item in filtered = (list | filter:{data.name:search}) | orderBy:'name'"
-      ng-click="editItem($event, item)">
-      <li>
-        <i ng-show="item._manual" class="icon-pencil"></i>
-        {{item.data.name}}
-        <i ng-show="!hasDependencies(item)" class="icon-remove"
-           dialog="ask"
-           dialog-title="${ _('Confirm!') }"
-           dialog-text="${ _('Really remove cache:') } {{item.data.name}}?"
-           callback="removeItem($event, item)">
-        </i>
-        <i ng-show="hasDependencies(item)" class="icon-remove"
-          dialog="confirm"
-          dialog-width="600"
-          dialog-height="300"
-          dialog-title="Confirm!"
-          dialog-text="${ _('Can not remove cache:') } {{item.data.name}}<br>${ _('Dependencies are:') }<br>{{getDependencies(item)}}">
-        </i>
-        <i class="icon-share" ng-click="copyItem($event, item)"></i>
-      </li>
-    </div>
-  </ul>
-  <span ng-show="false">{{mapproxy_caches.length - filtered.length}}</span>
-</div>
 %end
 
 %def middleblock():
