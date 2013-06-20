@@ -476,7 +476,7 @@ def transform_grid():
     features = []
 
     if feature_count > 1000:
-        polygon = generate_envelope_points(tiles_bbox, 128)
+        polygon = generate_envelope_points(grid_srs.align_bbox(tiles_bbox), 128)
         polygon = list(grid_srs.transform_to(map_srs, polygon)) if map_srs and grid_srs else list(polygon)
 
         features.append({
@@ -495,7 +495,7 @@ def transform_grid():
         for tile in tiles:
             if tile:
                 x, y, z = tile
-                polygon = generate_envelope_points(tilegrid.tile_bbox(tile), 16)
+                polygon = generate_envelope_points(grid_srs.align_bbox(tilegrid.tile_bbox(tile)), 16)
                 polygon = list(grid_srs.transform_to(map_srs, polygon)) if map_srs and grid_srs else list(polygon)
 
                 new_feature = {
