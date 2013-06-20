@@ -157,7 +157,7 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
             if(angular.isDefined(_this._rootScope))
                 _this._rootScope.$broadcast(_this._section + '.current');
         } else {
-            return $.extend({}, {'data': _this._model}, _this._item);
+            return angular.copy($.extend({}, {'data': _this._model}, _this._item));
         }
     };
     this.last = function() {
