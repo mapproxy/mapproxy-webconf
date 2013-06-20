@@ -60,13 +60,19 @@
       /* Set globals */
         angular.module('mapproxy_gui.openlayers').value('TRANSFORM_BBOX_URL', "${ get_url('transform_bbox') }");
         angular.module('mapproxy_gui.openlayers').value('TRANSFORM_GRID_URL', "${ get_url('transform_grid') }");
+        angular.module('mapproxy_gui.openlayers').value('LAYERSWITCHER_TEMPLATE_URL', "${ get_url('angular_template', filename='layerswitcher') }");
+        angular.module('mapproxy_gui.openlayers').value('OPENLAYERSMAP_TEMPLATE_URL', "${ get_url('angular_template', filename='openlayersmap') }");
+
+        angular.module('mapproxy_gui.directives').value('EDITAREA_TEMPLATE_URL', "${ get_url('angular_template', filename='editarea') }");
+        angular.module('mapproxy_gui.directives').value('EXTENDABLE_INPUT_LIST_TEMPLATE_URL', "${ get_url('angular_template', filename='extendable_input_list') }");
+
         app.run(function($rootScope, tooltipMapper) {
           tooltipMapper.loadDict("${ get_url('static', filepath='resources/tooltip_dict.js') }");
           $rootScope.LANGUAGE = '${ language }';
         });
 
     </script>
-    %include angular_templates
+    %include angular/base_templates
   </head>
   <body>
     <div id="wrapper">

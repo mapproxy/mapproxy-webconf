@@ -458,7 +458,7 @@ directive('labeled', function($parse, $templateCache, localize) {
     };
 }).
 
-directive('extendableInputList', function($timeout) {
+directive('extendableInputList', function($timeout, EXTENDABLE_INPUT_LIST_TEMPLATE_URL) {
     //form validation issue:
     //http://stackoverflow.com/questions/12044277/how-to-validate-inputs-dynamically-created-using-ng-repeat-ng-show-angular
     return {
@@ -470,7 +470,7 @@ directive('extendableInputList', function($timeout) {
         },
         replace: true,
         transclude: true,
-        templateUrl: '/static/angular_templates/extendable_input_list.html',
+        templateUrl: EXTENDABLE_INPUT_LIST_TEMPLATE_URL,
         link: function(scope, element, attrs) {
             var focusElement = false;
             scope.items = [];
@@ -535,7 +535,7 @@ directive('extendableInputList', function($timeout) {
     };
 }).
 
-directive('editarea', function($http, MessageService) {
+directive('editarea', function($http, MessageService, EDITAREA_TEMPLATE_URL) {
     return {
         restrict: 'A',
         scope: {
@@ -544,7 +544,7 @@ directive('editarea', function($http, MessageService) {
         },
         replace: true,
         transclude: true,
-        templateUrl: '/static/angular_templates/editarea.html',
+        templateUrl: EDITAREA_TEMPLATE_URL,
         link: function(scope, element, attrs) {
             var _editareaElement = $(element).find('#_editarea');
 

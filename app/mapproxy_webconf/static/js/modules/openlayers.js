@@ -79,14 +79,14 @@ constant('DEFAULT_VECTOR_STYLING', {
     }
 }).
 
-directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeout, DEFAULT_VECTOR_STYLING, TRANSFORM_BBOX_URL) {
+directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeout, DEFAULT_VECTOR_STYLING, TRANSFORM_BBOX_URL, OPENLAYERSMAP_TEMPLATE_URL, LAYERSWITCHER_TEMPLATE_URL) {
     return {
         restrict: 'A',
         scope: {
             olmapBinds: '=olMap'
         },
         transclude: true,
-        templateUrl: '/static/angular_templates/openlayersmap.html',
+        templateUrl: OPENLAYERSMAP_TEMPLATE_URL,
         controller: function($scope, $element, $attrs) {
             $scope.eventHandlers = {
                 checkMaxFeaturesAfterAddOrActivate: function() {
@@ -119,7 +119,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
             var loadLayerSwitcherTemplate = function() {
                 var layerSwitcherTemplate = $templateCache.get("layerswitcher_template");
                 if(angular.isUndefined(layerSwitcherTemplate)) {
-                    $http.get('/static/angular_templates/layerswitcher.html').success(function(layerSwitcherTemplate) {
+                    $http.get(LAYERSWITCHER_TEMPLATE_URL).success(function(layerSwitcherTemplate) {
                         $templateCache.put('layerswitcher_template', layerSwitcherTemplate);
                         renderLayerSwitcher($compile(layerSwitcherTemplate)($scope));
                     });

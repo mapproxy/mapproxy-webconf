@@ -329,6 +329,10 @@ def static(filepath):
 def i18n(filename):
     return static_file(filename, root=os.path.join(os.path.dirname(__file__), 'static/i18n'))
 
+@app.route('/template/<filename>', name='angular_template')
+def angular_template(filename):
+    return template(os.path.join(os.path.dirname(__file__), 'templates/angular', filename))
+
 @app.route('/yaml', 'POST', name='json_to_yaml')
 def create_yaml():
     data = request.json
