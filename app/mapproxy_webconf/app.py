@@ -7,8 +7,8 @@ from xml.etree.ElementTree import ParseError
 
 from mapproxy.client import http
 from mapproxy.script.scales import scale_to_res, res_to_scale
-from mapproxy.srs import SRS, generate_envelope_points
-from mapproxy.grid import tile_grid
+from mapproxy.srs import SRS, generate_envelope_points, TransformationError
+from mapproxy.grid import tile_grid, GridError
 
 from . import bottle
 from . import config
@@ -420,7 +420,6 @@ def transform_bbox():
     bbox = request.json.get('bbox')
     source_srs = request.json.get('sourceSRS')
     dest_srs = request.json.get('destSRS')
-    print source_srs, dest_srs
     source = SRS(source_srs)
     dest = SRS(dest_srs)
     transformed_bbox = source.transform_bbox_to(dest, bbox)
@@ -429,11 +428,27 @@ def transform_bbox():
 
 @app.route('/transform_grid', 'POST', name='transform_grid')
 def transform_grid():
-    view_bbox = request.forms.get('bbox', '').split(',')
-    if view_bbox:
-        view_bbox = map(float, view_bbox)
+    def return_map_message(points, message):
+        return {"type":"FeatureCollection",
+            "features": [{
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        points
+                    ]
+                },
+                "properties": {
+                    "message": message
+                }
+            }]
+        }
+
+    request_bbox = request.forms.get('bbox', '').split(',')
+    if request_bbox:
+        request_bbox = map(float, request_bbox)
     else:
-        view_bbox = None
+        request_bbox = None
 
     grid_bbox =request.forms.get('grid_bbox', None)
 
@@ -478,7 +493,9 @@ def transform_grid():
     except ValueError as e:
         response.status = 400
         return {"error": e.message}
-
+    except TransformationError:
+        x0, y0, x1, y1 = request_bbox
+        return return_map_message([[x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0, y0]], _('Given bbox can not be used with given SRS'))
 
     if grid_bbox is None:
         grid_bbox = tilegrid.bbox
@@ -486,7 +503,9 @@ def transform_grid():
         grid_bbox = grid_bbox_srs.transform_bbox_to(grid_srs, grid_bbox) if grid_bbox_srs and grid_srs else grid_bbox
 
     if map_srs and grid_srs:
-        view_bbox = map_srs.transform_bbox_to(grid_srs, view_bbox)
+        view_bbox = map_srs.transform_bbox_to(grid_srs, request_bbox)
+    else:
+        view_bbox = request_bbox
 
     view_bbox = [
         max(grid_bbox[0], view_bbox[0]),
@@ -494,8 +513,11 @@ def transform_grid():
         min(grid_bbox[2], view_bbox[2]),
         min(grid_bbox[3], view_bbox[3])
     ]
-
-    tiles_bbox, size, tiles = tilegrid.get_affected_level_tiles(bbox=view_bbox, level=level)
+    try:
+        tiles_bbox, size, tiles = tilegrid.get_affected_level_tiles(bbox=view_bbox, level=level)
+    except GridError:
+        x0, y0, x1, y1 = request_bbox
+        return return_map_message([[x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0, y0]], _('Given bbox can not be used with given SRS'))
 
     feature_count = size[0] * size[1]
     features = []
@@ -503,28 +525,14 @@ def transform_grid():
     if feature_count > 1000:
         polygon = generate_envelope_points(grid_srs.align_bbox(tiles_bbox), 128)
         polygon = list(grid_srs.transform_to(map_srs, polygon)) if map_srs and grid_srs else list(polygon)
+        return return_map_message([list(point) for point in polygon] + [list(polygon[0])], _("Too many tiles. Please zoom in."))
 
-
-        features.append({
-            "type": "Feature",
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [
-                    [list(point) for point in polygon] + [list(polygon[0])]
-                ]
-            },
-            "properties": {
-                "message": _("Too many tiles. Please zoom in.")
-            }
-        })
     else:
         for tile in tiles:
             if tile:
                 x, y, z = tile
                 polygon = generate_envelope_points(grid_srs.align_bbox(tilegrid.tile_bbox(tile)), 16)
-                print polygon
                 polygon = list(grid_srs.transform_to(map_srs, polygon)) if map_srs and grid_srs else list(polygon)
-                print polygon
 
                 new_feature = {
                     "type": "Feature",
@@ -535,6 +543,7 @@ def transform_grid():
                         ]
                     }
                 }
+
                 if feature_count == 1:
                     xc0, yc0, xc1, yc1 = grid_srs.transform_bbox_to(map_srs, view_bbox) if map_srs and grid_srs else view_bbox
                     features.append({
@@ -547,7 +556,6 @@ def transform_grid():
                         "geometry": {
                             "type": "Point",
                             "coordinates": [xc0 + (xc1-xc0) /2, yc0 + (yc1-yc0)/2]
-
                         }
                     })
                 elif feature_count <= 100:
@@ -556,6 +564,7 @@ def transform_grid():
                         "y": y,
                         "z": z
                     }
+
                 features.append(new_feature)
 
     return {"type":"FeatureCollection",
