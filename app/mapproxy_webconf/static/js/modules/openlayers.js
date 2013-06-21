@@ -564,6 +564,15 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING
             };
             $scope.gridLevel = 0;
             $scope.maxLevel = 20;
+            $scope.pointLabelRule = new OpenLayers.Rule({
+                filter: new OpenLayers.Filter.Function({
+                    evaluate: function(attrs) {
+                        return angular.isDefined(attrs.x) && angular.isDefined(attrs.y) && angular.isDefined(attrs.z);
+                }}),
+                symbolizer: {
+                    'label': "${z}/${x}/${y}"
+                }
+            });
         },
         link: function(scope, element, attrs, olMapCtrl) {
             olMapCtrl.registerExtension('layers', function() {
@@ -604,15 +613,6 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING
                             new OpenLayers.Rule({
                                 filter: new OpenLayers.Filter.Function({
                                     evaluate: function(attrs) {
-                                        return angular.isDefined(attrs.x) && angular.isDefined(attrs.y) && angular.isDefined(attrs.z);
-                                }}),
-                                symbolizer: {
-                                    'label': "${z}/${x}/${y}"
-                                }
-                            }),
-                            new OpenLayers.Rule({
-                                filter: new OpenLayers.Filter.Function({
-                                    evaluate: function(attrs) {
                                         return angular.isDefined(attrs.message);
                                 }}),
                                 symbolizer: {
@@ -625,7 +625,8 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING
                                         return (!(angular.isDefined(attrs.x) && angular.isDefined(attrs.y) && angular.isDefined(attrs.z)) && !angular.isDefined(attrs.message))
                                     }
                                 })
-                            })
+                            }),
+                            scope.pointLabelRule
                         ]})
                     }),
                 };
@@ -639,6 +640,24 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING
                 } else {
                     olMapCtrl.olmapBinds.layers.vector = [scope.layer];
                 }
+                scope.pointLayer = {
+                    'name': 'Labels',
+                    'title': 'Labels',
+                    'visibility': true,
+                    olLayer: {
+                        setVisibility: function(visible) {
+                            var rules = scope.layer.olLayer.styleMap.styles.default.rules;
+                            if(visible) {
+                                rules.push(scope.pointLabelRule)
+                            } else {
+                                rules.splice(rules.indexOf(scope.pointLabelRule), 1)
+                            }
+                            scope.layer.olLayer.styleMap.styles.default.rules = rules;
+                            scope.layer.olLayer.redraw();
+                        }
+                    }
+                }
+                olMapCtrl.olmapBinds.layers.vector.push(scope.pointLayer)
             });
 
             olMapCtrl.registerExtension('map', function(map) {
