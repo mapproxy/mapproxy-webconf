@@ -1213,14 +1213,7 @@ function MapproxyGlobalsFormCtrl($scope, TranslationService, MapproxyGlobals, Da
         $scope.editareaBinds.save = false;
     };
 
-    $scope.globals = {
-        'data': {
-            'cache': {
-                'meta_size': [null, null]
-            },
-            'image': {}
-        }
-    };
+    $scope.globals = angular.copy({'data': MapproxyGlobals.model});
 
     DataShareService.data('globals', $scope.globals);
 
