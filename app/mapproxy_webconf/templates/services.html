@@ -1,6 +1,6 @@
 %def leftblock():
-  <h3>${ _('Services') }</h3>
-  <div ng-controller="MapproxyServicesChooserCtrl">
+  <div ng-controller="MapproxyServicesChooserCtrl" ng-show="!_editarea_visible">
+    <h3>${ _('Services') }</h3>
     <ul class="vertical-list">
       <div class="{{setSelected(service)}}"
            ng-repeat="(service, data) in services.data"
@@ -10,6 +10,8 @@
               {{translate(service)}}</li>
       </div>
     </ul>
+    <hr>
+    <div id="_editarea_toggle_button_container"></div>
   </div>
 %end
 
@@ -151,7 +153,7 @@
     </div>
   </script>
   <div ng-controller="MapproxyServicesCtrl">
-    <form name="form">
+    <form name="form" ng-show="!editareaBinds.visible">
       <div ng-include src="template"></div>
       <hr>
       <button class="btn btn-small"
@@ -161,13 +163,17 @@
               ng-class="{'btn-success': form.$valid}">
         ${ _('Save') }
       </button>
-      <span message-handler="success"
-            message-types="services.add_success,services.update_success">
-      </span>
-      <span message-handler="error"
-            message-types="services.form_error,services.load_error,services.update_error,services.add_error">
-      </span>
     </form>
+    <div editarea="editareaBinds"
+         yaml-URL="${get_url('json_to_yaml')}"
+         json-URL="${get_url('yaml_to_json')}">
+    </div>
+    <span message-handler="success"
+          message-types="services.add_success,services.update_success">
+    </span>
+    <span message-handler="error"
+          message-types="services.form_error,services.load_error,services.update_error,services.add_error">
+    </span>
   </div>
 %end
 

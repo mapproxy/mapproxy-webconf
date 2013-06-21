@@ -1274,7 +1274,12 @@ function MapproxyServicesChooserCtrl($scope, TranslationService, DataShareServic
     $scope.$on('dss.services', function() {
         $scope.services = DataShareService.data('services');
     });
+    $scope.$on('dss._editarea_visible', function() {
+        $scope._editarea_visible = DataShareService.data('_editarea_visible');
+    });
+
     $scope.selected = 'wms';
+    $scope._editarea_visible = false;
 };
 
 function MapproxyServicesCtrl($scope, TranslationService, MapproxyServices, DataShareService, MessageService, ProjectDefaults) {
@@ -1282,7 +1287,11 @@ function MapproxyServicesCtrl($scope, TranslationService, MapproxyServices, Data
         var services = MapproxyServices.list();
         if(services.length > 0) {
             $scope.services = $.extend(true, $scope.services, services[0]);
-            DataShareService.data('services', $scope.services);
+        }
+        DataShareService.data('services', $scope.services);
+        $scope.editareaBinds.editareaValue = $scope.services;
+        if($scope.services._manual) {
+            $scope.editareaBinds.visible = true;
         }
     };
 
@@ -1294,12 +1303,22 @@ function MapproxyServicesCtrl($scope, TranslationService, MapproxyServices, Data
         if(angular.isDefined(event)) {
             event.preventDefault();
         }
+        $scope.services._manual = $scope.editareaBinds.visible;
         MapproxyServices.add($scope.services);
+        $scope.form.$setPristine();
+        $scope.editareaBinds.dirty = false;
+        $scope.editareaBinds.save = false;
     };
 
     $scope.services = angular.copy({'data': MapproxyServices.model});
 
     DataShareService.data('services', $scope.services);
+
+    $scope.editareaBinds = {
+        editareaValue: $scope.services,
+        visible: false,
+        dirty: false
+    }
 
     $scope.template = 'wms.html'
 
@@ -1318,6 +1337,18 @@ function MapproxyServicesCtrl($scope, TranslationService, MapproxyServices, Data
         var defaults = ProjectDefaults.list();
         if(defaults.length > 0) {
             $scope.defaults = defaults[0];
+        }
+    });
+    $scope.$watch('editareaBinds.save', function(save) {
+        if(save) {
+            $scope.services = $scope.editareaBinds.editareaValue;
+            $scope.save();
+        }
+    });
+    $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
+        DataShareService.data('_editarea_visible', isVisible)
+        if(wasVisible && !isVisible) {
+            $scope.save()
         }
     });
     $scope.$on('dss.service', setTemplate);
