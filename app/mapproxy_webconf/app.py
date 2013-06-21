@@ -418,7 +418,7 @@ def transform_bbox():
     dest_srs = request.json.get('destSRS')
     source = SRS(source_srs)
     dest = SRS(dest_srs)
-    transformed_bbox = source.transform_bbox_to(dest, bbox)
+    transformed_bbox = source.transform_bbox_to(dest, source.align_bbox(bbox))
 
     return {'result': transformed_bbox}
 
@@ -533,7 +533,7 @@ def transform_grid():
 
     if map_srs and grid_srs:
         if is_valid_transformation(request_bbox, map_srs, grid_srs):
-            view_bbox = map_srs.transform_bbox_to(grid_srs, request_bbox)
+            view_bbox = map_srs.transform_bbox_to(grid_srs, map_srs.align_bbox(request_bbox))
         else:
             view_bbox = grid_bbox
     else:
