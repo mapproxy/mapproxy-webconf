@@ -715,7 +715,7 @@ var toggleGroupCtrl = function($scope, $element) {
     };
     $scope.focusFirst = function() {
         $($element)
-            .find(':input:not(:checkbox):not(:button):not(:radio):first')
+            .find(':input:not(:checkbox):not(:button):not(:radio):visible:first')
             .focus();
     };
     $scope.isOpen = function() {
