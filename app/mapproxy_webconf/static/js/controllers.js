@@ -1239,6 +1239,7 @@ function MapproxyGlobalsFormCtrl($scope, TranslationService, MapproxyGlobals, Da
         }
     }, true);
     $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
+        DataShareService.data('_editarea_visible', isVisible)
         if(wasVisible && !isVisible) {
             $scope.save();
         }
