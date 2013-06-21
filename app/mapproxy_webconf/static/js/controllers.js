@@ -1297,13 +1297,7 @@ function MapproxyServicesCtrl($scope, TranslationService, MapproxyServices, Data
         MapproxyServices.add($scope.services);
     };
 
-    $scope.services = {'data': {
-        'wms': {},
-        'wmts': {},
-        'tms': {},
-        'kml': {},
-        'demo': {}
-    }};
+    $scope.services = angular.copy({'data': MapproxyServices.model});
 
     DataShareService.data('services', $scope.services);
 

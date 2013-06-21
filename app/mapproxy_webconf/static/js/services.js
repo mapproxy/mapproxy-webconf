@@ -406,10 +406,45 @@ var defaultsModel = {
     'dpi': undefined,
     'srs': []
 };
+var servicesModel = {
+    'demo': {
+        'active': undefined
+    },
+    'kml': {
+        'active': undefined
+    },
+    'tms': {
+        'active': undefined
+    },
+    'wms': {
+        'active': undefined,
+        'srs': undefined,
+        'md': {
+            'title': undefined,
+            'abstract': undefined,
+            'online_resource': undefined,
+            'fees': undefined,
+            'access_constraints': undefined,
+            'contact': {
+                'person': undefined,
+                'position': undefined,
+                'organization': undefined,
+                'address': undefined,
+                'city': undefined,
+                'postcode': undefined,
+                'country': undefined,
+                'phone': undefined,
+                'fax': undefined,
+                'email': undefined
+    }}},
+    'wmts': {
+        'active': undefined
+    }
+};
 
 var layerService = new MapproxyLayerService('layers', layerModel);
 var globalsService = new MapproxyBaseService('globals', globalsModel);
-var servicesService = new MapproxyBaseService('services');
+var servicesService = new MapproxyBaseService('services', servicesModel);
 var cacheService = new MapproxyBaseService('caches', cacheModel, [layerService]);
 var gridService = new MapproxyBaseService('grids', gridModel, [cacheService]);
 var sourceService = new MapproxyBaseService('sources', sourceModel, [cacheService, layerService]);
