@@ -253,10 +253,6 @@ RESTGrids().setup_routing(app)
 
 ## other
 
-@app.route('/conf/<project>/services')
-def services_list(project, storage):
-    return storage.get_all('services', project, with_id=True)
-
 @app.route('/', name='index')
 def index():
     return template('index')
