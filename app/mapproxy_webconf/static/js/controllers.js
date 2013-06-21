@@ -902,7 +902,7 @@ function MapproxyGridFormCtrl($scope, $http, TranslationService, MapproxyGrids, 
             return false;
         }
 
-        var srsOK = ["EPSG:4326", "EPSG:900913", "EPSG:3857", "EPSG:102100", "EPSG:102113"].indexOf(srs) != -1;
+        var srsOK = ["EPSG:4326", "EPSG:900913", "EPSG:3857", "EPSG:102100", "EPSG:102113"].indexOf($scope.grid.data.srs) != -1;
 
         var bboxOK = angular.isDefined($scope.grid.data.bbox) && $scope.grid.data.bbox.length == 4 && $scope.grid.data.bbox.indexOf(null) == -1;
 
