@@ -148,6 +148,10 @@
                 <option value="JPEG">JPEG</option>
                 <option value="GIF">GIF</option>
               </select>
+              <button class="btn btn-small"
+                      ng-click="source.data.supported_formats=undefined;">
+                ${ _('Clear selection') }
+              </button>
             </div>
             <hr class="formLine">
             <div labeled='input_label_toggleable'
