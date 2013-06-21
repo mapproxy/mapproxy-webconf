@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-06-21 09:47+0200\n"
-"PO-Revision-Date: 2013-06-21 09:48+0100\n"
+"POT-Creation-Date: 2013-06-21 11:18+0200\n"
+"PO-Revision-Date: 2013-06-21 11:12+0100\n"
 "Last-Translator: \n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -17,8 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: mapproxy_webconf/app.py:97
-#: mapproxy_webconf/app.py:123
+#: mapproxy_webconf/app.py:97 mapproxy_webconf/app.py:123
 msgid "missing URL"
 msgstr "Keine URL vorhanden"
 
@@ -46,10 +45,11 @@ msgstr "Erstellen der YAML fehlgeschlagen"
 msgid "parsing yaml failed"
 msgstr "Lesen der YAML fehlgeschlagen"
 
-#: mapproxy_webconf/app.py:494
-#: mapproxy_webconf/app.py:516
+#: mapproxy_webconf/app.py:494 mapproxy_webconf/app.py:516
 msgid "Given bbox can not be used with given SRS"
-msgstr "Die angegebene BBox kann mit dem angegebenen Koordinatensystem nicht benutzt werden"
+msgstr ""
+"Die angegebene BBox kann mit dem angegebenen Koordinatensystem nicht "
+"benutzt werden"
 
 #: mapproxy_webconf/app.py:524
 msgid "Too many tiles. Please zoom in."
@@ -74,8 +74,7 @@ msgstr "Für die Source %(source)s fehlt der Parameter \"layers\""
 msgid "Missing \"req\" for source %(source)s"
 msgstr "Für die Source %(source)s fehlt der Parameter \"req\""
 
-#: mapproxy_webconf/config.py:83
-#: mapproxy_webconf/config.py:85
+#: mapproxy_webconf/config.py:83 mapproxy_webconf/config.py:85
 #, python-format
 msgid "Source %(source)s for cache %(cache)s not found in config"
 msgstr "Source \"%(source)s\" für den Cache \"%(cache)s\" nicht gefunden"
@@ -96,8 +95,12 @@ msgstr "Für den Layer \"%(layer)s\" fehlt der Parameter \"sources\""
 
 #: mapproxy_webconf/config.py:111
 #, python-format
-msgid "Source %(source)s for layer %(layer)s neither found in caches- nor in sources-section"
-msgstr "Für den Layer \"%(layer)s\" wurde die Source \"%(source)s\" weder unter Caches noch unter Sources gefunden"
+msgid ""
+"Source %(source)s for layer %(layer)s neither found in caches- nor in "
+"sources-section"
+msgstr ""
+"Für den Layer \"%(layer)s\" wurde die Source \"%(source)s\" weder unter "
+"Caches noch unter Sources gefunden"
 
 #: mapproxy_webconf/config.py:115
 msgid "Missing services section"
@@ -114,12 +117,20 @@ msgid "%(type)s %(name)s contains invalid value in %(item)s item"
 msgstr "Der Wert für %(item)s im Abschnitt %(type)s %(name)s ist ungültig"
 
 #: mapproxy_webconf/storage.py:28
-msgid "Found another YAMLStore plugin with conflicting settings (non-unique keyword)."
-msgstr "Es besteht ein Konflikt in der Konfiguration mit einem anderen YAMLStore plugin (nicht eindeutiges Schlüsselwort)."
+msgid ""
+"Found another YAMLStore plugin with conflicting settings (non-unique "
+"keyword)."
+msgstr ""
+"Es besteht ein Konflikt in der Konfiguration mit einem anderen YAMLStore "
+"plugin (nicht eindeutiges Schlüsselwort)."
 
 #: mapproxy_webconf/storage.py:92
-msgid "Found another SQLiteStore plugin with conflicting settings (non-unique keyword)."
-msgstr "Es besteht ein Konflikt in der Konfiguration mit einem anderen SQLiteStore plugin (nicht eindeutiges Schlüsselwort):"
+msgid ""
+"Found another SQLiteStore plugin with conflicting settings (non-unique "
+"keyword)."
+msgstr ""
+"Es besteht ein Konflikt in der Konfiguration mit einem anderen "
+"SQLiteStore plugin (nicht eindeutiges Schlüsselwort):"
 
 #: mapproxy_webconf/templates/base.html:85
 msgid "Projects"
@@ -153,7 +164,7 @@ msgstr "Cache"
 #: mapproxy_webconf/templates/grids.html:11
 #: mapproxy_webconf/templates/layers.html:27
 #: mapproxy_webconf/templates/layers.html:136
-#: mapproxy_webconf/templates/layers.html:165
+#: mapproxy_webconf/templates/layers.html:164
 #: mapproxy_webconf/templates/sources.html:22
 msgid "Filter"
 msgstr "Filter"
@@ -212,7 +223,7 @@ msgstr "Name"
 #: mapproxy_webconf/templates/caches.html:158
 #: mapproxy_webconf/templates/config_index.html:7
 #: mapproxy_webconf/templates/layers.html:80
-#: mapproxy_webconf/templates/layers.html:162
+#: mapproxy_webconf/templates/layers.html:161
 #: mapproxy_webconf/templates/sources.html:14
 msgid "Sources"
 msgstr "Sources"
@@ -254,7 +265,7 @@ msgid "Reset"
 msgstr "Zurücksetzen"
 
 #: mapproxy_webconf/templates/caches.html:164
-#: mapproxy_webconf/templates/layers.html:168
+#: mapproxy_webconf/templates/layers.html:167
 #: mapproxy_webconf/templates/sources.html:24
 msgid "Not shown sources"
 msgstr "Ausgeblendete Sources"
@@ -271,8 +282,13 @@ msgid "Not shown grids"
 msgstr "Ausgeblendete Grids"
 
 #: mapproxy_webconf/templates/config_index.html:3
-msgid "The MapProxy configuration is grouped into sections, each configures a different aspect of MapProxy. These are the following sections:"
-msgstr "Die MapProxy Konfiguration ist in Abschnitte unterteilt, die die unterschiedlichen Bereiche des MapProxy konfigurieren. Dies sind die folgenden Abschnitte:"
+msgid ""
+"The MapProxy configuration is grouped into sections, each configures a "
+"different aspect of MapProxy. These are the following sections:"
+msgstr ""
+"Die MapProxy Konfiguration ist in Abschnitte unterteilt, die die "
+"unterschiedlichen Bereiche des MapProxy konfigurieren. Dies sind die "
+"folgenden Abschnitte:"
 
 #: mapproxy_webconf/templates/config_index.html:5
 #: mapproxy_webconf/templates/globals.html:3
@@ -281,8 +297,12 @@ msgid "Globals"
 msgstr "Globals"
 
 #: mapproxy_webconf/templates/config_index.html:6
-msgid "Internals of MapProxy and default values that are used in the other configuration sections."
-msgstr "MapProxy spezifische Konfigurationen und Standartwerte für andere Konfigurationsabschnitte."
+msgid ""
+"Internals of MapProxy and default values that are used in the other "
+"configuration sections."
+msgstr ""
+"MapProxy spezifische Konfigurationen und Standartwerte für andere "
+"Konfigurationsabschnitte."
 
 #: mapproxy_webconf/templates/config_index.html:8
 msgid "Define where MapProxy can retrieve new data."
@@ -294,7 +314,9 @@ msgstr "Konfiguriert die internen Caches."
 
 #: mapproxy_webconf/templates/config_index.html:12
 msgid "Define the grids that MapProxy uses to aligns cached images."
-msgstr "Definieren der Grids die MapProxy verwendet um die gecachten Kacheln auszurichten."
+msgstr ""
+"Definieren der Grids die MapProxy verwendet um die gecachten Kacheln "
+"auszurichten."
 
 #: mapproxy_webconf/templates/config_index.html:13
 #: mapproxy_webconf/templates/sources.html:304
@@ -302,8 +324,12 @@ msgid "Layers"
 msgstr "Layers"
 
 #: mapproxy_webconf/templates/config_index.html:14
-msgid "Configure the layers that MapProxy offers. Each layer can consist of multiple sources and caches."
-msgstr "Konfiguriert die durch MapProxy bereitgestellten Layer. Jeder Layer kann aus mehreren Sourcen und Caches bestehen."
+msgid ""
+"Configure the layers that MapProxy offers. Each layer can consist of "
+"multiple sources and caches."
+msgstr ""
+"Konfiguriert die durch MapProxy bereitgestellten Layer. Jeder Layer kann "
+"aus mehreren Sourcen und Caches bestehen."
 
 #: mapproxy_webconf/templates/config_index.html:15
 #: mapproxy_webconf/templates/services.html:3
@@ -427,7 +453,9 @@ msgstr "Abschließen des Bearbeitens für Grid"
 
 #: mapproxy_webconf/templates/grids.html:240
 msgid "If you lock the grid, you won't be able to edit it again"
-msgstr "Wenn das Bearbeiten dieses Grids abgeschlossen wird, ist kein weiteres Bearbeiten dieses Grids möglich"
+msgstr ""
+"Wenn das Bearbeiten dieses Grids abgeschlossen wird, ist kein weiteres "
+"Bearbeiten dieses Grids möglich"
 
 #: mapproxy_webconf/templates/grids.html:245
 msgid "Lock"
@@ -439,8 +467,14 @@ msgid "Unlock"
 msgstr "Bearbeitung wieder aufnehmen"
 
 #: mapproxy_webconf/templates/grids.html:251
-msgid "If you unlock this grid it you need to check settings of all caches you use this grid and delete all affacted caches from disk"
-msgstr "Wenn Sie die Bearbeitung des Grids wieder aufnehmen müssen Sie die Einstellungen aller Caches überprüfen, die dieses Grid verwenden. Weiterhin ist es nötig, alle bereits gecachten Daten dieser Caches zu löschen"
+msgid ""
+"If you unlock this grid it you need to check settings of all caches you "
+"use this grid and delete all affacted caches from disk"
+msgstr ""
+"Wenn Sie die Bearbeitung des Grids wieder aufnehmen müssen Sie die "
+"Einstellungen aller Caches überprüfen, die dieses Grid verwenden. "
+"Weiterhin ist es nötig, alle bereits gecachten Daten dieser Caches zu "
+"löschen"
 
 #: mapproxy_webconf/templates/grids.html:276
 msgid "Level"
@@ -483,11 +517,6 @@ msgstr "Layer bearbeiten"
 #: mapproxy_webconf/templates/services.html:24
 msgid "Title"
 msgstr "Titel"
-
-#: mapproxy_webconf/templates/layers.html:151
-#: mapproxy_webconf/templates/layers.html:180
-msgid "Informations"
-msgstr "Informationen"
 
 #: mapproxy_webconf/templates/project_index.html:6
 msgid "Project defaults"
@@ -777,8 +806,13 @@ msgid "Edit manual"
 msgstr "Manuell Editieren"
 
 #: mapproxy_webconf/templates/angular/editarea.html:15
-msgid "If you save the manual edition, you wont be able to edit it in the above form again. Realy save the manual edition?"
-msgstr "Wenn Sie die manuelle Bearbeitung speichern werden Sie nicht mehr in der Lage sein, dieses Element im Formular zu bearbeiten. Möchten Sie wirklich die manuelle Bearbeitung speichern?"
+msgid ""
+"If you save the manual edition, you wont be able to edit it in the above "
+"form again. Realy save the manual edition?"
+msgstr ""
+"Wenn Sie die manuelle Bearbeitung speichern werden Sie nicht mehr in der "
+"Lage sein, dieses Element im Formular zu bearbeiten. Möchten Sie wirklich"
+" die manuelle Bearbeitung speichern?"
 
 #: mapproxy_webconf/templates/angular/editarea.html:37
 #: mapproxy_webconf/templates/angular/editarea.html:46
@@ -790,8 +824,12 @@ msgid "Really go back to form editing"
 msgstr "Wirklich zum formularbasierten Editieren zurückkehren"
 
 #: mapproxy_webconf/templates/angular/editarea.html:44
-msgid "If you go back to form editing, you will loose all configurations which are not represented by form fields"
-msgstr "Wenn Sie zum formularbasierten Editieren zurückkehren verlieren Sie alle nicht durch ein Formularfeld representierten Konfigurationen"
+msgid ""
+"If you go back to form editing, you will loose all configurations which "
+"are not represented by form fields"
+msgstr ""
+"Wenn Sie zum formularbasierten Editieren zurückkehren verlieren Sie alle "
+"nicht durch ein Formularfeld representierten Konfigurationen"
 
 #: mapproxy_webconf/templates/angular/min_max_res.html:1
 msgid "Resolutions / Scales"
@@ -827,5 +865,7 @@ msgstr "Änderungen behalten?"
 
 #: mapproxy_webconf/templates/angular/openlayersmap.html:7
 msgid "You made changes in this map. Do you want to keep them?"
-msgstr "Sie haben Änderungen in der Karte vorgenommen. Möchten Sie diese Änderungen behalten?"
+msgstr ""
+"Sie haben Änderungen in der Karte vorgenommen. Möchten Sie diese "
+"Änderungen behalten?"
 
