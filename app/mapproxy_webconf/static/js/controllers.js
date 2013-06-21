@@ -914,6 +914,7 @@ function MapproxyGridFormCtrl($scope, $http, TranslationService, MapproxyGrids, 
     };
     $scope.showMap = function(event) {
         event.preventDefault();
+        $scope.olmapBinds.extent = undefined;
         $scope.olmapBinds.proj = $scope.custom.mapSRS;
         $scope.olmapBinds.visible = true;
     }
