@@ -607,7 +607,7 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING
                                         return angular.isDefined(attrs.x) && angular.isDefined(attrs.y) && angular.isDefined(attrs.z);
                                 }}),
                                 symbolizer: {
-                                    'label': "${z} / ${x} / ${y}"
+                                    'label': "${z}/${x}/${y}"
                                 }
                             }),
                             new OpenLayers.Rule({
