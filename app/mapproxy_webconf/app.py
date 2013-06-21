@@ -422,6 +422,42 @@ def transform_bbox():
 
     return {'result': transformed_bbox}
 
+def is_valid_transformation(bbox, source_srs, dest_srs):
+    """
+    >>> source_srs = SRS(4326)
+    >>> dest_srs = SRS(25833)
+    >>> bbox = [8,54,10,56]
+    >>> is_valid_transformation(bbox, source_srs, dest_srs)
+    True
+    >>> source_srs = SRS(4326)
+    >>> dest_srs = SRS(25833)
+    >>> bbox = [-15,54,-13,56]
+    >>> is_valid_transformation(bbox, source_srs, dest_srs)
+    False
+    """
+    # 1 m = 0.000009 deg
+    FACTOR = 0.000009
+    # delta in m
+    delta = 50
+    # delta in deg or m
+    delta = delta * FACTOR if source_srs.is_latlong else delta
+
+    x0, y0, x1, y1 = bbox
+    p1 = (x0, y0)
+    p2 = (x1, y1)
+
+    pd1, pd2 = list(source_srs.transform_to(dest_srs, [p1, p2]))
+
+    if not float('inf') in pd1 + pd2:
+        ps1, ps2 = list(dest_srs.transform_to(source_srs, [pd1, pd2]))
+        bbox_t = list(ps1 + ps2)
+        if not float('inf') in bbox_t:
+            for i in range(4):
+                if abs(bbox[i] - bbox_t[i]) > delta:
+                    return False
+            return True
+    return False
+
 @app.route('/transform_grid', 'POST', name='transform_grid')
 def transform_grid():
     def return_map_message(points, message):
@@ -486,10 +522,7 @@ def transform_grid():
 
     try:
         tilegrid = tile_grid(srs=grid_srs, bbox=grid_bbox, bbox_srs=grid_bbox_srs, origin=origin, res=res)
-    except ValueError as e:
-        response.status = 400
-        return {"error": e.message}
-    except TransformationError:
+    except (ValueError, TransformationError):
         x0, y0, x1, y1 = request_bbox
         return return_map_message([[x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0, y0]], _('Given bbox can not be used with given SRS'))
 
@@ -499,10 +532,12 @@ def transform_grid():
         grid_bbox = grid_bbox_srs.transform_bbox_to(grid_srs, grid_bbox) if grid_bbox_srs and grid_srs else grid_bbox
 
     if map_srs and grid_srs:
-        view_bbox = map_srs.transform_bbox_to(grid_srs, request_bbox)
+        if is_valid_transformation(request_bbox, map_srs, grid_srs):
+            view_bbox = map_srs.transform_bbox_to(grid_srs, request_bbox)
+        else:
+            view_bbox = grid_bbox
     else:
         view_bbox = request_bbox
-
     view_bbox = [
         max(grid_bbox[0], view_bbox[0]),
         max(grid_bbox[1], view_bbox[1]),
