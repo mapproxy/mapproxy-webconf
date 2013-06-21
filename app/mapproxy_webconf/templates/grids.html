@@ -76,24 +76,28 @@
         <!-- BBox -->
         <div labeled="input_label" name-for="bbox_0" text="${ _('BBox') }">
           <input type="number"
+                 float
                  ng-model="grid.data.bbox[0]"
                  class="input-large"
                  id="bbox_0"
                  ng-disabled="grid._locked||grid.default"
                  name="bbox_0"/>
           <input type="number"
+                 float
                  ng-model="grid.data.bbox[1]"
                  class="input-large"
                  id="bbox_1"
                  ng-disabled="grid._locked||grid.default"
                  name="bbox_1"/>
           <input type="number"
+                 float
                  ng-model="grid.data.bbox[2]"
                  class="input-large"
                  id="bbox_2"
                  ng-disabled="grid._locked||grid.default"
                  name="bbox_2"/>
           <input type="number"
+                 float
                  ng-model="grid.data.bbox[3]"
                  class="input-large"
                  id="bbox_3"
@@ -189,7 +193,7 @@
           </select>
           <button class="btn btn-small"
                   ng-click="showMap($event)"
-                  ng-disabled="false">
+                  ng-disabled="!allowMap()">
             ${ _('Show map') }
           </button>
         </div>

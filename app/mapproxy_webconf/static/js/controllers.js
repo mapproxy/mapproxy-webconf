@@ -893,6 +893,26 @@ function MapproxyGridFormCtrl($scope, $http, TranslationService, MapproxyGrids, 
         }
         setGrid();
     };
+    $scope.allowMap = function(event) {
+        if(angular.isDefined(event)) {
+            event.preventDefault();
+        }
+
+        if(angular.isUndefined($scope.grid.data.srs)) {
+            return false;
+        }
+
+        var srsOK = ["EPSG:4326", "EPSG:900913", "EPSG:3857", "EPSG:102100", "EPSG:102113"].indexOf(srs) == -1;
+
+        var bboxOK = angular.isDefined($scope.grid.data.bbox) && $scope.grid.data.bbox.length == 4 && $scope.grid.data.bbox.indexOf(null) == -1;
+
+        if(srsOK && (bboxOK || angular.isUndefined($scope.grid.data.bbox) || isEmpty($scope.grid.data.bbox))) {
+            return true;
+        } else {
+            return bboxOK;
+        }
+
+    }
     $scope.showMap = function(event) {
         event.preventDefault();
         $scope.olmapBinds.proj = $scope.custom.mapSRS;
