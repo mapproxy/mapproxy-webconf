@@ -243,7 +243,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     }, {
                         singleTile: true,
                         ratio: 1.0,
-                        isBaseLayer: false
+                        isBaseLayer: layer.baseLayer || false
                 });
                 layer.olLayer = newLayer;
                 layer.visibility = true;
@@ -391,20 +391,10 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                             }
                         }),
                         new OpenLayers.Control.PanZoomBar({autoActivate: true})
-                    ],
-                    layers: $scope.mapLayers
+                    ]
                 }
                 $scope.map = new OpenLayers.Map($scope.mapId, options);
-
-                var imageLayer = new OpenLayers.Layer.Image('Blank',
-                    OpenLayers.ImgPath+'/blank.gif',
-                    $scope.olmapBinds.extent,
-                    new OpenLayers.Size(500, 500), {
-                        isBaseLayer: true,
-                        displayInLayerSwitcher: false
-                    }
-                );
-                $scope.map.addLayer(imageLayer);
+                $scope.map.addLayers($scope.mapLayers);
 
                 if($scope.olmapBinds.showScaleRes) {
                     $scope.eventHandlers.updateMapScaleResolution();

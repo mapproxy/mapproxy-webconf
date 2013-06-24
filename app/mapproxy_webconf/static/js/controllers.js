@@ -483,7 +483,8 @@ function MapproxySourceFormCtrl($scope, $http, TranslationService, MapproxySourc
                     'background': [{
                         title: 'BackgroundLayer',
                         url: 'http://osm.omniscale.net/proxy/service?',
-                        name: 'osm'
+                        name: 'osm',
+                        baseLayer: true
                     }]
                 }
             };
@@ -973,7 +974,8 @@ function MapproxyGridFormCtrl($scope, $http, TranslationService, MapproxyGrids, 
             'background': [{
                 title: 'BackgroundLayer',
                 url: 'http://osm.omniscale.net/proxy/service?',
-                name: 'osm'
+                name: 'osm',
+                baseLayer: true
             }]
         }
     }
