@@ -2,6 +2,7 @@ import os
 import yaml
 import gettext
 from copy import deepcopy
+from uuid import uuid4
 
 from xml.etree.ElementTree import ParseError
 
@@ -13,7 +14,7 @@ from mapproxy.grid import tile_grid, GridError
 from . import bottle
 from . import config
 from . import storage
-from .bottle import request, response, static_file, template, SimpleTemplate
+from .bottle import request, response, static_file, template, SimpleTemplate, redirect
 from .utils import requires_json
 from .capabilities import parse_capabilities_url
 
@@ -666,6 +667,15 @@ def transform_grid():
     return {"type":"FeatureCollection",
         "features": features
     }
+
+@app.route('/create_project/<name>/<demo>', 'GET', name='create_project', demo=False)
+def create_project(name, storage, demo):
+    if demo:
+        name = str(uuid4()).replace('-', '')
+
+    storage._init_project(name)
+    redirect(app.get_url('project_index', project=name))
+
 
 def init_app(storage_dir):
     app.install(storage.SQLiteStorePlugin(os.path.join(configuration.get('app', 'storage_path'), configuration.get('app', 'sqlite_db'))))
