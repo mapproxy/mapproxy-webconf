@@ -638,7 +638,7 @@ def transform_grid():
                         }
                     })
                 elif feature_count <= 100:
-                    xc0, yc0, xc1, yc1 = tile_bbox
+                    xc0, yc0, xc1, yc1 = grid_srs.transform_bbox_to(map_srs, tile_bbox) if map_srs and grid_srs else tile_bbox
                     features.append({
                         "type": "Feature",
                         "properties": {
