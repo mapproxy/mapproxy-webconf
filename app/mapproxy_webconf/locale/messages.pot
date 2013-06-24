@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-06-21 11:18+0200\n"
+"POT-Creation-Date: 2013-06-24 15:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,39 +17,44 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: mapproxy_webconf/app.py:97 mapproxy_webconf/app.py:123
+#: mapproxy_webconf/app.py:98 mapproxy_webconf/app.py:124
 msgid "missing URL"
 msgstr ""
 
-#: mapproxy_webconf/app.py:102
+#: mapproxy_webconf/app.py:103
 msgid "no capabilities document found"
 msgstr ""
 
-#: mapproxy_webconf/app.py:106
+#: mapproxy_webconf/app.py:107
 msgid "invalid URL"
 msgstr ""
 
-#: mapproxy_webconf/app.py:315
+#: mapproxy_webconf/app.py:316
 msgid "creating mapproxy config successful"
 msgstr ""
 
-#: mapproxy_webconf/app.py:318
+#: mapproxy_webconf/app.py:319
 msgid "creating mapproxy config failed"
 msgstr ""
 
-#: mapproxy_webconf/app.py:344
+#: mapproxy_webconf/app.py:345
 msgid "creating yaml failed"
 msgstr ""
 
-#: mapproxy_webconf/app.py:353
+#: mapproxy_webconf/app.py:354
 msgid "parsing yaml failed"
 msgstr ""
 
-#: mapproxy_webconf/app.py:494 mapproxy_webconf/app.py:516
+#: mapproxy_webconf/app.py:451
+#, python-format
+msgid "Can not show map in %(srs)s with bounds %(bounds)s (%(bounds_srs)s)"
+msgstr ""
+
+#: mapproxy_webconf/app.py:574 mapproxy_webconf/app.py:599
 msgid "Given bbox can not be used with given SRS"
 msgstr ""
 
-#: mapproxy_webconf/app.py:524
+#: mapproxy_webconf/app.py:607
 msgid "Too many tiles. Please zoom in."
 msgstr ""
 
@@ -124,11 +129,11 @@ msgid ""
 "keyword)."
 msgstr ""
 
-#: mapproxy_webconf/templates/base.html:85
+#: mapproxy_webconf/templates/base.html:84
 msgid "Projects"
 msgstr ""
 
-#: mapproxy_webconf/templates/base.html:86
+#: mapproxy_webconf/templates/base.html:85
 #: mapproxy_webconf/templates/base_config.html:4
 msgid "Configuration"
 msgstr ""
@@ -174,7 +179,7 @@ msgstr ""
 #: mapproxy_webconf/templates/sources.html:36
 #: mapproxy_webconf/templates/sources.html:44
 #: mapproxy_webconf/templates/sources.html:67
-#: mapproxy_webconf/templates/sources.html:291
+#: mapproxy_webconf/templates/sources.html:294
 #: mapproxy_webconf/templates/angular/editarea.html:14
 msgid "Confirm!"
 msgstr ""
@@ -237,21 +242,21 @@ msgstr ""
 
 #: mapproxy_webconf/templates/caches.html:137
 #: mapproxy_webconf/templates/globals.html:68
-#: mapproxy_webconf/templates/grids.html:208
+#: mapproxy_webconf/templates/grids.html:211
 #: mapproxy_webconf/templates/layers.html:17
 #: mapproxy_webconf/templates/layers.html:106
 #: mapproxy_webconf/templates/project_index.html:35
 #: mapproxy_webconf/templates/services.html:164
-#: mapproxy_webconf/templates/sources.html:228
+#: mapproxy_webconf/templates/sources.html:231
 #: mapproxy_webconf/templates/angular/editarea.html:18
 #: mapproxy_webconf/templates/angular/editarea.html:24
 msgid "Save"
 msgstr ""
 
 #: mapproxy_webconf/templates/caches.html:139
-#: mapproxy_webconf/templates/grids.html:213
+#: mapproxy_webconf/templates/grids.html:216
 #: mapproxy_webconf/templates/layers.html:109
-#: mapproxy_webconf/templates/sources.html:230
+#: mapproxy_webconf/templates/sources.html:233
 #: mapproxy_webconf/templates/angular/editarea.html:29
 msgid "Reset"
 msgstr ""
@@ -304,7 +309,7 @@ msgid "Define the grids that MapProxy uses to aligns cached images."
 msgstr ""
 
 #: mapproxy_webconf/templates/config_index.html:13
-#: mapproxy_webconf/templates/sources.html:304
+#: mapproxy_webconf/templates/sources.html:307
 msgid "Layers"
 msgstr ""
 
@@ -321,6 +326,18 @@ msgstr ""
 
 #: mapproxy_webconf/templates/config_index.html:16
 msgid "The services MapProxy offers, e.g. WMS or TMS."
+msgstr ""
+
+#: mapproxy_webconf/templates/config_index.html:17
+msgid "Default project settings"
+msgstr ""
+
+#: mapproxy_webconf/templates/config_index.html:18
+msgid "Define project default settings, e.g. DPI or additional SRS"
+msgstr ""
+
+#: mapproxy_webconf/templates/config_index.html:18
+msgid "To default settings"
 msgstr ""
 
 #: mapproxy_webconf/templates/globals.html:18
@@ -403,7 +420,7 @@ msgstr ""
 
 #: mapproxy_webconf/templates/grids.html:139
 #: mapproxy_webconf/templates/grids.html:169
-#: mapproxy_webconf/templates/grids.html:281
+#: mapproxy_webconf/templates/grids.html:284
 msgid "Resolutions"
 msgstr ""
 
@@ -418,7 +435,7 @@ msgid "Degrees"
 msgstr ""
 
 #: mapproxy_webconf/templates/grids.html:176
-#: mapproxy_webconf/templates/grids.html:286
+#: mapproxy_webconf/templates/grids.html:289
 msgid "Scales"
 msgstr ""
 
@@ -430,38 +447,38 @@ msgstr ""
 msgid "Show map"
 msgstr ""
 
-#: mapproxy_webconf/templates/grids.html:239
+#: mapproxy_webconf/templates/grids.html:242
 msgid "Really lock the grid"
 msgstr ""
 
-#: mapproxy_webconf/templates/grids.html:240
+#: mapproxy_webconf/templates/grids.html:243
 msgid "If you lock the grid, you won't be able to edit it again"
 msgstr ""
 
-#: mapproxy_webconf/templates/grids.html:245
+#: mapproxy_webconf/templates/grids.html:248
 msgid "Lock"
 msgstr ""
 
-#: mapproxy_webconf/templates/grids.html:250
 #: mapproxy_webconf/templates/grids.html:253
+#: mapproxy_webconf/templates/grids.html:256
 msgid "Unlock"
 msgstr ""
 
-#: mapproxy_webconf/templates/grids.html:251
+#: mapproxy_webconf/templates/grids.html:254
 msgid ""
 "If you unlock this grid it you need to check settings of all caches you "
 "use this grid and delete all affacted caches from disk"
 msgstr ""
 
-#: mapproxy_webconf/templates/grids.html:276
+#: mapproxy_webconf/templates/grids.html:279
 msgid "Level"
 msgstr ""
 
-#: mapproxy_webconf/templates/grids.html:291
+#: mapproxy_webconf/templates/grids.html:294
 msgid "Total tiles"
 msgstr ""
 
-#: mapproxy_webconf/templates/grids.html:311
+#: mapproxy_webconf/templates/grids.html:314
 msgid "Tiles X * Tiles Y"
 msgstr ""
 
@@ -513,50 +530,54 @@ msgstr ""
 
 #: mapproxy_webconf/templates/project_index.html:26
 #: mapproxy_webconf/templates/sources.html:124
-#: mapproxy_webconf/templates/sources.html:215
-#: mapproxy_webconf/templates/sources.html:327
+#: mapproxy_webconf/templates/sources.html:218
+#: mapproxy_webconf/templates/sources.html:330
 msgid "Add"
 msgstr ""
 
 #: mapproxy_webconf/templates/project_index.html:40
-#: mapproxy_webconf/templates/projects.html:14
+#: mapproxy_webconf/templates/projects.html:18
 msgid "To configuration"
 msgstr ""
 
-#: mapproxy_webconf/templates/projects.html:5
-msgid "project"
+#: mapproxy_webconf/templates/projects.html:4
+msgid "demo - you dont see all projects"
 msgstr ""
 
-#: mapproxy_webconf/templates/projects.html:6
-msgid "settings"
+#: mapproxy_webconf/templates/projects.html:5
+msgid "Create Project"
 msgstr ""
 
 #: mapproxy_webconf/templates/projects.html:9
+msgid "project"
+msgstr ""
+
+#: mapproxy_webconf/templates/projects.html:10
+msgid "settings"
+msgstr ""
+
+#: mapproxy_webconf/templates/projects.html:13
 msgid "Goto default settings"
 msgstr ""
 
-#: mapproxy_webconf/templates/projects.html:19
+#: mapproxy_webconf/templates/projects.html:23
 msgid "status mapproxy configuration"
 msgstr ""
 
-#: mapproxy_webconf/templates/projects.html:23
+#: mapproxy_webconf/templates/projects.html:27
 msgid "The mapproxy configuration of this project is valid"
 msgstr ""
 
-#: mapproxy_webconf/templates/projects.html:29
+#: mapproxy_webconf/templates/projects.html:33
 msgid "Attention"
 msgstr ""
 
-#: mapproxy_webconf/templates/projects.html:30
+#: mapproxy_webconf/templates/projects.html:34
 msgid "The mapproxy configuration of this project is invalid"
 msgstr ""
 
-#: mapproxy_webconf/templates/projects.html:32
+#: mapproxy_webconf/templates/projects.html:36
 msgid "following errors are recorded"
-msgstr ""
-
-#: mapproxy_webconf/templates/projects.html:44
-msgid "demo - you dont see all projects"
 msgstr ""
 
 #: mapproxy_webconf/templates/projects.html:52
@@ -680,7 +701,7 @@ msgid "Replace service URL deletes all layers depends to it!"
 msgstr ""
 
 #: mapproxy_webconf/templates/sources.html:79
-#: mapproxy_webconf/templates/sources.html:301
+#: mapproxy_webconf/templates/sources.html:304
 msgid "URL"
 msgstr ""
 
@@ -725,31 +746,31 @@ msgstr ""
 msgid "Create coverage in map"
 msgstr ""
 
-#: mapproxy_webconf/templates/sources.html:191
+#: mapproxy_webconf/templates/sources.html:194
 msgid "Supported SRS"
 msgstr ""
 
-#: mapproxy_webconf/templates/sources.html:195
+#: mapproxy_webconf/templates/sources.html:198
 msgid "Add SRS from WMS"
 msgstr ""
 
-#: mapproxy_webconf/templates/sources.html:206
+#: mapproxy_webconf/templates/sources.html:209
 msgid "Manual add SRS"
 msgstr ""
 
-#: mapproxy_webconf/templates/sources.html:258
+#: mapproxy_webconf/templates/sources.html:261
 msgid "Available WMS"
 msgstr ""
 
-#: mapproxy_webconf/templates/sources.html:292
+#: mapproxy_webconf/templates/sources.html:295
 msgid "Really remove WMS:"
 msgstr ""
 
-#: mapproxy_webconf/templates/sources.html:298
+#: mapproxy_webconf/templates/sources.html:301
 msgid "Infos"
 msgstr ""
 
-#: mapproxy_webconf/templates/sources.html:325
+#: mapproxy_webconf/templates/sources.html:328
 msgid "Load WMS"
 msgstr ""
 
