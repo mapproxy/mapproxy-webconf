@@ -554,7 +554,7 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING
             $scope.eventHandlers = {
                 zoomToGrid: function() {
                     this.map.zoomToExtent(this.getDataExtent());
-                    this.events.unregister('loadend', null, $scope.eventHandlers.zoomToGrid);
+                    this.events.unregister('featuresadded', null, $scope.eventHandlers.zoomToGrid);
                 },
                 addSRSToProtocol: function() {
                     this.protocol.params['map_srs'] = this.projection.getCode();
@@ -621,7 +621,7 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING
                 };
                 var olLayer = olMapCtrl.createVectorLayer(scope.layer, options);
                 olLayer.events.register('added', null, scope.eventHandlers.addSRSToProtocol);
-                olLayer.events.register('loadend', null, scope.eventHandlers.zoomToGrid);
+                olLayer.events.register('featuresadded', null, scope.eventHandlers.zoomToGrid);
 
                 if(angular.isDefined(olMapCtrl.olmapBinds.layers.vector)) {
                     olMapCtrl.olmapBinds.layers.vector.push(scope.layer);
