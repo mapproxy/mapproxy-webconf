@@ -624,7 +624,16 @@ def transform_grid():
                 })
 
                 if feature_count == 1:
-                    xc0, yc0, xc1, yc1 = grid_srs.transform_bbox_to(map_srs, view_bbox) if map_srs and grid_srs else view_bbox
+                    xv0, yv0, xv1, yv1 = view_bbox
+                    xt0, yt0, xt1, yt1 = tile_bbox
+                    xtc = xt0 + (xt1-xt0) /2
+                    ytc = yt0 + (yt1-yt0)/2
+                    if(xv0 <= xtc and xv1 >= xtc and yv0 <= ytc and yv1 >= ytc):
+                        label_point = [xtc, ytc]
+                    else:
+                        label_point = [xv0 + (xv1-xv0) /2, yv0 + (yv1-yv0)/2]
+
+
                     features.append({
                         "type": "Feature",
                         "properties": {
@@ -634,7 +643,7 @@ def transform_grid():
                         },
                         "geometry": {
                             "type": "Point",
-                            "coordinates": [xc0 + (xc1-xc0) /2, yc0 + (yc1-yc0)/2]
+                            "coordinates": grid_srs.transform_to(map_srs, label_point) if map_srs and grid_srs else label_point
                         }
                     })
                 elif feature_count <= 100:
