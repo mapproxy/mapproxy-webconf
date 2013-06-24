@@ -14,6 +14,10 @@
       <dd>${ _('Configure the layers that MapProxy offers. Each layer can consist of multiple sources and caches.') }</dd>
       <dt>${ _('Services') }</dt>
       <dd>${ _('The services MapProxy offers, e.g. WMS or TMS.') }</dd>
+      <dt>${ _('Default project settings') }</dt>
+      <dd>
+        ${ _('Define project default settings, e.g. DPI or additional SRS') }<br />
+        <a class="btn btn-small" href="${ get_url('project_index', project=project) }">${ _('To default settings') }</a>
     </dl>
   </div>
 %end
