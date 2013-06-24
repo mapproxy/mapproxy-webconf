@@ -245,6 +245,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                         ratio: 1.0,
                         isBaseLayer: layer.baseLayer || false
                 });
+                $scope.haveBaseLayer = $scope.haveBaseLayer || layer.baseLayer;
                 layer.olLayer = newLayer;
                 layer.visibility = true;
 
@@ -382,6 +383,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     maxExtent: $scope.olmapBinds.extent,
                     units: $scope.olmapBinds.proj.units,
                     numZoomLevels: $scope.olmapBinds.numZoomLevels || 16,
+                    allOverlays: !$scope.haveBaseLayer,
                     theme: null,
                     controls: [
                         new OpenLayers.Control.Navigation({
