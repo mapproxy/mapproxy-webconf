@@ -436,12 +436,10 @@ def get_max_extent():
         fallback_extent = fallback_extent_srs.align_bbox(fallback_extent)
 
         buffer_in_percent = 10 if fallback_with_buffer else 0
-        buffered_extent = map(lambda x: x + (x / 100 * buffer_in_percent), fallback_extent)
-        map_extent = transform_bbox(buffered_extent, fallback_extent_srs, map_srs)
+        map_extent = transform_bbox(buffered_extent(fallback_extent, buffer_in_percent), fallback_extent_srs, map_srs)
         while not map_extent and buffer_in_percent >= 0:
             buffer_in_percent -= 1;
-            buffered_extent = map(lambda x: x + (x / 100 * buffer_in_percent), fallback_extent)
-            map_extent = transform_bbox(buffered_extent, fallback_extent_srs, map_srs)
+            map_extent = transform_bbox(buffered_extent(fallback_extent, buffer_in_percent), fallback_extent_srs, map_srs)
 
     if map_extent:
         return {'result': {
@@ -454,6 +452,14 @@ def get_max_extent():
             'bounds': bounds,
             'bounds_srs': bounds_srs
         })}
+
+def buffered_extent(extent, buffer):
+    x0, y0, x1, y1 = extent
+    xb0 = x0 - abs(x0 / 100 * buffer)
+    yb0 = y0 - abs(y0 / 100 * buffer)
+    xb1 = x1 + abs(x1 / 100 * buffer)
+    yb1 = y1 + abs(y1 / 100 * buffer)
+    return [xb0, yb0, xb1, yb1]
 
 def transform_bbox(bbox, source, dest):
     if is_valid_transformation(bbox, source, dest):
