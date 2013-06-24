@@ -411,16 +411,52 @@ def calculate_tiles():
         })
     return {'result': result}
 
-@app.route('/transform_bbox', 'POST', name='transform_bbox')
-def transform_bbox():
-    bbox = request.json.get('bbox')
-    source_srs = request.json.get('sourceSRS')
-    dest_srs = request.json.get('destSRS')
-    source = SRS(source_srs)
-    dest = SRS(dest_srs)
-    transformed_bbox = source.transform_bbox_to(dest, source.align_bbox(bbox))
+@app.route('/get_max_extent', 'POST', name='get_max_extent')
+def get_max_extent():
+    extent = request.json.get('extent', [-180, -90, 180, 90])
+    extent_srs = request.json.get('extent_srs', 'EPSG:4326')
+    fallback_extent = request.json.get('fallback_extent', None)
+    fallback_extent_srs = request.json.get('fallback_extent_srs', None)
+    fallback_with_buffer = request.json.get('fallback_with_buffer', True)
+    map_srs = request.json.get('map_srs')
 
-    return {'result': transformed_bbox}
+    extent_srs = SRS(extent_srs)
+    map_srs = SRS(map_srs)
+
+    extent = extent_srs.align_bbox(extent)
+    map_extent = transform_bbox(extent, extent_srs, map_srs)
+
+    if not map_extent and fallback_extent:
+        fallback_extent_srs = SRS(fallback_extent_srs)
+        fallback_extent = fallback_extent_srs.align_bbox(fallback_extent)
+
+        buffer_in_percent = 10 if fallback_with_buffer else 0
+        buffered_extent = map(lambda x: x + (x / 100 * buffer_in_percent), fallback_extent)
+        map_extent = transform_bbox(buffered_extent, fallback_extent_srs, map_srs)
+        while not map_extent and buffer_in_percent >= 0:
+            buffer_in_percent -= 1;
+            buffered_extent = map(lambda x: x + (x / 100 * buffer_in_percent), fallback_extent)
+            map_extent = transform_bbox(buffered_extent, fallback_extent_srs, map_srs)
+        fallback_extent_srs = fallback_extent_srs.srs_code
+
+    if map_extent:
+        return {'result': {
+            'maxExtent': map_extent
+        }}
+    else:
+        response.status = 400
+        return {'error': _('Can not show map in %(srs)s with bounds %(bounds)s (%(bounds_srs)s)') % ({
+            'srs': map_srs.srs_code,
+            'bounds': fallback_extent,
+            'bounds_srs': fallback_extent_srs
+        })}
+
+def transform_bbox(bbox, source, dest):
+    if is_valid_transformation(bbox, source, dest):
+        transformed_bbox = source.transform_bbox_to(dest, bbox)
+        return transformed_bbox
+    else:
+        return False
 
 def is_valid_transformation(bbox, source_srs, dest_srs):
     """
@@ -544,6 +580,7 @@ def transform_grid():
         min(grid_bbox[2], view_bbox[2]),
         min(grid_bbox[3], view_bbox[3])
     ]
+
     try:
         tiles_bbox, size, tiles = tilegrid.get_affected_level_tiles(bbox=view_bbox, level=level)
     except GridError:

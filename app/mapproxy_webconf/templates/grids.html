@@ -53,7 +53,7 @@
 
 %def middleblock():
   <div ng-controller="MapproxyGridFormCtrl"
-       ng-init="calculateTilesURL='${ get_url('calculate_tiles') }'">
+       ng-init="calculateTilesURL='${ get_url('calculate_tiles') }'; getMaxExtentURL='${ get_url('get_max_extent') }';">
     <div ng-show="!editareaBinds.visible">
       <h3 ng-show="formTitle=='new'">${ _('New grid') }</h3>
       <h3 ng-show="formTitle=='edit'">${ _('Edit grid') }</h3>
@@ -196,6 +196,9 @@
                   ng-disabled="!allowMap()">
             ${ _('Show map') }
           </button>
+          <span message-handler="error"
+                message-types="olMap.showMap_error">
+          </span>
         </div>
         <hr class="formLine">
         <!-- buttons -->

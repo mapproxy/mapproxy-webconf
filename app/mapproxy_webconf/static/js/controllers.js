@@ -469,24 +469,33 @@ function MapproxySourceFormCtrl($scope, $http, TranslationService, MapproxySourc
                 'coordinates': bbox
             }];
         }
-        $scope.olmapBinds = {
-            visible: true,
-            proj: srs,
-            layers: {
-                'vector': [coverage],
-                'background': [{
-                    title: 'BackgroundLayer',
-                    url: 'http://osm.omniscale.net/proxy/service?',
-                    name: 'osm'
-                }]
-            }
-        };
-        var unregisterCoverageWatch = $scope.$watch('olmapBinds.layers.vector[0].geometries', function(newValue, oldValue) {
-            if(!angular.equals(newValue, oldValue)) {
-                $scope.source.data.coverage.bbox = newValue[0].coordinates;
-                unregisterCoverageWatch();
-            }
-        }, true);
+        $http.post($scope.getMaxExtentURL, {
+            'fallback_extent': bbox,
+            'fallback_extent_srs': srs,
+            'map_srs': srs
+        }).success(function(response) {
+            $scope.olmapBinds = {
+                visible: true,
+                proj: srs,
+                extent: response.result.maxExtent,
+                layers: {
+                    'vector': [coverage],
+                    'background': [{
+                        title: 'BackgroundLayer',
+                        url: 'http://osm.omniscale.net/proxy/service?',
+                        name: 'osm'
+                    }]
+                }
+            };
+            var unregisterCoverageWatch = $scope.$watch('olmapBinds.layers.vector[0].geometries', function(newValue, oldValue) {
+                if(!angular.equals(newValue, oldValue)) {
+                    $scope.source.data.coverage.bbox = newValue[0].coordinates;
+                    unregisterCoverageWatch();
+                }
+            }, true);
+        }).error(function(response) {
+            MessageService.message('olMap', 'showMap_error', response.error);
+        });;
     };
     $scope.resetForm = function(event) {
         if(!angular.isUndefined(event)) {
@@ -903,7 +912,6 @@ function MapproxyGridFormCtrl($scope, $http, TranslationService, MapproxyGrids, 
         }
 
         var srsOK = ["EPSG:4326", "EPSG:900913", "EPSG:3857", "EPSG:102100", "EPSG:102113"].indexOf($scope.grid.data.srs) != -1;
-
         var bboxOK = angular.isDefined($scope.grid.data.bbox) && $scope.grid.data.bbox.length == 4 && $scope.grid.data.bbox.indexOf(null) == -1;
 
         if(srsOK && (bboxOK || angular.isUndefined($scope.grid.data.bbox) || isEmpty($scope.grid.data.bbox))) {
@@ -914,10 +922,18 @@ function MapproxyGridFormCtrl($scope, $http, TranslationService, MapproxyGrids, 
     };
     $scope.showMap = function(event) {
         event.preventDefault();
-        $scope.olmapBinds.extent = undefined;
-        $scope.olmapBinds.proj = $scope.custom.mapSRS;
-        $scope.olmapBinds.visible = true;
-    }
+        $http.post($scope.getMaxExtentURL, {
+            'fallback_extent': $scope.grid.data.bbox,
+            'fallback_extent_srs': $scope.grid.data.bbox_srs,
+            'map_srs': $scope.custom.mapSRS
+        }).success(function(response) {
+            $scope.olmapBinds.extent = response.result.maxExtent;
+            $scope.olmapBinds.proj = $scope.custom.mapSRS;
+            $scope.olmapBinds.visible = true;
+        }).error(function(response) {
+            MessageService.message('olMap', 'showMap_error', response.error);
+        });
+    };
     $scope.provideGridData = function() {
         var gridData = {
             'srs': $scope.grid.data.srs,

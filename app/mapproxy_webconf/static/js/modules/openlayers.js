@@ -79,7 +79,7 @@ constant('DEFAULT_VECTOR_STYLING', {
     }
 }).
 
-directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeout, DEFAULT_VECTOR_STYLING, TRANSFORM_BBOX_URL, OPENLAYERSMAP_TEMPLATE_URL, LAYERSWITCHER_TEMPLATE_URL) {
+directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeout, DEFAULT_VECTOR_STYLING, OPENLAYERSMAP_TEMPLATE_URL, LAYERSWITCHER_TEMPLATE_URL) {
     return {
         restrict: 'A',
         scope: {
@@ -336,6 +336,9 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 if(!($scope.olmapBinds.proj instanceof OpenLayers.Projection)) {
                     $scope.olmapBinds.proj = new OpenLayers.Projection($scope.olmapBinds.proj);
                 }
+                if(!($scope.olmapBinds.extent instanceof OpenLayers.Bounds)) {
+                    $scope.olmapBinds.extent = new OpenLayers.Bounds($scope.olmapBinds.extent);
+                }
 
                 if(angular.isDefined($scope.olmapBinds.layers.background)) {
                     angular.forEach($scope.olmapBinds.layers.background, function(layer) {
@@ -361,22 +364,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                         func();
                     });
                 }
-
-                if(angular.isUndefined($scope.olmapBinds.extent) && $scope.olmapBinds.proj.getCode() != 'EPSG:4326') {
-                    $http.post(TRANSFORM_BBOX_URL, {
-                        "bbox": [-180, -90, 180, 90],
-                        "sourceSRS": "EPSG:4326",
-                        "destSRS": $scope.olmapBinds.proj.getCode()
-                    }).success(function(response) {
-                        $scope.olmapBinds.extent = new OpenLayers.Bounds(response.result);
-                        createMap();
-                    });
-                } else {
-                    if(!($scope.olmapBinds.extent instanceof OpenLayers.Bounds)) {
-                        $scope.olmapBinds.extent = new OpenLayers.Bounds($scope.olmapBinds.extent || [-180, -90, 180, 90]);
-                    }
-                    createMap();
-                }
+                createMap();
             };
             var createMap = function() {
                 if($scope.map instanceof OpenLayers.Map) {
@@ -389,8 +377,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 } else {
                     OpenLayers.DOTS_PER_INCH = 72;
                 }
-
-                $scope.map = new OpenLayers.Map($scope.mapId, {
+                var options = {
                     projection: $scope.olmapBinds.proj,
                     maxExtent: $scope.olmapBinds.extent,
                     units: $scope.olmapBinds.proj.units,
@@ -406,7 +393,8 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                         new OpenLayers.Control.PanZoomBar({autoActivate: true})
                     ],
                     layers: $scope.mapLayers
-                });
+                }
+                $scope.map = new OpenLayers.Map($scope.mapId, options);
 
                 var imageLayer = new OpenLayers.Layer.Image('Blank',
                     OpenLayers.ImgPath+'/blank.gif',

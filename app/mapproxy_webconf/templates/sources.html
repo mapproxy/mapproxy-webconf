@@ -55,7 +55,7 @@
 
 %def middleblock():
   <div ng-controller="MapproxySourceFormCtrl"
-       ng-init="custom.scalesToResURL='${get_url('scales_to_res')}';custom.resToScalesURL='${get_url('res_to_scales')}';">
+       ng-init="custom.scalesToResURL='${get_url('scales_to_res')}';custom.resToScalesURL='${get_url('res_to_scales')}';getMaxExtentURL='${ get_url('get_max_extent') }';">
     <form name="form" novalidate ng-show="!editareaBinds.visible">
       <h3 ng-show="formTitle=='new'">${ _('New source') }</h3>
       <h3 ng-show="formTitle=='edit'">${ _('Edit source') }</h3>
@@ -186,6 +186,9 @@
                       ng-click="showCoverageInMap()">
                 ${ _('Create coverage in map') }
               </button>
+              <span message-handler="error"
+                    message-types="olMap.showMap_error">
+              </span>
             </div>
             <hr class="formLine">
             <div labeled="input_label_toggleable" name-for="supported_srs" text="${ _('Supported SRS') }">
