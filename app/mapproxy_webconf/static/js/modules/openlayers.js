@@ -381,6 +381,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     projection: $scope.olmapBinds.proj,
                     maxExtent: $scope.olmapBinds.extent,
                     units: $scope.olmapBinds.proj.units,
+                    numZoomLevels: $scope.olmapBinds.numZoomLevels || 16,
                     theme: null,
                     controls: [
                         new OpenLayers.Control.Navigation({
@@ -565,6 +566,7 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING
         link: function(scope, element, attrs, olMapCtrl) {
 
             olMapCtrl.registerExtension('layers', function() {
+                olMapCtrl.olmapBinds.numZoomLevels = scope.maxLevel;
                 scope.layer = angular.copy(scope._layer);
                 var gridData = scope.olGridData();
 
