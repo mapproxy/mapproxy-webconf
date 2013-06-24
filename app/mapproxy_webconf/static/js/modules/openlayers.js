@@ -660,7 +660,9 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING
                 scope.maxLevel = 20;
                 var layerList = olMapCtrl.olmapBinds.layers.vector;
                 var layerIdx = layerList.indexOf(scope.layer);
-                layerList.splice(layerIdx, 1)
+                layerList.splice(layerIdx, 1);
+                layerIdx = layerList.indexOf(scope.pointLayer);
+                layerList.splice(layerIdx, 1);
                 delete scope.layer;
             });
         }
