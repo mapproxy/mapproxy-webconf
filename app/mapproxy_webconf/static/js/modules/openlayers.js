@@ -561,8 +561,19 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING
                     'label': "${z}/${x}/${y}"
                 }
             });
+            $scope.eventHandlers = {
+                zoomToGrid: function() {
+                    this.map.zoomToExtent(this.getDataExtent());
+                    this.events.unregister('loadend', null, $scope.eventHandlers.zoomToGrid);
+                },
+                addSRSToProtocol: function() {
+                    this.protocol.params['map_srs'] = this.projection.getCode();
+                }
+            }
+
         },
         link: function(scope, element, attrs, olMapCtrl) {
+
             olMapCtrl.registerExtension('layers', function() {
                 scope.layer = angular.copy(scope._layer);
                 var gridData = scope.olGridData();
@@ -619,9 +630,8 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING
                     }),
                 };
                 var olLayer = olMapCtrl.createVectorLayer(scope.layer, options);
-                olLayer.events.register('added', null, function() {
-                    this.protocol.params['map_srs'] = this.projection.getCode();
-                });
+                olLayer.events.register('added', null, scope.eventHandlers.addSRSToProtocol);
+                olLayer.events.register('loadend', null, scope.eventHandlers.zoomToGrid);
 
                 if(angular.isDefined(olMapCtrl.olmapBinds.layers.vector)) {
                     olMapCtrl.olmapBinds.layers.vector.push(scope.layer);
