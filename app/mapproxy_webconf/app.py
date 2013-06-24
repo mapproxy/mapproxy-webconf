@@ -420,6 +420,9 @@ def get_max_extent():
     fallback_with_buffer = request.json.get('fallback_with_buffer', True)
     map_srs = request.json.get('map_srs')
 
+    bounds = extent
+    bounds_srs = extent_srs
+
     extent_srs = SRS(extent_srs)
     map_srs = SRS(map_srs)
 
@@ -427,6 +430,8 @@ def get_max_extent():
     map_extent = transform_bbox(extent, extent_srs, map_srs)
 
     if not map_extent and fallback_extent:
+        bounds = fallback_extent
+        bounds_srs = fallback_extent_srs
         fallback_extent_srs = SRS(fallback_extent_srs)
         fallback_extent = fallback_extent_srs.align_bbox(fallback_extent)
 
@@ -437,7 +442,6 @@ def get_max_extent():
             buffer_in_percent -= 1;
             buffered_extent = map(lambda x: x + (x / 100 * buffer_in_percent), fallback_extent)
             map_extent = transform_bbox(buffered_extent, fallback_extent_srs, map_srs)
-        fallback_extent_srs = fallback_extent_srs.srs_code
 
     if map_extent:
         return {'result': {
@@ -447,8 +451,8 @@ def get_max_extent():
         response.status = 400
         return {'error': _('Can not show map in %(srs)s with bounds %(bounds)s (%(bounds_srs)s)') % ({
             'srs': map_srs.srs_code,
-            'bounds': fallback_extent,
-            'bounds_srs': fallback_extent_srs
+            'bounds': bounds,
+            'bounds_srs': bounds_srs
         })}
 
 def transform_bbox(bbox, source, dest):
