@@ -399,13 +399,14 @@ def calculate_tiles():
     tilegrid = tile_grid(srs=srs, bbox=bbox, bbox_srs=bbox_srs, res=res, origin=origin, name=name)
 
     result = []
-    res_scale = 'resolution' if scales is None else 'scale'
+
     for level, res in enumerate(tilegrid.resolutions):
         tiles_in_x, tiles_in_y = tilegrid.grid_sizes[level]
         total_tiles = tiles_in_x * tiles_in_y
         result.append({
             'level': level,
-            res_scale: res if scales is None else res_to_scale(res, dpi, units),
+            'resolution': res,
+            'scale': scales[level] if scales else res_to_scale(res, dpi, units),
             'tiles_in_x': tiles_in_x,
             'tiles_in_y': tiles_in_y,
             'total_tiles': total_tiles
