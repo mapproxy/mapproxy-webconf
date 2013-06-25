@@ -1436,6 +1436,7 @@ function DisplayCalculatedTilesCtrl($scope, DataShareService) {
         DataShareService.data('refreshCalculatedTiles', true);
     };
     $scope.calculatedTiles = [];
+    $scope.resSelected = false;
     $scope.$on('dss.calculatedTiles', function() {
         $scope.calculatedTiles = DataShareService.data('calculatedTiles');
     });

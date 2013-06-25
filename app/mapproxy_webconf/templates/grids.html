@@ -115,7 +115,7 @@
         </div>
         <hr>
           <button class="btn btn-small"
-                ng-click="calculateTiles()"
+                ng-click="calculateTiles(!custom.resSelected)"
                 ng-disabled="!grid.data.srs">
           ${ _('Calculate tiles') }
          </button>
@@ -282,14 +282,22 @@
               ${ _('Level') }
             </span>
           </th>
-          <th ng-show="calculatedTiles[0].resolution">
+          <th>
             <span class="pull-right">
-              ${ _('Resolutions') }
-            </span>
-          </th>
-          <th ng-show="calculatedTiles[0].scale">
-            <span class="pull-left">
-              ${ _('Scales') }
+              <div class="btn-group" data-toggle="buttons-radio" style="display: inline-block;">
+                <button type="button"
+                        class="btn btn-small"
+                        ng-class="{'active': resSelected}"
+                        ng-click="resSelected=true;">
+                  ${ _('Resolution') }
+                </button>
+                <button type="button"
+                        class="btn btn-small"
+                        ng-class="{'active': !resSelected}"
+                        ng-click="resSelected=false;">
+                  ${ _('Scale') }
+                </button>
+              </div>
             </span>
           </th>
           <th>
@@ -302,12 +310,12 @@
       <tbody>
         <tr ng-repeat="row in calculatedTiles | orderBy:'level'">
           <td>{{row.level}}</td>
-          <td ng-show="row.resolution">
+          <td ng-show="resSelected">
             <span class="pull-right">
               {{row.resolution | number:9}}
             </span>
           </td>
-          <td ng-show="row.scale">
+          <td ng-show="!resSelected">
             <span class="pull-left">
               1 : {{row.scale | number}}
             </span>
