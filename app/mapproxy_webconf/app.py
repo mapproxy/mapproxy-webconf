@@ -1,6 +1,7 @@
 import os
 import yaml
 import gettext
+import inspect
 from copy import deepcopy
 from uuid import uuid4
 
@@ -14,7 +15,7 @@ from mapproxy.grid import tile_grid, GridError
 from . import bottle
 from . import config
 from . import storage
-from .bottle import request, response, static_file, template, SimpleTemplate, redirect
+from .bottle import request, response, static_file, template, SimpleTemplate, redirect, abort
 from .utils import requires_json
 from .capabilities import parse_capabilities_url
 
@@ -33,6 +34,17 @@ try:
 
 except IOError as e:
     print e
+
+#decorators
+def require_project(func):
+    def decorator(storage, **kwargs):
+        if 'project' in kwargs and storage.exist_project(kwargs['project']):
+            if 'storage' in inspect.getargspec(func).args:
+                kwargs['storage'] = storage
+            return func(**kwargs)
+        else:
+            abort(404)
+    return decorator
 
 class RESTBase(object):
     def __init__(self, section):
@@ -277,38 +289,47 @@ def projects(storage):
     return template('projects', projects=projects)
 
 @app.route('/project/<project>/conf', name='configuration')
+@require_project
 def conf_index(project):
     return template('config_index', project=project)
 
 @app.route('/project/<project>', name='project_index')
+@require_project
 def project_index(project):
     return template('project_index', project=project)
 
 @app.route('/project/<project>/conf/sources', name='sources')
+@require_project
 def sources(project):
     return template('sources', project=project)
 
 @app.route('/project/<project>/conf/grids', name='grids')
+@require_project
 def grids(project):
     return template('grids', project=project)
 
 @app.route('/project/<project>/conf/caches', name='caches')
+@require_project
 def caches(project):
     return template('caches', project=project)
 
 @app.route('/project/<project>/conf/layers', name='layers')
+@require_project
 def layers(project):
     return template('layers', project=project)
 
 @app.route('/project/<project>/conf/globals', name='globals')
+@require_project
 def globals(project):
     return template('globals', project=project)
 
 @app.route('/project/<project>/conf/services', name='services')
+@require_project
 def services(project):
     return template('services', project=project)
 
 @app.route('/conf/<project>/write_config', 'POST', name='write_config')
+@require_project
 def write_config(project, storage):
     mapproxy_conf = config.mapproxy_conf_from_storage(storage, project)
     try:

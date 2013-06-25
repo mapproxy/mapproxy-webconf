@@ -283,3 +283,9 @@ class SQLiteStore(object):
         cur.execute("SELECT id FROM store WHERE section = ? AND project = ? AND data LIKE ?", (section, project, search))
         row = cur.fetchone()
         return row[0] if row else False
+
+    def exist_project(self, project):
+        cur = self.db.cursor()
+        cur.execute("SELECT id FROM store WHERE section = 'defaults' AND project = ?", (project,))
+        result = cur.fetchall()
+        return len(result) > 0
