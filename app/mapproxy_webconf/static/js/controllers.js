@@ -984,6 +984,10 @@ function MapproxyGridFormCtrl($scope, $http, TranslationService, MapproxyGrids, 
 
     $scope.$on('grids.current', setGrid);
 
+    $scope.$on('dss.refreshCalculatedTiles', function() {
+        $scope.calculateTiles();
+    });
+
     $scope.$watch('editareaBinds.save', function(save) {
         if(save) {
             $scope.grid = $scope.editareaBinds.editareaValue;
@@ -1428,6 +1432,9 @@ function ProjectDefaultsCtrl($scope, ProjectDefaults, MessageService) {
 };
 
 function DisplayCalculatedTilesCtrl($scope, DataShareService) {
+    $scope.refresh = function() {
+        DataShareService.data('refreshCalculatedTiles', true);
+    };
     $scope.calculatedTiles = [];
     $scope.$on('dss.calculatedTiles', function() {
         $scope.calculatedTiles = DataShareService.data('calculatedTiles');

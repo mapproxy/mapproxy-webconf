@@ -271,6 +271,9 @@
 
 %def rightblock():
   <div ng-controller="DisplayCalculatedTilesCtrl">
+    <button class="btn btn-small pull-right" ng-click="refresh()" ng-show="calculatedTiles">${ _('Refresh') }</button>
+    <br ng-show="calculatedTiles">
+    <hr ng-show="calculatedTiles">
     <table class="table" ng-show="calculatedTiles">
       <thead>
         <tr>
