@@ -21,14 +21,14 @@
 
     <!-- libs -->
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/jquery-1.9.1.min.js') }"></script>
-    <script type="text/javascript" src="${ get_url('static', filepath='js/lib/jquery-ui-1.10.0.custom.js') }"></script>
+    <script type="text/javascript" src="${ get_url('static', filepath='js/lib/jquery-ui-1.10.3.custom.min.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/jquery.blockUI.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/angular.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/angular-locale_de-de.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/angular.extensions.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/angular-resource.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/bootstrap.js') }"></script>
-    <script type="text/javascript" src="${ get_url('static', filepath='js/lib/OpenLayers-2.12.js') }"></script>
+    <script type="text/javascript" src="${ get_url('static', filepath='js/lib/OpenLayers-2.13.min.custom.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/openlayers.extensions/delete.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/openlayers.extensions/string.format.js') }"></script>
 
@@ -67,8 +67,8 @@
         app.run(function($rootScope, tooltipMapper, TranslationService) {
           $rootScope.LANGUAGE = '${ language }';
           $rootScope.PROJECT = '${ project }';
-          tooltipMapper.loadDict("${ get_url('resource', filename='tooltips.%s.js' % language, translated=False) }");
-          TranslationService.loadDict("${ get_url('resource', filename='translations.js', translated=True) }");
+          tooltipMapper.loadDict("${ get_url('resource', filename='tooltips.%s.js' % language) }");
+          TranslationService.loadDict("${ get_url('resource', filename='translations.js') }");
 
         });
      </script>
