@@ -323,6 +323,7 @@
     <div message-handler="error"
          message-types="wms_capabilities.load_error,wms_capabilities.delete_error,wms_capabilities.update_error">
     </div>
+    <div spinner spinner-start="wms_capabilities.request_start" spinner-end="wms_capabilities.delete_success,wms_capabilities.update_success,wms_capabilities.load_error,wms_capabilities.delete_error,wms_capabilities.update_error"></div>
     <hr>
     <form name="form" novalidate>
       <div class="input-append" labeled="input_label" name-for="url"  text="${ _('Load WMS') }">
