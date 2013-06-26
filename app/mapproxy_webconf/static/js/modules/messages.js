@@ -53,12 +53,20 @@ directive('spinner', function(MessageService) {
             scope.messageService = MessageService;
 
             angular.forEach(attrs.spinnerStart.split(','), function(start) {
-                scope.$watch('messageService.messages.' + start, function() {
+                scope.$watch('messageService.messages.' + start, function(messageObject) {
+                    // start triggered twice
+                    if(angular.isDefined(messageObject)) {
+                        scope.messageService.removeMessage(messageObject.section, messageObject.action);
+                    }
                     console.log('spinner start')
                 });
             });
             angular.forEach(attrs.spinnerEnd.split(','), function(end) {
-                scope.$watch('messageService.messages.' + end, function() {
+                scope.$watch('messageService.messages.' + end, function(messageObject) {
+                    //how to handle events vor deleted messages?
+                    if(angular.isDefined(messageObject)) {
+                        scope.messageService.removeMessage(messageObject.section, messageObject.action);
+                    }
                     console.log('spinner end')
                 });
             });

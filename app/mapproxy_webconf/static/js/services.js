@@ -69,7 +69,7 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
         _this._loaded = false;
         _this._action = 'load';
         _this._loadingInProgress = true;
-        _this._messageService.message(_this._section + '.request_start', true);
+        _this._messageService.message(_this._section, 'request_start', true);
         _this._resource.query({action: _this._section}, function(result) {
             if(result) {
                 angular.forEach(result, function(item) {
@@ -92,7 +92,7 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
         delete item._section;
         if(angular.isUndefined(item._id)) {
             _this._action = 'add';
-            _this._rootScope.$broadcast(_this._section + '.request_start')
+            _this._messageService.message(_this._section, 'request_start', true);
             item.$save({action: _this._section},
                 function(result) {
                     result._section = _this._section;
@@ -106,7 +106,7 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
                 }, _this._errorMessageHandler);
         } else {
             _this._action = 'update';
-            _this._rootScope.$broadcast(_this._section + '.request_start')
+            _this._messageService.message(_this._section, 'request_start', true);
             item.$update({action: _this._section, id: item._id}, function(result) {
                 result._section = _this._section;
                 _this._addDependencies(result);
@@ -122,7 +122,7 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
     this.remove = function(_item) {
         var item = new _this._resource(_item)
         _this._action = 'delete';
-        _this._rootScope.$broadcast(_this._section + '.request_start')
+        _this._messageService.message(_this._section, 'request_start', true);
         item.$delete({action: _this._section, id: item._id}, function(result) {
             delete(_this._items[result._id]);
             _this._successMessageHandler(_this._translationService.translate('Successful deleted'));
@@ -244,7 +244,7 @@ var MapproxyLayerService = function(_section, _model, _dependencies) {
             _this.prepareLayer(to_update, layer, idx);
         });
         to_update = new _this._resource({'tree': to_update});
-        _this._rootScope.$broadcast(_this._section + '.request_start')
+        _this._messageService.message(_this._section, 'request_start', true);
         to_update.$update({action: _this._section}, function(result) {
             _this._successMessageHandler(_this._translationService.translate('Structure successful updated'));
         }, _this._errorMessageHandler);
@@ -332,7 +332,7 @@ WMSSourceService = function(_section) {
     this.refresh = function(_item) {
         var item = new _this._resource(_item);
         _this._action = 'update';
-        _this._rootScope.$broadcast(_this._section + '.request_start')
+        _this._messageService.message(_this._section, 'request_start', true);
         item.$update({action: _this._section, id: item._id}, function(result) {
             _this._items[result._id] = result;
             _this._last = result;
