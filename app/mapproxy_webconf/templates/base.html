@@ -67,8 +67,8 @@
         app.run(function($rootScope, tooltipMapper, TranslationService) {
           $rootScope.LANGUAGE = '${ language }';
           $rootScope.PROJECT = '${ project }';
-          tooltipMapper.loadDict("${ get_url('resource', filename='tooltips.%s.js' % language, translated=False) }");
-          TranslationService.loadDict("${ get_url('resource', filename='translations.js', translated=True) }");
+          tooltipMapper.loadDict("${ get_url('resource', filename='tooltips.%s.js' % language) }");
+          TranslationService.loadDict("${ get_url('resource', filename='translations.js') }");
 
         });
      </script>

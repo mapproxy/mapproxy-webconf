@@ -348,13 +348,10 @@ def static(filepath):
 def angular_template(filename):
     return template(os.path.join(os.path.dirname(__file__), 'templates/angular', filename))
 
-@app.route('/resources/<filename>/<translated>', name='resource', translated=False)
-def resources(filename, translated):
+@app.route('/resources/<filename>', name='resource')
+def resources(filename):
     file_location = os.path.join(os.path.dirname(__file__), 'templates/resources')
-    if translated:
-        return template(os.path.join(file_location, filename))
-    else:
-        return static_file(filename, root=file_location)
+    return template(os.path.join(file_location, filename))
 
 @app.route('/yaml', 'POST', name='json_to_yaml')
 def create_yaml():
