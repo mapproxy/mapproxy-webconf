@@ -33,15 +33,10 @@
     <script type="text/javascript" src="${ get_url('static', filepath='js/openlayers.extensions/string.format.js') }"></script>
 
     <!-- site libs -->
-    <script type="text/javascript" src="${ get_url('static', filepath='js/helper.js') }"></script>
-    <script type="text/javascript" src="${ get_url('static', filepath='js/validators.js') }"></script>
-    <script type="text/javascript" src="${ get_url('static', filepath='js/resources.js') }"></script>
-    <script type="text/javascript" src="${ get_url('static', filepath='js/services.js') }"></script>
-    <script type="text/javascript" src="${ get_url('static', filepath='js/modules/messages.js') }"></script>
-    <script type="text/javascript" src="${ get_url('static', filepath='js/modules/tooltips.js') }"></script>
-    <script type="text/javascript" src="${ get_url('static', filepath='js/directives.js') }"></script>
-    <script type="text/javascript" src="${ get_url('static', filepath='js/modules/openlayers.js') }"></script>
-    <script type="text/javascript" src="${ get_url('static', filepath='js/controllers.js') }"></script>
+    <script type="text/javascript" src="${ get_url('static', filepath='js/mapproxy_gui.js') }"></script>
+    <script type="text/javascript">
+      include_requireds("${ get_url('static', filepath='js/') }")
+    </script>
     % if defined('jsblock') and hasattr(jsblock, '__call__'):
       %jsblock()
     %end
