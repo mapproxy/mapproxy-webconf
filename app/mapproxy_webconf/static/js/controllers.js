@@ -333,7 +333,7 @@ function MapproxySourceFormCtrl($scope, $http, TranslationService, MapproxySourc
             buttons[TranslationService.translate('Change URL')] = function() {
                 $(this).dialog("close");
                 $scope.source.data.req.layers = undefined;
-                $scope.$apply();
+                safeApply($scope)
                 callback(true);
             };
             buttons[TranslationService.translate('Keep URL')] = function() {
@@ -371,7 +371,7 @@ function MapproxySourceFormCtrl($scope, $http, TranslationService, MapproxySourc
                 $(this).dialog("close");
                 $scope.source.data.req.url = new_data.sourceURL;
                 $scope.source.data.req.layers = undefined;
-                $scope.$apply();
+                safeApply($scope)
                 callback(true);
             };
             buttons[TranslationService.translate("Keep url and reject layer")] = function() {
