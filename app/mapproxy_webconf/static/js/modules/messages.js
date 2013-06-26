@@ -44,4 +44,24 @@ directive('messageHandler', function($templateCache, MessageService) {
             });
         }
     };
+}).
+
+directive('spinner', function(MessageService) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            scope.messageService = MessageService;
+
+            angular.forEach(attrs.spinnerStart.split(','), function(start) {
+                scope.$watch('messageService.messages.' + start, function() {
+                    console.log('spinner start')
+                });
+            });
+            angular.forEach(attrs.spinnerEnd.split(','), function(end) {
+                scope.$watch('messageService.messages.' + end, function() {
+                    console.log('spinner end')
+                });
+            });
+        }
+    }
 });
