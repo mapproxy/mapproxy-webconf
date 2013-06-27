@@ -1,6 +1,6 @@
 var PAGE_LEAVE_MSG = "You have unsaved changes in this form. Realy leave the page and disgard unsaved changes?";
 
-function BaseListCtrl($scope, MessageService, service, _section) {
+function BaseListCtrl($scope, MessageService, TranslationService, service, _section) {
     $scope.refreshList = function() {
         $scope.list = service.list();
     };
@@ -59,6 +59,44 @@ function BaseListCtrl($scope, MessageService, service, _section) {
         $scope.refreshList();
         service.current({'data': service.model});
     }, true);
+    $scope.$watch('_messageService.messages.' + _section + '.delete_has_dependencies', function(messageObject) {
+        if(angular.isDefined(messageObject)) {
+            var dialogContent = '<ul>';
+            angular.forEach(messageObject.message, function(_dependencies, name) {
+                if(_dependencies.length > 0) {
+                    dialogContent += '<li>' + name[0].toUpperCase() + name.slice(1) +'<ul>';
+                    if(name == 'layers') {
+                        angular.forEach(_dependencies, function(dependency) {
+                            dialogContent += '<li>' + dependency.title + ' (' + dependency.name + ')</li>';
+                        });
+                    } else {
+                        angular.forEach(_dependencies, function(dependency) {
+                            dialogContent += '<li>' + dependency.name + '</li>';
+                        });
+                    }
+                    dialogContent += '</ul>';
+                }
+            });
+            dialogContent += '</ul>';
+            var title = TranslationService.translate("Can not delete because of dependencies");
+            var dialogElement = $('<div style="display:none;" id="dialog_' + $scope.$id +'" title="' + title + '"></div>');
+            dialogElement.append($(dialogContent))
+            $(dialogElement).dialog({
+                resizeable: false,
+                width: (title.length * 12),
+                height: 'auto',
+                modal: true,
+                buttons: [{
+                    'text': TranslationService.translate('OK'),
+                    'class': 'btn btn-small',
+                    'click': function() {
+                        $(this).dialog("close");
+                    }
+                }]
+            })
+            MessageService.removeMessage(messageObject['section'], messageObject['action']);
+        }
+    }, true)
 };
 
 function SourceListCtrl($injector, $scope, TranslationService, MapproxySources) {
