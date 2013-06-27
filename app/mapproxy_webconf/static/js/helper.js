@@ -59,14 +59,14 @@ var nameExistInService = function(name, id, service, services) {
 //prevent error if $apply already in progress
 //found at https://coderwall.com/p/ngisma
 var safeApply = function(scope, fn) {
-  var phase = scope.$root.$$phase;
-  if(phase == '$apply' || phase == '$digest') {
-    if(fn && (typeof(fn) === 'function')) {
-      fn();
+    var phase = scope.$root.$$phase;
+    if(phase == '$apply' || phase == '$digest') {
+        if(fn && (typeof(fn) === 'function')) {
+            fn();
+        }
+    } else {
+        scope.$apply(fn);
     }
-  } else {
-    scope.$apply(fn);
-  }
 };
 
 var generateInfoDialogContent = function(data, TranslationService) {

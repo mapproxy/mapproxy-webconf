@@ -1,6 +1,6 @@
 var PAGE_LEAVE_MSG = "You have unsaved changes in this form. Realy leave the page and disgard unsaved changes?";
 
-function BaseListCtrl($scope, MessageService, service, _section) {
+function BaseListCtrl($scope, MessageService, TranslationService, service, _section) {
     $scope.refreshList = function() {
         $scope.list = service.list();
     };
@@ -41,35 +41,6 @@ function BaseListCtrl($scope, MessageService, service, _section) {
         $scope.selected = undefined;
         service.current({'data': service.model});
     };
-    $scope.hasDependencies = function(item) {
-        var hasDependencies = false;
-        angular.forEach(item._dependencies, function(kind) {
-            if(kind.length > 0) {
-                hasDependencies = true;
-            }
-        });
-        return hasDependencies;
-    };
-    $scope.getDependencies = function(item) {
-        var result = '<ul>';
-        angular.forEach(item._dependencies, function(_dependencies, name) {
-            if(_dependencies.length > 0) {
-                result += '<li>' + name[0].toUpperCase() + name.slice(1) +'<ul>';
-                if(name == 'layers') {
-                    angular.forEach(_dependencies, function(dependency) {
-                        result += '<li>' + dependency.data.title + '(' + dependency.data.name + ')</li>';
-                    });
-                } else {
-                    angular.forEach(_dependencies, function(dependency) {
-                        result += '<li>' + dependency.data.name + '</li>';
-                    });
-                }
-                result += '</ul>';
-            }
-        });
-        result += '</ul>';
-        return result;
-    };
 
     $scope._messageService = MessageService;
     $scope.$watch('_messageService.messages.' + _section + '.load_success', function() {
@@ -88,6 +59,44 @@ function BaseListCtrl($scope, MessageService, service, _section) {
         $scope.refreshList();
         service.current({'data': service.model});
     }, true);
+    $scope.$watch('_messageService.messages.' + _section + '.delete_has_dependencies', function(messageObject) {
+        if(angular.isDefined(messageObject)) {
+            var dialogContent = '<ul>';
+            angular.forEach(messageObject.message, function(_dependencies, name) {
+                if(_dependencies.length > 0) {
+                    dialogContent += '<li>' + name[0].toUpperCase() + name.slice(1) +'<ul>';
+                    if(name == 'layers') {
+                        angular.forEach(_dependencies, function(dependency) {
+                            dialogContent += '<li>' + dependency.title + ' (' + dependency.name + ')</li>';
+                        });
+                    } else {
+                        angular.forEach(_dependencies, function(dependency) {
+                            dialogContent += '<li>' + dependency.name + '</li>';
+                        });
+                    }
+                    dialogContent += '</ul>';
+                }
+            });
+            dialogContent += '</ul>';
+            var title = TranslationService.translate("Can not delete because of dependencies");
+            var dialogElement = $('<div style="display:none;" id="dialog_' + $scope.$id +'" title="' + title + '"></div>');
+            dialogElement.append($(dialogContent))
+            $(dialogElement).dialog({
+                resizeable: false,
+                width: (title.length * 12),
+                height: 'auto',
+                modal: true,
+                buttons: [{
+                    'text': TranslationService.translate('OK'),
+                    'class': 'btn btn-small',
+                    'click': function() {
+                        $(this).dialog("close");
+                    }
+                }]
+            })
+            MessageService.removeMessage(messageObject['section'], messageObject['action']);
+        }
+    }, true)
 };
 
 function SourceListCtrl($injector, $scope, TranslationService, MapproxySources) {
@@ -333,7 +342,7 @@ function MapproxySourceFormCtrl($scope, $http, TranslationService, MapproxySourc
             buttons[TranslationService.translate('Change URL')] = function() {
                 $(this).dialog("close");
                 $scope.source.data.req.layers = undefined;
-                $scope.$apply();
+                safeApply($scope)
                 callback(true);
             };
             buttons[TranslationService.translate('Keep URL')] = function() {
@@ -371,7 +380,7 @@ function MapproxySourceFormCtrl($scope, $http, TranslationService, MapproxySourc
                 $(this).dialog("close");
                 $scope.source.data.req.url = new_data.sourceURL;
                 $scope.source.data.req.layers = undefined;
-                $scope.$apply();
+                safeApply($scope)
                 callback(true);
             };
             buttons[TranslationService.translate("Keep url and reject layer")] = function() {

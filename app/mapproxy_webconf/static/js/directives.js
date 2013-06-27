@@ -52,7 +52,7 @@ directive('sortable', function() {
                     scope.items.splice(start, 1)[0]);
 
                 //tell angular $scope has changed
-                scope.$apply(function() {
+                safeApply(scope, function() {
                     ngModelCtrl.$setValidity('required', true);
                 });
             };
@@ -189,7 +189,7 @@ directive('droppable', function($parse) {
                 }
                 delete(scope.j_ui);
 
-                scope.$apply(function() {
+                safeApply(scope, function() {
                     ngModelCtrl.$setViewValue(scope.items);
                     if(angular.isDefined(scope.items)) {
                         ngModelCtrl.$setValidity('required', true);
@@ -587,7 +587,7 @@ directive('editarea', function($http, MessageService, EDITAREA_TEMPLATE_URL) {
                 scope.editareaBinds.dirty = false;
                 scope.editareaErrorMsg = undefined;
                 if(unmanual) {
-                    scope.$apply();
+                    safeApply(scope);
                 }
             };
             scope.reset = function() {
@@ -618,7 +618,7 @@ directive('editarea', function($http, MessageService, EDITAREA_TEMPLATE_URL) {
                 }
             });
             _editareaElement.on('keyup', function(e) {
-                scope.$apply(function() {
+                safeApply(scope, function() {
                     scope.editareaBinds.dirty = true;
                 });
             });
