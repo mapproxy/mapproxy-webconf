@@ -3,6 +3,7 @@ import ConfigParser as _ConfigParser
 from mapproxy.config.spec import validate_mapproxy_conf
 from mapproxy.script.scales import scale_to_res
 from mapproxy_webconf import utils
+from mapproxy_webconf.constants import OGC_DPI, UNIT_FACTOR
 
 class ConfigError(Exception):
     pass
@@ -150,11 +151,11 @@ def mapproxy_conf_from_storage(storage, project):
         clear_min_max_res_scales(layers, 'layer', defaults)
 
     if grids:
-        dpi = float(defaults.values()[0].get('dpi', (2.54/(0.00028 * 100))))
+        dpi = float(defaults.values()[0].get('dpi', OGC_DPI))
         for grid in grids.items():
             if 'scales' in grid[1].keys():
                 units = grid[1].get('units', 'm')
-                units = 1 if units == 'm' else 111319.4907932736
+                units = 1 if units == 'm' else UNIT_FACTOR
                 try:
                     grid[1]['res'] = [round(scale_to_res(float(scale), dpi, units), 9) for scale in grid[1]['scales']]
                 except ValueError:
@@ -188,10 +189,10 @@ def mapproxy_conf_from_storage(storage, project):
     return mapproxy_conf
 
 def clear_min_max_res_scales(data_elements, element_type, defaults):
-    dpi = float(defaults.values()[0].get('dpi', (2.54/(0.00028 * 100))))
+    dpi = float(defaults.values()[0].get('dpi', OGC_DPI))
     for data_element in data_elements:
         units = data_element.get('units', 'm')
-        units = 1 if units == 'm' else 111319.4907932736
+        units = 1 if units == 'm' else UNIT_FACTOR
         for key in ['min_res_scale', 'max_res_scale']:
             if key in data_element.keys():
                 mapproxy_conf_key = key[:7] # remove '_scale'
