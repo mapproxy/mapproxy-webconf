@@ -86,6 +86,17 @@ class RESTBase(object):
         return data
 
     def delete(self, project, id, storage):
+        if self.dependencies:
+            look_for = {}
+            for dependency in self.dependencies:
+                section, field = dependency.split('.')
+                look_for[section] = field
+            result = storage.check_dependencies(id, look_for)
+
+            if result:
+                response.status = 405
+                return result
+
         if storage.delete(id, self.section, project):
             response.status = 204
         else:
