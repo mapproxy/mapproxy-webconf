@@ -47,8 +47,9 @@ def require_project(func):
     return decorator
 
 class RESTBase(object):
-    def __init__(self, section):
+    def __init__(self, section, dependencies=[]):
         self.section = section
+        self.dependencies = dependencies
 
     def list(self, project, storage):
         return storage.get_all(self.section, project, with_id=True, with_manual=True, with_locked=True)
@@ -160,7 +161,7 @@ class RESTLayers(RESTBase):
 
 class RESTGrids(RESTBase):
     def __init__(self):
-        RESTBase.__init__(self, 'grids')
+        RESTBase.__init__(self, 'grids', ['caches.grids'])
 
     def list(self, project, storage):
         default_grids = {
@@ -255,8 +256,8 @@ class RESTGrids(RESTBase):
         default_grids.update(storage.get_all(self.section, project, with_id=True, with_manual=True, with_locked=True))
         return default_grids
 
-RESTBase('sources').setup_routing(app)
-RESTBase('caches').setup_routing(app)
+RESTBase('sources', ['caches.sources', 'layers.sources']).setup_routing(app)
+RESTBase('caches', ['caches.sources', 'layers.sources']).setup_routing(app)
 RESTBase('globals').setup_routing(app)
 RESTBase('services').setup_routing(app)
 RESTBase('defaults').setup_routing(app)
