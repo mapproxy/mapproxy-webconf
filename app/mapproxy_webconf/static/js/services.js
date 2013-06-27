@@ -90,7 +90,13 @@ var MapproxyBaseService = function(_section, _model) {
         item.$delete({action: _this._section, id: item._id}, function(result) {
             delete(_this._items[result._id]);
             _this._successMessageHandler(_this._translationService.translate('Successful deleted'));
-        }, _this._errorMessageHandler);
+        }, function(response) {
+            if(response.status == 405) {
+                _this._messageService.message(_this._section, _this._action + '_has_dependencies', response.data);
+            } else {
+                _this._errorMessageHandler(response)
+            }
+        });
     };
     this.list = function() {
         var result = [];
