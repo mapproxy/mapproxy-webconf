@@ -289,3 +289,24 @@ class SQLiteStore(object):
         cur.execute("SELECT id FROM store WHERE section = 'defaults' AND project = ?", (project,))
         result = cur.fetchall()
         return len(result) > 0
+
+    def check_dependencies(self, id, look_for):
+        cur = self.db.cursor()
+        cur.execute("SELECT section, data FROM store WHERE section in (%s)" % (', '.join(["'%s'" % section for section in look_for.keys()]), ))
+        result = cur.fetchall()
+
+        response = {}
+
+        for row in result:
+            section =  row[0]
+            data = json.loads(row[1])
+            if id in data[look_for[section]]:
+                dependency = {'name': data['name']}
+                if data.has_key('title'):
+                    dependency['title'] = data['title']
+                if response.has_key(section):
+                    response[section].append(dependency)
+                else:
+                    response[section] = [dependency]
+
+        return response
