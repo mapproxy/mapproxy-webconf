@@ -1,11 +1,10 @@
-var MapproxyBaseService = function(_section, _model, _dependencies) {
+var MapproxyBaseService = function(_section, _model) {
     var _this = this;
     this._items = {};
     this._item;
     this._last;
     this._section = _section;
     this._action;
-    this._dependencies = _dependencies;
     this._model = _model;
     this._rootScope;
     this._resource;
@@ -18,35 +17,6 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
     };
     this._successMessageHandler = function(msg) {
         _this._messageService.message(_this._section, _this._action + '_success', msg);
-    };
-    this._addDependencies = function(item) {
-        item._dependencies = {};
-        angular.forEach(_this._dependencies, function(dependency) {
-            item._dependencies[dependency._section] = []
-            angular.forEach(dependency._items, function(dependencyItem) {
-                var useSection = _this._section;
-                //layers only have sources for cache- and source-items
-                if(item._section == 'caches' && dependencyItem._section == 'layers') {
-                    useSection = 'sources';
-                }
-                if($.inArray(item._id, dependencyItem.data[useSection]) != -1) {
-                    item._dependencies[dependency._section].push(dependencyItem);
-                }
-            });
-        });
-    };
-    this._waitForLoadComplete = function(event) {
-        var name = event.name.split('.')[0];
-        var loadComplete = _this._loaded;
-        angular.forEach(_this.dependencies, function(dependency) {
-            if(!dependency._loaded) {
-                loadComplete = false;
-            }
-        });
-        if(loadComplete) {
-            angular.forEach(_this._items, _this._addDependencies);
-            _this._successMessageHandler(_this._translationService.translate('Load complete'));
-        }
     };
     this._removeNonModelProperties = function(data) {
         var cleanup = function(cleanData, data) {
@@ -77,6 +47,7 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
                 });
                 _this._loaded = true;
                 _this._loadingInProgress = false;
+                _this._successMessageHandler(_this._translationService.translate('Load complete'));
                 if(angular.isDefined(_this._rootScope))
                     _this._rootScope.$broadcast(_this._section + '.load_finished');
             }
@@ -87,14 +58,12 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
             _item.data = _this._removeNonModelProperties(_item.data);
         }
         var item = new _this._resource(_item);
-        delete item._dependencies;
         delete item._section;
         if(angular.isUndefined(item._id)) {
             _this._action = 'add';
             item.$save({action: _this._section},
                 function(result) {
                     result._section = _this._section;
-                    _this._addDependencies(result);
                     _this._items[result._id] = result;
                     _this._successMessageHandler(_this._translationService.translate('Successful added'));
                     if(angular.isDefined(_this._rootScope)) {
@@ -106,7 +75,6 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
             _this._action = 'update';
             item.$update({action: _this._section, id: item._id}, function(result) {
                 result._section = _this._section;
-                _this._addDependencies(result);
                 _this._items[result._id] = result;
                 _this._successMessageHandler(_this._translationService.translate('Successful updated'));
                 if(angular.isDefined(_this._rootScope)) {
@@ -172,10 +140,6 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
         _this._messageService = MessageService;
         _this._translationService = TranslationService;
         _this._rootScope.$on(_this._section + '.load_finished', _this._waitForLoadComplete);
-        angular.forEach(_this._dependencies, function(dependency) {
-            _this._rootScope.$on(dependency._section + '.load_finished', _this._waitForLoadComplete)
-            dependency.return_func(_this._rootScope, _this._resource, _this._messageService, _this._translationService);
-        });
         if(!_this._loadingInProgress && !_this._loaded) {
             _this.load();
         }
@@ -199,8 +163,8 @@ var MapproxyBaseService = function(_section, _model, _dependencies) {
     }
 };
 
-var MapproxyLayerService = function(_section, _model, _dependencies) {
-    MapproxyBaseService.call(this, _section, _model, _dependencies);
+var MapproxyLayerService = function(_section, _model) {
+    MapproxyBaseService.call(this, _section, _model);
     var _this = this;
 
     this.prepareLayer = function(store, layer, idx, parent_id) {
@@ -445,9 +409,9 @@ var servicesModel = {
 var layerService = new MapproxyLayerService('layers', layerModel);
 var globalsService = new MapproxyBaseService('globals', globalsModel);
 var servicesService = new MapproxyBaseService('services', servicesModel);
-var cacheService = new MapproxyBaseService('caches', cacheModel, [layerService]);
-var gridService = new MapproxyBaseService('grids', gridModel, [cacheService]);
-var sourceService = new MapproxyBaseService('sources', sourceModel, [cacheService, layerService]);
+var cacheService = new MapproxyBaseService('caches', cacheModel);
+var gridService = new MapproxyBaseService('grids', gridModel);
+var sourceService = new MapproxyBaseService('sources', sourceModel);
 var wmsService = new WMSSourceService('wms_capabilities');
 var defaultsService = new MapproxyBaseService('defaults', defaultsModel);
 

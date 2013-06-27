@@ -19,18 +19,11 @@
           <i ng-show="item._manual" class="icon-pencil"></i>
           <i ng-show="item._locked || item.default" class="icon-ok"></i>
           {{item.data.name}}
-          <i ng-show="!hasDependencies(item)" class="icon-remove"
+          <i class="icon-remove"
             dialog="ask"
             dialog-title="${ _('Confirm!') }"
             dialog-text="${ _('Really remove grid:') } {{item.data.name}}?"
             callback="removeItem($event, item)">
-          </i>
-          <i ng-show="hasDependencies(item)" class="icon-remove"
-            dialog="confirm"
-            dialog-width="600"
-            dialog-height="300"
-            dialog-title="Confirm!"
-            dialog-text="${ _('Can not remove grid:') } {{item.data.name}}<br>${ _('Dependencies are:') }<br>{{getDependencies(item)}}">
           </i>
           <i class="icon-share" ng-click="copyItem($event, item)"></i>
         </li>

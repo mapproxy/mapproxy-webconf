@@ -41,35 +41,6 @@ function BaseListCtrl($scope, MessageService, service, _section) {
         $scope.selected = undefined;
         service.current({'data': service.model});
     };
-    $scope.hasDependencies = function(item) {
-        var hasDependencies = false;
-        angular.forEach(item._dependencies, function(kind) {
-            if(kind.length > 0) {
-                hasDependencies = true;
-            }
-        });
-        return hasDependencies;
-    };
-    $scope.getDependencies = function(item) {
-        var result = '<ul>';
-        angular.forEach(item._dependencies, function(_dependencies, name) {
-            if(_dependencies.length > 0) {
-                result += '<li>' + name[0].toUpperCase() + name.slice(1) +'<ul>';
-                if(name == 'layers') {
-                    angular.forEach(_dependencies, function(dependency) {
-                        result += '<li>' + dependency.data.title + '(' + dependency.data.name + ')</li>';
-                    });
-                } else {
-                    angular.forEach(_dependencies, function(dependency) {
-                        result += '<li>' + dependency.data.name + '</li>';
-                    });
-                }
-                result += '</ul>';
-            }
-        });
-        result += '</ul>';
-        return result;
-    };
 
     $scope._messageService = MessageService;
     $scope.$watch('_messageService.messages.' + _section + '.load_success', function() {
