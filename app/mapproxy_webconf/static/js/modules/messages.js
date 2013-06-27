@@ -51,23 +51,28 @@ directive('spinner', function(MessageService) {
         restrict: 'A',
         link: function(scope, element, attrs) {
             scope.messageService = MessageService;
-
+            scope.active = false;
+            $(element).hide();
             angular.forEach(attrs.spinnerStart.split(','), function(start) {
-                scope.$watch('messageService.messages.' + start, function(messageObject) {
-                    // start triggered twice
+                scope.$watch('messageService.messages.' + start, function(messageObject, oldMessageObject) {
                     if(angular.isDefined(messageObject)) {
-                        scope.messageService.removeMessage(messageObject.section, messageObject.action);
+                        scope.active = true;
+                        console.log($(element).show());
+                    } else {
+                        console.log(messageObject, oldMessageObject)
                     }
-                    console.log('spinner start')
                 });
             });
             angular.forEach(attrs.spinnerEnd.split(','), function(end) {
                 scope.$watch('messageService.messages.' + end, function(messageObject) {
-                    //how to handle events vor deleted messages?
-                    if(angular.isDefined(messageObject)) {
-                        scope.messageService.removeMessage(messageObject.section, messageObject.action);
+                    if(scope.active) {
+                        //how to handle events vor deleted messages?
+                        if(angular.isDefined(messageObject)) {
+                            scope.messageService.removeMessage(messageObject.section, messageObject.action);
+                        }
+                        scope.active = false;
+                        $(element).hide();
                     }
-                    console.log('spinner end')
                 });
             });
         }
