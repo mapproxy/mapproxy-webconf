@@ -14,9 +14,11 @@ var MapproxyBaseService = function(_section, _model) {
     this._errorMessageHandler = function(error) {
         _this._rootScope.$broadcast(_this._section + '.' + _this._action + '_error');
         _this._messageService.message(_this._section, _this._action + '_error', error.data.error);
+        _this._messageService.notifyOnly(_this._section, 'request_end');
     };
     this._successMessageHandler = function(msg) {
         _this._messageService.message(_this._section, _this._action + '_success', msg);
+        _this._messageService.notifyOnly(_this._section, 'request_end');
     };
     this._removeNonModelProperties = function(data) {
         var cleanup = function(cleanData, data) {
@@ -34,12 +36,15 @@ var MapproxyBaseService = function(_section, _model) {
         };
         return cleanup(_this._model, data);;
     };
+    this._beforeRequest = function() {
+        _this._messageService.notifyOnly(_this._section, 'request_start');
+    };
     this.load = function() {
         _this._items = {};
         _this._loaded = false;
         _this._action = 'load';
         _this._loadingInProgress = true;
-        _this._messageService.message(_this._section, 'request_start', new Date().getTime());
+        _this._beforeRequest();
         _this._resource.query({action: _this._section}, function(result) {
             if(result) {
                 angular.forEach(result, function(item) {
@@ -62,7 +67,7 @@ var MapproxyBaseService = function(_section, _model) {
         delete item._section;
         if(angular.isUndefined(item._id)) {
             _this._action = 'add';
-            _this._messageService.message(_this._section, 'request_start', new Date().getTime());
+            _this._beforeRequest();
             item.$save({action: _this._section},
                 function(result) {
                     result._section = _this._section;
@@ -75,7 +80,7 @@ var MapproxyBaseService = function(_section, _model) {
                 }, _this._errorMessageHandler);
         } else {
             _this._action = 'update';
-            _this._messageService.message(_this._section, 'request_start', new Date().getTime());
+            _this._beforeRequest();
             item.$update({action: _this._section, id: item._id}, function(result) {
                 result._section = _this._section;
                 _this._items[result._id] = result;
@@ -90,7 +95,7 @@ var MapproxyBaseService = function(_section, _model) {
     this.remove = function(_item) {
         var item = new _this._resource(_item)
         _this._action = 'delete';
-        _this._messageService.message(_this._section, 'request_start', new Date().getTime());
+        _this._beforeRequest();
         item.$delete({action: _this._section, id: item._id}, function(result) {
             delete(_this._items[result._id]);
             _this._successMessageHandler(_this._translationService.translate('Successful deleted'));
@@ -214,7 +219,7 @@ var MapproxyLayerService = function(_section, _model) {
             _this.prepareLayer(to_update, layer, idx);
         });
         to_update = new _this._resource({'tree': to_update});
-        _this._messageService.message(_this._section, 'request_start', new Date().getTime());
+        _this._beforeRequest();
         to_update.$update({action: _this._section}, function(result) {
             _this._successMessageHandler(_this._translationService.translate('Structure successful updated'));
         }, _this._errorMessageHandler);
@@ -302,7 +307,7 @@ WMSSourceService = function(_section) {
     this.refresh = function(_item) {
         var item = new _this._resource(_item);
         _this._action = 'update';
-        _this._messageService.message(_this._section, 'request_start', new Date().getTime());
+        _this._beforeRequest();
         item.$update({action: _this._section, id: item._id}, function(result) {
             _this._items[result._id] = result;
             _this._last = result;
