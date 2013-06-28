@@ -147,13 +147,9 @@ var MapproxyBaseService = function(_section, _model, _preloadedData) {
         _this._messageService = MessageService;
         _this._translationService = TranslationService;
         _this._rootScope.$on(_this._section + '.load_finished', _this._waitForLoadComplete);
-        if(angular.isDefined(_this._preloadedData) && angular.isObject(_this._preloadedData)) {
-            _this._loaded = true;
-            _this._loadingInProgress = false;
-            _this._items = _this._preloadedData;
-        } else if(!_this._loadingInProgress && !_this._loaded) {
-            _this.load();
-        }
+        _this._loaded = true;
+        _this._loadingInProgress = false;
+        _this._items = _this._preloadedData;
         return _this.return_dict;
     };
 
@@ -417,7 +413,7 @@ var servicesModel = {
     }
 };
 
-//look for preloaded data
+//ensure variables are defined
 var preloaded_layers = preloaded_layers || undefined;
 var preloaded_globals = preloaded_globals || undefined;
 var preloaded_services = preloaded_services || undefined;
