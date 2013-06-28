@@ -4,6 +4,7 @@ service('MessageService', function($rootScope) {
     var service = {};
 
     service.messages = {};
+    service.notifies = {};
     service.message = function(section, action, message) {
         service.messages[section] = service.messages[section] || {};
         service.messages[section][action] = {
@@ -15,6 +16,11 @@ service('MessageService', function($rootScope) {
 
     service.removeMessage = function(section, action) {
         delete service.messages[section][action];
+    }
+    service.notifyOnly = function(section, action) {
+        service.notifies[section] = service.notifies[section] || {};
+        service.notifies[section][action] = new Date().getTime();
+
     }
     return service;
 }).
@@ -53,27 +59,17 @@ directive('spinner', function(MessageService) {
             scope.messageService = MessageService;
             scope.active = false;
             $(element).hide();
-            angular.forEach(attrs.spinnerStart.split(','), function(start) {
-                scope.$watch('messageService.messages.' + start, function(messageObject, oldMessageObject) {
-                    if(angular.isDefined(messageObject)) {
-                        scope.active = true;
-                        console.log($(element).show());
-                    } else {
-                        console.log(messageObject, oldMessageObject)
-                    }
-                });
+            var service = attrs.spinner;
+            scope.$watch('messageService.notifies.' + service + '.request_start', function() {
+                scope.active = true;
+                $(element).show();
             });
-            angular.forEach(attrs.spinnerEnd.split(','), function(end) {
-                scope.$watch('messageService.messages.' + end, function(messageObject) {
-                    if(scope.active) {
-                        //how to handle events vor deleted messages?
-                        if(angular.isDefined(messageObject)) {
-                            scope.messageService.removeMessage(messageObject.section, messageObject.action);
-                        }
-                        scope.active = false;
-                        $(element).hide();
-                    }
-                });
+
+            scope.$watch('messageService.notifies.' + service + '.request_end', function() {
+                if(scope.active) {
+                    scope.active = false;
+                    $(element).hide();
+                }
             });
         }
     }
