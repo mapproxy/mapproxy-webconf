@@ -118,7 +118,7 @@ function SourceListCtrl($injector, $scope, TranslationService, MapproxySources) 
     };
 };
 
-function CacheListCtrl($injector, $scope, TranslationService, MapproxyCaches, MapproxySources, MapproxyGrids) {
+function CacheListCtrl($injector, $scope, TranslationService, MapproxySources, MapproxyGrids, MapproxyCaches) {
 
     $injector.invoke(BaseListCtrl, this, {$scope: $scope, service: MapproxyCaches, _section: 'caches'});
 
@@ -213,7 +213,7 @@ function MapProxyConfigCtrl($scope, $http, MessageService) {
     $scope._messageService = MessageService;
 }
 
-function TreeCtrl($scope, WMSSources, MessageService, ProjectDefaults) {
+function TreeCtrl($scope, MessageService, WMSSources, ProjectDefaults) {
 
     var refreshTree = function() {
         $scope.wms_list = WMSSources.list();
@@ -276,7 +276,7 @@ function TreeCtrl($scope, WMSSources, MessageService, ProjectDefaults) {
     $scope.capabilities = {};
 };
 
-function MapproxySourceFormCtrl($scope, $http, TranslationService, MapproxySources, WMSSources, ProjectDefaults, MessageService, MapproxyCaches) {
+function MapproxySourceFormCtrl($scope, $http, TranslationService, MessageService, MapproxySources, ProjectDefaults, WMSSources, MapproxyCaches) {
 
     var setSource = function() {
         $scope.source = MapproxySources.current();
@@ -614,7 +614,7 @@ function MapproxySourceFormCtrl($scope, $http, TranslationService, MapproxySourc
     });
 };
 
-function MapproxyCacheFormCtrl($scope, TranslationService, MapproxySources, MapproxyCaches, MapproxyGrids, MessageService) {
+function MapproxyCacheFormCtrl($scope, TranslationService, MessageService, MapproxySources, MapproxyGrids, MapproxyCaches) {
 
     var refreshGrids = function() {
         $scope.available_grids = MapproxyGrids.list();
@@ -760,7 +760,7 @@ function MapproxyCacheFormCtrl($scope, TranslationService, MapproxySources, Mapp
     });
 };
 
-function MapproxyGridFormCtrl($scope, $http, TranslationService, MapproxyGrids, MessageService, ProjectDefaults, DataShareService) {
+function MapproxyGridFormCtrl($scope, $http, TranslationService, MessageService, DataShareService, ProjectDefaults, MapproxyGrids) {
 
     var convertResScales = function(url, mode) {
         if($scope.custom.res_scales.length > 0) {
@@ -1030,7 +1030,7 @@ function MapproxyGridFormCtrl($scope, $http, TranslationService, MapproxyGrids, 
     });
 };
 
-function MapproxyLayerFormCtrl($scope, $http, TranslationService, MapproxySources, MapproxyCaches, MapproxyLayers, MessageService, ProjectDefaults) {
+function MapproxyLayerFormCtrl($scope, $http, TranslationService, MessageService, ProjectDefaults, MapproxySources, MapproxyCaches, MapproxyLayers) {
 
     var setLayer = function() {
         $scope.layer = MapproxyLayers.current();
@@ -1219,7 +1219,7 @@ function MapproxyGlobalsChooserCtrl($scope, DataShareService, TranslationService
     $scope._editarea_visible = false;
 };
 
-function MapproxyGlobalsFormCtrl($scope, TranslationService, MapproxyGlobals, DataShareService, MessageService) {
+function MapproxyGlobalsFormCtrl($scope, TranslationService, MessageService, MapproxyGlobals, DataShareService) {
     var setGlobals = function() {
         var globals = MapproxyGlobals.list();
         if(globals.length > 0) {

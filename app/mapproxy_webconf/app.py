@@ -18,6 +18,7 @@ from . import storage
 from .bottle import request, response, static_file, template, SimpleTemplate, redirect, abort
 from .utils import requires_json
 from .capabilities import parse_capabilities_url
+from .constants import OGC_DPI, UNIT_FACTOR, M_TO_DEG_FACTOR
 
 configuration = config.ConfigParser.from_file('./config.ini')
 
@@ -388,10 +389,10 @@ def create_json():
 def convert_res_scales():
     data = request.json.get('data', [])
     mode = request.json.get('mode', 'to_scale')
-    dpi = float(request.json.get('dpi', (2.54/(0.00028 * 100))))
+    dpi = float(request.json.get('dpi', OGC_DPI))
     units = request.json.get('units', 'm')
     data = [float(d) if d else None for d in data]
-    units = 1 if units == 'm' else 111319.4907932736
+    units = 1 if units == 'm' else UNIT_FACTOR
     convert = res_to_scale if mode == 'to_scale' else scale_to_res
 
     result = []
@@ -412,8 +413,8 @@ def calculate_tiles():
 
     if bbox is not None and not all(bbox):
         bbox = None
-    dpi = float(data.get('dpi', (2.54/(0.00028 * 100))))
-    units = 1 if data.get('units', 'm') == 'm' else 111319.4907932736
+    dpi = float(data.get('dpi', OGC_DPI))
+    units = 1 if data.get('units', 'm') == 'm' else UNIT_FACTOR
 
     res = data.get('res', None)
     if res:
@@ -513,12 +514,10 @@ def is_valid_transformation(bbox, source_srs, dest_srs):
     >>> is_valid_transformation(bbox, source_srs, dest_srs)
     False
     """
-    # 1 m = 0.000009 deg
-    FACTOR = 0.000009
     # delta in m
     delta = 50
     # delta in deg or m
-    delta = delta * FACTOR if source_srs.is_latlong else delta
+    delta = delta * M_TO_DEG_FACTOR if source_srs.is_latlong else delta
 
     x0, y0, x1, y1 = bbox
     p1 = (x0, y0)
@@ -592,8 +591,8 @@ def transform_grid():
     scales = request.forms.get('scales', None)
     if scales:
         scales = map(float, scales.split(','))
-        units = 1 if request.forms.get('units', 'm') == 'm' else 111319.4907932736
-        dpi = float(request.forms.get('dpi', (2.54/(0.00028 * 100))))
+        units = 1 if request.forms.get('units', 'm') == 'm' else UNIT_FACTOR
+        dpi = float(request.forms.get('dpi', OGC_DPI))
         res = [scale_to_res(scale, dpi, units) for scale in scales]
 
     origin = request.forms.get('origin', 'll')
