@@ -1,3 +1,7 @@
+%def preload_block():
+  var preloaded_globals = ${!_globals};
+%end
+
 %def leftblock():
   <div ng-controller="MapproxyGlobalsChooserCtrl" ng-show="!_editarea_visible">
     <h3>${ _('Globals') }</h3>
@@ -88,4 +92,4 @@
   &nbsp;
 %end
 
-%rebase base_config leftblock=leftblock, rightblock=rightblock, middleblock=middleblock, project=get('project'), active='globals'
+%rebase base_config leftblock=leftblock, rightblock=rightblock, middleblock=middleblock, preload_block=preload_block, project=get('project'), active='globals'

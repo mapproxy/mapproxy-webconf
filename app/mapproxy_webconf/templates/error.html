@@ -1,0 +1,8 @@
+%def content():
+  <div class="text-center">
+    <h1>${ _('Error') } ${ error_code }</h1>
+    <h3>${ error_message }</h3>
+  </div>
+%end
+
+%rebase base content=content

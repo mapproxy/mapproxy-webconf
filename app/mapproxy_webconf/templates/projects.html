@@ -1,50 +1,61 @@
 %def content():
-  <div class="span5">
     %if demo:
-      <p class="text-error">${_('demo - you dont see all projects')}</p>
-      <a href="${ get_url('create_project', name='demo', demo=True) }" class="btn btn-small">${ _('Create Project') }</a>
+      <div class="span5">
+        <p class="text-error">${_('demo - you dont see all projects')}</p>
+        <a href="${ get_url('create_project', demo=True) }" class="btn btn-small">${ _('Create Project') }</a>
+      </div>
     %else:
-      %for name, data in projects.items():
-        <div>
-          <h3>${ _('project') }: ${name}</h3>
-          <h4>${ _('settings') }</h4>
-          <div class="pull-left" tooltip="t1" tooltip-placement="left">
-            <a href="${ get_url('project_index', project=name) }" class="btn btn-small">
-              ${ _('Goto default settings') }
-            </a>
+      <div class="span3" ng-controller="CreateProjectCtrl" ng-init="createURL='${ get_url('create_project') }'">
+        <form novalidate name="form">
+          <div labeled="input_label" name-for="cache_name" text="${ _('Project name') }">
+            <input required type="text" ng-model="project.name" id="project_name" name="project_name"/>
           </div>
-          <div class="pull-right" tooltip="t2" tooltip-placement="top">
-            <a href="${ get_url('configuration', project=name) }" class="btn btn-small">
-              ${ _('To configuration') } &rarr;
-            </a>
+          <button class="btn btn-small" ng-disabled="!form.$valid" ng-click="createProject()">${ _('Create project') }</button>
+        </form>
+        <span message-handler="error" message-types="project.create_error"></span>
+      </div>
+      <div class="span5">
+        %for name, data in projects.items():
+          <div>
+            <h3>${ _('project') }: ${name}</h3>
+            <h4>${ _('settings') }</h4>
+            <div class="pull-left" tooltip="t1" tooltip-placement="left">
+              <a href="${ get_url('project_index', project=name) }" class="btn btn-small">
+                ${ _('Goto default settings') }
+              </a>
+            </div>
+            <div class="pull-right" tooltip="t2" tooltip-placement="top">
+              <a href="${ get_url('configuration', project=name) }" class="btn btn-small">
+                ${ _('To configuration') } &rarr;
+              </a>
+            </div>
+            <div style="clear:both"></div>
+            <hr>
+            <h4>${ _('status mapproxy configuration') }</h4>
+            %if data['valid']:
+              <div class="alert alert-block alert-success ">
+                <h4 class="alert-heading">
+                  ${ _('The mapproxy configuration of this project is valid') }
+                </h4>
+              </div>
+            %else:
+              <div class="alert alert-block alert-error ">
+                <h4 class"alert-heading" style="margin-bottom: 10px">
+                  ${ _('Attention') }:
+                  ${ _('The mapproxy configuration of this project is invalid') }
+                </h4>
+                <p style="margin-bottom: 10px">${ _('following errors are recorded') }:</p>
+                <ul>
+                  %for msg in data['errors']:
+                    <li>${msg}</li>
+                  %end
+                </ul>
+              </div>
+            %end
           </div>
-          <div style="clear:both"></div>
-          <hr>
-          <h4>${ _('status mapproxy configuration') }</h4>
-          %if data['valid']:
-            <div class="alert alert-block alert-success ">
-              <h4 class="alert-heading">
-                ${ _('The mapproxy configuration of this project is valid') }
-              </h4>
-            </div>
-          %else:
-            <div class="alert alert-block alert-error ">
-              <h4 class"alert-heading" style="margin-bottom: 10px">
-                ${ _('Attention') }:
-                ${ _('The mapproxy configuration of this project is invalid') }
-              </h4>
-              <p style="margin-bottom: 10px">${ _('following errors are recorded') }:</p>
-              <ul>
-                %for msg in data['errors']:
-                  <li>${msg}</li>
-                %end
-              </ul>
-            </div>
-          %end
-        </div>
-      %end
+        %end
+      </div>
     %end
-  </div>
 % end
 
 %def site_navbar():
