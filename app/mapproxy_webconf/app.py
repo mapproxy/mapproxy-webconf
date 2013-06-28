@@ -48,6 +48,18 @@ def require_project(func):
             abort(404)
     return decorator
 
+## error_pages
+def error404(error):
+    return template('error', error_code=404, error_message=_('Page not found'))
+
+def error500(error):
+    return template('error', error_code=500, error_message=_('Internal server error'))
+
+app.error_handler = {
+    404: error404,
+    500: error500
+}
+
 class RESTBase(object):
     def __init__(self, section, dependencies=[]):
         self.section = section
