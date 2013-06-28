@@ -737,14 +737,20 @@ def transform_grid():
         "features": features
     }
 
-@app.route('/create_project/<name>/<demo>', 'GET', name='create_project', demo=False)
-def create_project(name, storage, demo):
-    if demo:
+@app.route('/create_project/', ['GET', 'POST'], name='create_project')
+def create_project(storage):
+    if request.query.get('demo', False):
         name = str(uuid4()).replace('-', '')
-
-    storage._init_project(name)
-    redirect(app.get_url('project_index', project=name))
-
+        storage._init_project(name)
+        redirect(app.get_url('configuration', project=name))
+    else:
+        name = request.json.get('name')
+        if not name or storage.exist_project(name):
+            response.status = 400
+            return {'error': _('Project "%(name)s" already exists') % ({'name': name})}
+        else:
+            storage._init_project(name)
+            return {'url': app.get_url('configuration', project=name)}
 
 def init_app(storage_dir):
     app.install(storage.SQLiteStorePlugin(os.path.join(configuration.get('app', 'storage_path'), configuration.get('app', 'sqlite_db'))))

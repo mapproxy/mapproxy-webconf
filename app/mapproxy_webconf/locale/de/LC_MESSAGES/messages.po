@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-06-28 10:28+0200\n"
-"PO-Revision-Date: 2013-06-28 10:29+0100\n"
+"POT-Creation-Date: 2013-06-28 12:27+0200\n"
+"PO-Revision-Date: 2013-06-28 12:28+0100\n"
 "Last-Translator: \n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -67,6 +67,11 @@ msgstr "Die angegebene BBox kann mit dem angegebenen Koordinatensystem nicht ben
 #: mapproxy_webconf/app.py:676
 msgid "Too many tiles. Please zoom in."
 msgstr "Zu viele Kacheln. Bitte Zoomen Sie weiter hinein."
+
+#: mapproxy_webconf/app.py:750
+#, python-format
+msgid "Project \"%(name)s\" already exists"
+msgstr "Es existiert bereits ein Projekt mit dem Namen \"%(name)s\""
 
 #: mapproxy_webconf/config.py:63
 msgid "Missing sources section"
@@ -230,43 +235,51 @@ msgstr "Demo - Projekte sind nicht sichtbar"
 msgid "Create Project"
 msgstr "Neues Projekt erstellen"
 
-#: mapproxy_webconf/templates/projects.html:9
+#: mapproxy_webconf/templates/projects.html:10
+msgid "Project name"
+msgstr "Projektname"
+
+#: mapproxy_webconf/templates/projects.html:13
+msgid "Create project"
+msgstr "Neues Projekt erstellen"
+
+#: mapproxy_webconf/templates/projects.html:20
 msgid "project"
 msgstr "Projekt"
 
-#: mapproxy_webconf/templates/projects.html:10
+#: mapproxy_webconf/templates/projects.html:21
 msgid "settings"
 msgstr "Einstellungen"
 
-#: mapproxy_webconf/templates/projects.html:13
+#: mapproxy_webconf/templates/projects.html:24
 msgid "Goto default settings"
 msgstr "Default Einstellungen bearbeiten"
 
-#: mapproxy_webconf/templates/projects.html:18
+#: mapproxy_webconf/templates/projects.html:29
 msgid "To configuration"
 msgstr "Zur Konfiguration"
 
-#: mapproxy_webconf/templates/projects.html:23
+#: mapproxy_webconf/templates/projects.html:34
 msgid "status mapproxy configuration"
 msgstr "Status der MapProxy Konfiguration"
 
-#: mapproxy_webconf/templates/projects.html:27
+#: mapproxy_webconf/templates/projects.html:38
 msgid "The mapproxy configuration of this project is valid"
 msgstr "Die MapProxy-Konfiguration für dieses Projekts ist lauffähig"
 
-#: mapproxy_webconf/templates/projects.html:33
+#: mapproxy_webconf/templates/projects.html:44
 msgid "Attention"
 msgstr "Achtung"
 
-#: mapproxy_webconf/templates/projects.html:34
+#: mapproxy_webconf/templates/projects.html:45
 msgid "The mapproxy configuration of this project is invalid"
 msgstr "Die MapProxy-Konfiguration für dieses Projekts ist nicht lauffähig"
 
-#: mapproxy_webconf/templates/projects.html:36
+#: mapproxy_webconf/templates/projects.html:47
 msgid "following errors are recorded"
 msgstr "Bei der Überprüfung sind folgende Fehler aufgetreten"
 
-#: mapproxy_webconf/templates/projects.html:52
+#: mapproxy_webconf/templates/projects.html:63
 msgid "project overview"
 msgstr "Projektübersicht"
 
@@ -501,294 +514,3 @@ msgstr "Baum erfolgreich aktualisiert"
 msgid "Can not delete because of dependencies"
 msgstr "Kann aufgrund von Abhängigkeiten nicht gelöscht werden"
 
-#~ msgid "Create new cache"
-#~ msgstr "Neuen Cache erstellen"
-
-#~ msgid "Filter"
-#~ msgstr "Filter"
-
-#~ msgid "Not shown caches"
-#~ msgstr "Ausgeblendete Caches"
-
-#~ msgid "Really remove cache:"
-#~ msgstr "Diesen Cache wirklich entfernen:"
-
-#~ msgid "New cache"
-#~ msgstr "Neuer Cache"
-
-#~ msgid "Edit cache"
-#~ msgstr "Cache bearbeiten"
-
-#~ msgid "Request format"
-#~ msgstr "Request Format"
-
-#~ msgid "Not shown sources"
-#~ msgstr "Ausgeblendete Sources"
-
-#~ msgid "Not shown grids"
-#~ msgstr "Ausgeblendete Grids"
-
-#~ msgid "cache"
-#~ msgstr "Cache"
-
-#~ msgid "Meta size"
-#~ msgstr "Metakachelgröße"
-
-#~ msgid "Meta buffer"
-#~ msgstr "Metapuffer"
-
-#~ msgid "image"
-#~ msgstr "Image"
-
-#~ msgid "Resampling method"
-#~ msgstr "Resampling Methode"
-
-#~ msgid "Paletted"
-#~ msgstr "Paletted"
-
-#~ msgid "Create new grid"
-#~ msgstr "Neues Grid erstellen"
-
-#~ msgid "User defined grids"
-#~ msgstr "Grids"
-
-#~ msgid "Really remove grid:"
-#~ msgstr "Wirklich dieses Grid entfernen:"
-
-#~ msgid "Default grids"
-#~ msgstr "Default Grids"
-
-#~ msgid "New grid"
-#~ msgstr "Neues Grid"
-
-#~ msgid "Edit grid"
-#~ msgstr "Grid bearbeiten"
-
-#~ msgid "Default grid"
-#~ msgstr "Default Grid"
-
-#~ msgid "BBox"
-#~ msgstr "BBox"
-
-#~ msgid "BBox SRS"
-#~ msgstr "BBox SRS"
-
-#~ msgid "Calculate tiles"
-#~ msgstr "Kachelanzahl berechnen"
-
-#~ msgid "Resolutions"
-#~ msgstr "Auflösungen"
-
-#~ msgid "Scales"
-#~ msgstr "Maßstäbe"
-
-#~ msgid "Map SRS"
-#~ msgstr "SRS der Karte"
-
-#~ msgid "Show map"
-#~ msgstr "In Karte anzeigen"
-
-#~ msgid "Really lock the grid"
-#~ msgstr "Abschließen des Bearbeitens für Grid"
-
-#~ msgid "If you lock the grid, you won't be able to edit it again"
-#~ msgstr ""
-#~ "Wenn das Bearbeiten dieses Grids "
-#~ "abgeschlossen wird, ist kein weiteres "
-#~ "Bearbeiten dieses Grids möglich"
-
-#~ msgid "Lock"
-#~ msgstr "Bearbeitung abschließen"
-
-#~ msgid "Unlock"
-#~ msgstr "Bearbeitung wieder aufnehmen"
-
-#~ msgid ""
-#~ "If you unlock this grid it you "
-#~ "need to check settings of all "
-#~ "caches you use this grid and "
-#~ "delete all affacted caches from disk"
-#~ msgstr ""
-#~ "Wenn Sie die Bearbeitung des Grids "
-#~ "wieder aufnehmen müssen Sie die "
-#~ "Einstellungen aller Caches überprüfen, die "
-#~ "dieses Grid verwenden. Weiterhin ist es"
-#~ " nötig, alle bereits gecachten Daten "
-#~ "dieser Caches zu löschen"
-
-#~ msgid "Refresh"
-#~ msgstr "Aktualisieren"
-
-#~ msgid "Level"
-#~ msgstr "Level"
-
-#~ msgid "Total tiles"
-#~ msgstr "Kacheln gesammt"
-
-#~ msgid "Tiles X * Tiles Y"
-#~ msgstr "Kacheln X * Kacheln Y"
-
-#~ msgid "Create new layer"
-#~ msgstr "Neuen Layer erstellen"
-
-#~ msgid "Layer"
-#~ msgstr "Layer"
-
-#~ msgid "Not shown layers"
-#~ msgstr "Ausgeblendete Layers"
-
-#~ msgid "Really remove layer:"
-#~ msgstr "Wirklich diesen Layer entfernen:"
-
-#~ msgid "New layer"
-#~ msgstr "Neuer Layer"
-
-#~ msgid "Edit layer"
-#~ msgstr "Layer bearbeiten"
-
-#~ msgid "Title"
-#~ msgstr "Titel"
-
-#~ msgid "Project defaults"
-#~ msgstr "Defaultwerte des Projekts"
-
-#~ msgid "infotext_default_settings"
-#~ msgstr "TODO: Infotexte Default Settings"
-
-#~ msgid "DPI"
-#~ msgstr "DPI"
-
-#~ msgid "Add SRS"
-#~ msgstr "Koordinatensystem hinzufügen"
-
-#~ msgid "Add"
-#~ msgstr "Hinzufügen"
-
-#~ msgid "wms"
-#~ msgstr "WMS"
-
-#~ msgid "Active"
-#~ msgstr "Aktiv"
-
-#~ msgid "Meta data"
-#~ msgstr "Metadaten"
-
-#~ msgid "Abstract"
-#~ msgstr "Kurzbeschreibung"
-
-#~ msgid "Online resource"
-#~ msgstr "Online Quelle"
-
-#~ msgid "Contact"
-#~ msgstr "Kontakt"
-
-#~ msgid "Person"
-#~ msgstr "Person"
-
-#~ msgid "Position"
-#~ msgstr "Position"
-
-#~ msgid "Organization"
-#~ msgstr "Organisation"
-
-#~ msgid "Address"
-#~ msgstr "Adresse"
-
-#~ msgid "City"
-#~ msgstr "Ort"
-
-#~ msgid "Postcode"
-#~ msgstr "Postleitzahl"
-
-#~ msgid "Country"
-#~ msgstr "Land"
-
-#~ msgid "Phone"
-#~ msgstr "Telefonnummer"
-
-#~ msgid "Fax"
-#~ msgstr "Faxnummer"
-
-#~ msgid "Email"
-#~ msgstr "Email"
-
-#~ msgid "Fees"
-#~ msgstr "Gebühren"
-
-#~ msgid "Access constraints"
-#~ msgstr "Zugriffsbeschränkungen"
-
-#~ msgid "tms"
-#~ msgstr "TMS"
-
-#~ msgid "wmts"
-#~ msgstr "WMTS"
-
-#~ msgid "kml"
-#~ msgstr "KML"
-
-#~ msgid "demo"
-#~ msgstr "Demo"
-
-#~ msgid "Create new source"
-#~ msgstr "Neue Source anlegen"
-
-#~ msgid "Really remove source:"
-#~ msgstr "Soll die Source wirklich gelöscht werden:"
-
-#~ msgid "New source"
-#~ msgstr "Neue Source"
-
-#~ msgid "Edit source"
-#~ msgstr "Source bearbeiten"
-
-#~ msgid "Replace service URL deletes all layers depends to it!"
-#~ msgstr "Das Ersetzen der Service-URL führt zum leeren der Layerliste!"
-
-#~ msgid "Manual add layer"
-#~ msgstr "Layer manuell hinzufügen"
-
-#~ msgid "Selectet image format(s) not support transparency."
-#~ msgstr "Das ausgewählte Bildformat unterstüzt keine Transparenz."
-
-#~ msgid "Supported formats"
-#~ msgstr "Unterstütze Bildformate"
-
-#~ msgid "Clear selection"
-#~ msgstr "Auswahl leeren"
-
-#~ msgid "Coverage BBOX"
-#~ msgstr "Coverage BBOX"
-
-#~ msgid "Use coverage from WMS"
-#~ msgstr "Coverage des WMS benutzen"
-
-#~ msgid "Coverage SRS"
-#~ msgstr "Coverage SRS"
-
-#~ msgid "Show coverage in map"
-#~ msgstr "Coverage in Karte anzeigen"
-
-#~ msgid "Create coverage in map"
-#~ msgstr "Coverage in Karte erstellen"
-
-#~ msgid "Supported SRS"
-#~ msgstr "Unterstütze Koordinatensysteme"
-
-#~ msgid "Add SRS from WMS"
-#~ msgstr "SRS von WMS hinzufügen"
-
-#~ msgid "Manual add SRS"
-#~ msgstr "Koordinatensystem manuell hinzufügen"
-
-#~ msgid "Available WMS"
-#~ msgstr "Verfügbare WMS"
-
-#~ msgid "Really remove WMS:"
-#~ msgstr "Wirklich dieser WMS enternen:"
-
-#~ msgid "Infos"
-#~ msgstr "Informationen"
-
-#~ msgid "Load WMS"
-#~ msgstr "WMS laden"

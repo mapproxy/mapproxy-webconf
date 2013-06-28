@@ -1453,3 +1453,19 @@ function DisplayCalculatedTilesCtrl($scope, DataShareService) {
         $scope.calculatedTiles = undefined;
     });
 };
+
+function CreateProjectCtrl($scope, $http, $window, MessageService) {
+    $scope.project = {};
+
+    $scope.createProject = function() {
+        $http.post($scope.createURL, {'name': $scope.project.name})
+            .success(function(response) {
+                safeApply($scope, function() {
+                    $window.location.href = response.url;
+                });
+            })
+            .error(function(error) {
+                MessageService.message('project', 'create_error', error.error);
+            });
+    }
+}

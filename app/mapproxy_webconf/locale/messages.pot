@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-06-28 10:28+0200\n"
+"POT-Creation-Date: 2013-06-28 12:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -64,6 +64,11 @@ msgstr ""
 
 #: mapproxy_webconf/app.py:676
 msgid "Too many tiles. Please zoom in."
+msgstr ""
+
+#: mapproxy_webconf/app.py:750
+#, python-format
+msgid "Project \"%(name)s\" already exists"
 msgstr ""
 
 #: mapproxy_webconf/config.py:63
@@ -239,43 +244,51 @@ msgstr ""
 msgid "Create Project"
 msgstr ""
 
-#: mapproxy_webconf/templates/projects.html:9
-msgid "project"
-msgstr ""
-
 #: mapproxy_webconf/templates/projects.html:10
-msgid "settings"
+msgid "Project name"
 msgstr ""
 
 #: mapproxy_webconf/templates/projects.html:13
+msgid "Create project"
+msgstr ""
+
+#: mapproxy_webconf/templates/projects.html:20
+msgid "project"
+msgstr ""
+
+#: mapproxy_webconf/templates/projects.html:21
+msgid "settings"
+msgstr ""
+
+#: mapproxy_webconf/templates/projects.html:24
 msgid "Goto default settings"
 msgstr ""
 
-#: mapproxy_webconf/templates/projects.html:18
+#: mapproxy_webconf/templates/projects.html:29
 msgid "To configuration"
 msgstr ""
 
-#: mapproxy_webconf/templates/projects.html:23
+#: mapproxy_webconf/templates/projects.html:34
 msgid "status mapproxy configuration"
 msgstr ""
 
-#: mapproxy_webconf/templates/projects.html:27
+#: mapproxy_webconf/templates/projects.html:38
 msgid "The mapproxy configuration of this project is valid"
 msgstr ""
 
-#: mapproxy_webconf/templates/projects.html:33
+#: mapproxy_webconf/templates/projects.html:44
 msgid "Attention"
 msgstr ""
 
-#: mapproxy_webconf/templates/projects.html:34
+#: mapproxy_webconf/templates/projects.html:45
 msgid "The mapproxy configuration of this project is invalid"
 msgstr ""
 
-#: mapproxy_webconf/templates/projects.html:36
+#: mapproxy_webconf/templates/projects.html:47
 msgid "following errors are recorded"
 msgstr ""
 
-#: mapproxy_webconf/templates/projects.html:52
+#: mapproxy_webconf/templates/projects.html:63
 msgid "project overview"
 msgstr ""
 
