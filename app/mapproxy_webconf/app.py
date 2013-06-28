@@ -2,6 +2,7 @@ import os
 import yaml
 import gettext
 import inspect
+import json
 from copy import deepcopy
 from uuid import uuid4
 
@@ -268,14 +269,22 @@ class RESTGrids(RESTBase):
         default_grids.update(storage.get_all(self.section, project, with_id=True, with_manual=True, with_locked=True))
         return default_grids
 
-RESTBase('sources', ['caches.sources', 'layers.sources']).setup_routing(app)
-RESTBase('caches', ['caches.sources', 'layers.sources']).setup_routing(app)
-RESTBase('globals').setup_routing(app)
-RESTBase('services').setup_routing(app)
-RESTBase('defaults').setup_routing(app)
-RESTWMSCapabilities().setup_routing(app)
-RESTLayers().setup_routing(app)
-RESTGrids().setup_routing(app)
+rest_sources = RESTBase('sources', ['caches.sources', 'layers.sources'])
+rest_sources.setup_routing(app)
+rest_caches = RESTBase('caches', ['caches.sources', 'layers.sources'])
+rest_caches.setup_routing(app)
+rest_globals = RESTBase('globals')
+rest_globals.setup_routing(app)
+rest_services = RESTBase('services')
+rest_services.setup_routing(app)
+rest_defaults = RESTBase('defaults')
+rest_defaults.setup_routing(app)
+rest_wms_capabilities = RESTWMSCapabilities()
+rest_wms_capabilities.setup_routing(app)
+rest_layers = RESTLayers()
+rest_layers.setup_routing(app)
+rest_grids = RESTGrids()
+rest_grids.setup_routing(app)
 
 ## other
 
@@ -308,38 +317,56 @@ def conf_index(project):
 
 @app.route('/project/<project>', name='project_index')
 @require_project
-def project_index(project):
-    return template('project_index', project=project)
+def project_index(project, storage):
+    defaults = json.dumps(rest_defaults.list(project, storage))
+    return template('project_index', project=project, defaults=defaults)
 
 @app.route('/project/<project>/conf/sources', name='sources')
 @require_project
-def sources(project):
-    return template('sources', project=project)
+def sources(project, storage):
+    wms_capabilities = json.dumps(rest_wms_capabilities.list(project, storage))
+    sources = json.dumps(rest_sources.list(project, storage))
+    caches = json.dumps(rest_caches.list(project, storage))
+    defaults = json.dumps(rest_defaults.list(project, storage))
+    return template('sources', project=project, wms_capabilities=wms_capabilities, sources=sources, caches=caches, defaults=defaults)
 
 @app.route('/project/<project>/conf/grids', name='grids')
 @require_project
-def grids(project):
-    return template('grids', project=project)
+def grids(project, storage):
+    grids = json.dumps(rest_grids.list(project, storage))
+    defaults = json.dumps(rest_defaults.list(project, storage))
+    return template('grids', project=project, grids=grids, defaults=defaults)
 
 @app.route('/project/<project>/conf/caches', name='caches')
 @require_project
-def caches(project):
-    return template('caches', project=project)
+def caches(project, storage):
+    sources = json.dumps(rest_sources.list(project, storage))
+    caches = json.dumps(rest_caches.list(project, storage))
+    grids = json.dumps(rest_grids.list(project, storage))
+    return template('caches', project=project, sources=sources, caches=caches, grids=grids)
 
 @app.route('/project/<project>/conf/layers', name='layers')
 @require_project
-def layers(project):
-    return template('layers', project=project)
+def layers(project, storage):
+    sources = json.dumps(rest_sources.list(project, storage))
+    caches = json.dumps(rest_caches.list(project, storage))
+    layers = json.dumps(rest_layers.list(project, storage))
+    grids = json.dumps(rest_grids.list(project, storage))
+    defaults = json.dumps(rest_defaults.list(project, storage))
+    return template('layers', project=project, sources=sources, caches=caches, layers=layers, grids=grids, defaults=defaults)
 
 @app.route('/project/<project>/conf/globals', name='globals')
 @require_project
-def globals(project):
-    return template('globals', project=project)
+def globals(project, storage):
+    _globals = json.dumps(rest_globals.list(project, storage))
+    return template('globals', project=project, _globals=_globals)
 
 @app.route('/project/<project>/conf/services', name='services')
 @require_project
-def services(project):
-    return template('services', project=project)
+def services(project, storage):
+    defaults = json.dumps(rest_defaults.list(project, storage))
+    services = json.dumps(rest_services.list(project, storage))
+    return template('services', project=project, defaults=defaults, services=services)
 
 @app.route('/conf/<project>/write_config', 'POST', name='write_config')
 @require_project

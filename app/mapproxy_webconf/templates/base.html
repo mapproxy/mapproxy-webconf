@@ -15,6 +15,12 @@
       %css()
     % end
 
+    % if defined('preload_block') and hasattr(preload_block, '__call__'):
+      <script type="text/javascript">
+        %preload_block()
+      </script>
+    %end
+
     <!--[if lte IE 8]>
       <script type="text/javascript" src="${ get_url('static', filepath='js/ie8_fixtures.js')}"></script>
     <![endif]-->

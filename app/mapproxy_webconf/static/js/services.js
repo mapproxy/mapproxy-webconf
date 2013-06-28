@@ -1,4 +1,4 @@
-var MapproxyBaseService = function(_section, _model) {
+var MapproxyBaseService = function(_section, _model, _preloadedData) {
     var _this = this;
     this._items = {};
     this._item;
@@ -9,6 +9,7 @@ var MapproxyBaseService = function(_section, _model) {
     this._rootScope;
     this._resource;
     this._messageService;
+    this._preloadedData = _preloadedData;
     this.error;
 
     this._errorMessageHandler = function(error) {
@@ -146,7 +147,11 @@ var MapproxyBaseService = function(_section, _model) {
         _this._messageService = MessageService;
         _this._translationService = TranslationService;
         _this._rootScope.$on(_this._section + '.load_finished', _this._waitForLoadComplete);
-        if(!_this._loadingInProgress && !_this._loaded) {
+        if(angular.isDefined(_this._preloadedData) && angular.isObject(_this._preloadedData)) {
+            _this._loaded = true;
+            _this._loadingInProgress = false;
+            _this._items = _this._preloadedData;
+        } else if(!_this._loadingInProgress && !_this._loaded) {
             _this.load();
         }
         return _this.return_dict;
@@ -169,8 +174,8 @@ var MapproxyBaseService = function(_section, _model) {
     }
 };
 
-var MapproxyLayerService = function(_section, _model) {
-    MapproxyBaseService.call(this, _section, _model);
+var MapproxyLayerService = function(_section, _model, _preloadedData) {
+    MapproxyBaseService.call(this, _section, _model, _preloadedData);
     var _this = this;
 
     this.prepareLayer = function(store, layer, idx, parent_id) {
@@ -219,8 +224,8 @@ var MapproxyLayerService = function(_section, _model) {
     this.return_dict['updateStructure'] = _this.updateStructure;
 };
 
-WMSSourceService = function(_section) {
-    MapproxyBaseService.call(this, _section);
+WMSSourceService = function(_section, _model, _preloadedData) {
+    MapproxyBaseService.call(this, _section, _model, _preloadedData);
     var _this = this;
 
     this._addSourceURL = function(layer, sourceURL) {
@@ -412,14 +417,24 @@ var servicesModel = {
     }
 };
 
-var layerService = new MapproxyLayerService('layers', layerModel);
-var globalsService = new MapproxyBaseService('globals', globalsModel);
-var servicesService = new MapproxyBaseService('services', servicesModel);
-var cacheService = new MapproxyBaseService('caches', cacheModel);
-var gridService = new MapproxyBaseService('grids', gridModel);
-var sourceService = new MapproxyBaseService('sources', sourceModel);
-var wmsService = new WMSSourceService('wms_capabilities');
-var defaultsService = new MapproxyBaseService('defaults', defaultsModel);
+//look for preloaded data
+var preloaded_layers = preloaded_layers || undefined;
+var preloaded_globals = preloaded_globals || undefined;
+var preloaded_services = preloaded_services || undefined;
+var preloaded_caches = preloaded_caches || undefined;
+var preloaded_grids = preloaded_grids || undefined;
+var preloaded_sources = preloaded_sources || undefined;
+var preloaded_wms_capabilities = preloaded_wms_capabilities || undefined;
+var preloaded_defaults = preloaded_defaults || undefined;
+
+var layerService = new MapproxyLayerService('layers', layerModel, preloaded_layers);
+var globalsService = new MapproxyBaseService('globals', globalsModel, preloaded_globals);
+var servicesService = new MapproxyBaseService('services', servicesModel, preloaded_services);
+var cacheService = new MapproxyBaseService('caches', cacheModel, preloaded_caches);
+var gridService = new MapproxyBaseService('grids', gridModel, preloaded_grids);
+var sourceService = new MapproxyBaseService('sources', sourceModel, preloaded_sources);
+var wmsService = new WMSSourceService('wms_capabilities', undefined, preloaded_wms_capabilities);
+var defaultsService = new MapproxyBaseService('defaults', defaultsModel, preloaded_defaults);
 
 angular.module('mapproxy_gui.services', ['mapproxy_gui.resources']).
 
