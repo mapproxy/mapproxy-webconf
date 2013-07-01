@@ -266,7 +266,7 @@ function TreeCtrl($scope, SRS, MessageService, WMSSources, ProjectDefaults) {
     $scope.capabilities = {};
 };
 
-function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPARENT_FORMATS, BACKGROUND_SERVICE_TITLE, BACKGROUND_SERVICE_URL, BACKGROUND_SERVICE_LAYER, TranslationService, MessageService, MapproxySources, ProjectDefaults, WMSSources, MapproxyCaches) {
+function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPARENT_FORMATS, BACKGROUND_SERVICE_TITLE, BACKGROUND_SERVICE_URL, BACKGROUND_SERVICE_LAYER, BBOXES, TranslationService, MessageService, MapproxySources, ProjectDefaults, WMSSources, MapproxyCaches) {
 
     var setSource = function() {
         $scope.source = MapproxySources.current();
@@ -433,6 +433,22 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
             }
         }
         return !empty && !nonValues && bbox.length == 4;
+    };
+    $scope.fillBBox = function(event) {
+        safePreventDefaults(event);
+        if(isEmpty($scope.source.data.coverage.bbox)) {
+            $scope.source.data.coverage.bbox = angular.copy(BBOXES[$scope.source.data.coverage.srs]);
+        } else {
+            var haveDefaultBBox = false;
+            angular.forEach(BBOXES, function(bbox) {
+                if(!haveDefaultBBox && angular.equals(bbox, $scope.source.data.coverage.bbox)) {
+                    haveDefaultBBox = true;
+                }
+            });
+            if(haveDefaultBBox) {
+                $scope.source.data.coverage.bbox = angular.copy(BBOXES[$scope.source.data.coverage.srs]);
+            }
+        }
     };
     $scope.addCoverage = function(event) {
         safePreventDefaults(event);
@@ -741,7 +757,7 @@ function MapproxyCacheFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Messa
     });
 };
 
-function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID_SRS, BACKGROUND_SERVICE_TITLE, BACKGROUND_SERVICE_URL, BACKGROUND_SERVICE_LAYER, $http, TranslationService, MessageService, DataShareService, ProjectDefaults, MapproxyGrids) {
+function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID_SRS, BACKGROUND_SERVICE_TITLE, BACKGROUND_SERVICE_URL, BACKGROUND_SERVICE_LAYER, BBOXES, $http, TranslationService, MessageService, DataShareService, ProjectDefaults, MapproxyGrids) {
 
     var convertResScales = function(url, mode) {
         if($scope.custom.res_scales.length > 0) {
@@ -938,7 +954,22 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
         }
         return !empty && !nonValues && bbox.length == 4;
     };
-
+    $scope.fillBBox = function(event) {
+        safePreventDefaults(event);
+        if(isEmpty($scope.grid.data.bbox)) {
+            $scope.grid.data.bbox = angular.copy(BBOXES[$scope.grid.data.bbox_srs]);
+        } else {
+            var haveDefaultBBox = false;
+            angular.forEach(BBOXES, function(bbox) {
+                if(!haveDefaultBBox && angular.equals(bbox, $scope.grid.data.bbox)) {
+                    haveDefaultBBox = true;
+                }
+            });
+            if(haveDefaultBBox) {
+                $scope.grid.data.bbox = angular.copy(BBOXES[$scope.grid.data.bbox_srs]);
+            }
+        }
+    };
     $scope.custom = {
         'res_scales': [],
         'resSelected': false,

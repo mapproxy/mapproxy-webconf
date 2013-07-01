@@ -116,6 +116,7 @@
                   id="bbox_srs"
                   ng-options="srs for srs in defaults.data.srs"
                   ng-disabled="grid._locked||grid.default"
+                  ng-change="fillBBox()"
                   name="bbox_srs">
           </select>
         </div>
