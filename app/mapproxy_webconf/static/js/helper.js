@@ -69,6 +69,13 @@ var safeApply = function(scope, fn) {
     }
 };
 
+var safePreventDefaults = function(event) {
+    if(angular.isDefined(event)) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+};
+
 var generateInfoDialogContent = function(data, TranslationService) {
     var message = '<div><dl class="info-horizontal">';
     angular.forEach(data, function(value, key) {

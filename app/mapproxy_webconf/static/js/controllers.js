@@ -12,25 +12,17 @@ function BaseListCtrl($scope, MessageService, TranslationService, service, _sect
         return class_;
     };
     $scope.editItem = function(event, item) {
-        if(angular.isDefined(event)) {
-            event.preventDefault();
-        }
+        safePreventDefaults(event);
         $scope.selected = item;
         service.current(item);
     };
     $scope.removeItem = function(event, item) {
-        if(angular.isDefined(event)) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
+        safePreventDefaults(event);
         $scope.selected = undefined;
         service.remove(item);
     };
     $scope.copyItem = function(event, item) {
-        if(angular.isDefined(event)) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
+        safePreventDefaults(event);
         $scope.selected = undefined;
         var copiedData = angular.copy(item.data);
         delete copiedData.name;
@@ -400,9 +392,7 @@ function MapproxySourceFormCtrl($scope, $http, TranslationService, MessageServic
         }
     };
     $scope.addSource = function(event) {
-        if(angular.isDefined(event)) {
-            event.preventDefault();
-        }
+        safePreventDefaults(event);
 
         $scope.source = clearData($scope.source)
 
@@ -435,7 +425,7 @@ function MapproxySourceFormCtrl($scope, $http, TranslationService, MessageServic
         }
     };
     $scope.addCoverage = function(event) {
-        event.preventDefault();
+        safePreventDefaults(event);
         var bbox = WMSSources.coverage($scope.source.data.req.url);
         if(bbox) {
             if(angular.isUndefined($scope.source.data.coverage)) {
@@ -508,13 +498,11 @@ function MapproxySourceFormCtrl($scope, $http, TranslationService, MessageServic
         });;
     };
     $scope.resetForm = function(event) {
-        if(!angular.isUndefined(event)) {
-            event.preventDefault();
-        }
+        safePreventDefaults(event);
         setSource();
     };
     $scope.addLayerManual = function(event) {
-        event.preventDefault();
+        safePreventDefaults(event);
         var new_layer = $scope.custom.layer_manual;
         if(angular.isDefined(new_layer)) {
             if(!angular.isArray($scope.source.data.req.layers)) {
@@ -526,7 +514,7 @@ function MapproxySourceFormCtrl($scope, $http, TranslationService, MessageServic
         }
     };
     $scope.addSRSManual = function(event) {
-        event.preventDefault();
+        safePreventDefaults(event);
         if($.inArray($scope.custom.srs_manual, $scope.source.data.supported_srs) === -1) {
             if(angular.isUndefined($scope.source.data.supported_srs)) {
                 $scope.source.data.supported_srs = [$scope.custom.srs_manual];
@@ -537,8 +525,7 @@ function MapproxySourceFormCtrl($scope, $http, TranslationService, MessageServic
         }
     };
     $scope.removeSRS = function(event, srs) {
-        event.preventDefault();
-        event.stopPropagation();
+        safePreventDefaults(event);
         var supportedSRSID = $.inArray(srs, $scope.source.data.supported_srs);
         if(supportedSRSID !== -1) {
             $scope.source.data.supported_srs.splice(supportedSRSID, 1);
@@ -678,9 +665,7 @@ function MapproxyCacheFormCtrl($scope, TranslationService, MessageService, Mappr
         callback($scope.cache.data.name !== new_item.data.name)
     };
     $scope.addCache = function(event) {
-        if(angular.isDefined(event)) {
-            event.preventDefault();
-        }
+        safePreventDefaults(event);
 
         $scope.cache = clearData($scope.cache);
 
@@ -710,9 +695,7 @@ function MapproxyCacheFormCtrl($scope, TranslationService, MessageService, Mappr
         }
     };
     $scope.resetForm = function(event) {
-        if(!angular.isUndefined(event)) {
-            event.preventDefault();
-        }
+        safePreventDefaults(event);
         setCache();
     };
     $scope.showName = function(_id) {
@@ -834,9 +817,7 @@ function MapproxyGridFormCtrl($scope, $http, TranslationService, MessageService,
         return $.extend(true, {'data': {'name': ""}}, data);
     };
     $scope.addGrid = function(event) {
-        if(angular.isDefined(event)) {
-            event.preventDefault();
-        }
+        safePreventDefaults(event);
         if(!$scope.editareaBinds.save) {
             addScalesResTo($scope.grid.data);
         }
@@ -866,17 +847,13 @@ function MapproxyGridFormCtrl($scope, $http, TranslationService, MessageService,
         }
     };
     $scope.lockGrid = function(event) {
-        if(angular.isDefined(event)) {
-            event.preventDefault();
-        }
+        safePreventDefaults(event);
 
         $scope.grid._locked = true;
         $scope.addGrid();
     };
     $scope.unlockGrid = function(event) {
-        if(angular.isDefined(event)) {
-            event.preventDefault();
-        }
+        safePreventDefaults(event);
         $scope.grid._locked = false;
         $scope.addGrid();
     };
@@ -907,15 +884,11 @@ function MapproxyGridFormCtrl($scope, $http, TranslationService, MessageService,
         });
     }
     $scope.resetForm = function(event) {
-        if(angular.isDefined(event)) {
-            event.preventDefault();
-        }
+        safePreventDefaults(event);
         setGrid();
     };
     $scope.allowMap = function(event) {
-        if(angular.isDefined(event)) {
-            event.preventDefault();
-        }
+        safePreventDefaults(event);
 
         if(angular.isUndefined($scope.grid.data.srs)) {
             return false;
@@ -931,7 +904,7 @@ function MapproxyGridFormCtrl($scope, $http, TranslationService, MessageService,
         }
     };
     $scope.showMap = function(event) {
-        event.preventDefault();
+        safePreventDefaults(event);
         $http.post($scope.getMaxExtentURL, {
             'fallback_extent': $scope.grid.data.bbox,
             'fallback_extent_srs': $scope.grid.data.bbox_srs,
@@ -1080,9 +1053,7 @@ function MapproxyLayerFormCtrl($scope, $http, TranslationService, MessageService
         return layer;
     };
     $scope.addLayer = function(event) {
-        if(angular.isDefined(event)) {
-            event.preventDefault();
-        }
+        safePreventDefaults(event);
 
         $scope.layer = clearData($scope.layer)
 
@@ -1112,9 +1083,7 @@ function MapproxyLayerFormCtrl($scope, $http, TranslationService, MessageService
         }
     };
     $scope.resetForm = function(event) {
-        if(angular.isDefined(event)) {
-            event.preventDefault();
-        }
+        safePreventDefaults(event);
         setLayer();
     };
     $scope.layerTitle = function(name) {
@@ -1235,9 +1204,7 @@ function MapproxyGlobalsFormCtrl($scope, TranslationService, MessageService, Map
         $scope.template = DataShareService.data('global');
     };
     $scope.save = function(event) {
-        if(angular.isDefined(event)) {
-            event.preventDefault();
-        }
+        safePreventDefaults(event);
         $scope.globals._manual = $scope.editareaBinds.visible;
         MapproxyGlobals.add($scope.globals);
         $scope.form.$setPristine();
@@ -1332,9 +1299,7 @@ function MapproxyServicesCtrl($scope, TranslationService, MapproxyServices, Data
     };
 
     $scope.save = function(event) {
-        if(angular.isDefined(event)) {
-            event.preventDefault();
-        }
+        safePreventDefaults(event);
         $scope.services._manual = $scope.editareaBinds.visible;
         MapproxyServices.add($scope.services);
         $scope.form.$setPristine();
@@ -1400,17 +1365,13 @@ function ProjectDefaultsCtrl($scope, ProjectDefaults, MessageService) {
         }
     };
     $scope.save = function(event) {
-        if(angular.isDefined(event)) {
-            event.preventDefault();
-        }
+        safePreventDefaults(event);
         $scope.defaults = clearData($scope.defaults);
         ProjectDefaults.add($scope.defaults);
         $scope.form.$setPristine();
     };
     $scope.addSRS = function(event) {
-        if(angular.isDefined(event)) {
-            event.preventDefault();
-        }
+        safePreventDefaults(event);
         if($.inArray($scope.custom.newSRS, $scope.defaults.data.srs) === -1) {
             $scope.defaults.data.srs.push($scope.custom.newSRS);
             $scope.custom.newSRS = undefined;
