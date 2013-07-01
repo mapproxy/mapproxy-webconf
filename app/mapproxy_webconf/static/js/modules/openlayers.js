@@ -527,7 +527,7 @@ constant('GRID_STYLING', {
     'labelOutlineWidth': 0
 }).
 
-directive('olGridExtension', function(GRID_STYLING, TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING, GRID_START_LEVEL, GRID_MAX_LEVEL) {
+directive('olGridExtension', function(GRID_STYLING, GRID_AS_GEOJSON_URL, DEFAULT_VECTOR_STYLING, GRID_START_LEVEL, GRID_MAX_LEVEL) {
     return {
         restrict: 'A',
         require: '^olMap',
@@ -590,7 +590,7 @@ directive('olGridExtension', function(GRID_STYLING, TRANSFORM_GRID_URL, DEFAULT_
 
                 var options = {
                     protocol: new OpenLayers.Protocol.HTTP({
-                        url: TRANSFORM_GRID_URL,
+                        url: GRID_AS_GEOJSON_URL,
                         readWithPOST: true,
                         updateWithPOST: true,
                         deleteWithPOST: true,

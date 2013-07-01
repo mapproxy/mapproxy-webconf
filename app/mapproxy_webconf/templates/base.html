@@ -67,7 +67,7 @@
         app.value('MAPPROXY_DEFAULT_GRID_SRS', MAPPROXY_DEFAULT_GRID_SRS);
 
       /* OpenLayers directive defaults */
-        angular.module('mapproxy_gui.openlayers').value('TRANSFORM_GRID_URL', "${ get_url('transform_grid') }");
+        angular.module('mapproxy_gui.openlayers').value('GRID_AS_GEOJSON_URL', "${ get_url('grid_as_geojson') }");
         angular.module('mapproxy_gui.openlayers').value('LAYERSWITCHER_TEMPLATE_URL', "${ get_url('angular_template', filename='layerswitcher') }");
         angular.module('mapproxy_gui.openlayers').value('OPENLAYERSMAP_TEMPLATE_URL', "${ get_url('angular_template', filename='openlayersmap') }");
         angular.module('mapproxy_gui.openlayers').value('DPI', DPI);

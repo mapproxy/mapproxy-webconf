@@ -574,8 +574,8 @@ def is_valid_transformation(bbox, source_srs, dest_srs):
             return True
     return False
 
-@app.route('/transform_grid', 'POST', name='transform_grid')
-def transform_grid():
+@app.route('/grid_as_geojson', 'POST', name='grid_as_geojson')
+def grid_as_geojson():
     def return_map_message(points, message):
         return {"type":"FeatureCollection",
             "features": [{
