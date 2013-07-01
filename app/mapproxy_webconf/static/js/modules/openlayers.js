@@ -527,15 +527,21 @@ constant('GRID_STYLING', {
     'labelOutlineWidth': 0
 }).
 
-directive('olGridExtension', function(GRID_STYLING, GRID_AS_GEOJSON_URL, DEFAULT_VECTOR_STYLING, GRID_START_LEVEL, GRID_MAX_LEVEL) {
+directive('olGridExtension', function($parse, GRID_STYLING, GRID_AS_GEOJSON_URL, DEFAULT_VECTOR_STYLING, GRID_START_LEVEL, GRID_MAX_LEVEL, GRID_EXTENSION_TEMPLATE_URL) {
     return {
         restrict: 'A',
         require: '^olMap',
         transclude: false,
-        scope: {
-            olGridData: '=olGridExtension'
-        },
+        repalce: true,
+        templateUrl: GRID_EXTENSION_TEMPLATE_URL,
+        scope: 'element',
         controller: function($scope, $element, $attrs) {
+            $scope.preventDefaultsStopPropagation = function(event) {
+                if(angular.isDefined(event)) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+            };
             // check why range-filter not work
             $scope.levels = function() {
                 var levels = [];
@@ -543,16 +549,28 @@ directive('olGridExtension', function(GRID_STYLING, GRID_AS_GEOJSON_URL, DEFAULT
                     levels.push(i);
                 }
                 return levels;
-            }
+            };
             $scope.updateLevel = function() {
                 $scope.layer.olLayer.protocol.params.level = $scope.gridLevel;
                 $scope.layer.olLayer.strategies[0].update({force: true});
-            }
+            };
+            $scope.toggleLabels = function() {
+                var rules = $scope.layer.olLayer.styleMap.styles.default.rules;
+                if($scope.showLabels) {
+                    rules.splice(rules.indexOf($scope.pointLabelRule), 1)
+                } else {
+                    rules.push($scope.pointLabelRule)
+                }
+                $scope.showLabels = !$scope.showLabels;
+                $scope.layer.olLayer.styleMap.styles.default.rules = rules;
+                $scope.layer.olLayer.redraw()
+            };
             $scope._layer = {
                 'name': 'Coverage'
             };
             $scope.gridLevel = GRID_START_LEVEL;
             $scope.maxLevel = GRID_MAX_LEVEL;
+            $scope.showLabels = true;
             $scope.pointLabelRule = new OpenLayers.Rule({
                 filter: new OpenLayers.Filter.Function({
                     evaluate: function(attrs) {
@@ -570,15 +588,15 @@ directive('olGridExtension', function(GRID_STYLING, GRID_AS_GEOJSON_URL, DEFAULT
                 addSRSToProtocol: function() {
                     this.protocol.params['map_srs'] = this.projection.getCode();
                 }
-            }
-
+            };
         },
         link: function(scope, element, attrs, olMapCtrl) {
+            scope.olGridData = $parse(attrs.olGridExtension);
 
             olMapCtrl.registerExtension('layers', function() {
                 olMapCtrl.olmapBinds.numZoomLevels = scope.maxLevel;
                 scope.layer = angular.copy(scope._layer);
-                var gridData = scope.olGridData();
+                var gridData = scope.olGridData(scope, {})();
 
                 if(angular.isDefined(gridData.res) && angular.isArray(gridData.res) && gridData.res.length > 0) {
                     scope.maxLevel = gridData.res.length;
@@ -627,47 +645,19 @@ directive('olGridExtension', function(GRID_STYLING, GRID_AS_GEOJSON_URL, DEFAULT
                 var olLayer = olMapCtrl.createVectorLayer(scope.layer, options);
                 olLayer.events.register('added', null, scope.eventHandlers.addSRSToProtocol);
                 olLayer.events.register('featuresadded', null, scope.eventHandlers.zoomToGrid);
-
-                if(angular.isDefined(olMapCtrl.olmapBinds.layers.vector)) {
-                    olMapCtrl.olmapBinds.layers.vector.push(scope.layer);
-                } else {
-                    olMapCtrl.olmapBinds.layers.vector = [scope.layer];
-                }
-                scope.pointLayer = {
-                    'name': 'Labels',
-                    'title': 'Labels',
-                    'visibility': true,
-                    olLayer: {
-                        setVisibility: function(visible) {
-                            var rules = scope.layer.olLayer.styleMap.styles.default.rules;
-                            if(visible) {
-                                rules.push(scope.pointLabelRule)
-                            } else {
-                                rules.splice(rules.indexOf(scope.pointLabelRule), 1)
-                            }
-                            scope.layer.olLayer.styleMap.styles.default.rules = rules;
-                            scope.layer.olLayer.redraw();
-                        }
-                    }
-                }
-                olMapCtrl.olmapBinds.layers.vector.push(scope.pointLayer)
             });
 
             olMapCtrl.registerExtension('map', function(map) {
                 map.events.register('zoomend', null, function() {
                     scope.updateLevel();
                 });
-                $(map.div).find('.olMapViewport').append(element);
+                $(map.div).find('.olMapViewport').append(element.first());
             });
 
             olMapCtrl.registerExtension('destroy', function(map) {
                 scope.gridLevel = GRID_START_LEVEL;
                 scope.maxLevel = GRID_MAX_LEVEL;
-                var layerList = olMapCtrl.olmapBinds.layers.vector;
-                var layerIdx = layerList.indexOf(scope.layer);
-                layerList.splice(layerIdx, 1);
-                layerIdx = layerList.indexOf(scope.pointLayer);
-                layerList.splice(layerIdx, 1);
+
                 delete scope.layer;
                 delete scope.pointLayer;
             });

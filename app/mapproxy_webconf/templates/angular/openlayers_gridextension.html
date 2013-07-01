@@ -1,0 +1,17 @@
+<div class="grid-extension-controls"
+     ng-mousedown="$event.stopPropagation();"
+     ng-click="$event.stopPropagation();"
+     ng-dblclick="$event.stopPropagation();">
+  <label for="selectGridLevel" >${ _('Select grid level') }</label>
+  <select name="selectGridLevel"
+          id="selectGridLevel"
+          ng-model="gridLevel"
+          ng-change="updateLevel()"
+          ng-options="level for level in levels()">
+  </select>
+  <br>
+  <button class="btn btn-small" ng-click="toggleLabels()">
+    <span ng-show="showLabels">${ _('Hide labels') }</span>
+    <span ng-show="!showLabels">${ _('Show labels') }</span>
+  </button>
+</div>

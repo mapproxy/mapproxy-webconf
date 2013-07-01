@@ -262,16 +262,8 @@
             callback="unlockGrid()">
       ${ _('Unlock') }
     </button>
-    <div ol-map="olmapBinds" map-width="1000" map-height="600" map-hidden="true" map-layer-switcher="true">
-      <select ol-grid-extension="provideGridData"
-              class="_gridLevelSelect"
-              ng-model="gridLevel"
-              ng-change="updateLevel()"
-              ng-mousedown="$event.stopPropagation();"
-              ng-click="$event.stopPropagation();"
-              ng-dblclick="$event.stopPropagation();"
-              ng-options="level for level in levels()">
-      </select>
+    <div ol-map="olmapBinds" map-width="1000" map-height="600" map-hidden="true">
+      <div ol-grid-extension="provideGridData"></div>
     </div>
   </div>
 %end
