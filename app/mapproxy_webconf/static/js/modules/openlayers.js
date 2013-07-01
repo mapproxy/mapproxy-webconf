@@ -518,6 +518,14 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
     }
 }).
 
+constant('GRID_STYLING', {
+    'fillOpacity': 0.25,
+    'fillColor': '#bbb',
+    'strokeColor': '#777',
+    'fontColor': '#555',
+    'pointRadius': 0,
+    'labelOutlineWidth': 0
+}).
 
 directive('olGridExtension', function(GRID_STYLING, TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING, GRID_START_LEVEL, GRID_MAX_LEVEL) {
     return {
@@ -594,14 +602,7 @@ directive('olGridExtension', function(GRID_STYLING, TRANSFORM_GRID_URL, DEFAULT_
                             ratio: 1
                     })],
                     styleMap: new OpenLayers.StyleMap({
-                        "default": new OpenLayers.Style($.extend(true, {}, DEFAULT_VECTOR_STYLING['default'], {
-                            'fillOpacity': 0.25,
-                            'fillColor': '#bbb',
-                            'strokeColor': '#777',
-                            'fontColor': '#555',
-                            'pointRadius': 0,
-                            'labelOutlineWidth': 0
-                        }), {
+                        "default": new OpenLayers.Style($.extend(true, {}, DEFAULT_VECTOR_STYLING['default'], GRID_STYLING), {
                         rules: [
                             new OpenLayers.Rule({
                                 filter: new OpenLayers.Filter.Function({
