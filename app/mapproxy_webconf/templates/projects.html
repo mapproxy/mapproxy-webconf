@@ -18,19 +18,6 @@
         %for name, data in projects.items():
           <div>
             <h3>${ _('project') }: ${name}</h3>
-            <h4>${ _('settings') }</h4>
-            <div class="pull-left" tooltip="t1" tooltip-placement="left">
-              <a href="${ get_url('project_index', project=name) }" class="btn btn-small">
-                ${ _('Goto default settings') }
-              </a>
-            </div>
-            <div class="pull-right" tooltip="t2" tooltip-placement="top">
-              <a href="${ get_url('configuration', project=name) }" class="btn btn-small">
-                ${ _('To configuration') } &rarr;
-              </a>
-            </div>
-            <div style="clear:both"></div>
-            <hr>
             <h4>${ _('status mapproxy configuration') }</h4>
             %if data['valid']:
               <div class="alert alert-block alert-success ">
@@ -52,6 +39,20 @@
                 </ul>
               </div>
             %end
+            <h4>${ _('settings') }</h4>
+            <div class="pull-left" tooltip="t1" tooltip-placement="left">
+              <a href="${ get_url('project_index', project=name) }" class="btn btn-small">
+                ${ _('Goto default settings') }
+              </a>
+            </div>
+            <div class="pull-right" tooltip="t2" tooltip-placement="top">
+              <a href="${ get_url('configuration', project=name) }" class="btn btn-small">
+                ${ _('To configuration') } &rarr;
+              </a>
+            </div>
+            <div style="clear:both"></div>
+            <hr>
+
           </div>
         %end
       </div>
