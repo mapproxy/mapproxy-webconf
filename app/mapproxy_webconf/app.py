@@ -592,7 +592,7 @@ def grid_as_geojson():
 
     origin = request.forms.get('origin', 'll')
 
-    if is_valid_transformation(request_bbox, map_srs, grid_srs):
+    if is_valid_transformation(grid_bbox, grid_bbox_srs, grid_srs):
         tilegrid = tile_grid(srs=grid_srs, bbox=grid_bbox, bbox_srs=grid_bbox_srs, origin=origin, res=res)
     else:
         x0, y0, x1, y1 = request_bbox
