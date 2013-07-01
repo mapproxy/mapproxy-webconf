@@ -434,6 +434,9 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
         }
         return !empty && !nonValues && bbox.length == 4;
     };
+    $scope.isEmptyBBox = function() {
+        return isEmpty($scope.source.data.coverage.bbox);
+    };
     $scope.fillBBox = function(event) {
         safePreventDefaults(event);
         if(isEmpty($scope.source.data.coverage.bbox)) {
@@ -895,9 +898,7 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
     };
     $scope.allowMap = function(event) {
         safePreventDefaults(event);
-
         if(angular.isUndefined($scope.grid.data.srs) ||
-           MAPPROXY_DEFAULT_GRID_SRS.indexOf($scope.grid.data.srs) == -1 ||
            !$scope.validBBox() ||
            angular.isUndefined($scope.grid.data.bbox_srs)) {
             return false;
