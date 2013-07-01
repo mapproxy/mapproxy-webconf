@@ -77,23 +77,6 @@
             <input type="number"
                    placeholder="${ _('North') }"
                    float
-                   ng-model="grid.data.bbox[0]"
-                   class="input-large"
-                   id="bbox_0"
-                   ng-disabled="grid._locked||grid.default"
-                   name="bbox_0"/>
-            <br>
-            <input type="number"
-                   placeholder="${ _('West') }"
-                   float
-                   ng-model="grid.data.bbox[1]"
-                   class="input-large"
-                   id="bbox_1"
-                   ng-disabled="grid._locked||grid.default"
-                   name="bbox_1"/>
-            <input type="number"
-                   placeholder="${ _('East') }"
-                   float
                    ng-model="grid.data.bbox[3]"
                    class="input-large"
                    id="bbox_3"
@@ -101,13 +84,30 @@
                    name="bbox_3"/>
             <br>
             <input type="number"
-                   placeholder="${ _('South') }"
+                   placeholder="${ _('West') }"
+                   float
+                   ng-model="grid.data.bbox[0]"
+                   class="input-large"
+                   id="bbox_0"
+                   ng-disabled="grid._locked||grid.default"
+                   name="bbox_0"/>
+            <input type="number"
+                   placeholder="${ _('East') }"
                    float
                    ng-model="grid.data.bbox[2]"
                    class="input-large"
                    id="bbox_2"
                    ng-disabled="grid._locked||grid.default"
                    name="bbox_2"/>
+            <br>
+            <input type="number"
+                   placeholder="${ _('South') }"
+                   float
+                   ng-model="grid.data.bbox[1]"
+                   class="input-large"
+                   id="bbox_1"
+                   ng-disabled="grid._locked||grid.default"
+                   name="bbox_1"/>
           </div>
         </div>
         <!-- BBox SRS -->
