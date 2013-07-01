@@ -483,62 +483,18 @@ def calculate_tiles():
         })
     return {'result': result}
 
-@app.route('/get_max_extent', 'POST', name='get_max_extent')
-def get_max_extent():
-    extent = request.json.get('extent', [-180, -90, 180, 90])
-    extent_srs = request.json.get('extent_srs', 'EPSG:4326')
-    fallback_extent = request.json.get('fallback_extent', None)
-    fallback_extent_srs = request.json.get('fallback_extent_srs', None)
-    fallback_with_buffer = request.json.get('fallback_with_buffer', True)
-    map_srs = request.json.get('map_srs')
+@app.route('/transform_bbox', 'POST', name="transform_bbox")
+def transform_bbox():
+    source = SRS(request.json.get('source'));
+    dest = SRS(request.json.get('dest'));
+    bbox = source.align_bbox(request.json.get('bbox'));
 
-    bounds = extent
-    bounds_srs = extent_srs
-
-    extent_srs = SRS(extent_srs)
-    map_srs = SRS(map_srs)
-
-    extent = extent_srs.align_bbox(extent)
-    map_extent = transform_bbox(extent, extent_srs, map_srs)
-
-    if not map_extent and fallback_extent:
-        bounds = fallback_extent
-        bounds_srs = fallback_extent_srs
-        fallback_extent_srs = SRS(fallback_extent_srs)
-        fallback_extent = fallback_extent_srs.align_bbox(fallback_extent)
-
-        buffer_in_percent = 10 if fallback_with_buffer else 0
-        map_extent = transform_bbox(buffered_extent(fallback_extent, buffer_in_percent), fallback_extent_srs, map_srs)
-        while not map_extent and buffer_in_percent >= 0:
-            buffer_in_percent -= 1;
-            map_extent = transform_bbox(buffered_extent(fallback_extent, buffer_in_percent), fallback_extent_srs, map_srs)
-
-    if map_extent:
-        return {'result': {
-            'maxExtent': map_extent
-        }}
-    else:
-        response.status = 400
-        return {'error': _('Can not show map in %(srs)s with bounds %(bounds)s (%(bounds_srs)s)') % ({
-            'srs': map_srs.srs_code,
-            'bounds': bounds,
-            'bounds_srs': bounds_srs
-        })}
-
-def buffered_extent(extent, buffer):
-    x0, y0, x1, y1 = extent
-    xb0 = x0 - abs(x0 / 100 * buffer)
-    yb0 = y0 - abs(y0 / 100 * buffer)
-    xb1 = x1 + abs(x1 / 100 * buffer)
-    yb1 = y1 + abs(y1 / 100 * buffer)
-    return [xb0, yb0, xb1, yb1]
-
-def transform_bbox(bbox, source, dest):
     if is_valid_transformation(bbox, source, dest):
         transformed_bbox = source.transform_bbox_to(dest, bbox)
-        return transformed_bbox
+        return {'bbox': transformed_bbox}
     else:
-        return False
+        response.status = 400;
+        return {'error': 'Could not transform bbox'}
 
 def is_valid_transformation(bbox, source_srs, dest_srs):
     """
@@ -636,9 +592,9 @@ def grid_as_geojson():
 
     origin = request.forms.get('origin', 'll')
 
-    try:
+    if is_valid_transformation(request_bbox, map_srs, grid_srs):
         tilegrid = tile_grid(srs=grid_srs, bbox=grid_bbox, bbox_srs=grid_bbox_srs, origin=origin, res=res)
-    except (ValueError, TransformationError):
+    else:
         x0, y0, x1, y1 = request_bbox
         return return_map_message([[x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0, y0]], _('Given bbox can not be used with given SRS'))
 
