@@ -465,7 +465,7 @@ service('DataShareService', function($rootScope) {
                 $rootScope.$broadcast('dss.' + key);
             } else {
                 if(angular.isDefined(_this._data[key])) {
-                    return _this._data[key];
+                    return angular.copy(_this._data[key]);
                 } else {
                     return undefined;
                 }
