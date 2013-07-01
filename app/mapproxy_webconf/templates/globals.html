@@ -71,6 +71,11 @@
               ng-class="{'btn-success': form.$valid}">
         ${ _('Save') }
       </button>
+      <button class="btn btn-small"
+              ng-click="reset($event)"
+              id="form_reset">
+        ${ _('Reset') }
+      </button>
     </form>
     <hr ng-show="!editareaBinds.visible">
     <div editarea="editareaBinds"

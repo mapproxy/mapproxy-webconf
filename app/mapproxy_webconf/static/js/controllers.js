@@ -1192,7 +1192,7 @@ function MapproxyGlobalsFormCtrl($scope, TranslationService, MessageService, Map
     var setGlobals = function() {
         var globals = MapproxyGlobals.list();
         if(globals.length > 0) {
-            $scope.globals = $.extend(true, $scope.globals, globals[0]);
+            $scope.globals = angular.copy(globals[0]);
         }
         DataShareService.data('globals', $scope.globals);
         $scope.editareaBinds.editareaValue = $scope.globals;
@@ -1210,6 +1210,10 @@ function MapproxyGlobalsFormCtrl($scope, TranslationService, MessageService, Map
         $scope.form.$setPristine();
         $scope.editareaBinds.dirty = false;
         $scope.editareaBinds.save = false;
+    };
+    $scope.reset = function(event) {
+        safePreventDefaults(event);
+        setGlobals();
     };
 
     $scope.globals = angular.copy({'data': MapproxyGlobals.model});
@@ -1285,7 +1289,7 @@ function MapproxyServicesCtrl($scope, TranslationService, MapproxyServices, Data
     var setServices = function() {
         var services = MapproxyServices.list();
         if(services.length > 0) {
-            $scope.services = $.extend(true, $scope.services, services[0]);
+            $scope.services = angular.copy(services[0]);
         }
         DataShareService.data('services', $scope.services);
         $scope.editareaBinds.editareaValue = $scope.services;
@@ -1305,6 +1309,10 @@ function MapproxyServicesCtrl($scope, TranslationService, MapproxyServices, Data
         $scope.form.$setPristine();
         $scope.editareaBinds.dirty = false;
         $scope.editareaBinds.save = false;
+    };
+    $scope.reset = function(event) {
+        safePreventDefaults(event);
+        setServices();
     };
 
     $scope.services = angular.copy({'data': MapproxyServices.model});

@@ -168,6 +168,11 @@
               ng-class="{'btn-success': form.$valid}">
         ${ _('Save') }
       </button>
+      <button class="btn btn-small"
+              ng-click="reset($event)"
+              id="form_reset">
+        ${ _('Reset') }
+      </button>
     </form>
     <div editarea="editareaBinds"
          yaml-URL="${get_url('json_to_yaml')}"
