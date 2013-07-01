@@ -157,11 +157,42 @@
             <div labeled='input_label_toggleable'
                  name-for="coverage_bbox"
                  text="${ _('Coverage BBOX') }">
-              <input type="text"
-                     ng-model="source.data.coverage.bbox"
-                     id="coverage_bbox"
-                     name="coverage_bbox"
-                     class="input-medium"/>
+              <div class="text-center">
+                <input type="number"
+                       placeholder="${ _('North') }"
+                       float
+                       ng-model="source.data.coverage.bbox[0]"
+                       class="input-large"
+                       id="bbox_0"
+                       ng-disabled="grid._locked||grid.default"
+                       name="bbox_0"/>
+                <br>
+                <input type="number"
+                       placeholder="${ _('West') }"
+                       float
+                       ng-model="source.data.coverage.bbox[1]"
+                       class="input-large"
+                       id="bbox_1"
+                       ng-disabled="grid._locked||grid.default"
+                       name="bbox_1"/>
+                <input type="number"
+                       placeholder="${ _('East') }"
+                       float
+                       ng-model="source.data.coverage.bbox[3]"
+                       class="input-large"
+                       id="bbox_3"
+                       ng-disabled="grid._locked||grid.default"
+                       name="bbox_3"/>
+                <br>
+                <input type="number"
+                       placeholder="${ _('South') }"
+                       float
+                       ng-model="source.data.coverage.bbox[2]"
+                       class="input-large"
+                       id="bbox_2"
+                       ng-disabled="grid._locked||grid.default"
+                       name="bbox_2"/>
+              </div>
               <button class="btn btn-small"
                       ng-disabled="!source.data.req.url"
                       ng-click="addCoverage($event)"

@@ -377,7 +377,7 @@ var sourceModel = {
         'transparent': undefined
     },
     'coverage': {
-        'bbox': undefined,
+        'bbox': [],
         'srs': undefined
     },
     'supported_formats': [],
