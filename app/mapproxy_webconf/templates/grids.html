@@ -161,17 +161,17 @@
           <div class="btn-group switch" data-toggle="buttons-radio">
             <button type="button"
                     class="btn btn-small"
-                    ng-class="{'active': custom.resSelected}"
-                    ng-click="getResolutions('${get_url('scales_to_res')}')"
-                    ng-disabled="grid._locked||grid.default">
-              ${ _('Resolutions') }
-            </button>
-            <button type="button"
-                    class="btn btn-small"
                     ng-class="{'active': !custom.resSelected}"
                     ng-click="getScales('${get_url('res_to_scales')}')"
                     ng-disabled="grid._locked||grid.default">
               ${ _('Scales') }
+            </button>
+            <button type="button"
+                    class="btn btn-small"
+                    ng-class="{'active': custom.resSelected}"
+                    ng-click="getResolutions('${get_url('scales_to_res')}')"
+                    ng-disabled="grid._locked||grid.default">
+              ${ _('Resolutions') }
             </button>
           </div>
           <div extendable-input-list="custom.res_scales"

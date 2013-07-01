@@ -22,15 +22,15 @@
   <div class="btn-group switch" data-toggle="buttons-radio">
     <button type="button"
             class="btn btn-small"
-            ng-class="{'active': custom.resSelected}"
-            ng-click="getResolution()">
-      ${ _('Resolution') }
-    </button>
-    <button type="button"
-            class="btn btn-small"
             ng-class="{'active': !custom.resSelected}"
             ng-click="getScale()">
       ${ _('Scale') }
+    </button>
+    <button type="button"
+            class="btn btn-small"
+            ng-class="{'active': custom.resSelected}"
+            ng-click="getResolution()">
+      ${ _('Resolution') }
     </button>
   </div>
   <div labeled="input_label" name-for="min_res" text="${ _('min_res') }" ng-show="custom.resSelected">
