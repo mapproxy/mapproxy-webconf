@@ -208,14 +208,9 @@
                 </select>
               </div>
               <button class="btn btn-small"
-                      ng-show="source.data.coverage.bbox"
                       ng-click="showCoverageInMap()">
-                ${ _('Show coverage in map') }
-              </button>
-              <button class="btn btn-small"
-                      ng-show="!source.data.coverage.bbox"
-                      ng-click="showCoverageInMap()">
-                ${ _('Create coverage in map') }
+                <span ng-show="validBBox()">${ _('Show coverage in map') }</span>
+                <span ng-show="!validBBox()">${ _('Create coverage in map') }</span>
               </button>
               <span message-handler="error"
                     message-types="olMap.showMap_error">

@@ -422,6 +422,18 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
             $scope.editareaBinds.save = false;
         }
     };
+    $scope.validBBox = function() {
+        var bbox = $scope.source.data.coverage.bbox
+        var empty = isEmpty(bbox);
+        var nonValues = false;
+        for(var i = 0; i < 4; i++) {
+            if(bbox[i] == undefined || bbox[i] == null) {
+                nonValues = true;
+                break
+            }
+        }
+        return !empty && !nonValues && bbox.length == 4;
+    };
     $scope.addCoverage = function(event) {
         safePreventDefaults(event);
         var bbox = WMSSources.coverage($scope.source.data.req.url);
@@ -438,20 +450,8 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
         }
     };
     $scope.showCoverageInMap = function(event) {
-        if(angular.isDefined(event)) {
-            event.stopPropagation();
-        }
-        var bbox = $scope.source.data.coverage.bbox;
-        if(angular.isString(bbox)) {
-            bbox = bbox.split(',');
-            if(bbox[0] != "") {
-                angular.forEach(bbox, function(value, idx) {
-                    bbox[idx] = parseFloat(value);
-                });
-            } else {
-                bbox = undefined;
-            }
-        }
+        safePreventDefaults(event);
+        var bbox = $scope.validBBox() ? $scope.source.data.coverage.bbox : undefined;
         var srs = $scope.source.data.coverage.srs || SRS;
         var coverage = {
             'name': 'Coverage',
@@ -888,18 +888,13 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
     $scope.allowMap = function(event) {
         safePreventDefaults(event);
 
-        if(angular.isUndefined($scope.grid.data.srs)) {
+        if(angular.isUndefined($scope.grid.data.srs) ||
+           MAPPROXY_DEFAULT_GRID_SRS.indexOf($scope.grid.data.srs) == -1 ||
+           !$scope.validBBox() ||
+           angular.isUndefined($scope.grid.data.bbox_srs)) {
             return false;
         }
-
-        var srsOK = MAPPROXY_DEFAULT_GRID_SRS.indexOf($scope.grid.data.srs) != -1;
-        var bboxOK = angular.isDefined($scope.grid.data.bbox) && $scope.grid.data.bbox.length == 4 && $scope.grid.data.bbox.indexOf(null) == -1;
-
-        if(srsOK && (bboxOK || angular.isUndefined($scope.grid.data.bbox) || isEmpty($scope.grid.data.bbox))) {
-            return true;
-        } else {
-            return bboxOK;
-        }
+        return true;
     };
     $scope.showMap = function(event) {
         safePreventDefaults(event);
@@ -930,7 +925,19 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
             gridData.dpi = $scope.defaults.data.dpi;
         }
         return gridData;
-    }
+    };
+    $scope.validBBox = function() {
+        var bbox = $scope.grid.data.bbox
+        var empty = isEmpty(bbox);
+        var nonValues = false;
+        for(var i = 0; i < 4; i++) {
+            if(bbox[i] == undefined || bbox[i] == null) {
+                nonValues = true;
+                break
+            }
+        }
+        return !empty && !nonValues && bbox.length == 4;
+    };
 
     $scope.custom = {
         'res_scales': [],
