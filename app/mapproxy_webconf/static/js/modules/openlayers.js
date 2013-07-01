@@ -79,7 +79,7 @@ constant('DEFAULT_VECTOR_STYLING', {
     }
 }).
 
-directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeout, DEFAULT_VECTOR_STYLING, OPENLAYERSMAP_TEMPLATE_URL, LAYERSWITCHER_TEMPLATE_URL) {
+directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeout, DEFAULT_VECTOR_STYLING, OPENLAYERSMAP_TEMPLATE_URL, LAYERSWITCHER_TEMPLATE_URL, DPI, NUM_ZOOM_LEVELS) {
     return {
         restrict: 'A',
         scope: {
@@ -376,13 +376,13 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 if($scope.olmapBinds.showScaleRes && $scope.olmapBinds.dpi) {
                     OpenLayers.DOTS_PER_INCH = $scope.olmapBinds.dpi;
                 } else {
-                    OpenLayers.DOTS_PER_INCH = 72;
+                    OpenLayers.DOTS_PER_INCH = DPI;
                 }
                 var options = {
                     projection: $scope.olmapBinds.proj,
                     maxExtent: $scope.olmapBinds.extent,
                     units: $scope.olmapBinds.proj.units,
-                    numZoomLevels: $scope.olmapBinds.numZoomLevels || 16,
+                    numZoomLevels: $scope.olmapBinds.numZoomLevels || NUM_ZOOM_LEVELS,
                     allOverlays: !$scope.haveBaseLayer,
                     theme: null,
                     controls: [
@@ -519,7 +519,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
 }).
 
 
-directive('olGridExtension', function(TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING) {
+directive('olGridExtension', function(GRID_STYLING, TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING, GRID_START_LEVEL, GRID_MAX_LEVEL) {
     return {
         restrict: 'A',
         require: '^olMap',
@@ -543,8 +543,8 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING
             $scope._layer = {
                 'name': 'Coverage'
             };
-            $scope.gridLevel = 0;
-            $scope.maxLevel = 20;
+            $scope.gridLevel = GRID_START_LEVEL;
+            $scope.maxLevel = GRID_MAX_LEVEL;
             $scope.pointLabelRule = new OpenLayers.Rule({
                 filter: new OpenLayers.Filter.Function({
                     evaluate: function(attrs) {
@@ -577,7 +577,7 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING
                 } else if(angular.isDefined(gridData.scales) && angular.isArray(gridData.scales) && gridData.scales.length > 0) {
                     scope.maxLevel = gridData.scales.length;
                 } else {
-                    scope.maxLevel = 20;
+                    scope.maxLevel = GRID_MAX_LEVEL;
                 }
 
                 var options = {
@@ -660,8 +660,8 @@ directive('olGridExtension', function(TRANSFORM_GRID_URL, DEFAULT_VECTOR_STYLING
             });
 
             olMapCtrl.registerExtension('destroy', function(map) {
-                scope.gridLevel = 0;
-                scope.maxLevel = 20;
+                scope.gridLevel = GRID_START_LEVEL;
+                scope.maxLevel = GRID_MAX_LEVEL;
                 var layerList = olMapCtrl.olmapBinds.layers.vector;
                 var layerIdx = layerList.indexOf(scope.layer);
                 layerList.splice(layerIdx, 1);

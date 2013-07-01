@@ -57,13 +57,31 @@
       /* add directives and services*/
         var app = angular.module('mapproxy_gui', ['angular.extensions', 'mapproxy_gui.directives', 'mapproxy_gui.services', 'mapproxy_gui.validators', 'mapproxy_gui.messages', 'mapproxy_gui.tooltips', 'mapproxy_gui.openlayers']);
 
-      /* Set globals */
+      /* app defaults */
+        app.value('PAGE_LEAVE_MSG', PAGE_LEAVE_MSG);
+        app.value('SRS', SRS);
+        app.value('NON_TRANSPARENT_FORMATS', NON_TRANSPARENT_FORMATS);
+        app.value('BACKGROUND_SERVICE_TITLE', BACKGROUND_SERVICE_TITLE);
+        app.value('BACKGROUND_SERVICE_URL', BACKGROUND_SERVICE_URL);
+        app.value('BACKGROUND_SERVICE_LAYER', BACKGROUND_SERVICE_LAYER);
+        app.value('MAPPROXY_DEFAULT_GRID_SRS', MAPPROXY_DEFAULT_GRID_SRS);
+
+      /* OpenLayers directive defaults */
         angular.module('mapproxy_gui.openlayers').value('TRANSFORM_GRID_URL', "${ get_url('transform_grid') }");
         angular.module('mapproxy_gui.openlayers').value('LAYERSWITCHER_TEMPLATE_URL', "${ get_url('angular_template', filename='layerswitcher') }");
         angular.module('mapproxy_gui.openlayers').value('OPENLAYERSMAP_TEMPLATE_URL', "${ get_url('angular_template', filename='openlayersmap') }");
+        angular.module('mapproxy_gui.openlayers').value('DPI', DPI);
+        angular.module('mapproxy_gui.openlayers').value('NUM_ZOOM_LEVELS', NUM_ZOOM_LEVELS);
+        angular.module('mapproxy_gui.openlayers').value('GRID_START_LEVEL', GRID_START_LEVEL);
+        angular.module('mapproxy_gui.openlayers').value('GRID_MAX_LEVEL', GRID_MAX_LEVEL);
 
+      /* Message directive defaults */
+        angular.module('mapproxy_gui.messages').value('FADEOUT_DELAY', FADEOUT_DELAY);
+
+      /* Other directive defaults */
         angular.module('mapproxy_gui.directives').value('EDITAREA_TEMPLATE_URL', "${ get_url('angular_template', filename='editarea') }");
         angular.module('mapproxy_gui.directives').value('EXTENDABLE_INPUT_LIST_TEMPLATE_URL', "${ get_url('angular_template', filename='extendable_input_list') }");
+        angular.module('mapproxy_gui.directives').value('FADEOUT_DELAY', FADEOUT_DELAY);
 
         app.run(function($rootScope, tooltipMapper, TranslationService) {
           $rootScope.LANGUAGE = '${ language }';

@@ -25,7 +25,7 @@ service('MessageService', function($rootScope) {
     return service;
 }).
 
-directive('messageHandler', function($templateCache, MessageService) {
+directive('messageHandler', function($templateCache, MessageService, FADEOUT_DELAY) {
     return {
         restrict: 'A',
         scope: 'Element',
@@ -44,7 +44,7 @@ directive('messageHandler', function($templateCache, MessageService) {
                     if(angular.isDefined(messageObject)) {
                         scope.message = messageObject.message;
                         scope.messageService.removeMessage(messageObject.section, messageObject.action);
-                        $(element).show().fadeOut(3000);
+                        $(element).show().fadeOut(FADEOUT_DELAY);
                     }
                 } , true);
             });

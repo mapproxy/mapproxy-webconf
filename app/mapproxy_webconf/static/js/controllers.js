@@ -1,5 +1,3 @@
-var PAGE_LEAVE_MSG = "You have unsaved changes in this form. Realy leave the page and disgard unsaved changes?";
-
 function BaseListCtrl($scope, MessageService, TranslationService, service, _section) {
     $scope.refreshList = function() {
         $scope.list = service.list();
@@ -205,7 +203,7 @@ function MapProxyConfigCtrl($scope, $http, MessageService) {
     $scope._messageService = MessageService;
 }
 
-function TreeCtrl($scope, MessageService, WMSSources, ProjectDefaults) {
+function TreeCtrl($scope, SRS, MessageService, WMSSources, ProjectDefaults) {
 
     var refreshTree = function() {
         $scope.wms_list = WMSSources.list();
@@ -234,8 +232,8 @@ function TreeCtrl($scope, MessageService, WMSSources, ProjectDefaults) {
     };
     $scope.showMap = function(event, wms) {
         event.stopPropagation();
-        var srs = ($.inArray('EPSG:4326', wms.data.layer.srs) != -1 || $.inArray('epsg:4326', wms.data.layer.srs) != -1) ?
-            'EPSG:4326' : wms.data.layer.srs[0];
+        var srs = ($.inArray(SRS.toUpperCase(), wms.data.layer.srs) != -1 || $.inArray(SRS.toLowerCase(), wms.data.layer.srs) != -1) ?
+            SRS : wms.data.layer.srs[0];
         var extent = wms.data.layer.llbbox;
         $scope.olmapBinds = {
             visible: true,
@@ -268,7 +266,7 @@ function TreeCtrl($scope, MessageService, WMSSources, ProjectDefaults) {
     $scope.capabilities = {};
 };
 
-function MapproxySourceFormCtrl($scope, $http, TranslationService, MessageService, MapproxySources, ProjectDefaults, WMSSources, MapproxyCaches) {
+function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPARENT_FORMATS, BACKGROUND_SERVICE_TITLE, BACKGROUND_SERVICE_URL, BACKGROUND_SERVICE_LAYER, TranslationService, MessageService, MapproxySources, ProjectDefaults, WMSSources, MapproxyCaches) {
 
     var setSource = function() {
         $scope.source = MapproxySources.current();
@@ -299,7 +297,7 @@ function MapproxySourceFormCtrl($scope, $http, TranslationService, MessageServic
 
     $scope.warningLogic = {
         checkImageSettings: function() {
-            var non_transparent_formats = ['JPEG', 'GIF'];
+            var non_transparent_formats = NON_TRANSPARENT_FORMATS;
             return $scope.source.data.req.transparent == true &&
             $(non_transparent_formats).not($scope.source.data.supported_formats).length != non_transparent_formats.length
         }
@@ -431,11 +429,11 @@ function MapproxySourceFormCtrl($scope, $http, TranslationService, MessageServic
             if(angular.isUndefined($scope.source.data.coverage)) {
                 $scope.source.data.coverage = {
                     'bbox': bbox,
-                    'srs': 'EPSG:4326'
+                    'srs': SRS
                 };
             } else {
                 $scope.source.data.coverage.bbox = bbox;
-                $scope.source.data.coverage.srs = 'EPSG:4326';
+                $scope.source.data.coverage.srs = SRS;
             }
         }
     };
@@ -454,7 +452,7 @@ function MapproxySourceFormCtrl($scope, $http, TranslationService, MessageServic
                 bbox = undefined;
             }
         }
-        var srs = $scope.source.data.coverage.srs || 'EPSG:4326';
+        var srs = $scope.source.data.coverage.srs || SRS;
         var coverage = {
             'name': 'Coverage',
             'zoomToDataExtent': angular.isDefined(bbox),
@@ -480,9 +478,9 @@ function MapproxySourceFormCtrl($scope, $http, TranslationService, MessageServic
                 layers: {
                     'vector': [coverage],
                     'background': [{
-                        title: 'BackgroundLayer',
-                        url: 'http://osm.omniscale.net/proxy/service?',
-                        name: 'osm',
+                        title: BACKGROUND_SERVICE_TITLE,
+                        url: BACKGROUND_SERVICE_URL,
+                        name: BACKGROUND_SERVICE_LAYER,
                         baseLayer: true
                     }]
                 }
@@ -601,7 +599,7 @@ function MapproxySourceFormCtrl($scope, $http, TranslationService, MessageServic
     });
 };
 
-function MapproxyCacheFormCtrl($scope, TranslationService, MessageService, MapproxySources, MapproxyGrids, MapproxyCaches) {
+function MapproxyCacheFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, MessageService, MapproxySources, MapproxyGrids, MapproxyCaches) {
 
     var refreshGrids = function() {
         $scope.available_grids = MapproxyGrids.list();
@@ -743,7 +741,7 @@ function MapproxyCacheFormCtrl($scope, TranslationService, MessageService, Mappr
     });
 };
 
-function MapproxyGridFormCtrl($scope, $http, TranslationService, MessageService, DataShareService, ProjectDefaults, MapproxyGrids) {
+function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID_SRS, BACKGROUND_SERVICE_TITLE, BACKGROUND_SERVICE_URL, BACKGROUND_SERVICE_LAYER, $http, TranslationService, MessageService, DataShareService, ProjectDefaults, MapproxyGrids) {
 
     var convertResScales = function(url, mode) {
         if($scope.custom.res_scales.length > 0) {
@@ -894,7 +892,7 @@ function MapproxyGridFormCtrl($scope, $http, TranslationService, MessageService,
             return false;
         }
 
-        var srsOK = ["EPSG:4326", "EPSG:900913", "EPSG:3857", "EPSG:102100", "EPSG:102113"].indexOf($scope.grid.data.srs) != -1;
+        var srsOK = MAPPROXY_DEFAULT_GRID_SRS.indexOf($scope.grid.data.srs) != -1;
         var bboxOK = angular.isDefined($scope.grid.data.bbox) && $scope.grid.data.bbox.length == 4 && $scope.grid.data.bbox.indexOf(null) == -1;
 
         if(srsOK && (bboxOK || angular.isUndefined($scope.grid.data.bbox) || isEmpty($scope.grid.data.bbox))) {
@@ -937,7 +935,7 @@ function MapproxyGridFormCtrl($scope, $http, TranslationService, MessageService,
     $scope.custom = {
         'res_scales': [],
         'resSelected': false,
-        'mapSRS': 'EPSG:4326'
+        'mapSRS': SRS
     };
     $scope.grid = angular.copy({'data': MapproxyGrids.model});
 
@@ -954,9 +952,9 @@ function MapproxyGridFormCtrl($scope, $http, TranslationService, MessageService,
         proj: $scope.custom.mapSRS,
         layers: {
             'background': [{
-                title: 'BackgroundLayer',
-                url: 'http://osm.omniscale.net/proxy/service?',
-                name: 'osm',
+                title: BACKGROUND_SERVICE_TITLE,
+                url: BACKGROUND_SERVICE_URL,
+                name: BACKGROUND_SERVICE_LAYER,
                 baseLayer: true
             }]
         }
@@ -1003,7 +1001,7 @@ function MapproxyGridFormCtrl($scope, $http, TranslationService, MessageService,
     });
 };
 
-function MapproxyLayerFormCtrl($scope, $http, TranslationService, MessageService, ProjectDefaults, MapproxySources, MapproxyCaches, MapproxyLayers) {
+function MapproxyLayerFormCtrl($scope, $http, PAGE_LEAVE_MSG, TranslationService, MessageService, ProjectDefaults, MapproxySources, MapproxyCaches, MapproxyLayers) {
 
     var setLayer = function() {
         $scope.layer = MapproxyLayers.current();
@@ -1188,7 +1186,7 @@ function MapproxyGlobalsChooserCtrl($scope, DataShareService, TranslationService
     $scope._editarea_visible = false;
 };
 
-function MapproxyGlobalsFormCtrl($scope, TranslationService, MessageService, MapproxyGlobals, DataShareService) {
+function MapproxyGlobalsFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, MessageService, MapproxyGlobals, DataShareService) {
     var setGlobals = function() {
         var globals = MapproxyGlobals.list();
         if(globals.length > 0) {
@@ -1285,7 +1283,7 @@ function MapproxyServicesChooserCtrl($scope, TranslationService, DataShareServic
     $scope._editarea_visible = false;
 };
 
-function MapproxyServicesCtrl($scope, TranslationService, MapproxyServices, DataShareService, MessageService, ProjectDefaults) {
+function MapproxyServicesCtrl($scope, PAGE_LEAVE_MSG, TranslationService, MapproxyServices, DataShareService, MessageService, ProjectDefaults) {
     var setServices = function() {
         var services = MapproxyServices.list();
         if(services.length > 0) {
@@ -1365,7 +1363,7 @@ function MapproxyServicesCtrl($scope, TranslationService, MapproxyServices, Data
     });
 };
 
-function ProjectDefaultsCtrl($scope, ProjectDefaults, MessageService) {
+function ProjectDefaultsCtrl($scope, PAGE_LEAVE_MSG, ProjectDefaults, MessageService) {
     var setDefaults = function() {
         var defaults = ProjectDefaults.list();
         if(defaults.length > 0) {

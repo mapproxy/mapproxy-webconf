@@ -15,8 +15,9 @@ function include_requireds(path) {
             }
         }
         document.write('<script type="text/javascript" src="' + path + l + jspath+'"><\/script>');
-    }
+    };
 
+    require("defaults.js");
     require("helper.js");
     require("validators.js");
     require("resources.js");
@@ -26,4 +27,4 @@ function include_requireds(path) {
     require("modules/messages.js");
     require("modules/tooltips.js");
     require("modules/openlayers.js")
-}
+};

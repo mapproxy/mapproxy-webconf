@@ -534,7 +534,7 @@ directive('extendableInputList', function($timeout, EXTENDABLE_INPUT_LIST_TEMPLA
     };
 }).
 
-directive('editarea', function($http, MessageService, EDITAREA_TEMPLATE_URL) {
+directive('editarea', function($http, MessageService, EDITAREA_TEMPLATE_URL, FADEOUT_DELAY) {
     return {
         restrict: 'A',
         scope: {
@@ -558,7 +558,7 @@ directive('editarea', function($http, MessageService, EDITAREA_TEMPLATE_URL) {
             };
             scope.showErrorMsg = function(errorMsg) {
                 scope.editareaErrorMsg = errorMsg;
-                $('#editarea_error').show().fadeOut(3000)
+                $('#editarea_error').show().fadeOut(FADEOUT_DELAY)
             };
             var loadYAML = function() {
                 //clear editarea
