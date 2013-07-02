@@ -25,13 +25,16 @@ def fill_storage_with_mapproxy_conf(storage, project, mapproxy_conf):
         section = mapproxy_conf.get(section_name, {})
         if isinstance(section, list):
             for item in section:
-                storage.add(section_name, project, item)
-        else:
+
+                storage.add(section_name, project, {'data': item})
+        elif section_name in ['sources', 'caches', 'grids']:
             for name, item in section.iteritems():
                 if item is None:
                     continue
                 item['name'] = name
-                storage.add(section_name, project, item)
+                storage.add(section_name, project, {'data': item})
+        else:
+            storage.add(section_name, project, {'data': section})
 
 def id_dict_to_named_dict(input):
     output = {}
