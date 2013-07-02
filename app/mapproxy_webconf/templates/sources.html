@@ -155,7 +155,7 @@
             </div>
             <hr class="formLine">
             <div labeled='input_label_toggleable'
-                 name-for="coverage_bbox"
+                 name-for="bbox_3"
                  text="${ _('Coverage BBOX') }">
               <div class="text-center">
                 <input type="number"
@@ -214,6 +214,7 @@
                 <span ng-show="!isEmptyBBox()">${ _('Show coverage in map') }</span>
                 <span ng-show="isEmptyBBox()">${ _('Create coverage in map') }</span>
               </button>
+              <pre ng-bind="isEmpty(source.data.coverage.bbox)"></pre>
               <span message-handler="error"
                     message-types="olMap.showMap_error">
               </span>
