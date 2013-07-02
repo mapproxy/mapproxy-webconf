@@ -34,8 +34,8 @@
       <div class="pull-left">
         <button class="btn btn-small"
                 ng-click="save($event)"
-                ng-disabled="!form.$valid"
-                ng-class="{'btn-success': form.$valid}">
+                ng-disabled="!form.$valid || !form.$dirty"
+                ng-class="{'btn-success': form.$valid && form.$dirty}">
           ${ _('Save') }
         </button>
       </div>
