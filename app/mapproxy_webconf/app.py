@@ -148,9 +148,9 @@ class RESTWMSCapabilities(RESTBase):
         search = """%%"url": "%s"%%""" % cap['data']['url']
         id = storage.exists_in_data(self.section, project, search)
         if id:
-            return self.update(project, id, storage)
-
-        id = storage.add(self.section, project, cap)
+            storage.update(id, self.section, project, cap)
+        else:
+            id = storage.add(self.section, project, cap)
         cap['_id'] = id
         response.status = 201
         return cap
