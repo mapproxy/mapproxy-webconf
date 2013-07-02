@@ -327,11 +327,11 @@ def projects(storage):
 def conf_index(project):
     return template('config_index', project=project)
 
-@app.route('/project/<project>', name='project_index')
+@app.route('/project/<project>', name='project_defaults')
 @require_project
-def project_index(project, storage):
+def project_defaults(project, storage):
     defaults = json.dumps(rest_defaults.list(project, storage))
-    return template('project_index', project=project, defaults=defaults)
+    return template('project_defaults', project=project, defaults=defaults)
 
 @app.route('/project/<project>/conf/sources', name='sources')
 @require_project

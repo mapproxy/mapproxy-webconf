@@ -240,7 +240,7 @@ msgstr "Request Format"
 #: mapproxy_webconf/templates/grids.html:218
 #: mapproxy_webconf/templates/layers.html:25
 #: mapproxy_webconf/templates/layers.html:114
-#: mapproxy_webconf/templates/project_index.html:39
+#: mapproxy_webconf/templates/project_defaults.html:39
 #: mapproxy_webconf/templates/services.html:169
 #: mapproxy_webconf/templates/sources.html:260
 #: mapproxy_webconf/templates/angular/editarea.html:18
@@ -389,7 +389,7 @@ msgid "Default grid"
 msgstr "Default Grid"
 
 #: mapproxy_webconf/templates/grids.html:65
-#: mapproxy_webconf/templates/project_index.html:19
+#: mapproxy_webconf/templates/project_defaults.html:19
 #: mapproxy_webconf/templates/services.html:32
 #: mapproxy_webconf/templates/resources/translations.js:21
 msgid "SRS"
@@ -536,30 +536,30 @@ msgstr "Layer bearbeiten"
 msgid "Title"
 msgstr "Titel"
 
-#: mapproxy_webconf/templates/project_index.html:10
+#: mapproxy_webconf/templates/project_defaults.html:10
 msgid "Project defaults"
 msgstr "Defaultwerte des Projekts"
 
-#: mapproxy_webconf/templates/project_index.html:11
+#: mapproxy_webconf/templates/project_defaults.html:11
 msgid "infotext_default_settings"
 msgstr "TODO: Infotexte Default Settings"
 
-#: mapproxy_webconf/templates/project_index.html:15
+#: mapproxy_webconf/templates/project_defaults.html:15
 msgid "DPI"
 msgstr "DPI"
 
-#: mapproxy_webconf/templates/project_index.html:27
+#: mapproxy_webconf/templates/project_defaults.html:27
 msgid "Add SRS"
 msgstr "Koordinatensystem hinzufügen"
 
-#: mapproxy_webconf/templates/project_index.html:30
+#: mapproxy_webconf/templates/project_defaults.html:30
 #: mapproxy_webconf/templates/sources.html:124
 #: mapproxy_webconf/templates/sources.html:247
 #: mapproxy_webconf/templates/sources.html:360
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: mapproxy_webconf/templates/project_index.html:44
+#: mapproxy_webconf/templates/project_defaults.html:44
 #: mapproxy_webconf/templates/projects.html:50
 msgid "To configuration"
 msgstr "Zur Konfiguration"
