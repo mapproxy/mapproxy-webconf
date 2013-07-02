@@ -284,7 +284,7 @@ class SQLiteStore(object):
         for row in result:
             section =  row[0]
             data = json.loads(row[1])
-            if id in data[look_for[section]]:
+            if look_for[section] in data and id in data[look_for[section]]:
                 dependency = {'name': data['name']}
                 if data.has_key('title'):
                     dependency['title'] = data['title']
