@@ -100,21 +100,20 @@ def test_layer_tree():
 class TestMapProxyWrite(helper.TempDirTest):
     def test_write_mapproxy_conf(self):
         storage = SQLiteStore(p.join(self.tmp_dir, 'storage1.sqlite'))
-        grid_id = storage.add('grids', 'base', {'name': 'webmercator', 'srs': 'EPSG:3857'})
-        source_id = storage.add('sources', 'base', {'name': 'source', 'type': 'wms'})
-        cache_id = storage.add('caches', 'base', {'name': 'cache', 'grids': [grid_id], 'sources': [source_id]})
-        storage.add('layers', 'base', {'name': 'layer', 'sources': [cache_id]})
+        grid_id = storage.add('grids', 'base', {'data': {'name': 'webmercator', 'srs': 'EPSG:3857'}})
+        source_id = storage.add('sources', 'base', {'data': {'name': 'source', 'type': 'wms'}})
+        cache_id = storage.add('caches', 'base', {'data': {'name': 'cache', 'grids': [grid_id], 'sources': [source_id]}})
+        storage.add('layers', 'base', {'data': {'name': 'layer', 'sources': [cache_id]}})
 
         tmp_mapproxy_conf = config.mapproxy_conf_from_storage(storage, 'base')
 
         expected = {
-            'services': {'wms': {'srs': ['EPSG:4326', 'EPSG:3857'], 'md': {'title': 'TestWMS'}}, 'demo': None},
+            'services': {'wms': {'srs': ['EPSG:4326'], 'md': {'title': 'Default WMS'}}, 'demo': {}},
             'layers': [{'name': 'layer', 'sources': ['cache']}],
             'grids': {'webmercator': {'srs': 'EPSG:3857'}},
             'sources': {'source': {'type': 'wms'}},
             'caches': {'cache': {'grids': ['webmercator'], 'sources': ['source']}}
         }
-
         assert tmp_mapproxy_conf == expected
 
 class TestRoundTrip(helper.TempDirTest):

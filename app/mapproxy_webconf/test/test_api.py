@@ -31,11 +31,13 @@ class TestWMSCapabilitiesAPI(ServerAPITest):
 
     def test_add_wms_source(self):
         doc = {
-            'title': 'WMS Source',
-            'name': 'wms_source',
-            'url': 'http://localhost/service?',
-            'layers': [
-            ]
+            'data': {
+                'title': 'WMS Source',
+                'name': 'wms_source',
+                'url': 'http://localhost/service?',
+                'layers': [
+                ]
+            }
         }
         resp = self.app.post_json('/conf/base/wms_capabilities', doc)
         assert resp.status == '201 Created'
@@ -46,21 +48,36 @@ class TestWMSCapabilitiesAPI(ServerAPITest):
 
 class TestLayersAPI(ServerAPITest):
     def test_layers(self):
-        resp = self.app.post_json('/conf/base/layers', {'name': '1'})
+        resp = self.app.post_json('/conf/base/layers', {'data': {'name': '1'}})
         assert resp.status_code == 201
-        assert resp.json == {'name': '1', '_id': helper.ANY}
+        assert resp.json == {'data': {'name': '1'}, '_id': helper.ANY, '_locked': False, '_manual': False}
         parent_id = resp.json['_id']
+        first_id = resp.json['_id']
 
-        resp = self.app.post_json('/conf/base/layers', {'name': '2', '_parent': parent_id, '_rank': 10})
+        resp = self.app.post_json('/conf/base/layers', {'data': {'name': '2'}, '_parent': parent_id, '_rank': 10})
         assert resp.status_code == 201
-        assert resp.json == {'name': '2', '_id': helper.ANY}
+        assert resp.json == {'data': {'name': '2'}, '_id': helper.ANY, '_locked': False, '_manual': False}
+        secound_id = resp.json['_id']
 
-        resp = self.app.post_json('/conf/base/layers', {'name': '3', '_parent': parent_id, '_rank': 5})
+        resp = self.app.post_json('/conf/base/layers', {'data': {'name': '3'}, '_parent': parent_id, '_rank': 5})
         assert resp.status_code == 201
-        assert resp.json == {'name': '3', '_id': helper.ANY}
+        assert resp.json == {'data': {'name': '3'}, '_id': helper.ANY, '_locked': False, '_manual': False}
+        third_id = resp.json['_id']
 
         resp = self.app.get('/conf/base/layers')
-        assert resp.json == {'1': {'_parent': None, '_rank': None, '_id': 1, 'name': '1'}, '3': {'_parent': 1, '_rank': 5, '_id': 3, 'name': '3'}, '2': {'_parent': 1, '_rank': 10, '_id': 2, 'name': '2'}}
+        expected = {
+            unicode(first_id): {'_parent': None, '_rank': None, '_id': first_id, 'data': {'name': '1'}, '_locked': 0, '_manual': 0},
+            unicode(third_id): {'_parent': parent_id, '_rank': 5, '_id': third_id, 'data': {'name': '3'}, '_locked': 0, '_manual': 0},
+            unicode(secound_id): {'_parent': parent_id, '_rank': 10, '_id': secound_id, 'data': {'name': '2'}, '_locked': 0, '_manual': 0}
+        }
+        assert resp.json == expected
+
+        self.app.delete('/conf/base/layers/%d' % third_id, status=204)
+        self.app.delete('/conf/base/layers/%d' % third_id, status=404)
+        self.app.delete('/conf/base/layers/%d' % secound_id, status=204)
+        self.app.delete('/conf/base/layers/%d' % secound_id, status=404)
+        self.app.delete('/conf/base/layers/%d' % first_id, status=204)
+        self.app.delete('/conf/base/layers/%d' % first_id, status=404)
 
 
 
@@ -72,23 +89,23 @@ class TestSourcesAPI(ServerAPITest):
         self.app.delete('/conf/base/sources/1', status=404)
 
     def test_add_get_delete(self):
-        resp = self.app.post_json('/conf/base/sources', {'name': '1'})
+        resp = self.app.post_json('/conf/base/sources', {'data': {'name': '1'}})
         assert resp.status_code == 201
         id = resp.json['_id']
         resp = self.app.get('/conf/base/sources/%d' % id)
-        assert resp.json == {'name': '1'}
+        assert resp.json == {'data': {'name': '1'}}
         resp = self.app.delete('/conf/base/sources/%d' % id)
         assert resp.status_code == 204
         resp = self.app.get('/conf/base/sources/%d' % id, status=404)
 
     def test_add_update_get(self):
-        resp = self.app.post_json('/conf/base/sources', {'name': '1'})
+        resp = self.app.post_json('/conf/base/sources', {'data': {'name': '1'}})
         assert resp.status_code == 201
         id = resp.json['_id']
-        resp = self.app.put_json('/conf/base/sources/%d' % id, {'name': 'foo'})
-        assert resp.json == {'name': 'foo'}
+        resp = self.app.put_json('/conf/base/sources/%d' % id, {'data': {'name': 'foo'}})
+        assert resp.json == {'data': {'name': 'foo'}, '_locked': False, '_manual': False}
         resp = self.app.get('/conf/base/sources/%d' % id)
-        assert resp.json == {'name': 'foo'}
+        assert resp.json == {'data': {'name': 'foo'}}
 
 
 class TestCachesAPI(ServerAPITest):
@@ -105,35 +122,35 @@ class TestCachesAPI(ServerAPITest):
         self.app.post('/conf/base/caches', 'foo', status=400)
 
     def test_update_non_json(self):
-        resp = self.app.post_json('/conf/base/caches', {'name': '1'})
+        resp = self.app.post_json('/conf/base/caches', {'data': {'name': '1'}})
         assert resp.status_code == 201
         id = resp.json['_id']
         self.app.put('/conf/base/caches/%d' % id, 'foo', status=400)
 
     def test_update_bad_data(self):
-        resp = self.app.post_json('/conf/base/caches', {'name': '1'})
+        resp = self.app.post_json('/conf/base/caches', {'data': {'name': '1'}})
         assert resp.status_code == 201
         id = resp.json['_id']
         self.app.put('/conf/base/caches/%d' % id, '{foo: badjson}', headers=[('Content-type', 'application/json')], status=400)
 
     def test_add_get_delete(self):
-        resp = self.app.post_json('/conf/base/caches', {'name': '1'})
+        resp = self.app.post_json('/conf/base/caches', {'data': {'name': '1'}})
         assert resp.status_code == 201
         id = resp.json['_id']
         resp = self.app.get('/conf/base/caches/%d' % id)
-        assert resp.json == {'name': '1'}
+        assert resp.json == {'data': {'name': '1'}}
         resp = self.app.delete('/conf/base/caches/%d' % id)
         assert resp.status_code == 204
         resp = self.app.get('/conf/base/caches/%d' % id, status=404)
 
     def test_add_update_get(self):
-        resp = self.app.post_json('/conf/base/caches', {'name': '1'})
+        resp = self.app.post_json('/conf/base/caches', {'data': {'name': '1'}})
         assert resp.status_code == 201
         id = resp.json['_id']
-        resp = self.app.put_json('/conf/base/caches/%d' % id, {'name': 'foo'})
-        assert resp.json == {'name': 'foo'}
+        resp = self.app.put_json('/conf/base/caches/%d' % id, {'data': {'name': 'foo'}})
+        assert resp.json == {'data': {'name': 'foo'}, '_locked': False, '_manual': False}
         resp = self.app.get('/conf/base/caches/%d' % id)
-        assert resp.json == {'name': 'foo'}
+        assert resp.json == {'data': {'name': 'foo'}}
 
 
 class TestGridsAPI(ServerAPITest):
@@ -144,23 +161,23 @@ class TestGridsAPI(ServerAPITest):
         self.app.delete('/conf/base/grids/1', status=404)
 
     def test_add_get_delete(self):
-        resp = self.app.post_json('/conf/base/grids', {'name': '1'})
+        resp = self.app.post_json('/conf/base/grids', {'data': {'name': '1'}})
         assert resp.status_code == 201
         id = resp.json['_id']
         resp = self.app.get('/conf/base/grids/%d' % id)
-        assert resp.json == {'name': '1'}
+        assert resp.json == {'data': {'name': '1'}}
         resp = self.app.delete('/conf/base/grids/%d' % id)
         assert resp.status_code == 204
         resp = self.app.get('/conf/base/grids/%d' % id, status=404)
 
     def test_add_update_get(self):
-        resp = self.app.post_json('/conf/base/grids', {'name': '1'})
+        resp = self.app.post_json('/conf/base/grids', {'data': {'name': '1'}})
         assert resp.status_code == 201
         id = resp.json['_id']
-        resp = self.app.put_json('/conf/base/grids/%d' % id, {'name': 'foo'})
-        assert resp.json == {'name': 'foo'}
+        resp = self.app.put_json('/conf/base/grids/%d' % id, {'data': {'name': 'foo'}})
+        assert resp.json == {'data': {'name': 'foo'}, '_locked': False, '_manual': False}
         resp = self.app.get('/conf/base/grids/%d' % id)
-        assert resp.json == {'name': 'foo'}
+        assert resp.json == {'data': {'name': 'foo'}}
 
 
 class TestWMSCapabilitiesAPI(ServerAPITest):
@@ -169,18 +186,19 @@ class TestWMSCapabilitiesAPI(ServerAPITest):
         mock_serv.expects('/foo/service?REQUEST=GetCapabilities&SERVICE=WMS&VERSION=1.1.1')
         cap_file = os.path.join(os.path.dirname(__file__), 'fixtures', 'wms_nasa_cap.xml')
         mock_serv.returns(body_file=cap_file)
-
         with mock_serv:
-            resp = self.app.post_json('/conf/base/wms_capabilities', {'url': mock_serv.base_url + '/foo/service'})
+            resp = self.app.post_json('/conf/base/wms_capabilities', {'data': {'url': mock_serv.base_url + '/foo/service'}})
 
         id = resp.json['_id']
 
         expected = {
             '_id': id,
-            'abstract': helper.ANY,
-            'title': 'JPL Global Imagery Service',
-            'url': 'http://wms.jpl.nasa.gov/wms.cgi?',
-            'layer': helper.ANY,
+            'data': {
+                'abstract': helper.ANY,
+                'title': 'JPL Global Imagery Service',
+                'url': 'http://wms.jpl.nasa.gov/wms.cgi?',
+                'layer': helper.ANY,
+            }
         }
         assert resp.json == expected
 
@@ -189,19 +207,24 @@ class TestWMSCapabilitiesAPI(ServerAPITest):
         assert resp.json == expected
 
         resp = self.app.get('/conf/base/wms_capabilities')
+        # add vars returned by function
+        expected['_id'] = id
+        expected['_locked'] = 0
+        expected['_manual'] = 0
         assert resp.json == {str(id): expected}
-
         mock_serv.reset()
-        with mock_serv:
-            resp = self.app.put_json('/conf/base/wms_capabilities/1', {'url': mock_serv.base_url + '/foo/service'})
 
-        resp = self.app.delete('/conf/base/wms_capabilities/1')
+        with mock_serv:
+            resp = self.app.put_json('/conf/base/wms_capabilities/%d' % id, {'data': {'url': mock_serv.base_url + '/foo/service'}})
+
+        resp = self.app.delete('/conf/base/wms_capabilities/%d' % id)
         assert resp.status_code == 204
         resp = self.app.get('/conf/base/wms_capabilities/%d' % id, status=404)
 
 
 
 class TestServerAPIExistingConf(helper.TempDirTest):
+
     def setup(self):
         helper.TempDirTest.setup(self)
         self.storage_plugin = storage.SQLiteStorePlugin(os.path.join(self.tmp_dir, 'mapproxy.yaml'))
@@ -217,5 +240,8 @@ class TestServerAPIExistingConf(helper.TempDirTest):
 
     def test_grids(self):
         resp = self.app.get('/conf/base/grids')
-        data = id_dict_to_named_dict(resp.json)
+
+        data_dict = dict(enumerate([dict(resp.json[k]['data']) for k in resp.json]))
+        data = id_dict_to_named_dict(data_dict)
+
         assert 'global_geodetic_sqrt2' in data
