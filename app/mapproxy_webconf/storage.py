@@ -199,7 +199,7 @@ class SQLiteStore(object):
             data[i] = _data['data']
         return data
 
-    def get(self, id, section, project):
+    def get(self, id, section, project, with_rank=False, with_manual=False, with_locked=False):
         cur = self.db.cursor()
         cur.execute("SELECT data, parent, rank, manual, locked FROM store WHERE id = ? AND section = ? AND project = ?",
             (id, section, project))
@@ -209,11 +209,11 @@ class SQLiteStore(object):
             data['data'] = json.loads(row[0])
             if row[1] is not None:
                 data['_parent'] = row[1]
-            if row[2] is not None:
+            if with_rank and row[2] is not None:
                 data['_rank'] = row[2]
-            if row[3] is not None:
+            if with_manual and row[3] is not None:
                 data['_manual'] = row[3]
-            if row[4] is not None:
+            if with_locked and row[4] is not None:
                 data['_locked'] = row[4]
             return data
 
