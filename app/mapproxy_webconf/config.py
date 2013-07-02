@@ -12,7 +12,7 @@ def load_mapproxy_yaml(filename):
     with open(filename, 'rb') as f:
         mapproxy_conf = yaml.load(f)
 
-    return mapproxy_conf
+    return {'data': mapproxy_conf}
 
 def write_mapproxy_yaml(mapproxy_conf, filename):
     content = yaml.safe_dump(mapproxy_conf, default_flow_style=False)
