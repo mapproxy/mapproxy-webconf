@@ -36,19 +36,19 @@ function BaseListCtrl($scope, MessageService, TranslationService, service, _sect
     $scope.$watch('_messageService.messages.' + _section + '.load_success', function() {
         //we must wrap this in a function, so we can overwrite refreshList in child
         $scope.refreshList()
-    }, true);
+    });
     $scope.$watch('_messageService.messages.' + _section + '.add_success', function() {
         $scope.selected = service.last();
         $scope.refreshList();
-    }, true);
+    });
     $scope.$watch('_messageService.messages.' + _section + '.update_success', function() {
         $scope.selected = service.last();
         $scope.refreshList();
-    }, true);
+    });
     $scope.$watch('_messageService.messages.' + _section + '.delete_success', function() {
         $scope.refreshList();
         service.current({'data': service.model});
-    }, true);
+    });
     $scope.$watch('_messageService.messages.' + _section + '.delete_has_dependencies', function(messageObject) {
         if(angular.isDefined(messageObject)) {
             var dialogContent = '<ul>';
@@ -86,7 +86,7 @@ function BaseListCtrl($scope, MessageService, TranslationService, service, _sect
             })
             MessageService.removeMessage(messageObject['section'], messageObject['action']);
         }
-    }, true)
+    })
 };
 
 function SourceListCtrl($injector, $scope, TranslationService, MapproxySources) {
@@ -248,10 +248,10 @@ function TreeCtrl($scope, SRS, MessageService, WMSSources, ProjectDefaults) {
     }
 
     $scope._messageService = MessageService;
-    $scope.$watch('_messageService.messages.wms_capabilities.load_success', refreshTree, true);
-    $scope.$watch('_messageService.messages.wms_capabilities.delete_success', refreshTree, true);
-    $scope.$watch('_messageService.messages.wms_capabilities.add_success', refreshTree, true);
-    $scope.$watch('_messageService.messages.wms_capabilities.update_success', refreshTree, true);
+    $scope.$watch('_messageService.messages.wms_capabilities.load_success', refreshTree);
+    $scope.$watch('_messageService.messages.wms_capabilities.delete_success', refreshTree);
+    $scope.$watch('_messageService.messages.wms_capabilities.add_success', refreshTree);
+    $scope.$watch('_messageService.messages.wms_capabilities.update_success', refreshTree);
     $scope.$watch('_messageService.messages.defaults.load_success', function() {
         var defaults = ProjectDefaults.list();
         if(defaults.length > 0) {
@@ -579,7 +579,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
             $scope.source = $scope.editareaBinds.editareaValue;
             $scope.addSource();
         }
-    }, true);
+    });
     $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
         if(wasVisible && !isVisible) {
             $scope.addSource();
@@ -734,7 +734,7 @@ function MapproxyCacheFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Messa
             $scope.cache = $scope.editareaBinds.editareaValue;
             $scope.addCache();
         }
-    }, true);
+    });
     $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
         if(wasVisible && !isVisible) {
             $scope.addCache();
@@ -1012,7 +1012,7 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
             $scope.grid = $scope.editareaBinds.editareaValue;
             $scope.addGrid();
         }
-    }, true);
+    });
 
     $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
         if(isVisible) {
@@ -1183,11 +1183,10 @@ function MapproxyLayerFormCtrl($scope, $http, PAGE_LEAVE_MSG, TranslationService
             $scope.layer = $scope.editareaBinds.editareaValue;
             $scope.addLayer();
         }
-    }, true);
+    });
     $scope.$watch('layer', function() {
-            $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.layer);
-        }, true
-    );
+        $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.layer);
+    }, true);
 
     $(window).on('beforeunload', function() {
         if($scope.form.$dirty || $scope.editareaBinds.dirty) {
@@ -1277,7 +1276,7 @@ function MapproxyGlobalsFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Mes
             $scope.globals = $scope.editareaBinds.editareaValue;
             $scope.save();
         }
-    }, true);
+    });
     $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
         DataShareService.data('_editarea_visible', isVisible)
         if(wasVisible && !isVisible) {
@@ -1286,9 +1285,8 @@ function MapproxyGlobalsFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Mes
     });
 
     $scope.$watch('globals', function() {
-            $scope.editareaBinds.editareaValue = $scope.globals;
-        }, true
-    );
+        $scope.editareaBinds.editareaValue = $scope.globals;
+    }, true);
 
     $(window).on('beforeunload', function() {
         if($scope.form.$dirty || $scope.editareaBinds.dirty) {

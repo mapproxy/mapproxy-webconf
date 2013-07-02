@@ -640,7 +640,7 @@ directive('editarea', function($http, MessageService, EDITAREA_TEMPLATE_URL, FAD
                         scope.unregisterValueWatch();
                     }
                 }
-            }, true);
+            });
 
 
             //move the editarea togglebutton

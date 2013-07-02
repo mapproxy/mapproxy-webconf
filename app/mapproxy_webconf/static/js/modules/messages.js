@@ -46,7 +46,7 @@ directive('messageHandler', function($templateCache, MessageService, FADEOUT_DEL
                         scope.messageService.removeMessage(messageObject.section, messageObject.action);
                         $(element).show().fadeOut(FADEOUT_DELAY);
                     }
-                } , true);
+                });
             });
         }
     };
