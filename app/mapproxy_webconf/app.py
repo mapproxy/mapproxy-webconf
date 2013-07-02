@@ -16,6 +16,7 @@ from mapproxy.grid import tile_grid, GridError
 from . import bottle
 from . import config
 from . import storage
+from . import defaults
 from .bottle import request, response, static_file, template, SimpleTemplate, redirect, abort
 from .utils import requires_json
 from .capabilities import parse_capabilities_url
@@ -189,95 +190,7 @@ class RESTGrids(RESTBase):
         RESTBase.__init__(self, 'grids', ['caches.grids'])
 
     def list(self, project, storage):
-        default_grids = {
-            'GLOBAL_GEODETIC': {'_id': 'GLOBAL_GEODETIC', 'default': True, 'data': {
-                'name': 'GLOBAL_GEODETIC',
-                'srs': 'EPSG:4326',
-                'bbox': [-180, -90, 180, 90],
-                'bbox_srs': 'EPSG:4326',
-                'origin': 'sw',
-                'res': [
-                    1.40625,
-                    0.703125,
-                    0.3515625,
-                    0.17578125,
-                    0.087890625,
-                    0.0439453125,
-                    0.02197265625,
-                    0.010986328125,
-                    0.0054931640625,
-                    0.00274658203125,
-                    0.001373291015625,
-                    0.0006866455078125,
-                    0.00034332275390625,
-                    0.000171661376953125,
-                    0.0000858306884765625,
-                    0.00004291534423828125,
-                    0.000021457672119140625,
-                    0.000010728836059570312,
-                    0.000005364418029785156,
-                    0.000002682209014892578,
-                ]
-            }},
-            'GLOBAL_MERCATOR': {'_id': 'GLOBAL_MERCATOR', 'default': True, 'data': {
-                'name': 'GLOBAL_MERCATOR',
-                'srs': 'EPSG:900913',
-                'bbox': [-20037508.342789244, -20037508.342789244, 20037508.342789244, 20037508.342789244],
-                'bbox_srs': 'EPSG:900913',
-                'origin': 'sw',
-                'res': [
-                    156543.03392804097,
-                    78271.51696402048,
-                    39135.75848201024,
-                    19567.87924100512,
-                    9783.93962050256,
-                    4891.96981025128,
-                    2445.98490512564,
-                    1222.99245256282,
-                    611.49622628141,
-                    305.748113140705,
-                    152.8740565703525,
-                    76.43702828517625,
-                    38.21851414258813,
-                    19.109257071294063,
-                    9.554628535647032,
-                    4.777314267823516,
-                    2.388657133911758,
-                    1.194328566955879,
-                    0.5971642834779395,
-                    0.29858214173896974,
-                ]
-            }},
-            'GLOBAL_WEBMERCATOR': {'_id': 'GLOBAL_WEBMERCATOR', 'default': True, 'data': {
-                'name': 'GLOBAL_WEBMERCATOR',
-                'srs': 'EPSG:3857',
-                'bbox': [-20037508.342789244, -20037508.342789244, 20037508.342789244, 20037508.342789244],
-                'bbox_srs': 'EPSG:3857',
-                'origin': 'nw',
-                'res': [
-                    156543.03392804097,
-                    78271.51696402048,
-                    39135.75848201024,
-                    19567.87924100512,
-                    9783.93962050256,
-                    4891.96981025128,
-                    2445.98490512564,
-                    1222.99245256282,
-                    611.49622628141,
-                    305.748113140705,
-                    152.8740565703525,
-                    76.43702828517625,
-                    38.21851414258813,
-                    19.109257071294063,
-                    9.554628535647032,
-                    4.777314267823516,
-                    2.388657133911758,
-                    1.194328566955879,
-                    0.5971642834779395,
-                    0.29858214173896974,
-                ]
-            }}
-        }
+        default_grids = deepcopy(defaults.GRIDS.copy())
         default_grids.update(storage.get_all(self.section, project, with_id=True, with_manual=True, with_locked=True))
         return default_grids
 
@@ -436,7 +349,7 @@ def convert_res_scales():
 
     result = []
     for i, d in enumerate(data):
-        result.append(round(convert(d, dpi, units),9) if d else None)
+        result.append(round(convert(d, dpi, units), defaults.DECIMAL_PLACES) if d else None)
 
     return {'result': result}
 
@@ -464,7 +377,7 @@ def calculate_tiles():
         scales = [float(s) for s in scales]
 
     if res is None and scales is not None:
-        res = [round(scale_to_res(scale, dpi, units), 9) for scale in scales]
+        res = [round(scale_to_res(scale, dpi, units), defaults.DECIMAL_PLACES) for scale in scales]
 
     tilegrid = tile_grid(srs=srs, bbox=bbox, bbox_srs=bbox_srs, res=res, origin=origin, name=name)
 
@@ -510,7 +423,7 @@ def is_valid_transformation(bbox, source_srs, dest_srs):
     False
     """
     # delta in m
-    delta = 50
+    delta = defaults.TRANSFORMATION_DEVIATION
     # delta in deg or m
     delta = delta * M_TO_DEG_FACTOR if source_srs.is_latlong else delta
 
@@ -626,8 +539,8 @@ def grid_as_geojson():
     feature_count = size[0] * size[1]
     features = []
 
-    if feature_count > 1000:
-        polygon = generate_envelope_points(grid_srs.align_bbox(tiles_bbox), 128)
+    if feature_count > defaults.MAX_GRID_FEATURES:
+        polygon = generate_envelope_points(grid_srs.align_bbox(tiles_bbox), defaults.TILE_POLYGON_POINTS)
         polygon = list(grid_srs.transform_to(map_srs, polygon)) if map_srs and grid_srs else list(polygon)
         return return_map_message([list(point) for point in polygon] + [list(polygon[0])], _("Too many tiles. Please zoom in."))
 
@@ -636,7 +549,7 @@ def grid_as_geojson():
             if tile:
                 x, y, z = tile
                 tile_bbox = grid_srs.align_bbox(tilegrid.tile_bbox(tile))
-                polygon = generate_envelope_points(tile_bbox, 16)
+                polygon = generate_envelope_points(tile_bbox, defaults.MESSAGE_POLYGON_POINTS)
                 polygon = list(grid_srs.transform_to(map_srs, polygon)) if map_srs and grid_srs else list(polygon)
 
                 features.append({
@@ -672,7 +585,7 @@ def grid_as_geojson():
                             "coordinates": grid_srs.transform_to(map_srs, label_point) if map_srs and grid_srs else label_point
                         }
                     })
-                elif feature_count <= 100:
+                elif feature_count <= defaults.MAX_LABELED_GRID_FEATURES:
                     xc0, yc0, xc1, yc1 = grid_srs.transform_bbox_to(map_srs, tile_bbox) if map_srs and grid_srs else tile_bbox
                     features.append({
                         "type": "Feature",

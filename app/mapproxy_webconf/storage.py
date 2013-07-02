@@ -8,7 +8,7 @@ import json
 
 from bottle import PluginError
 
-from mapproxy_webconf import utils
+from mapproxy_webconf import utils, defaults
 
 class YAMLStorePlugin(object):
     name = 'yamlstore'
@@ -137,24 +137,8 @@ class SQLiteStore(object):
         """)
 
     def _init_project(self, project):
-        defaults_data = json.dumps({
-            "srs": [
-                "EPSG:4326",
-                "EPSG:3857",
-                "EPSG:900913"
-            ]
-        })
-        services_data = json.dumps({
-            "demo": {
-                "active": True
-            },
-            "wms": {
-                "active": True,
-                "md": {
-                    "title": "Default WMS"
-                },
-                "srs": ["EPSG:4326"]
-        }})
+        defaults_data = json.dumps(defaults.PROJECT_DEFAULTS)
+        services_data = json.dumps(defaults.PROJECT_SERVICES)
 
         cur = self.db.cursor()
 
