@@ -31,9 +31,16 @@ directive('float', function() {
                     ctrl.$setValidity('float', true);
                     return viewValue;
                 } else if (FLOAT_REGEXP.test(viewValue)) {
-                    ctrl.$setValidity('float', true);
                     //allow . and ,
-                    return parseFloat(viewValue.replace(',', '.'));
+                    var replacement = viewValue.replace(',', '.');
+                    //allow - as single char
+                    if('-' == replacement) {
+                        ctrl.$setValidity('float', false);
+                        return viewValue;
+                    } else {
+                        ctrl.$setValidity('float', true);
+                        return replacement
+                    }
                 } else {
                     ctrl.$setValidity('float', false);
                     return undefined;
