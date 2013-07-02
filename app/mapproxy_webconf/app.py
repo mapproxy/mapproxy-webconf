@@ -105,7 +105,7 @@ class RESTBase(object):
             for dependency in self.dependencies:
                 section, field = dependency.split('.')
                 look_for[section] = field
-            result = storage.check_dependencies(id, look_for)
+            result = storage.check_dependencies(id, project, look_for)
 
             if result:
                 response.status = 405

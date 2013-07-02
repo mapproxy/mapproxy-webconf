@@ -290,9 +290,9 @@ class SQLiteStore(object):
         result = cur.fetchall()
         return len(result) > 0
 
-    def check_dependencies(self, id, look_for):
+    def check_dependencies(self, id, project, look_for):
         cur = self.db.cursor()
-        cur.execute("SELECT section, data FROM store WHERE section in (%s)" % (', '.join(["'%s'" % section for section in look_for.keys()]), ))
+        cur.execute("SELECT section, data FROM store WHERE project = ? AND section in (%s)" % (', '.join(["'%s'" % section for section in look_for.keys()]), ), (project,))
         result = cur.fetchall()
 
         response = {}
