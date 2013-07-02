@@ -28,21 +28,21 @@
      ng-click="$event.stopPropagation();"
      ng-dblclick="$event.stopPropagation();">
   <div class="layersDiv" ng-show="layerSwitcherMaximized">
-    <div class="baseLbl" ng-show="olmapBinds.layers.background">Background Layer</div>
+    <div class="baseLbl" ng-show="olmapBinds.layers.background">${ _('Background Layer') }</div>
     <div class="baseLayersDiv" ng-show="olmapBinds.layers.background">
       <div ng-repeat="layer in olmapBinds.layers.background"
            ng-include="'layerItem'"
            ng-show="layer.name || layer.layers">
       </div>
     </div>
-    <div class="dataLbl" ng-show="olmapBinds.layers.wms">WMS Layer</div>
+    <div class="dataLbl" ng-show="olmapBinds.layers.wms">${ _('WMS Layer') }</div>
     <div class="dataLayersDiv" ng-show="olmapBinds.layers.wms">
       <div ng-repeat="layer in olmapBinds.layers.wms"
            ng-include="'layerItem'"
            ng-show="layer.name || layer.layers">
       </div>
     </div>
-    <div class="dataLbl" ng-show="olmapBinds.layers.vector">Vector Layer</div>
+    <div class="dataLbl" ng-show="olmapBinds.layers.vector">${ _('Vector Layer') }</div>
     <div class="dataLayersDiv" ng-show="olmapBinds.layers.vector">
       <div ng-repeat="layer in olmapBinds.layers.vector"
            ng-include="'layerItem'"

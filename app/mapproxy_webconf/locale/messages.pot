@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-07-02 07:00+0200\n"
+"POT-Creation-Date: 2013-07-02 10:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,51 +17,51 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: mapproxy_webconf/app.py:53
+#: mapproxy_webconf/app.py:54
 msgid "Page not found"
 msgstr ""
 
-#: mapproxy_webconf/app.py:56
+#: mapproxy_webconf/app.py:57
 msgid "Internal server error"
 msgstr ""
 
-#: mapproxy_webconf/app.py:136 mapproxy_webconf/app.py:162
+#: mapproxy_webconf/app.py:137 mapproxy_webconf/app.py:163
 msgid "missing URL"
 msgstr ""
 
-#: mapproxy_webconf/app.py:141
+#: mapproxy_webconf/app.py:142
 msgid "no capabilities document found"
 msgstr ""
 
-#: mapproxy_webconf/app.py:145
+#: mapproxy_webconf/app.py:146
 msgid "invalid URL"
 msgstr ""
 
-#: mapproxy_webconf/app.py:389
+#: mapproxy_webconf/app.py:302
 msgid "creating mapproxy config successful"
 msgstr ""
 
-#: mapproxy_webconf/app.py:392
+#: mapproxy_webconf/app.py:305
 msgid "creating mapproxy config failed"
 msgstr ""
 
-#: mapproxy_webconf/app.py:415
+#: mapproxy_webconf/app.py:328
 msgid "creating yaml failed"
 msgstr ""
 
-#: mapproxy_webconf/app.py:424
+#: mapproxy_webconf/app.py:337
 msgid "parsing yaml failed"
 msgstr ""
 
-#: mapproxy_webconf/app.py:599 mapproxy_webconf/app.py:624
+#: mapproxy_webconf/app.py:512 mapproxy_webconf/app.py:537
 msgid "Given bbox can not be used with given SRS"
 msgstr ""
 
-#: mapproxy_webconf/app.py:632
+#: mapproxy_webconf/app.py:545
 msgid "Too many tiles. Please zoom in."
 msgstr ""
 
-#: mapproxy_webconf/app.py:706
+#: mapproxy_webconf/app.py:619
 #, python-format
 msgid "Project \"%(name)s\" already exists"
 msgstr ""
@@ -867,6 +867,18 @@ msgstr ""
 msgid ""
 "If you go back to form editing, you will loose all configurations which "
 "are not represented by form fields"
+msgstr ""
+
+#: mapproxy_webconf/templates/angular/layerswitcher.html:31
+msgid "Background Layer"
+msgstr ""
+
+#: mapproxy_webconf/templates/angular/layerswitcher.html:38
+msgid "WMS Layer"
+msgstr ""
+
+#: mapproxy_webconf/templates/angular/layerswitcher.html:45
+msgid "Vector Layer"
 msgstr ""
 
 #: mapproxy_webconf/templates/angular/min_max_res.html:1

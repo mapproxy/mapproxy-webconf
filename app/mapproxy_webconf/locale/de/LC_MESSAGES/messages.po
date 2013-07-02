@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-07-02 07:00+0200\n"
-"PO-Revision-Date: 2013-07-02 07:01+0100\n"
+"POT-Creation-Date: 2013-07-02 10:19+0200\n"
+"PO-Revision-Date: 2013-07-02 10:20+0100\n"
 "Last-Translator: \n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -17,53 +17,53 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: mapproxy_webconf/app.py:53
+#: mapproxy_webconf/app.py:54
 msgid "Page not found"
 msgstr "Seite nicht gefunden"
 
-#: mapproxy_webconf/app.py:56
+#: mapproxy_webconf/app.py:57
 msgid "Internal server error"
 msgstr "Interner Server Fehler"
 
-#: mapproxy_webconf/app.py:136
-#: mapproxy_webconf/app.py:162
+#: mapproxy_webconf/app.py:137
+#: mapproxy_webconf/app.py:163
 msgid "missing URL"
 msgstr "Keine URL vorhanden"
 
-#: mapproxy_webconf/app.py:141
+#: mapproxy_webconf/app.py:142
 msgid "no capabilities document found"
 msgstr "Kein Capabilities-Dokument gefunden"
 
-#: mapproxy_webconf/app.py:145
+#: mapproxy_webconf/app.py:146
 msgid "invalid URL"
 msgstr "Ungültige URL"
 
-#: mapproxy_webconf/app.py:389
+#: mapproxy_webconf/app.py:302
 msgid "creating mapproxy config successful"
 msgstr "MapProxy Konfiguration erfolgreich erstellt"
 
-#: mapproxy_webconf/app.py:392
+#: mapproxy_webconf/app.py:305
 msgid "creating mapproxy config failed"
 msgstr "Erstellen der MapProxy Konfiguration fehlgeschlagen"
 
-#: mapproxy_webconf/app.py:415
+#: mapproxy_webconf/app.py:328
 msgid "creating yaml failed"
 msgstr "Erstellen der YAML fehlgeschlagen"
 
-#: mapproxy_webconf/app.py:424
+#: mapproxy_webconf/app.py:337
 msgid "parsing yaml failed"
 msgstr "Lesen der YAML fehlgeschlagen"
 
-#: mapproxy_webconf/app.py:599
-#: mapproxy_webconf/app.py:624
+#: mapproxy_webconf/app.py:512
+#: mapproxy_webconf/app.py:537
 msgid "Given bbox can not be used with given SRS"
 msgstr "Die angegebene BBox kann mit dem angegebenen Koordinatensystem nicht benutzt werden"
 
-#: mapproxy_webconf/app.py:632
+#: mapproxy_webconf/app.py:545
 msgid "Too many tiles. Please zoom in."
 msgstr "Zu viele Kacheln. Bitte Zoomen Sie weiter hinein."
 
-#: mapproxy_webconf/app.py:706
+#: mapproxy_webconf/app.py:619
 #, python-format
 msgid "Project \"%(name)s\" already exists"
 msgstr "Es existiert bereits ein Projekt mit dem Namen \"%(name)s\""
@@ -854,6 +854,18 @@ msgstr "Wirklich zum formularbasierten Editieren zurückkehren"
 msgid "If you go back to form editing, you will loose all configurations which are not represented by form fields"
 msgstr "Wenn Sie zum formularbasierten Editieren zurückkehren verlieren Sie alle nicht durch ein Formularfeld representierten Konfigurationen"
 
+#: mapproxy_webconf/templates/angular/layerswitcher.html:31
+msgid "Background Layer"
+msgstr "Hintergrundlayer"
+
+#: mapproxy_webconf/templates/angular/layerswitcher.html:38
+msgid "WMS Layer"
+msgstr "WMS Layer"
+
+#: mapproxy_webconf/templates/angular/layerswitcher.html:45
+msgid "Vector Layer"
+msgstr "Vector Layer"
+
 #: mapproxy_webconf/templates/angular/min_max_res.html:1
 msgid "Resolutions / Scales"
 msgstr "Auflösungen / Maßstäbe"
@@ -994,8 +1006,3 @@ msgstr "Baum erfolgreich aktualisiert"
 msgid "Can not delete because of dependencies"
 msgstr "Kann aufgrund von Abhängigkeiten nicht gelöscht werden"
 
-#~ msgid "Can not show map in %(srs)s with bounds %(bounds)s (%(bounds_srs)s)"
-#~ msgstr ""
-#~ "Die Karte kann im Koordinatensystem "
-#~ "%(srs)s nicht mit den Bounds %(bounds)s"
-#~ " (%(bounds_srs)s) angezeigt werden"
