@@ -44,3 +44,13 @@ class TestSQLiteStorage(TempDirTest):
 
         self.storage.update(id=new_id, section='sources', project='base', data={'data': {'foo': 'baz'}})
         assert self.storage.get_all(section='sources', project='base', with_id=True) == {new_id: {'_id': new_id, 'data': {'foo': 'baz'}}}
+
+    def test_dependencies(self):
+        source_id = self.storage.add(section='sources', project='base', data={'data': {'name': 'foo_source'}})
+        assert self.storage.get_all(section='sources', project='base', with_id=True) == {source_id: {'_id': source_id, 'data': {'name': 'foo_source'}}}
+
+        layer_id = self.storage.add(section='layers', project='base', data={'data': {'name': 'foo_layer', 'sources': [source_id]}})
+        assert self.storage.get_all(section='layers', project='base', with_id=True) == {layer_id: {'_id': layer_id, 'data': {'name': 'foo_layer', 'sources': [source_id]}}}
+
+        result = self.storage.check_dependencies(id=source_id, project='base', look_for={'layers': 'sources'})
+        assert result == {'layers': [{'name': 'foo_layer'}]}

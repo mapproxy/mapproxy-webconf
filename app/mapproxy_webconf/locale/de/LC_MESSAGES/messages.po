@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-07-02 10:19+0200\n"
-"PO-Revision-Date: 2013-07-02 10:20+0100\n"
+"POT-Creation-Date: 2013-07-03 08:45+0200\n"
+"PO-Revision-Date: 2013-07-03 08:46+0100\n"
 "Last-Translator: \n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -68,60 +68,60 @@ msgstr "Zu viele Kacheln. Bitte Zoomen Sie weiter hinein."
 msgid "Project \"%(name)s\" already exists"
 msgstr "Es existiert bereits ein Projekt mit dem Namen \"%(name)s\""
 
-#: mapproxy_webconf/config.py:63
+#: mapproxy_webconf/config.py:65
 msgid "Missing sources section"
 msgstr "Sources Abschnitt fehlt"
 
-#: mapproxy_webconf/config.py:69
+#: mapproxy_webconf/config.py:71
 #, python-format
 msgid "Missing \"url\" for source %(source)s"
 msgstr "Für die Source %(source)s fehlt der Parameter \"url\""
 
-#: mapproxy_webconf/config.py:71
+#: mapproxy_webconf/config.py:73
 #, python-format
 msgid "Missing \"layers\" for source %(source)s"
 msgstr "Für die Source %(source)s fehlt der Parameter \"layers\""
 
-#: mapproxy_webconf/config.py:73
+#: mapproxy_webconf/config.py:75
 #, python-format
 msgid "Missing \"req\" for source %(source)s"
 msgstr "Für die Source %(source)s fehlt der Parameter \"req\""
 
-#: mapproxy_webconf/config.py:84
 #: mapproxy_webconf/config.py:86
+#: mapproxy_webconf/config.py:88
 #, python-format
 msgid "Source %(source)s for cache %(cache)s not found in config"
 msgstr "Source \"%(source)s\" für den Cache \"%(cache)s\" nicht gefunden"
 
-#: mapproxy_webconf/config.py:94
+#: mapproxy_webconf/config.py:96
 #, python-format
 msgid "Grid %(grid)s for cache %(cache)s not found in config"
 msgstr "Grid \"%(grid)s\" für den Cache \"%(cache)s\" nicht gefunden"
 
-#: mapproxy_webconf/config.py:98
+#: mapproxy_webconf/config.py:100
 msgid "Missing layers section"
 msgstr "Der Abschnitt \"layers\" fehlt"
 
-#: mapproxy_webconf/config.py:103
+#: mapproxy_webconf/config.py:105
 #, python-format
 msgid "Missing sources for layer %(layer)s"
 msgstr "Für den Layer \"%(layer)s\" fehlt der Parameter \"sources\""
 
-#: mapproxy_webconf/config.py:112
+#: mapproxy_webconf/config.py:114
 #, python-format
 msgid "Source %(source)s for layer %(layer)s neither found in caches- nor in sources-section"
 msgstr "Für den Layer \"%(layer)s\" wurde die Source \"%(source)s\" weder unter Caches noch unter Sources gefunden"
 
-#: mapproxy_webconf/config.py:116
+#: mapproxy_webconf/config.py:118
 msgid "Missing services section"
 msgstr "Der Abschnitt \"services\" fehlt"
 
-#: mapproxy_webconf/config.py:162
+#: mapproxy_webconf/config.py:164
 #, python-format
 msgid "grid %(grid)s contains invalid value in scales section"
 msgstr "Das Grid \"%(grid)s\" beinhaltet ungültige Werte im \"scales\" Abschnitt"
 
-#: mapproxy_webconf/config.py:202
+#: mapproxy_webconf/config.py:204
 #, python-format
 msgid "%(type)s %(name)s contains invalid value in %(item)s item"
 msgstr "Der Wert für %(item)s im Abschnitt %(type)s %(name)s ist ungültig"
@@ -133,6 +133,14 @@ msgstr "Es besteht ein Konflikt in der Konfiguration mit einem anderen YAMLStore
 #: mapproxy_webconf/storage.py:92
 msgid "Found another SQLiteStore plugin with conflicting settings (non-unique keyword)."
 msgstr "Es besteht ein Konflikt in der Konfiguration mit einem anderen SQLiteStore plugin (nicht eindeutiges Schlüsselwort):"
+
+#: mapproxy_webconf/utils.py:16
+msgid "invalid JSON data"
+msgstr "Invalide JSON Daten"
+
+#: mapproxy_webconf/utils.py:19
+msgid "missing JSON data"
+msgstr "Fehlende JSON Daten"
 
 #: mapproxy_webconf/templates/base.html:107
 msgid "Projects"

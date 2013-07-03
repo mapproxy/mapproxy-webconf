@@ -10,10 +10,10 @@ def requires_json(func, *args, **kw):
         data = request.json
     except ValueError:
         response.status = 400
-        return {'error': 'invalid JSON data'}
+        return {'error': _('invalid JSON data')}
     if not data:
         response.status = 400
-        return {'error': 'missing JSON data'}
+        return {'error': _('missing JSON data')}
     return func(*args, **kw)
 
 def save_atomic(filename, content, makedirs=True):
