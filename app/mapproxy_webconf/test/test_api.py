@@ -114,6 +114,34 @@ class TestSourcesAPI(ServerAPITest):
         resp = self.app.get('/conf/base/sources/%d' % id)
         assert resp.json == {'data': {'name': 'foo'}}
 
+    def test_dependencies(self):
+        resp = self.app.post_json('/conf/base/sources', {'data': {'name': 'foo_source'}})
+        assert resp.status_code == 201
+        source_id = resp.json['_id']
+
+        resp = self.app.post_json('/conf/base/caches', {'data': {'name': 'foo_cache', 'sources': [source_id]}})
+        assert resp.status_code == 201
+        cache_id = resp.json['_id']
+
+        resp = self.app.post_json('/conf/base/layers', {'data': {'name': 'foo_layer', 'sources': [source_id]}})
+        assert resp.status_code == 201
+        layer_id = resp.json['_id']
+
+        resp = self.app.delete('/conf/base/sources/%d' % source_id, status=405)
+        assert resp.json == {'caches': [{'name': 'foo_cache'}], 'layers': [{'name': 'foo_layer'}]}
+
+        resp = self.app.delete('/conf/base/layers/%d' % layer_id)
+        assert resp.status_code == 204
+
+        resp = self.app.delete('/conf/base/sources/%d' % source_id, status=405)
+        assert resp.json == {'caches': [{'name': 'foo_cache'}]}
+
+        resp = self.app.delete('/conf/base/caches/%d' % cache_id)
+        assert resp.status_code == 204
+
+        resp = self.app.delete('/conf/base/sources/%d' % source_id)
+        assert resp.status_code == 204
+
 
 class TestCachesAPI(ServerAPITest):
     def test_get_missing(self):
@@ -159,6 +187,34 @@ class TestCachesAPI(ServerAPITest):
         resp = self.app.get('/conf/base/caches/%d' % id)
         assert resp.json == {'data': {'name': 'foo'}}
 
+    def test_dependencies(self):
+        resp = self.app.post_json('/conf/base/caches', {'data': {'name': 'bar_cache'}})
+        assert resp.status_code == 201
+        base_cache_id = resp.json['_id']
+
+        resp = self.app.post_json('/conf/base/caches', {'data': {'name': 'foo_cache', 'sources': [base_cache_id]}})
+        assert resp.status_code == 201
+        cache_id = resp.json['_id']
+
+        resp = self.app.post_json('/conf/base/layers', {'data': {'name': 'foo_layer', 'sources': [base_cache_id]}})
+        assert resp.status_code == 201
+        layer_id = resp.json['_id']
+
+        resp = self.app.delete('/conf/base/caches/%d' % base_cache_id, status=405)
+        assert resp.json == {'caches': [{'name': 'foo_cache'}], 'layers': [{'name': 'foo_layer'}]}
+
+        resp = self.app.delete('/conf/base/layers/%d' % layer_id)
+        assert resp.status_code == 204
+
+        resp = self.app.delete('/conf/base/caches/%d' % base_cache_id, status=405)
+        assert resp.json == {'caches': [{'name': 'foo_cache'}]}
+
+        resp = self.app.delete('/conf/base/caches/%d' % cache_id)
+        assert resp.status_code == 204
+
+        resp = self.app.delete('/conf/base/caches/%d' % base_cache_id)
+        assert resp.status_code == 204
+
 
 class TestGridsAPI(ServerAPITest):
     def test_get_missing(self):
@@ -186,6 +242,23 @@ class TestGridsAPI(ServerAPITest):
         resp = self.app.get('/conf/base/grids/%d' % id)
         assert resp.json == {'data': {'name': 'foo'}}
 
+    def test_dependencies(self):
+        resp = self.app.post_json('/conf/base/grids', {'data': {'name': 'foo_grid'}})
+        assert resp.status_code == 201
+        grid_id = resp.json['_id']
+
+        resp = self.app.post_json('/conf/base/caches', {'data': {'name': 'foo_cache', 'grids': [grid_id]}})
+        assert resp.status_code == 201
+        cache_id = resp.json['_id']
+
+        resp = self.app.delete('/conf/base/grids/%d' % grid_id, status=405)
+        assert resp.json == {'caches': [{'name': 'foo_cache'}]}
+
+        resp = self.app.delete('/conf/base/caches/%d' % cache_id)
+        assert resp.status_code == 204
+
+        resp = self.app.delete('/conf/base/grids/%d' % grid_id)
+        assert resp.status_code == 204
 
 class TestWMSCapabilitiesAPI(ServerAPITest):
     def test_post_url(self):
