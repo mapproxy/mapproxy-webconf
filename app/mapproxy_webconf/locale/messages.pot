@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-07-02 10:19+0200\n"
+"POT-Creation-Date: 2013-07-03 08:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,61 +66,61 @@ msgstr ""
 msgid "Project \"%(name)s\" already exists"
 msgstr ""
 
-#: mapproxy_webconf/config.py:63
+#: mapproxy_webconf/config.py:65
 msgid "Missing sources section"
-msgstr ""
-
-#: mapproxy_webconf/config.py:69
-#, python-format
-msgid "Missing \"url\" for source %(source)s"
 msgstr ""
 
 #: mapproxy_webconf/config.py:71
 #, python-format
-msgid "Missing \"layers\" for source %(source)s"
+msgid "Missing \"url\" for source %(source)s"
 msgstr ""
 
 #: mapproxy_webconf/config.py:73
 #, python-format
+msgid "Missing \"layers\" for source %(source)s"
+msgstr ""
+
+#: mapproxy_webconf/config.py:75
+#, python-format
 msgid "Missing \"req\" for source %(source)s"
 msgstr ""
 
-#: mapproxy_webconf/config.py:84 mapproxy_webconf/config.py:86
+#: mapproxy_webconf/config.py:86 mapproxy_webconf/config.py:88
 #, python-format
 msgid "Source %(source)s for cache %(cache)s not found in config"
 msgstr ""
 
-#: mapproxy_webconf/config.py:94
+#: mapproxy_webconf/config.py:96
 #, python-format
 msgid "Grid %(grid)s for cache %(cache)s not found in config"
 msgstr ""
 
-#: mapproxy_webconf/config.py:98
+#: mapproxy_webconf/config.py:100
 msgid "Missing layers section"
 msgstr ""
 
-#: mapproxy_webconf/config.py:103
+#: mapproxy_webconf/config.py:105
 #, python-format
 msgid "Missing sources for layer %(layer)s"
 msgstr ""
 
-#: mapproxy_webconf/config.py:112
+#: mapproxy_webconf/config.py:114
 #, python-format
 msgid ""
 "Source %(source)s for layer %(layer)s neither found in caches- nor in "
 "sources-section"
 msgstr ""
 
-#: mapproxy_webconf/config.py:116
+#: mapproxy_webconf/config.py:118
 msgid "Missing services section"
 msgstr ""
 
-#: mapproxy_webconf/config.py:162
+#: mapproxy_webconf/config.py:164
 #, python-format
 msgid "grid %(grid)s contains invalid value in scales section"
 msgstr ""
 
-#: mapproxy_webconf/config.py:202
+#: mapproxy_webconf/config.py:204
 #, python-format
 msgid "%(type)s %(name)s contains invalid value in %(item)s item"
 msgstr ""
@@ -135,6 +135,14 @@ msgstr ""
 msgid ""
 "Found another SQLiteStore plugin with conflicting settings (non-unique "
 "keyword)."
+msgstr ""
+
+#: mapproxy_webconf/utils.py:16
+msgid "invalid JSON data"
+msgstr ""
+
+#: mapproxy_webconf/utils.py:19
+msgid "missing JSON data"
 msgstr ""
 
 #: mapproxy_webconf/templates/base.html:107
