@@ -352,7 +352,9 @@
     <div message-handler="error"
          message-types="wms_capabilities.load_error,wms_capabilities.delete_error,wms_capabilities.update_error">
     </div>
-    <div spinner='wms_capabilities'>${ _('Loading in progress') }</div>
+    <div spinner='wms_capabilities'>
+        <img src="${ get_url('static', filepath='img/loader.gif') }"> ${ _('Loading in progress') }
+    </div>
     <hr>
     <form name="form" novalidate>
       <div class="input-append" labeled="input_label" name-for="url"  text="${ _('Load WMS') }">
