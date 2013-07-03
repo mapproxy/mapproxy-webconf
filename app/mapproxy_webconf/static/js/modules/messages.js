@@ -44,7 +44,7 @@ directive('messageHandler', function($templateCache, MessageService, FADEOUT_DEL
                     if(angular.isDefined(messageObject)) {
                         scope.message = messageObject.message;
                         scope.messageService.removeMessage(messageObject.section, messageObject.action);
-                        $(element).show().fadeOut(FADEOUT_DELAY);
+                        $(element).show().delay(FADEOUT_DELAY).fadeOut('slow');
                     }
                 });
             });
