@@ -29,6 +29,7 @@
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/jquery-1.9.1.min.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/jquery-ui-1.10.3.custom.min.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/jquery.blockUI.js') }"></script>
+    <script type="text/javascript" src="${ get_url('static', filepath='js/lib/jquery.placeholder.min.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/angular.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/angular-locale_de-de.js') }"></script>
     <script type="text/javascript" src="${ get_url('static', filepath='js/lib/angular.extensions.js') }"></script>
@@ -94,6 +95,12 @@
           TranslationService.loadDict("${ get_url('resource', filename='translations.js') }");
 
         });
+
+        /* set placeholder text for ie9 and browser who not support placeholder */
+        $(document).ready(function() {
+          $('input, textarea').placeholder();
+        })
+
      </script>
     %include angular/base_templates
   </head>
