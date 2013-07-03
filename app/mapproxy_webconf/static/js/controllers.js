@@ -328,18 +328,26 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
            $scope.source.data.req.layers.length == 0) {
             callback(true);
         } else  {
-            var buttons = {};
-            buttons[TranslationService.translate('Change URL')] = function() {
-                $(this).dialog("close");
-                $scope.source.data.req.layers = undefined;
-                safeApply($scope)
-                callback(true);
-            };
-            buttons[TranslationService.translate('Keep URL')] = function() {
-                $(this).dialog("close");
-                callback(false);
-            };
-
+            var buttons = [
+                {
+                    'text': TranslationService.translate('Change URL'),
+                    'class': 'btn btn-small',
+                    'click': function() {
+                        $(this).dialog("close");
+                        $scope.source.data.req.layers = undefined;
+                        safeApply($scope)
+                        callback(true);
+                    }
+                },
+                {
+                    'text': TranslationService.translate('Keep URL'),
+                    'class': 'btn btn-small',
+                    'click': function() {
+                        $(this).dialog("close");
+                        callback(false);
+                    }
+                }
+            ]
             $('#confirm_url_change_dialog').dialog({
                 resizeable: false,
                 width: 400,
