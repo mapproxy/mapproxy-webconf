@@ -84,7 +84,6 @@
       /* Other directive defaults */
         angular.module('mapproxy_gui.directives').value('EDITAREA_TEMPLATE_URL', "${ get_url('angular_template', filename='editarea') }");
         angular.module('mapproxy_gui.directives').value('EXTENDABLE_INPUT_LIST_TEMPLATE_URL', "${ get_url('angular_template', filename='extendable_input_list') }");
-        angular.module('mapproxy_gui.directives').value('FADEOUT_DELAY', FADEOUT_DELAY);
 
         app.run(function($rootScope, tooltipMapper, TranslationService) {
           $rootScope.LANGUAGE = '${ language }';

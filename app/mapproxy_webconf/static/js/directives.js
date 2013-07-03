@@ -534,7 +534,7 @@ directive('extendableInputList', function($timeout, EXTENDABLE_INPUT_LIST_TEMPLA
     };
 }).
 
-directive('editarea', function($http, MessageService, EDITAREA_TEMPLATE_URL, FADEOUT_DELAY) {
+directive('editarea', function($http, MessageService, EDITAREA_TEMPLATE_URL) {
     return {
         restrict: 'A',
         scope: {
