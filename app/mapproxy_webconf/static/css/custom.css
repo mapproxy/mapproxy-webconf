@@ -5,7 +5,8 @@ body {
 }
 
 #wrapper {
-    width: 1260px;
+    width: 96%;
+    max-width: 1260px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     margin: 30px auto;
     background-color: #FFFFFF;
@@ -569,3 +570,4 @@ dl.info-horizontal dt {
 dl.info-horizontal dd {
     marign-left: 100px;
 }
+
