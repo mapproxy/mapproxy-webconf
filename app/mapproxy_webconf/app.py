@@ -296,6 +296,9 @@ def services(project, storage):
 @app.route('/conf/<project>/write_config', 'POST', name='write_config')
 @require_project
 def write_config(project, storage):
+    if configuration.get_bool('app', 'demo'):
+        abort(500)
+
     mapproxy_conf = config.mapproxy_conf_from_storage(storage, project)
     try:
         config.write_mapproxy_yaml(mapproxy_conf, os.path.join(configuration.get('app', 'output_path'), project + '.yaml'))
