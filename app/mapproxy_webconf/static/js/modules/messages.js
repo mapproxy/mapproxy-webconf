@@ -62,6 +62,8 @@ directive('spinner', function(MessageService) {
             var service = attrs.spinner;
             scope.$watch('messageService.notifies.' + service + '.request_start', function() {
                 scope.active = true;
+                // hide all message areas before showing spinner
+                $("div.messsage-area").hide();
                 $(element).show();
             });
 
