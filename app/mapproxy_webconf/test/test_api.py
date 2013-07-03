@@ -47,7 +47,7 @@ class TestWMSCapabilitiesAPI(ServerAPITest):
         assert resp.json == {'1': doc}
 
 class TestLayersAPI(ServerAPITest):
-    def test_layers(self):
+    def test_add_edit_delete_layers(self):
         resp = self.app.post_json('/conf/base/layers', {'data': {'name': '1'}})
         assert resp.status_code == 201
         assert resp.json == {'data': {'name': '1'}, '_id': helper.ANY, '_locked': False, '_manual': False}
@@ -72,14 +72,21 @@ class TestLayersAPI(ServerAPITest):
         }
         assert resp.json == expected
 
+        resp = self.app.get('/conf/base/layers/%d' % secound_id)
+        assert resp.json == {'_parent': parent_id, 'data': {'name': '2'}}
+
+        data = resp.json
+        data['data']['name'] = u'foo'
+        resp = self.app.put_json('/conf/base/layers/%d' % secound_id, data)
+        assert resp.status_code == 200
+        assert resp.json == {'_parent': parent_id, 'data': {'name': 'foo'}, '_locked': False, '_manual': False}
+
         self.app.delete('/conf/base/layers/%d' % third_id, status=204)
         self.app.delete('/conf/base/layers/%d' % third_id, status=404)
         self.app.delete('/conf/base/layers/%d' % secound_id, status=204)
         self.app.delete('/conf/base/layers/%d' % secound_id, status=404)
         self.app.delete('/conf/base/layers/%d' % first_id, status=204)
         self.app.delete('/conf/base/layers/%d' % first_id, status=404)
-
-
 
 class TestSourcesAPI(ServerAPITest):
     def test_get_missing(self):
