@@ -556,10 +556,6 @@ directive('editarea', function($http, MessageService, EDITAREA_TEMPLATE_URL, FAD
             var errorHandler = function(response) {
                 MessageService.message('editarea', 'error', response.error)
             };
-            scope.showErrorMsg = function(errorMsg) {
-                scope.editareaErrorMsg = errorMsg;
-                $('#editarea_error').show().fadeOut(FADEOUT_DELAY)
-            };
             var loadYAML = function() {
                 //clear editarea
                 _editareaElement.val('');
