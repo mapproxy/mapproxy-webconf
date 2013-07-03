@@ -104,7 +104,11 @@ PROJECT_SERVICES = {
             "title": "Default WMS"
         },
         "srs": ["EPSG:4326"]
-}}
+    },
+    "kml": {},
+    "tms": {},
+    "wmts": {},
+}
 DECIMAL_PLACE = 9
 TRANSFORMATION_DEVIATION = 50
 MAX_GRID_FEATURES = 1000
