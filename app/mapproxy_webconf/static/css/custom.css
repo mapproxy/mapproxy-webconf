@@ -362,7 +362,7 @@ ul.vertical-list div.selected li i.icon-share {
 
 .accordion .label {
     cursor: pointer;
-    width: 100%;
+    min-width: 100%;
     background-color: #999999;
 }
 
