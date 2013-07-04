@@ -280,7 +280,7 @@ ul.vertical-list.small {
     max-height: 300px;
 }
 
-ul.vertical-list div {
+ul.vertical-list li {
   border-bottom: 1px solid #ccc;
 }
 
@@ -423,6 +423,7 @@ input.droppable-active, div.droppable-active {
 .icon-refresh {
     cursor: pointer;
     opacity: 0.1;
+    height: 20px;
 }
 
 .vertical-list li:hover .icon-share:hover,
@@ -561,6 +562,11 @@ div.blockMsg {
   z-index: 1050;
 }
 
+dl.info-horizontal  {
+  margin-bottom: 0;
+  text-align: left;
+}
+
 /* info dialog */
 dl.info-horizontal dt {
   width: 100px;
@@ -568,6 +574,6 @@ dl.info-horizontal dt {
 }
 
 dl.info-horizontal dd {
-    marign-left: 100px;
+  margin-left: 0;
 }
 

@@ -4,12 +4,9 @@
     <title>Mapproxy GUI</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="${ get_url('static', filepath='css/openlayers.css') }">
-    <link rel="stylesheet" href="${ get_url('static', filepath='css/toolbar.css') }">
     <link rel="stylesheet" href="${ get_url('static', filepath='css/bootstrap.css') }">
     <link rel="stylesheet" href="${ get_url('static', filepath='css/bootstrap-responsive.css') }">
     <link rel="stylesheet" href="${ get_url('static', filepath='css/jquery-ui-1.10.0.bootstrap.css') }">
-    <link rel="stylesheet" href="${ get_url('static', filepath='css/jquery-ui.css') }">
-
     <link rel="stylesheet" href="${ get_url('static', filepath='css/custom.css') }">
     % if defined('css'):
       %css()
@@ -51,7 +48,6 @@
       /* overwrite styling from block ui for openlayers map*/
       $.blockUI.defaults.overlayCSS = {};
       $.blockUI.defaults.css = {};
-
       /* Set OpenLayers ImgPath */
         OpenLayers.ImgPath = "${ get_url('static', filepath='img/') }";
 
@@ -67,6 +63,7 @@
         app.value('BACKGROUND_SERVICE_LAYER', BACKGROUND_SERVICE_LAYER);
         app.value('MAPPROXY_DEFAULT_GRID_SRS', MAPPROXY_DEFAULT_GRID_SRS);
         app.value('BBOXES', BBOXES);
+        app.value('CREATE_CONFIG_URL', '${ get_url('write_config', project=project)}');
 
       /* OpenLayers directive defaults */
         angular.module('mapproxy_gui.openlayers').value('GRID_AS_GEOJSON_URL', "${ get_url('grid_as_geojson') }");
@@ -79,6 +76,8 @@
         angular.module('mapproxy_gui.openlayers').value('GRID_EXTENSION_TEMPLATE_URL', "${ get_url('angular_template', filename='openlayers_gridextension.html') }");
 
       /* Message directive defaults */
+        angular.module('mapproxy_gui.messages').value('FADEOUT_DELAY', FADEOUT_DELAY);
+
         angular.module('mapproxy_gui.messages').value('FADEOUT_DELAY', FADEOUT_DELAY);
 
       /* Other directive defaults */

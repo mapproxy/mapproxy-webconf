@@ -73,7 +73,8 @@ directive('tooltip', function(tooltipMapper) {
                 $(element).attr('data-original-title', content);
                 $(element).tooltip({
                     html: true,
-                    placement: scope.tooltipPlacement
+                    placement: scope.tooltipPlacement,
+                    delay: { show: 200, hide: 300 }
                 });
             };
             var initFromService = function() {

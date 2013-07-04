@@ -179,3 +179,72 @@ div.olControlMousePosition {
     right: 0;
     cursor: pointer;
 }
+
+
+
+/* Toolbar */
+.customEditingToolbar {
+    float: right;
+    left: 60px;
+    height: 30px;
+    min-width: 68px;
+}
+.customEditingToolbar div {
+    float: right;
+    margin: 5px;
+    width: 24px;
+    height: 24px;
+}
+
+/* Select */
+div.olControlSelectFeatureItemActive {
+    background-image: url(../img/multi_toolbar.png);
+    background-repeat: no-repeat;
+    background-position: -253px -23px;
+}
+div.olControlSelectFeatureItemInactive {
+    background-image: url(../img/multi_toolbar.png);
+    background-repeat: no-repeat;
+    background-position: -253px 0px;
+}
+
+/* Draw Rectangle */
+.olControlDrawFeatureRectItemInactive {
+    background-image: url(../img/draw_rectangle_off.png);
+    background-repeat: no-repeat;
+}
+.olControlDrawFeatureRectItemActive {
+    background-image: url(../img/draw_rectangle_on.png);
+    background-repeat: no-repeat;
+}
+.olControlDrawFeatureRectItemInactive.itemDisabled {
+    background-image: url(../img/draw_rectangle_disabled.png);
+    background-repeat: no-repeat;
+}
+
+/* Modify */
+.olControlModifyFeatureItemActive {
+    background-image: url(../img/multi_toolbar.png);
+    background-repeat: no-repeat;
+    background-position: -128px -23px;
+}
+.olControlModifyFeatureItemInactive {
+    background-image: url(../img/multi_toolbar.png);
+    background-repeat: no-repeat;
+    background-position: -128px 0px;
+}
+
+/* Delete */
+.olControlDeleteFeatureItemActive {
+    background-image: url(../img/delete_on.png);
+    background-repeat: no-repeat;
+}
+
+.olControlDeleteFeatureItemInactive.itemDisabled {
+    background-image: url(../img/delete_disabled.png);
+    background-repeat: no-repeat;
+}
+.olControlDeleteFeatureItemInactive {
+    background-image: url(../img/delete_off.png);
+    background-repeat: no-repeat;
+}

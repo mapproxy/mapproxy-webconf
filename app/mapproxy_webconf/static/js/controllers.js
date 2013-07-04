@@ -189,14 +189,34 @@ function LayerListCtrl($injector, $scope, MapproxyLayers) {
     };
 };
 
-function MapProxyConfigCtrl($scope, $http, MessageService) {
+function MapProxyConfigCtrl($scope, $http, MessageService, TranslationService, CREATE_CONFIG_URL) {
     $scope.writeMapProxyConfig = function(event) {
-        var url = "/conf/base/write_config";
-        $http.post(url)
+        var dialogOptions = {
+            resizeable: false,
+            width: 400,
+            height: 200,
+            modal: true,
+            buttons: [{
+                'text': TranslationService.translate('OK'),
+                'class': 'btn btn-small',
+                'click': function() {
+                    $(this).dialog("close");
+                }
+            }]
+        }
+
+        var title = TranslationService.translate("Create MapProxy Config");
+        var dialogElement = $('<div style="display:none;" id="dialog_' + $scope.$id +'" title="' + title + '"></div>');
+
+        $http.post(CREATE_CONFIG_URL)
             .success(function(message) {
-                $scope._messageService.message('mapproxy_config', 'success', message.success);
+                var dialogContent = "<div>" + message.success + "</div>";
+                dialogElement.append($(dialogContent))
+                $(dialogElement).dialog(dialogOptions);
             }).error(function () {
-                $scope._messageService.messageService.message('mapproxy_config', 'error', message.error);
+                var dialogContent = "<div>" + message.error + "</div>";
+                dialogElement.append($(dialogContent))
+                $(dialogElement).dialog(dialogOptions);
             });
     };
 
