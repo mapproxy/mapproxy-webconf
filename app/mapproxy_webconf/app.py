@@ -308,6 +308,10 @@ def write_config(project, storage):
         return {'error': _('creating mapproxy config failed')}
 
 
+@app.route('/favicon.ico')
+def get_favicon():
+    return static('favicon.ico')
+
 @app.route('/static/<filepath:path>', name='static')
 def static(filepath):
     return static_file(filepath, root=os.path.join(os.path.dirname(__file__), 'static'))
