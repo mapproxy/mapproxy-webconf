@@ -219,7 +219,6 @@
                 <span ng-show="!isEmptyBBox()">${ _('Show coverage in map') }</span>
                 <span ng-show="isEmptyBBox()">${ _('Create coverage in map') }</span>
               </button>
-              <pre ng-bind="isEmpty(source.data.coverage.bbox)"></pre>
               <span message-handler="error"
                     message-types="olMap.showMap_error">
               </span>
