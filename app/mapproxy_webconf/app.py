@@ -10,8 +10,8 @@ from xml.etree.ElementTree import ParseError
 
 from mapproxy.client import http
 from mapproxy.script.scales import scale_to_res, res_to_scale
-from mapproxy.srs import SRS, generate_envelope_points, TransformationError
-from mapproxy.grid import tile_grid, GridError
+from mapproxy.srs import SRS
+from mapproxy.grid import tile_grid
 
 from . import bottle
 from . import config
@@ -20,7 +20,9 @@ from . import defaults
 from .bottle import request, response, static_file, template, SimpleTemplate, redirect, abort
 from .utils import requires_json
 from .capabilities import parse_capabilities_url
-from .constants import OGC_DPI, UNIT_FACTOR, M_TO_DEG_FACTOR
+from .constants import OGC_DPI, UNIT_FACTOR
+
+from .lib.geojson import ConfigGeoJSONGrid, features
 from .lib.grid import is_valid_transformation, InvalidTransformationException
 
 configuration = config.ConfigParser.from_file('./config.ini')
@@ -417,170 +419,58 @@ def transform_bbox():
         response.status = 400;
         return {'error': 'Could not transform bbox'}
 
-@app.route('/grid_as_geojson', 'POST', name='grid_as_geojson')
-def grid_as_geojson():
-    def return_map_message(points, message):
-        return {"type":"FeatureCollection",
-            "features": [{
-                "type": "Feature",
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [
-                        points
-                    ]
-                },
-                "properties": {
-                    "message": message
-                }
-            }]
-        }
+def prepare_grid_params(params):
+    grid_params = {}
 
-    request_bbox = request.forms.get('bbox', '').split(',')
+    request_bbox = params.get('bbox', None)
     if request_bbox:
-        request_bbox = map(float, request_bbox)
-    else:
-        request_bbox = None
+        request_bbox = request_bbox.split(',')
+    grid_params['request_bbox'] = request_bbox
 
-    grid_bbox =request.forms.get('grid_bbox', None)
+    grid_bbox = params.get('grid_bbox', None)
 
-    if grid_bbox:
+    if type(grid_bbox) == str:
         grid_bbox = grid_bbox.split(',')
-        if grid_bbox:
-            grid_bbox = map(float, grid_bbox)
-    else:
-        grid_bbox = None
-
-    level = request.forms.get('level', None)
-    if level:
-        level = int(level)
-
-    grid_srs = request.forms.get('srs', None)
-    if grid_srs:
-        grid_srs = SRS(grid_srs)
-
-    grid_bbox_srs = request.forms.get('bbox_srs', None)
-    if grid_bbox_srs:
-        grid_bbox_srs = SRS(grid_bbox_srs)
-
-    map_srs = request.forms.get('map_srs', None)
-    if map_srs:
-        map_srs = SRS(map_srs)
+    grid_params['grid_bbox'] = grid_bbox
 
     res = request.forms.get('res', None)
     if res:
-        res = map(float, res.split(','))
+        res = res.split(',')
+    grid_params['res'] = res
 
     scales = request.forms.get('scales', None)
     if scales:
-        scales = map(float, scales.split(','))
-        units = 1 if request.forms.get('units', 'm') == 'm' else UNIT_FACTOR
-        dpi = float(request.forms.get('dpi', OGC_DPI))
-        res = [scale_to_res(scale, dpi, units) for scale in scales]
+        scales = scales.split(',')
+    grid_params['scales'] = scales
 
-    origin = request.forms.get('origin', 'll')
+    grid_params['level'] = params.get('level', None)
+    grid_params['grid_srs'] = params.get('srs', None)
+    grid_params['grid_bbox_srs'] = params.get('bbox_srs', None)
+    grid_params['map_srs'] = params.get('map_srs', None)
+    grid_params['origin'] = params.get('origin', 'll')
+    grid_params['units'] = params.get('units', 'm')
+    grid_params['dpi'] = params.get('dpi', None)
 
-    if is_valid_transformation(grid_bbox, grid_bbox_srs, grid_srs):
-        tilegrid = tile_grid(srs=grid_srs, bbox=grid_bbox, bbox_srs=grid_bbox_srs, origin=origin, res=res)
-    else:
-        x0, y0, x1, y1 = request_bbox
-        return return_map_message([[x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0, y0]], _('Given bbox can not be used with given SRS'))
+    return grid_params
 
-    if grid_bbox is None:
-        grid_bbox = tilegrid.bbox
-    else:
-        grid_bbox = grid_bbox_srs.transform_bbox_to(grid_srs, grid_bbox) if grid_bbox_srs and grid_srs else grid_bbox
-
-    if map_srs and grid_srs:
-        if is_valid_transformation(request_bbox, map_srs, grid_srs):
-            view_bbox = map_srs.transform_bbox_to(grid_srs, map_srs.align_bbox(request_bbox))
-        else:
-            view_bbox = grid_bbox
-    else:
-        view_bbox = request_bbox
-    view_bbox = [
-        max(grid_bbox[0], view_bbox[0]),
-        max(grid_bbox[1], view_bbox[1]),
-        min(grid_bbox[2], view_bbox[2]),
-        min(grid_bbox[3], view_bbox[3])
-    ]
-
-    try:
-        tiles_bbox, size, tiles = tilegrid.get_affected_level_tiles(bbox=view_bbox, level=level)
-    except GridError:
-        x0, y0, x1, y1 = request_bbox
-        return return_map_message([[x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0, y0]], _('Given bbox can not be used with given SRS'))
-
-    feature_count = size[0] * size[1]
-    features = []
-
-    if feature_count > defaults.MAX_GRID_FEATURES:
-        polygon = generate_envelope_points(grid_srs.align_bbox(tiles_bbox), defaults.TILE_POLYGON_POINTS)
-        polygon = list(grid_srs.transform_to(map_srs, polygon)) if map_srs and grid_srs else list(polygon)
-        return return_map_message([list(point) for point in polygon] + [list(polygon[0])], _("Too many tiles. Please zoom in."))
-
-    else:
-        for tile in tiles:
-            if tile:
-                x, y, z = tile
-                tile_bbox = grid_srs.align_bbox(tilegrid.tile_bbox(tile))
-                polygon = generate_envelope_points(tile_bbox, defaults.MESSAGE_POLYGON_POINTS)
-                polygon = list(grid_srs.transform_to(map_srs, polygon)) if map_srs and grid_srs else list(polygon)
-
-                features.append({
-                    "type": "Feature",
-                    "geometry": {
-                        "type": "Polygon",
-                        "coordinates": [
-                            [list(point) for point in polygon] + [list(polygon[0])]
-                        ]
-                    }
-                })
-
-                if feature_count == 1:
-                    xv0, yv0, xv1, yv1 = view_bbox
-                    xt0, yt0, xt1, yt1 = tile_bbox
-                    xtc = xt0 + (xt1-xt0) /2
-                    ytc = yt0 + (yt1-yt0)/2
-                    if(xv0 <= xtc and xv1 >= xtc and yv0 <= ytc and yv1 >= ytc):
-                        label_point = [xtc, ytc]
-                    else:
-                        label_point = [xv0 + (xv1-xv0) /2, yv0 + (yv1-yv0)/2]
-
-
-                    features.append({
-                        "type": "Feature",
-                        "properties": {
-                            "x": x,
-                            "y": y,
-                            "z": z
-                        },
-                        "geometry": {
-                            "type": "Point",
-                            "coordinates": grid_srs.transform_to(map_srs, label_point) if map_srs and grid_srs else label_point
-                        }
-                    })
-                elif feature_count <= defaults.MAX_LABELED_GRID_FEATURES:
-                    xc0, yc0, xc1, yc1 = grid_srs.transform_bbox_to(map_srs, tile_bbox) if map_srs and grid_srs else tile_bbox
-                    features.append({
-                        "type": "Feature",
-                        "properties": {
-                            "x": x,
-                            "y": y,
-                            "z": z
-                        },
-                        "geometry": {
-                            "type": "Point",
-                            "coordinates": [xc0 + (xc1-xc0) /2, yc0 + (yc1-yc0)/2]
-                        }
-                    })
-
-
-
+@app.route('/grid_as_geojson', 'POST', name='grid_as_geojson')
+def grid_as_geojson():
+    grid_params = prepare_grid_params(request.forms)
+    config = ConfigGeoJSONGrid(**grid_params)
     return {"type":"FeatureCollection",
-        "features": features
+        "features": features(config)
     }
 
-@app.route('/create_project/', ['GET', 'POST'], name='create_project')
+@app.route('/validate_grid_params', 'POST', name='validate_grid_params')
+def validate_grid_params():
+    grid_params = prepare_grid_params(request.json)
+    config = ConfigGeoJSONGrid(**grid_params)
+    try:
+        config.grid_bbox
+    except InvalidTransformationException:
+        response.status = 400
+        return {'error': _('Given grid bbox is invalid for used grid srs')}
+
 @app.route('/create_project', ['GET', 'POST'], name='create_project')
 def create_project(storage):
     if request.query.get('demo', False):
