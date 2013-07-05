@@ -360,6 +360,10 @@ def convert_res_scales():
 def calculate_tiles():
     data = request.json
 
+    if not data:
+        response.status = 400
+        return {'error': _('Missing data')}
+
     origin = data.get('origin', None)
     name = data.get('name', None)
     srs = data.get('srs', None)
