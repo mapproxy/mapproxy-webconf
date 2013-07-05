@@ -670,7 +670,7 @@ msgstr "Status der MapProxy Konfiguration"
 
 #: mapproxy_webconf/templates/projects.html:23
 msgid "valid"
-msgstr "Lauffühig"
+msgstr "Lauffähig"
 
 #: mapproxy_webconf/templates/projects.html:27
 msgid "invalid"
