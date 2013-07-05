@@ -1,6 +1,7 @@
 import os
 
 from webtest import TestApp
+from nose.tools import assert_almost_equal
 from mapproxy_webconf.app import init_app, app
 from mapproxy_webconf import bottle
 from mapproxy_webconf import storage, config
@@ -20,7 +21,6 @@ class ServerAPITest(helper.TempDirTest):
     def teardown(self):
         helper.TempDirTest.teardown(self)
         self._app.uninstall('sqlitestore')
-
 
 class TestWMSCapabilitiesAPI(ServerAPITest):
     def test_wms_capabilities_list_empty(self):
@@ -142,7 +142,6 @@ class TestSourcesAPI(ServerAPITest):
         resp = self.app.delete('/conf/base/sources/%d' % source_id)
         assert resp.status_code == 204
 
-
 class TestCachesAPI(ServerAPITest):
     def test_get_missing(self):
         self.app.get('/conf/base/caches/1', status=404)
@@ -214,7 +213,6 @@ class TestCachesAPI(ServerAPITest):
 
         resp = self.app.delete('/conf/base/caches/%d' % base_cache_id)
         assert resp.status_code == 204
-
 
 class TestGridsAPI(ServerAPITest):
     def test_get_missing(self):
@@ -301,8 +299,6 @@ class TestWMSCapabilitiesAPI(ServerAPITest):
         assert resp.status_code == 204
         resp = self.app.get('/conf/base/wms_capabilities/%d' % id, status=404)
 
-
-
 class TestServerAPIExistingConf(helper.TempDirTest):
 
     def setup(self):
@@ -330,3 +326,84 @@ class TestProjectAPI(ServerAPITest):
     def test_create_project(self):
         resp.app.post_json('/create_project', {'name': 'test'})
 
+class TestGeoOpperations(ServerAPITest):
+    def test_scales_to_res_to_scales(self):
+        scales = [10000000, 1000000, 100000, 10000, 1000, 100, 10, 1]
+
+        resp = self.app.post_json('/res', {'data': scales})
+        assert resp.status_code == 200
+        assert resp.json.has_key('result')
+
+        resp = self.app.post_json('/scales', {'data': resp.json['result'], 'mode': 'to_scales'})
+        assert resp.status_code == 200
+        assert resp.json.has_key('result')
+
+        for idx, result in enumerate(resp.json['result']):
+            assert_almost_equal(result, scales[idx])
+
+    def test_res_to_scales_to_res(self):
+        res = [1.40625, 0.703125, 0.3515625, 0.17578125]
+
+        resp = self.app.post_json('/scales', {'data': res, 'mode': 'to_scales', 'dpi': 72})
+        assert resp.status_code == 200
+        assert resp.json.has_key('result')
+
+        resp = self.app.post_json('/res', {'data': resp.json['result'], 'dpi': 72})
+        assert resp.status_code == 200
+        assert resp.json.has_key('result')
+
+        for idx, result in enumerate(resp.json['result']):
+            assert_almost_equal(result, res[idx], places=5+idx)
+
+    def test_transform_bbox(self):
+        bbox = [8,52,9,53]
+
+        resp = self.app.post_json('/transform_bbox', {'source': 'EPSG:4326', 'dest': 'EPSG:3857', 'bbox': bbox})
+        assert resp.status_code == 200
+        assert resp.json.has_key('bbox')
+
+        resp = self.app.post_json('/transform_bbox', {'source': 'EPSG:3857', 'dest': 'EPSG:4326', 'bbox': resp.json['bbox']})
+        assert resp.status_code == 200
+        assert resp.json.has_key('bbox')
+
+        for idx, result in enumerate(resp.json['bbox']):
+            assert_almost_equal(result, bbox[idx])
+
+    def test_calculate_tiles(self):
+        resp = self.app.post_json('/calculate_tiles', status=400)
+        assert resp.json.has_key('error')
+
+        resp = self.app.post_json('/calculate_tiles', {'srs': 'EPSG:4326'})
+        assert resp.json.has_key('result')
+        result = resp.json['result']
+        assert len(result) == 20
+        assert result[0]['level'] == 0
+        assert result[19]['level'] == 19
+
+        resp = self.app.post_json('/calculate_tiles', {'srs': 'EPSG:4326', 'bbox': [8, 52, 9, 53], 'bbox_srs': 'EPSG:4326'})
+        assert resp.json.has_key('result')
+        result = resp.json['result']
+        assert len(result) == 20
+        assert result[0]['level'] == 0
+        assert result[19]['level'] == 19
+
+        resp = self.app.post_json('/calculate_tiles', {'srs': 'EPSG:4326', 'bbox': [890555.9263461898, 6800125.454397307, 1001875.4171394621, 6982997.920389788], 'bbox_srs': 'EPSG:3857'})
+        assert resp.json.has_key('result')
+        result = resp.json['result']
+        assert len(result) == 20
+        assert result[0]['level'] == 0
+        assert result[19]['level'] == 19
+
+        resp = self.app.post_json('/calculate_tiles', {'srs': 'EPSG:4326', 'res': [1.40625, 0.703125, 0.3515625, 0.17578125]})
+        assert resp.json.has_key('result')
+        result = resp.json['result']
+        assert len(result) == 4
+        assert result[0]['level'] == 0
+        assert result[3]['level'] == 3
+
+        resp = self.app.post_json('/calculate_tiles', {'srs': 'EPSG:4326', 'res': [1000, 100, 10, 1]})
+        assert resp.json.has_key('result')
+        result = resp.json['result']
+        assert len(result) == 4
+        assert result[0]['level'] == 0
+        assert result[3]['level'] == 3
