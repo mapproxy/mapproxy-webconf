@@ -63,7 +63,11 @@
         app.value('BACKGROUND_SERVICE_LAYER', BACKGROUND_SERVICE_LAYER);
         app.value('MAPPROXY_DEFAULT_GRID_SRS', MAPPROXY_DEFAULT_GRID_SRS);
         app.value('BBOXES', BBOXES);
-        app.value('CREATE_CONFIG_URL', '${ get_url('write_config', project=project)}');
+
+        %if defined('project'):
+          app.value('CREATE_CONFIG_URL', '${ get_url('write_config', project=project)}');
+        % end
+
 
       /* OpenLayers directive defaults */
         angular.module('mapproxy_gui.openlayers').value('GRID_AS_GEOJSON_URL', "${ get_url('grid_as_geojson') }");
