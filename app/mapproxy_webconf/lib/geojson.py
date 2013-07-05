@@ -131,6 +131,7 @@ def features(config):
         # if tile center not visible use view center
         if(not (xv0 <= xtc and xv1 >= xtc and yv0 <= ytc and yv1 >= ytc)):
             center = [xv0 + (xv1-xv0) / 2, yv0 + (yv1-yv0) / 2]
+            center = config.grid_srs.transform_to(config.map_srs, center) if config.map_srs and config.grid_srs else center
         return [
             polygon_feature(polygon),
             point_feature(center, {'x':x, 'y': y, 'z': z})
