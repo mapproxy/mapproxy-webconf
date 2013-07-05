@@ -614,6 +614,7 @@ def grid_as_geojson():
     }
 
 @app.route('/create_project/', ['GET', 'POST'], name='create_project')
+@app.route('/create_project', ['GET', 'POST'], name='create_project')
 def create_project(storage):
     if request.query.get('demo', False):
         name = str(uuid4()).replace('-', '')
