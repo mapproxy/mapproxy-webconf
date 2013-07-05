@@ -309,6 +309,8 @@ input[type="color"]:focus,
 
 .tab-menu-header {
     margin-right: 1em;
+    margin-bottom: 0;
+    margin-top: 0.5em;
     color: white;
 }
 
@@ -625,3 +627,13 @@ dl.info-horizontal dd {
   margin-left: 0;
 }
 
+/* config index */
+dl#config-index-list dt{
+  width: 80px;
+  text-align: left;
+}
+
+dl#config-index-list dd{
+  margin-left: 80px;
+  margin-bottom: 10px;
+}

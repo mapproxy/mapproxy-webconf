@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-07-05 09:58+0200\n"
+"POT-Creation-Date: 2013-07-05 13:19+0200\n"
 "PO-Revision-Date: 2013-07-03 08:46+0100\n"
 "Last-Translator: \n"
 "Language-Team: de <LL@li.org>\n"
@@ -157,25 +157,29 @@ msgstr "Invalide JSON Daten"
 msgid "missing JSON data"
 msgstr "Fehlende JSON Daten"
 
-#: mapproxy_webconf/templates/base.html:112
+#: mapproxy_webconf/templates/base.html:114
 msgid "Projects"
 msgstr "Projekte"
 
-#: mapproxy_webconf/templates/base.html:114
+#: mapproxy_webconf/templates/base.html:116
 #: mapproxy_webconf/templates/base_config.html:4
 msgid "Configuration"
 msgstr "Konfiguration"
 
-#: mapproxy_webconf/templates/base.html:140
+#: mapproxy_webconf/templates/base.html:142
 msgid "Home"
 msgstr "Home"
 
-#: mapproxy_webconf/templates/base.html:141
+#: mapproxy_webconf/templates/base.html:143
+msgid "Mapproxy"
+msgstr "MapProxy"
+
+#: mapproxy_webconf/templates/base.html:144
 #: mapproxy_webconf/templates/services.html:57
 msgid "Contact"
 msgstr "Kontakt"
 
-#: mapproxy_webconf/templates/base.html:142
+#: mapproxy_webconf/templates/base.html:145
 msgid "Help"
 msgstr "Hilfe"
 
@@ -248,7 +252,7 @@ msgstr "Name"
 
 #: mapproxy_webconf/templates/caches.html:56
 #: mapproxy_webconf/templates/caches.html:133
-#: mapproxy_webconf/templates/config_index.html:7
+#: mapproxy_webconf/templates/config_index.html:6
 #: mapproxy_webconf/templates/layers.html:88
 #: mapproxy_webconf/templates/layers.html:169
 #: mapproxy_webconf/templates/sources.html:21
@@ -258,7 +262,7 @@ msgstr "Sources"
 
 #: mapproxy_webconf/templates/caches.html:74
 #: mapproxy_webconf/templates/caches.html:190
-#: mapproxy_webconf/templates/config_index.html:11
+#: mapproxy_webconf/templates/config_index.html:8
 #: mapproxy_webconf/templates/resources/translations.js:19
 msgid "Grids"
 msgstr "Grids"
@@ -303,7 +307,7 @@ msgid "Not shown sources"
 msgstr "Ausgeblendete Sources"
 
 #: mapproxy_webconf/templates/caches.html:161
-#: mapproxy_webconf/templates/config_index.html:9
+#: mapproxy_webconf/templates/config_index.html:10
 #: mapproxy_webconf/templates/layers.html:141
 msgid "Caches"
 msgstr "Caches"
@@ -314,78 +318,75 @@ msgid "Not shown grids"
 msgstr "Ausgeblendete Grids"
 
 #: mapproxy_webconf/templates/config_index.html:3
+msgid "Mapproxy configuration"
+msgstr "MapProxy Konfiguration"
+
+#: mapproxy_webconf/templates/config_index.html:4
 msgid ""
 "The MapProxy configuration is grouped into sections, each configures a "
 "different aspect of MapProxy. These are the following sections:"
 msgstr ""
-"Die MapProxy Konfiguration ist in Abschnitte unterteilt, die die "
-"unterschiedlichen Bereiche des MapProxy konfigurieren. Dies sind die "
-"folgenden Abschnitte:"
+"Die MapProxy Konfigurationsdatei unterteilt sich in unterschiedliche Abschnitte. Diese wurden in die Oberfläche übernommen und sind als einzelne Bereiche abgebildet. In den einzelnen Bereichen haben Sie die Möglichkeit auf Elemente anderer Beriech zuzugreifen. Es stehen folgende Abschnitte zur Auswahl: "
 
-#: mapproxy_webconf/templates/config_index.html:5
-#: mapproxy_webconf/templates/globals.html:7
-#: mapproxy_webconf/templates/globals.html:63
-msgid "Globals"
-msgstr "Globals"
-
-#: mapproxy_webconf/templates/config_index.html:6
-msgid ""
-"Internals of MapProxy and default values that are used in the other "
-"configuration sections."
-msgstr ""
-"MapProxy spezifische Konfigurationen und Standartwerte für andere "
-"Konfigurationsabschnitte."
-
-#: mapproxy_webconf/templates/config_index.html:8
+#: mapproxy_webconf/templates/config_index.html:7
 msgid "Define where MapProxy can retrieve new data."
-msgstr "Definieren der Datenquellen des MapProxy."
+msgstr "Definieren Sie die Datenquellen mit der MapProxy gefüllt werden soll. Standardmässig steht ihnen hier die Auswahl eines WMS zur Verfügung."
 
-#: mapproxy_webconf/templates/config_index.html:10
-msgid "Configure the internal caches."
-msgstr "Konfiguriert die internen Caches."
-
-#: mapproxy_webconf/templates/config_index.html:12
+#: mapproxy_webconf/templates/config_index.html:9
 msgid "Define the grids that MapProxy uses to aligns cached images."
 msgstr ""
-"Definieren der Grids die MapProxy verwendet um die gecachten Kacheln "
-"auszurichten."
+"Grids - oder auch Gitter genannt - sind ein wichtiger Part in der MapProxy Konfiguration. Entscheiden Sie hier wie die gecachten Kacheln ausgerichtet werden sollen."
 
-#: mapproxy_webconf/templates/config_index.html:13
+#: mapproxy_webconf/templates/config_index.html:11
+msgid "Configure the internal caches."
+msgstr "Der Cache des MapProxy unterschiedliche Grids und Sources beinhalten. Zudem können Sie hier das Format des Caches festlegen."
+
+#: mapproxy_webconf/templates/config_index.html:12
 #: mapproxy_webconf/templates/sources.html:340
 #: mapproxy_webconf/templates/resources/translations.js:16
 msgid "Layers"
 msgstr "Layers"
 
-#: mapproxy_webconf/templates/config_index.html:14
+#: mapproxy_webconf/templates/config_index.html:13
 msgid ""
 "Configure the layers that MapProxy offers. Each layer can consist of "
 "multiple sources and caches."
 msgstr ""
 "Konfiguriert die durch MapProxy bereitgestellten Layer. Jeder Layer kann "
-"aus mehreren Sourcen und Caches bestehen."
+"aus mehreren Sourcen oder Caches bestehen."
 
-#: mapproxy_webconf/templates/config_index.html:15
+#: mapproxy_webconf/templates/config_index.html:14
 #: mapproxy_webconf/templates/services.html:8
 msgid "Services"
 msgstr "Dienste"
 
-#: mapproxy_webconf/templates/config_index.html:16
+#: mapproxy_webconf/templates/config_index.html:15
 msgid "The services MapProxy offers, e.g. WMS or TMS."
-msgstr "Die durch den MapProxy bereitgestellten Dienste, z.B. WMS oder TMS."
+msgstr "MapProxy stellt die Karten in unterschiedlichen Diensten bereit. Standardmässig ist ein WMS und der MapProxy-Demodienst aktiviert."
+
+#: mapproxy_webconf/templates/config_index.html:16
+#: mapproxy_webconf/templates/globals.html:7
+#: mapproxy_webconf/templates/globals.html:63
+msgid "Globals"
+msgstr "Globals"
 
 #: mapproxy_webconf/templates/config_index.html:17
-msgid "Default project settings"
-msgstr "Defaulteinstellungen des Projekts"
-
-#: mapproxy_webconf/templates/config_index.html:19
-msgid "Define project default settings, e.g. DPI or additional SRS"
-msgstr ""
-"Konfiguriert die Defaultprojekteinstellungen wie DPI oder zusätzliche "
-"Koordinatensysteme"
+msgid ""
+"Internals of MapProxy and default values that are used in the other "
+"configuration sections."
+msgstr "MapProxy spezifische Standardwerte die für übergeordnete Bereiche gelten. Zum Beispiel Metabuffer oder die Kachelgröße."
 
 #: mapproxy_webconf/templates/config_index.html:20
+msgid "Default project settings"
+msgstr "Grundeinstellungen des Projektes"
+
+#: mapproxy_webconf/templates/config_index.html:22
+msgid "Info text define project default settings, e.g. DPI or additional SRS"
+msgstr "Jedes Projekt beinhaltet einige Grundeinstellungen die in der Oberfläche verwendet werden. Hierzu zählen zum Beispiel die zur Auswahl stehenden Koordinatensysteme oder die für die Berechnung verwendete DPI."
+
+#: mapproxy_webconf/templates/config_index.html:24
 msgid "To default settings"
-msgstr "Zu den Defaulteinstellungen des Projekts"
+msgstr "Grundeinstellungen bearbeiten"
 
 #: mapproxy_webconf/templates/error.html:3
 msgid "Error"
