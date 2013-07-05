@@ -1,20 +1,38 @@
-/* site options */
+html,
+body {
+  height: 100%;
+}
+
 body {
     background-color: #EEEEEE;
     color: #3A3740;
 }
 
+a {
+  color: #bbbbbb;
+}
+
+
+#wrapper, footer {
+  width: 96%;
+  max-width: 1260px;
+}
+
 #wrapper {
-    width: 96%;
-    max-width: 1260px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    margin: 30px auto;
+    margin: 0px auto -43px;
     background-color: #FFFFFF;
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
 }
 
 .navbar {
     border-top: 3px solid #2AA4B5;
     background-image: 0;
+}
+
+.navbar .nav {
+  margin-top: 8px;
 }
 
 .sitebar-wrapper {
@@ -25,7 +43,7 @@ body {
     background-image: url("../img/shadow-bottom.png");
     background-position: center top;
     background-repeat: no-repeat;
-    height: 42px;
+    height: 15px;
     top: 0;
     width: 100%;
     z-index: 40;
@@ -37,12 +55,44 @@ body {
 }
 
 
+#push {
+  height: 40px;
+}
+
 footer {
+    border-bottom: 3px solid #2AA4B5;
     background-color: #3A3740;
     color: #65676B;
     padding: 10px 0;
     text-align: center;
-    width: 100%;
+    margin: 0 auto;
+    height: 20px;
+}
+
+footer ul.footer-nav  {
+  float: left;
+  font-size: 12px;
+}
+
+footer ul.footer-nav li {
+  display: inline-block;
+  color: #bbb;
+  margin-right: 20px;
+}
+
+
+footer ul.footer-nav li a:hover {
+  color: #bbb;
+  border-bottom: 1px solid black;
+}
+
+footer span#copyright {
+  float: right;
+}
+
+.carousel-inner > .item {
+  text-align: center;
+  height: 200px;
 }
 
 /*overwrite boostrap */
@@ -422,7 +472,6 @@ input.droppable-active, div.droppable-active {
 .icon-refresh {
     cursor: pointer;
     opacity: 0.1;
-    height: 20px;
 }
 
 .vertical-list li:hover .icon-share:hover,

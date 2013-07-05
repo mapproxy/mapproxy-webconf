@@ -107,7 +107,9 @@
       <div class="navbar navbar-static-top">
         <div class="navbar-inner">
           <div class="container">
-            <a class="brand" href="/">MPG</a>
+            <a class="brand" href="/">
+              <img src="${ get_url('static', filepath='img/logo.png') }">
+            </a>
             <ul class="nav">
               <li><a href="${ get_url('projects') }">${ _('Projects') }</a></li>
               %if defined('project') and project != None:
@@ -132,9 +134,19 @@
           % end
         </div>
       </div>
-      <footer>
-        &copy; 2013 - Omniscale GmbH & Co. KG
-      </footer>
+      <div id="push"></div>
     </div>
+    <footer>
+      <div class="contents container-fluid">
+        <ul class="footer-nav">
+          <li><a href="/">${ _('Home') }</a></li>
+          <li><a href="http://www.mapproxy.org/">${ _('Mapproxy') }</a></li>
+          <li><a href="http://omniscale.de/kontakt" target="_blank">${ _('Contact') }</a></li>
+          <li><a href="">${ _('Help') }</a></li>
+        </ul>
+        <span id="copyright">&copy; 2013 - Omniscale GmbH & Co. KG</span>
+      </div>
+    </footer>
+
   </body>
 </html>
