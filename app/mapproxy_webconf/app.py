@@ -21,6 +21,7 @@ from .bottle import request, response, static_file, template, SimpleTemplate, re
 from .utils import requires_json
 from .capabilities import parse_capabilities_url
 from .constants import OGC_DPI, UNIT_FACTOR, M_TO_DEG_FACTOR
+from .lib.grid import is_valid_transformation, InvalidTransformationException
 
 configuration = config.ConfigParser.from_file('./config.ini')
 
@@ -415,40 +416,6 @@ def transform_bbox():
     else:
         response.status = 400;
         return {'error': 'Could not transform bbox'}
-
-def is_valid_transformation(bbox, source_srs, dest_srs):
-    """
-    >>> source_srs = SRS(4326)
-    >>> dest_srs = SRS(25833)
-    >>> bbox = [8,54,10,56]
-    >>> is_valid_transformation(bbox, source_srs, dest_srs)
-    True
-    >>> source_srs = SRS(4326)
-    >>> dest_srs = SRS(25833)
-    >>> bbox = [-15,54,-13,56]
-    >>> is_valid_transformation(bbox, source_srs, dest_srs)
-    False
-    """
-    # delta in m
-    delta = defaults.TRANSFORMATION_DEVIATION
-    # delta in deg or m
-    delta = delta * M_TO_DEG_FACTOR if source_srs.is_latlong else delta
-
-    x0, y0, x1, y1 = bbox
-    p1 = (x0, y0)
-    p2 = (x1, y1)
-
-    pd1, pd2 = list(source_srs.transform_to(dest_srs, [p1, p2]))
-
-    if not float('inf') in pd1 + pd2:
-        ps1, ps2 = list(dest_srs.transform_to(source_srs, [pd1, pd2]))
-        bbox_t = list(ps1 + ps2)
-        if not float('inf') in bbox_t:
-            for i in range(4):
-                if abs(bbox[i] - bbox_t[i]) > delta:
-                    return False
-            return True
-    return False
 
 @app.route('/grid_as_geojson', 'POST', name='grid_as_geojson')
 def grid_as_geojson():
