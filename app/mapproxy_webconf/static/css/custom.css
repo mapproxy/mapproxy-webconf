@@ -637,3 +637,7 @@ dl#config-index-list dd{
   margin-left: 80px;
   margin-bottom: 10px;
 }
+
+.alert-block > p {
+  margin-bottom: 10px;
+}

@@ -18,20 +18,18 @@
         %for name, data in projects.items():
           <div>
             <h3>${ _('project') }: ${name}</h3>
-            <h4>${ _('status mapproxy configuration') }</h4>
-            %if data['valid']:
-              <div class="alert alert-block alert-success ">
-                <h4 class="alert-heading">
-                  ${ _('The mapproxy configuration of this project is valid') }
-                </h4>
-              </div>
-            %else:
-              <div class="alert alert-block alert-error ">
-                <h4 class"alert-heading" style="margin-bottom: 10px">
-                  ${ _('Attention') }:
-                  ${ _('The mapproxy configuration of this project is invalid') }
-                </h4>
-                <p style="margin-bottom: 10px">${ _('following errors are recorded') }:</p>
+              <h5>${ _('status mapproxy configuration') }:
+              %if data['valid']:
+                 <span class="label label-success">${ _('valid') }</span>
+              </h5>
+              %else:
+                  <span class"alert-heading">
+                    <span class="label label-warning">${ _('invalid') }</span>
+                  </span>
+              </h5>
+
+              <div class="alert alert-block alert-warning ">
+                <p>${ _('following errors are recorded') }:</p>
                 <ul>
                   %for msg in data['errors']:
                     <li>${msg}</li>
@@ -39,21 +37,11 @@
                 </ul>
               </div>
             %end
-            <h4>${ _('settings') }</h4>
-            <div class="pull-left">
-              <a href="${ get_url('project_defaults', project=name) }" class="btn btn-small">
-                ${ _('Goto default settings') }
-              </a>
-            </div>
-            <div class="pull-right">
-              <a href="${ get_url('configuration', project=name) }" class="btn btn-small">
-                ${ _('To configuration') } &rarr;
-              </a>
-            </div>
-            <div style="clear:both"></div>
-            <hr>
-
           </div>
+           <a href="${ get_url('configuration', project=name) }" class="btn btn-small">
+              ${ _('To configuration') } &rarr;
+           </a>
+         <hr>
         %end
       </div>
     %end

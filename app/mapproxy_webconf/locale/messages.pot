@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-07-05 13:19+0200\n"
+"POT-Creation-Date: 2013-07-05 14:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -600,7 +600,7 @@ msgid "Add"
 msgstr ""
 
 #: mapproxy_webconf/templates/project_defaults.html:44
-#: mapproxy_webconf/templates/projects.html:50
+#: mapproxy_webconf/templates/projects.html:42
 msgid "To configuration"
 msgstr ""
 
@@ -628,31 +628,19 @@ msgstr ""
 msgid "status mapproxy configuration"
 msgstr ""
 
-#: mapproxy_webconf/templates/projects.html:25
-msgid "The mapproxy configuration of this project is valid"
+#: mapproxy_webconf/templates/projects.html:23
+msgid "valid"
 msgstr ""
 
-#: mapproxy_webconf/templates/projects.html:31
-msgid "Attention"
+#: mapproxy_webconf/templates/projects.html:27
+msgid "invalid"
 msgstr ""
 
 #: mapproxy_webconf/templates/projects.html:32
-msgid "The mapproxy configuration of this project is invalid"
-msgstr ""
-
-#: mapproxy_webconf/templates/projects.html:34
 msgid "following errors are recorded"
 msgstr ""
 
-#: mapproxy_webconf/templates/projects.html:42
-msgid "settings"
-msgstr ""
-
-#: mapproxy_webconf/templates/projects.html:45
-msgid "Goto default settings"
-msgstr ""
-
-#: mapproxy_webconf/templates/projects.html:64
+#: mapproxy_webconf/templates/projects.html:52
 msgid "project overview"
 msgstr ""
 
