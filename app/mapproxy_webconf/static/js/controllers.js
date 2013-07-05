@@ -944,25 +944,44 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
     };
     $scope.showMap = function(event) {
         safePreventDefaults(event);
-        if($scope.grid.data.bbox_srs != $scope.custom.mapSRS) {
-            $http.post($scope.transformBBoxURL, {
-                'source': $scope.grid.data.bbox_srs,
-                'dest': $scope.custom.mapSRS,
-                'bbox': $scope.grid.data.bbox
-            }).
-                success(function(response) {
-                    $scope.olmapBinds.extent = response.bbox,
-                    $scope.olmapBinds.proj = $scope.custom.mapSRS,
-                    $scope.olmapBinds.visible = true;
-                }).
-                error(function(response) {
-                    console.log(response);
-                });
+        var data = {
+            'srs': $scope.grid.data.srs,
+            'grid_bbox': $scope.grid.data.bbox,
+            'bbox_srs': $scope.grid.data.bbox_srs,
+            'origin': $scope.grid.data.origin,
+            'map_srs': $scope.custom.mapSRS
+        };
+        if($scope.custom.resSelected) {
+            data['res'] = $scope.custom.res_scales;
         } else {
-            $scope.olmapBinds.extent = $scope.grid.data.bbox;
-            $scope.olmapBinds.proj = $scope.custom.mapSRS;
-            $scope.olmapBinds.visible = true;
+            data['scales'] = $scope.custom.res_scales;
         }
+        $http.post($scope.checkGridParameterURL, data).
+            success(function() {
+                if($scope.grid.data.bbox_srs != $scope.custom.mapSRS) {
+                    $http.post($scope.transformBBoxURL, {
+                        'source': $scope.grid.data.bbox_srs,
+                        'dest': $scope.custom.mapSRS,
+                        'bbox': $scope.grid.data.bbox
+                    }).
+                        success(function(response) {
+                            $scope.olmapBinds.extent = response.bbox,
+                            $scope.olmapBinds.proj = $scope.custom.mapSRS,
+                            $scope.olmapBinds.visible = true;
+                        }).
+                        error(function(response) {
+                            //XXXkai: error handling
+                            angular.noop();
+                        });
+                } else {
+                    $scope.olmapBinds.extent = $scope.grid.data.bbox;
+                    $scope.olmapBinds.proj = $scope.custom.mapSRS;
+                    $scope.olmapBinds.visible = true;
+                }
+            }).
+            error(function(response) {
+                MessageService.message('olMap', 'showMap_error', response.error)
+            });
     };
     $scope.provideGridData = function() {
         var gridData = {
