@@ -325,3 +325,8 @@ class TestServerAPIExistingConf(helper.TempDirTest):
         data = id_dict_to_named_dict(data_dict)
 
         assert 'global_geodetic_sqrt2' in data
+
+class TestProjectAPI(ServerAPITest):
+    def test_create_project(self):
+        resp.app.post_json('/create_project', {'name': 'test'})
+
