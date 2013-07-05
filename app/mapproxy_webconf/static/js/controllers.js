@@ -371,7 +371,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
             $('#confirm_url_change_dialog').dialog({
                 resizeable: false,
                 width: 400,
-                height: 200,
+                height: 'auto',
                 modal: true,
                 buttons: buttons
             });
@@ -414,10 +414,10 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
                     }
                 }
             ]
-            $('#confirm_url_change_dialog').dialog({
+            $('#confirm_layer_change_dialog').dialog({
                 resizeable: false,
-                width: 600,
-                height: 250,
+                width: 400,
+                height: 'auto',
                 modal: true,
                 buttons: buttons
             });

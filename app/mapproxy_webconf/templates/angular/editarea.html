@@ -7,13 +7,11 @@
   </button>
   <div ng-show='editareaBinds.visible'>
     <h3>${ _('Edit manual') }</h3>
-    <textarea class='input-xlarge' id='_editarea' ng-disabled="ngDisabled"></textarea>
+    <textarea class='input-xlarge edit-manual' id='_editarea' ng-disabled="ngDisabled"></textarea>
     <div class="pull-left">
       <button ng-show='!editareaBinds.editareaValue._manual'
               ng-disabled="ngDisabled"
-              dialog="ask" dialog-title="${ _('Confirm!') }"
-              dialog-text="${ _('If you save the manual edition, you wont be able to edit it in the above form again. Realy save the manual edition?') }"
-              callback='save()'
+              ng-click='save()'
               class='btn btn-small'>
         ${ _('Save') }
       </button>
@@ -40,8 +38,8 @@
               ng-disabled="ngDisabled"
               class='btn btn-small'
               dialog="ask"
-              dialog-title="${ _('Really go back to form editing') }?"
-              dialog-text="${ _('If you go back to form editing, you will loose all configurations which are not represented by form fields') }"
+              dialog-title="${ _('Back to form editing title') }?"
+              dialog-text="${ _('Back to form editing info text - lose some inputs') }"
               callback="leaveEditarea(true)">
         ${ _('Back to form edit') }
       </button>
