@@ -69,7 +69,7 @@ class RESTBase(object):
         self.dependencies = dependencies
 
     def list(self, project, storage):
-        return storage.get_all(self.section, project, with_id=True, with_manual=True, with_locked=True)
+        return storage.get_all(self.section, project, with_id=True, with_manual=True, with_locked=True, with_section=True)
 
     @requires_json
     def add(self, project, storage):
