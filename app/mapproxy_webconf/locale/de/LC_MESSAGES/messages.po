@@ -470,7 +470,7 @@ msgstr "SRS"
 
 #: mapproxy_webconf/templates/grids.html:75
 msgid "BBox"
-msgstr "BBox"
+msgstr "Bounding Box"
 
 #: mapproxy_webconf/templates/grids.html:78
 #: mapproxy_webconf/templates/sources.html:167
@@ -494,7 +494,7 @@ msgstr "Süd"
 
 #: mapproxy_webconf/templates/grids.html:114
 msgid "BBox SRS"
-msgstr "BBox SRS"
+msgstr "BoundingBox SRS"
 
 #: mapproxy_webconf/templates/grids.html:127
 msgid "Calculate tiles"
@@ -539,8 +539,7 @@ msgstr "Grid abschließen"
 #: mapproxy_webconf/templates/grids.html:250
 msgid "If you lock the grid, you won't be able to edit it again"
 msgstr ""
-"Wenn das Bearbeiten dieses Grids abgeschlossen wird, ist kein weiteres "
-"Bearbeiten dieses Grids möglich"
+"Durch das Abschließen des Grids stellen Sie sicher, dass die Einstellungen des Grids nicht nachträglich verändert werden"
 
 #: mapproxy_webconf/templates/grids.html:255
 msgid "Lock"
@@ -777,8 +776,8 @@ msgid "Create new source"
 msgstr "Neue Source anlegen"
 
 #: mapproxy_webconf/templates/sources.html:44
-msgid "Really remove source:"
-msgstr "Soll die Source wirklich gelöscht werden:"
+msgid "Really remove source"
+msgstr "Soll die folgende Source gelöscht werden"
 
 #: mapproxy_webconf/templates/sources.html:60
 msgid "New source"
@@ -830,7 +829,7 @@ msgstr "Auswahl leeren"
 
 #: mapproxy_webconf/templates/sources.html:164
 msgid "Coverage BBOX"
-msgstr "Coverage BBOX"
+msgstr "Coverage Bounding Box"
 
 #: mapproxy_webconf/templates/sources.html:205
 msgid "Use coverage from WMS"
@@ -907,7 +906,7 @@ msgstr "Es ist ein Fehler aufgetreten"
 #: mapproxy_webconf/templates/angular/editarea.html:6
 #: mapproxy_webconf/templates/angular/editarea.html:9
 msgid "Edit manual"
-msgstr "Manuelles bearbeiten"
+msgstr "Manuell bearbeiten"
 
 #: mapproxy_webconf/templates/angular/editarea.html:35
 #: mapproxy_webconf/templates/angular/editarea.html:44
@@ -950,11 +949,11 @@ msgstr "Maximale Auflösung"
 
 #: mapproxy_webconf/templates/angular/min_max_res.html:52
 msgid "min_scale"
-msgstr "Minimale Auflösung (als Maßstab)"
+msgstr "Kleinster Maßstab"
 
 #: mapproxy_webconf/templates/angular/min_max_res.html:60
 msgid "max_scale"
-msgstr "Maximale Auflösung (als Maßstab)"
+msgstr "Größter Maßstab"
 
 #: mapproxy_webconf/templates/angular/openlayers_gridextension.html:5
 msgid "Select grid level"
