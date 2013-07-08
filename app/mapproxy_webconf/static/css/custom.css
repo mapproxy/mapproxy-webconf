@@ -277,6 +277,11 @@ input[type="color"]:focus,
 }
 
 /* config page options */
+.project-name {
+  padding: 10px 5px;
+  margin-top: 5px;
+}
+
 .middleblock {
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
