@@ -947,7 +947,8 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
         var data = $scope.provideGridData();
 
         $http.post($scope.checkGridParameterURL, data).
-            success(function() {
+            success(function(response) {
+                $scope.custom.grid_scales = response.scales;
                 if($scope.grid.data.bbox_srs != $scope.custom.mapSRS) {
                     $http.post($scope.transformBBoxURL, {
                         'source': $scope.grid.data.bbox_srs,
