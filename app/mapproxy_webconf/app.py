@@ -475,7 +475,7 @@ def validate_grid_params():
         response.status = 400
         return {'error': _('Given grid bbox is invalid for used grid srs')}
 
-@app.route('/create_project', ['GET', 'POST'], name='create_project')
+@app.route('/project/create', ['GET', 'POST'], name='create_project')
 def create_project(storage):
     if request.query.get('demo', False):
         name = str(uuid4()).replace('-', '')

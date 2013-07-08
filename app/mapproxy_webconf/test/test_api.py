@@ -308,11 +308,11 @@ class TestServerAPIExistingConf(helper.TempDirTest):
 
 class TestProjectAPI(ServerAPITest):
     def test_create_project(self):
-        resp = self.app.post_json('/create_project', {'name': 'test'})
+        resp = self.app.post_json('/project/create', {'name': 'test'})
         assert resp.json == {'url': '/project/test/conf'}
 
     def test_create_project_duplicated(self):
-        resp = self.app.post_json('/create_project', {'name': 'test'}, status=400)
+        resp = self.app.post_json('/project/create', {'name': 'test'}, status=400)
         assert resp.json.has_key('error')
 
 
