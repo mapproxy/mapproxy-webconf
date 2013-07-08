@@ -549,16 +549,6 @@ div.blockMsg {
 }
 
 /* map */
-
-.map-icon-remove {
-    position: absolute;
-    cursor: pointer;
-    top: 5px;
-    right: 5px;
-    z-index: 1500;
-    opacity: 1.0;
-}
-
 .olControlLayerSwitcher {
     width: 27em;
 }

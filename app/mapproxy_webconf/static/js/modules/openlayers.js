@@ -457,7 +457,6 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 $scope.dataExtent = undefined;
                 $scope.mapLayers = [];
                 $scope.drawLayer = undefined;
-                $.unblockUI();
                 $scope.olmapBinds.visible = false;
 
                 safeApply($scope);
@@ -485,13 +484,34 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
 
             $scope.$watch('olmapBinds.visible', function(visible) {
                 if(visible) {
+                    marginWidth = 200;
+                    marginHeight = marginWidth;
+                    // set size of map
+                    if(!$scope.hasSize) {
+                        $("#"+$scope.mapId)
+                            .css('width', $(window).width() - marginWidth)
+                            .css('height', $(window).height() - marginHeight);
+
+                        // set new size after resizing window
+                        $(window).resize(function() {
+                            $("#"+$scope.mapId)
+                                .css('width', $(window).width() - marginWidth)
+                                .css('height', $(window).height() - marginHeight);
+                        });
+                    }
+
                     prepareMap();
-                    $.blockUI({
-                        message: $($element),
-                        css: {
-                            top:  ($(window).height() - $attrs.mapHeight) /2 + 'px',
-                            left: ($(window).width() - $attrs.mapWidth) /2 + 'px',
-                            width: $attrs.mapWidth
+
+
+                    $($element).dialog({
+                        width:'auto',
+                        modal: true,
+                        close: function() {
+                            if(angular.isUndefined($scope.unsavedChanges)) {
+                                $scope.destroyMap(false)
+                            } else  {
+                                $scope.destroyMap($scope.unsavedChanges)
+                            }
                         }
                     });
                 }
@@ -504,12 +524,20 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
             };
         },
         link: function(scope, element, attrs) {
+            scope.hasSize = false;
             scope.mapId = 'ol_map_' + scope.$id;
             //setup map element
-            element.find('#_olmapTemp')
-                .attr('id', scope.mapId)
-                .css('width', attrs.mapWidth)
-                .css('height', attrs.mapHeight);
+            if (attrs.mapWidth && attrs.mapHeight) {
+                scope.hasSize = true;
+                element.find('#_olmapTemp')
+                    .attr('id', scope.mapId)
+                    .css('width', attrs.mapWidth)
+                    .css('height', attrs.mapHeight);
+            } else {
+                element.find('#_olmapTemp')
+                    .attr('id', scope.mapId)
+            }
+
 
             if(!scope.olmapBinds.visible) {
                 $(element).hide();
