@@ -82,8 +82,9 @@ footer ul.footer-nav li {
 
 
 footer ul.footer-nav li a:hover {
-  color: #bbb;
-  border-bottom: 1px solid black;
+  color: white;
+  border-bottom: none;
+  text-decoration: none;
 }
 
 footer span#copyright {
@@ -356,7 +357,7 @@ ul.vertical-list div.active {
 }
 
 ul.vertical-list li {
-    margin-left: 0.5em;
+    /*margin-left: 0.5em;*/
     cursor: pointer;
     white-space: normal;
     padding: 0.5em;
