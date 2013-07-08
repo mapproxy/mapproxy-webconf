@@ -25,8 +25,18 @@ OpenLayers.Control.DeleteFeature = OpenLayers.Class(OpenLayers.Control, {
         }
         OpenLayers.Control.prototype.initialize.apply(this, [OpenLayers.Util.extend(options, {type: OpenLayers.Control.TYPE_BUTTON})]);
         this.layer = layer;
-        this.layer.events.register('featureselected', this, this._toggleControlState);
-        this.layer.events.register('featureunselected', this, this._toggleControlState);
+        this.layer.events.register('featureselected', this, function() {
+            this._toggleControlState(true)
+        });
+        this.layer.events.register('featureunselected', this, function() {
+            this._toggleControlState(false)
+        });
+        this.layer.events.register('beforefeaturemodified', this, function() {
+            this._toggleControlState(true)
+        });
+        this.layer.events.register('afterfeaturemodified', this, function() {
+            this._toggleControlState(false)
+        });
 
         if(!this.selectControl && !this.modifyControl) {
             this.handler = new OpenLayers.Handler.Feature(
@@ -61,7 +71,9 @@ OpenLayers.Control.DeleteFeature = OpenLayers.Class(OpenLayers.Control, {
             this.selectControl.unselect(feature);
         }
         if(this.modifyControl) {
-            this.modifyControl.selectControl.unselect(feature);
+            if(this.modifyControl.feature == feature) {
+                this.modifyControl.unselectFeature(feature);
+            }
             this.modifyControl.deactivate();
         }
         // if feature doesn't have a fid, destroy it
@@ -183,8 +195,8 @@ OpenLayers.Control.DeleteFeature = OpenLayers.Class(OpenLayers.Control, {
      * @memberof OpenLayers.Control.DeleteFeature
      * @instance
      */
-    _toggleControlState: function() {
-        if(this.layer.selectedFeatures.length > 0) {
+    _toggleControlState: function(featureSelected) {
+        if(featureSelected) {
             this.activatable = true;
             if(this.panel_div) {
                 OpenLayers.Element.removeClass(this.panel_div, 'itemDisabled');
