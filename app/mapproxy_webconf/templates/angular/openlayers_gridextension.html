@@ -7,7 +7,7 @@
           id="selectGridLevel"
           ng-model="gridLevel"
           ng-change="updateLevel()"
-          ng-options="level for level in levels()">
+          ng-options="level.level as level.name for level in levels()">
   </select>
   <br>
   <button class="btn btn-small" ng-click="toggleLabels()">

@@ -262,8 +262,8 @@
             callback="unlockGrid()">
       ${ _('Unlock') }
     </button>
-    <div ol-map="olmapBinds" map-width="1000" map-height="600" map-hidden="true">
-      <div ol-grid-extension="provideGridData"></div>
+    <div ol-map="olmapBinds" map-hidden="true">
+      <div ol-grid-extension="provideGridData" ol-grid-scales="custom.grid_scales"></div>
     </div>
   </div>
 %end

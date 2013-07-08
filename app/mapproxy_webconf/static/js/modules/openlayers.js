@@ -574,11 +574,15 @@ directive('olGridExtension', function($parse, GRID_STYLING, GRID_AS_GEOJSON_URL,
                     event.stopPropagation();
                 }
             };
-            // check why range-filter not work
             $scope.levels = function() {
                 var levels = [];
                 for(var i = 0; i < $scope.maxLevel; i++) {
-                    levels.push(i);
+                    var level = {'level': i}
+                    level['name'] = i;
+                    if($scope.olGridScales) {
+                        level['name'] += ' (1 : ' + $scope.olGridScales[i] + ')';
+                    }
+                    levels.push(level);
                 }
                 return levels;
             };
