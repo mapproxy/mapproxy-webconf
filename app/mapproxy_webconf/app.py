@@ -35,9 +35,8 @@ SimpleTemplate.defaults["language"] = configuration.get('app', 'language')
 
 try:
     translation = gettext.translation('messages', os.path.join(os.path.dirname(os.path.realpath(__file__)), 'locale'), ['de'])
-    translation.install()
-    SimpleTemplate.defaults["_"] = translation.gettext
-
+    _ = translation.ugettext
+    SimpleTemplate.defaults["_"] = _
 except IOError as e:
     print e
 

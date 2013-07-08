@@ -1,8 +1,15 @@
 import os
 import errno
+import gettext
 
 from .bottle import response, request
 from .decorator import decorator
+
+try:
+    translation = gettext.translation('messages', os.path.join(os.path.dirname(os.path.realpath(__file__)), 'locale'), ['de'])
+    _ = translation.ugettext
+except IOError as e:
+    print e
 
 @decorator
 def requires_json(func, *args, **kw):
