@@ -41,7 +41,7 @@
           <i class="icon-remove"
             dialog="ask"
             dialog-title="${ _('Confirm!') }"
-            dialog-text="${ _('Really remove source:') } {{source.data.name}}?"
+            dialog-text="${ _('Really remove source') }: {{item.data.name}}?"
             callback="removeItem($event, item)">
           </i>
            <i class="icon-share" ng-click="copyItem($event, item)"></i>

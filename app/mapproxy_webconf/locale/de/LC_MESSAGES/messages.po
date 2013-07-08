@@ -539,8 +539,7 @@ msgstr "Grid abschließen"
 #: mapproxy_webconf/templates/grids.html:250
 msgid "If you lock the grid, you won't be able to edit it again"
 msgstr ""
-"Wenn das Bearbeiten dieses Grids abgeschlossen wird, ist kein weiteres "
-"Bearbeiten dieses Grids möglich"
+"Durch das Abschließen des Grids stellen Sie sicher, dass die Einstellungen des Grids nicht nachträglich verändert werden"
 
 #: mapproxy_webconf/templates/grids.html:255
 msgid "Lock"
@@ -777,8 +776,8 @@ msgid "Create new source"
 msgstr "Neue Source anlegen"
 
 #: mapproxy_webconf/templates/sources.html:44
-msgid "Really remove source:"
-msgstr "Soll die Source wirklich gelöscht werden:"
+msgid "Really remove source"
+msgstr "Soll die folgende Source gelöscht werden"
 
 #: mapproxy_webconf/templates/sources.html:60
 msgid "New source"
@@ -907,7 +906,7 @@ msgstr "Es ist ein Fehler aufgetreten"
 #: mapproxy_webconf/templates/angular/editarea.html:6
 #: mapproxy_webconf/templates/angular/editarea.html:9
 msgid "Edit manual"
-msgstr "Manuelles bearbeiten"
+msgstr "Manuell bearbeiten"
 
 #: mapproxy_webconf/templates/angular/editarea.html:35
 #: mapproxy_webconf/templates/angular/editarea.html:44
