@@ -506,6 +506,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     $($element).dialog({
                         width:'auto',
                         modal: true,
+                        title: $scope.olmapBinds.title,
                         close: function() {
                             if(angular.isUndefined($scope.unsavedChanges)) {
                                 $scope.destroyMap(false)
