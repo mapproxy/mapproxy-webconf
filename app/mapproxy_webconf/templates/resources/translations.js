@@ -10,7 +10,6 @@
     "Yes": "${ _('Yes') }",
     "No": "${ _('No') }",
     "OK": "${ _('OK') }",
-    "You have unsaved changes in this form. Realy leave the page and disgard unsaved changes?": "${ _('You have unsaved changes in this form. Realy leave the page and disgard unsaved changes?') }",
     "Name": "${ _('Name') }",
     "URL": "${ _('URL') }",
     "Layers": "${ _('Layers') }",
