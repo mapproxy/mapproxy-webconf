@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-07-05 14:03+0200\n"
+"POT-Creation-Date: 2013-07-08 11:13+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,51 +17,51 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: mapproxy_webconf/app.py:54
+#: mapproxy_webconf/app.py:57
 msgid "Page not found"
 msgstr ""
 
-#: mapproxy_webconf/app.py:57
+#: mapproxy_webconf/app.py:60
 msgid "Internal server error"
 msgstr ""
 
-#: mapproxy_webconf/app.py:137 mapproxy_webconf/app.py:163
+#: mapproxy_webconf/app.py:140 mapproxy_webconf/app.py:166
 msgid "missing URL"
 msgstr ""
 
-#: mapproxy_webconf/app.py:142
+#: mapproxy_webconf/app.py:145
 msgid "no capabilities document found"
 msgstr ""
 
-#: mapproxy_webconf/app.py:146
+#: mapproxy_webconf/app.py:149
 msgid "invalid URL"
 msgstr ""
 
-#: mapproxy_webconf/app.py:305
+#: mapproxy_webconf/app.py:308
 msgid "creating mapproxy config successful"
 msgstr ""
 
-#: mapproxy_webconf/app.py:308
+#: mapproxy_webconf/app.py:311
 msgid "creating mapproxy config failed"
 msgstr ""
 
-#: mapproxy_webconf/app.py:335
+#: mapproxy_webconf/app.py:338
 msgid "creating yaml failed"
 msgstr ""
 
-#: mapproxy_webconf/app.py:344
+#: mapproxy_webconf/app.py:347
 msgid "parsing yaml failed"
 msgstr ""
 
-#: mapproxy_webconf/app.py:519 mapproxy_webconf/app.py:544
-msgid "Given bbox can not be used with given SRS"
+#: mapproxy_webconf/app.py:372
+msgid "Missing data"
 msgstr ""
 
-#: mapproxy_webconf/app.py:552
-msgid "Too many tiles. Please zoom in."
+#: mapproxy_webconf/app.py:476
+msgid "Given grid bbox is invalid for used grid srs"
 msgstr ""
 
-#: mapproxy_webconf/app.py:626
+#: mapproxy_webconf/app.py:488
 #, python-format
 msgid "Project \"%(name)s\" already exists"
 msgstr ""
@@ -145,6 +145,14 @@ msgstr ""
 msgid "missing JSON data"
 msgstr ""
 
+#: mapproxy_webconf/lib/geojson.py:117
+msgid "Given bbox can not be used with given SRS"
+msgstr ""
+
+#: mapproxy_webconf/lib/geojson.py:123
+msgid "Too many tiles. Please zoom in."
+msgstr ""
+
 #: mapproxy_webconf/templates/base.html:114
 msgid "Projects"
 msgstr ""
@@ -154,20 +162,24 @@ msgstr ""
 msgid "Configuration"
 msgstr ""
 
-#: mapproxy_webconf/templates/base.html:142
+#: mapproxy_webconf/templates/base.html:122
+msgid "working on project"
+msgstr ""
+
+#: mapproxy_webconf/templates/base.html:149
 msgid "Home"
 msgstr ""
 
-#: mapproxy_webconf/templates/base.html:143
+#: mapproxy_webconf/templates/base.html:150
 msgid "Mapproxy"
 msgstr ""
 
-#: mapproxy_webconf/templates/base.html:144
+#: mapproxy_webconf/templates/base.html:151
 #: mapproxy_webconf/templates/services.html:57
 msgid "Contact"
 msgstr ""
 
-#: mapproxy_webconf/templates/base.html:145
+#: mapproxy_webconf/templates/base.html:152
 msgid "Help"
 msgstr ""
 
@@ -212,7 +224,7 @@ msgstr ""
 #: mapproxy_webconf/templates/sources.html:43
 #: mapproxy_webconf/templates/sources.html:67
 #: mapproxy_webconf/templates/sources.html:72
-#: mapproxy_webconf/templates/sources.html:327
+#: mapproxy_webconf/templates/sources.html:325
 msgid "Confirm!"
 msgstr ""
 
@@ -326,7 +338,7 @@ msgid "Configure the internal caches."
 msgstr ""
 
 #: mapproxy_webconf/templates/config_index.html:12
-#: mapproxy_webconf/templates/sources.html:340
+#: mapproxy_webconf/templates/sources.html:338
 #: mapproxy_webconf/templates/resources/translations.js:16
 msgid "Layers"
 msgstr ""
@@ -595,7 +607,7 @@ msgstr ""
 #: mapproxy_webconf/templates/project_defaults.html:30
 #: mapproxy_webconf/templates/sources.html:129
 #: mapproxy_webconf/templates/sources.html:251
-#: mapproxy_webconf/templates/sources.html:366
+#: mapproxy_webconf/templates/sources.html:364
 msgid "Add"
 msgstr ""
 
@@ -737,7 +749,7 @@ msgid "Create new source"
 msgstr ""
 
 #: mapproxy_webconf/templates/sources.html:44
-msgid "Really remove source:"
+msgid "Really remove source"
 msgstr ""
 
 #: mapproxy_webconf/templates/sources.html:60
@@ -757,7 +769,7 @@ msgid "Replace service URL deletes all layers depends to it!"
 msgstr ""
 
 #: mapproxy_webconf/templates/sources.html:84
-#: mapproxy_webconf/templates/sources.html:337
+#: mapproxy_webconf/templates/sources.html:335
 #: mapproxy_webconf/templates/resources/translations.js:15
 msgid "URL"
 msgstr ""
@@ -816,23 +828,23 @@ msgstr ""
 msgid "Manual add SRS"
 msgstr ""
 
-#: mapproxy_webconf/templates/sources.html:294
+#: mapproxy_webconf/templates/sources.html:292
 msgid "Available WMS"
 msgstr ""
 
-#: mapproxy_webconf/templates/sources.html:328
+#: mapproxy_webconf/templates/sources.html:326
 msgid "Really remove WMS:"
 msgstr ""
 
-#: mapproxy_webconf/templates/sources.html:334
+#: mapproxy_webconf/templates/sources.html:332
 msgid "Infos"
 msgstr ""
 
-#: mapproxy_webconf/templates/sources.html:360
+#: mapproxy_webconf/templates/sources.html:358
 msgid "Loading in progress"
 msgstr ""
 
-#: mapproxy_webconf/templates/sources.html:364
+#: mapproxy_webconf/templates/sources.html:362
 msgid "Load WMS"
 msgstr ""
 

@@ -159,8 +159,6 @@ img.olTileImage, .olPopup img {
     max-width: none;
 }
 
-
-
 .btn-add {
   color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
@@ -274,8 +272,16 @@ input[type="color"]:focus,
   width: 350px;
 }
 
+.tooltip.left {
+  margin-left: -10px;
+}
 
 /* config page options */
+.project-name {
+  padding: 10px 5px;
+  margin-top: 5px;
+}
+
 .middleblock {
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;

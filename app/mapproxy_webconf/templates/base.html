@@ -106,7 +106,7 @@
     <div id="wrapper">
       <div class="navbar navbar-static-top">
         <div class="navbar-inner">
-          <div class="container">
+          <div>
             <a class="brand" href="/">
               <img src="${ get_url('static', filepath='img/logo.png') }">
             </a>
@@ -116,18 +116,25 @@
                 <li><a href="${ get_url('configuration', project=project) }">${ _('Configuration') }</a></li>
               %end
             </ul>
+
+            %if defined('project') and project != None:
+            <div class="pull-right project-name">
+                <span class="text-info">${ _('working on project') }: <strong>${project}</strong></span>
+            </div>
+            %end
+
           </div>
         </div>
       </div><!-- /.navbar -->
       <div class="sitebar-wrapper">
         <div class="shadow"></div>
-        <div class="sitebar container">
+        <div class="sitebar container-fluid">
           % if defined('site_navbar'):
             %site_navbar()
           % end
         </div>
       </div>
-      <div class="container content">
+      <div class="content container-fluid">
         <div class="row-fluid">
           % if defined('content'):
             %content()
