@@ -470,7 +470,7 @@ msgstr "SRS"
 
 #: mapproxy_webconf/templates/grids.html:75
 msgid "BBox"
-msgstr "BBox"
+msgstr "Bounding Box"
 
 #: mapproxy_webconf/templates/grids.html:78
 #: mapproxy_webconf/templates/sources.html:167
@@ -494,7 +494,7 @@ msgstr "Süd"
 
 #: mapproxy_webconf/templates/grids.html:114
 msgid "BBox SRS"
-msgstr "BBox SRS"
+msgstr "BoundingBox SRS"
 
 #: mapproxy_webconf/templates/grids.html:127
 msgid "Calculate tiles"
@@ -829,7 +829,7 @@ msgstr "Auswahl leeren"
 
 #: mapproxy_webconf/templates/sources.html:164
 msgid "Coverage BBOX"
-msgstr "Coverage BBOX"
+msgstr "Coverage Bounding Box"
 
 #: mapproxy_webconf/templates/sources.html:205
 msgid "Use coverage from WMS"
@@ -949,11 +949,11 @@ msgstr "Maximale Auflösung"
 
 #: mapproxy_webconf/templates/angular/min_max_res.html:52
 msgid "min_scale"
-msgstr "Minimale Auflösung (als Maßstab)"
+msgstr "Kleinster Maßstab"
 
 #: mapproxy_webconf/templates/angular/min_max_res.html:60
 msgid "max_scale"
-msgstr "Maximale Auflösung (als Maßstab)"
+msgstr "Größter Maßstab"
 
 #: mapproxy_webconf/templates/angular/openlayers_gridextension.html:5
 msgid "Select grid level"
