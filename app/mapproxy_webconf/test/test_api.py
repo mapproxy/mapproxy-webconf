@@ -401,3 +401,17 @@ class TestGeoOpperations(ServerAPITest):
         assert len(result) == 4
         assert result[0]['level'] == 0
         assert result[3]['level'] == 3
+
+    def test_grid_as_geojson(self):
+        data = {
+            'srs': 'epsg:4326',
+            'grid_srs': 'epsg:4326',
+            'grid_bbox': '-180, -90, 180, 90',
+            'map_srs': 'epsg:4326',
+            'bbox': '-180, -90, 180, 90',
+            'level': 0
+        }
+        resp = self.app.post('/grid_as_geojson', data)
+
+        assert resp.json.has_key('features')
+        assert len(resp.json['features']) == 2
