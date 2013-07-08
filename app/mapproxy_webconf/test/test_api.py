@@ -59,7 +59,7 @@ class TestWMSCapabilitiesAPI(ServerAPITest):
         expected['_id'] = id
         expected['_locked'] = 0
         expected['_manual'] = 0
-
+        expected['_section'] = 'wms_capabilities'
         assert resp.json == {str(id): expected}
         mock_serv.reset()
 
