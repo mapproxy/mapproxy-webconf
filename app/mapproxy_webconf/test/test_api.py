@@ -29,22 +29,46 @@ class TestWMSCapabilitiesAPI(ServerAPITest):
         assert resp.content_type == 'application/json'
         assert resp.json == {}
 
-    def test_add_wms_source(self):
-        doc = {
+    def test_add_get_edit_delete(self):
+        mock_serv = MockServ()
+        mock_serv.expects('/foo/service?REQUEST=GetCapabilities&SERVICE=WMS&VERSION=1.1.1')
+        cap_file = os.path.join(os.path.dirname(__file__), 'fixtures', 'wms_nasa_cap.xml')
+        mock_serv.returns(body_file=cap_file)
+        with mock_serv:
+            resp = self.app.post_json('/conf/base/wms_capabilities', {'data': {'url': mock_serv.base_url + '/foo/service'}})
+
+        id = resp.json['_id']
+
+        expected = {
+            '_id': id,
             'data': {
-                'title': 'WMS Source',
-                'name': 'wms_source',
-                'url': 'http://localhost/service?',
-                'layers': [
-                ]
+                'abstract': helper.ANY,
+                'title': 'JPL Global Imagery Service',
+                'url': 'http://wms.jpl.nasa.gov/wms.cgi?',
+                'layer': helper.ANY,
             }
         }
-        resp = self.app.post_json('/conf/base/wms_capabilities', doc)
-        assert resp.status == '201 Created'
+        assert resp.json == expected
+
+        resp = self.app.get('/conf/base/wms_capabilities/%d' % resp.json['_id'])
+        expected.pop('_id') # remove if we decide to pass _id in get request
+        assert resp.json == expected
+
         resp = self.app.get('/conf/base/wms_capabilities')
-        assert resp.status == '200 OK'
-        assert resp.content_type == 'application/json'
-        assert resp.json == {'1': doc}
+        # add vars returned by function
+        expected['_id'] = id
+        expected['_locked'] = 0
+        expected['_manual'] = 0
+
+        assert resp.json == {str(id): expected}
+        mock_serv.reset()
+
+        with mock_serv:
+            resp = self.app.put_json('/conf/base/wms_capabilities/%d' % id, {'data': {'url': mock_serv.base_url + '/foo/service'}})
+
+        resp = self.app.delete('/conf/base/wms_capabilities/%d' % id)
+        assert resp.status_code == 204
+        resp = self.app.get('/conf/base/wms_capabilities/%d' % id, status=404)
 
 class TestLayersAPI(ServerAPITest):
     def test_add_edit_delete_layers(self):
@@ -258,46 +282,6 @@ class TestGridsAPI(ServerAPITest):
         resp = self.app.delete('/conf/base/grids/%d' % grid_id)
         assert resp.status_code == 204
 
-class TestWMSCapabilitiesAPI(ServerAPITest):
-    def test_post_url(self):
-        mock_serv = MockServ()
-        mock_serv.expects('/foo/service?REQUEST=GetCapabilities&SERVICE=WMS&VERSION=1.1.1')
-        cap_file = os.path.join(os.path.dirname(__file__), 'fixtures', 'wms_nasa_cap.xml')
-        mock_serv.returns(body_file=cap_file)
-        with mock_serv:
-            resp = self.app.post_json('/conf/base/wms_capabilities', {'data': {'url': mock_serv.base_url + '/foo/service'}})
-
-        id = resp.json['_id']
-
-        expected = {
-            '_id': id,
-            'data': {
-                'abstract': helper.ANY,
-                'title': 'JPL Global Imagery Service',
-                'url': 'http://wms.jpl.nasa.gov/wms.cgi?',
-                'layer': helper.ANY,
-            }
-        }
-        assert resp.json == expected
-
-        resp = self.app.get('/conf/base/wms_capabilities/%d' % resp.json['_id'])
-        expected.pop('_id') # remove if we decide to pass _id in get request
-        assert resp.json == expected
-
-        resp = self.app.get('/conf/base/wms_capabilities')
-        # add vars returned by function
-        expected['_id'] = id
-        expected['_locked'] = 0
-        expected['_manual'] = 0
-        assert resp.json == {str(id): expected}
-        mock_serv.reset()
-
-        with mock_serv:
-            resp = self.app.put_json('/conf/base/wms_capabilities/%d' % id, {'data': {'url': mock_serv.base_url + '/foo/service'}})
-
-        resp = self.app.delete('/conf/base/wms_capabilities/%d' % id)
-        assert resp.status_code == 204
-        resp = self.app.get('/conf/base/wms_capabilities/%d' % id, status=404)
 
 class TestServerAPIExistingConf(helper.TempDirTest):
 
@@ -324,7 +308,17 @@ class TestServerAPIExistingConf(helper.TempDirTest):
 
 class TestProjectAPI(ServerAPITest):
     def test_create_project(self):
-        resp.app.post_json('/create_project', {'name': 'test'})
+        resp = self.app.post_json('/project/create', {'name': 'test'})
+        assert resp.json == {'url': '/project/test/conf'}
+
+    def test_create_project_duplicated(self):
+        resp = self.app.post_json('/project/create', {'name': 'test'}, status=400)
+        assert resp.json.has_key('error')
+
+    def test_delete_project(self):
+        resp = self.app.get('/project/delete?project=test')
+        assert resp.status_code == 204
+
 
 class TestGeoOpperations(ServerAPITest):
     def test_scales_to_res_to_scales(self):
@@ -407,3 +401,17 @@ class TestGeoOpperations(ServerAPITest):
         assert len(result) == 4
         assert result[0]['level'] == 0
         assert result[3]['level'] == 3
+
+    def test_grid_as_geojson(self):
+        data = {
+            'srs': 'epsg:4326',
+            'grid_srs': 'epsg:4326',
+            'grid_bbox': '-180, -90, 180, 90',
+            'map_srs': 'epsg:4326',
+            'bbox': '-180, -90, 180, 90',
+            'level': 0
+        }
+        resp = self.app.post('/grid_as_geojson', data)
+
+        assert resp.json.has_key('features')
+        assert len(resp.json['features']) == 2

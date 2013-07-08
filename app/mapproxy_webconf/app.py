@@ -475,7 +475,7 @@ def validate_grid_params():
         response.status = 400
         return {'error': _('Given grid bbox is invalid for used grid srs')}
 
-@app.route('/create_project', ['GET', 'POST'], name='create_project')
+@app.route('/project/create', ['GET', 'POST'], name='create_project')
 def create_project(storage):
     if request.query.get('demo', False):
         name = str(uuid4()).replace('-', '')
@@ -489,6 +489,15 @@ def create_project(storage):
         else:
             storage._init_project(name)
             return {'url': app.get_url('configuration', project=name)}
+
+@app.route('/project/delete', 'GET', name='delete_project')
+def delete_project(storage):
+    project = request.query.get('project', None)
+    response.status = 404
+    if project:
+        if storage.delete_project(project):
+            response.status = 204
+
 
 def init_app(storage_dir):
     app.install(storage.SQLiteStorePlugin(os.path.join(configuration.get('app', 'storage_path'), configuration.get('app', 'sqlite_db'))))
