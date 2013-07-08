@@ -437,13 +437,13 @@ def prepare_grid_params(params):
         grid_bbox = grid_bbox.split(',')
     grid_params['grid_bbox'] = grid_bbox
 
-    res = request.forms.get('res', None)
-    if res:
+    res = params.get('res', None)
+    if res and type(res) == str:
         res = res.split(',')
     grid_params['res'] = res
 
-    scales = request.forms.get('scales', None)
-    if scales:
+    scales = params.get('scales', None)
+    if scales and type(scales) == str:
         scales = scales.split(',')
     grid_params['scales'] = scales
 
