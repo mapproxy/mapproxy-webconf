@@ -538,7 +538,11 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
         };
         var unregisterCoverageWatch = $scope.$watch('olmapBinds.layers.vector[0].geometries', function(newValue, oldValue) {
             if(!angular.equals(newValue, oldValue)) {
-                $scope.source.data.coverage.bbox = newValue[0].coordinates;
+                if(angular.equals(newValue, [])) {
+                    $scope.source.data.coverage.bbox = [];
+                } else {
+                    $scope.source.data.coverage.bbox = newValue[0].coordinates;
+                }
                 unregisterCoverageWatch();
             }
         }, true);
