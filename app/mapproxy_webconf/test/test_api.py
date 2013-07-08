@@ -316,7 +316,7 @@ class TestProjectAPI(ServerAPITest):
         assert resp.json.has_key('error')
 
     def test_delete_project(self):
-        resp = self.app.get('/project/delete?project=test')
+        resp = self.app.post_json('/project/delete', {'name': 'test'})
         assert resp.status_code == 204
 
 
