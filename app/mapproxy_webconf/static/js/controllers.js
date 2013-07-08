@@ -33,24 +33,26 @@ function BaseListCtrl($scope, MessageService, TranslationService, service, _sect
         service.current({'data': service.model});
     };
 
-    $scope._messageService = MessageService;
-    $scope.$watch('_messageService.messages.' + _section + '.load_success', function() {
+    if(!angular.isDefined($scope.$root[_section+'_messageService'])) {
+        $scope.$root[_section+'_messageService'] = MessageService;
+    }
+    $scope.$root.$watch(_section + '_messageService.messages.' + _section + '.load_success', function() {
         //we must wrap this in a function, so we can overwrite refreshList in child
         $scope.refreshList()
     });
-    $scope.$watch('_messageService.messages.' + _section + '.add_success', function() {
+    $scope.$root.$watch(_section + '_messageService.messages.' + _section + '.add_success', function() {
         $scope.selected = service.last();
         $scope.refreshList();
     });
-    $scope.$watch('_messageService.messages.' + _section + '.update_success', function() {
+    $scope.$root.$watch(_section + '_messageService.messages.' + _section + '.update_success', function() {
         $scope.selected = service.last();
         $scope.refreshList();
     });
-    $scope.$watch('_messageService.messages.' + _section + '.delete_success', function() {
+    $scope.$root.$watch(_section + '_messageService.messages.' + _section + '.delete_success', function() {
         $scope.refreshList();
         service.current({'data': service.model});
     });
-    $scope.$watch('_messageService.messages.' + _section + '.delete_has_dependencies', function(messageObject) {
+    $scope.$root.$watch(_section + '_messageService.messages.' + _section + '.delete_has_dependencies', function(messageObject) {
         if(angular.isDefined(messageObject)) {
             var dialogContent = '<ul>';
             angular.forEach(messageObject.message, function(_dependencies, name) {
@@ -87,7 +89,7 @@ function BaseListCtrl($scope, MessageService, TranslationService, service, _sect
             })
             MessageService.removeMessage(messageObject['section'], messageObject['action']);
         }
-    })
+    });
 };
 
 function SourceListCtrl($injector, $scope, TranslationService, MapproxySources) {
