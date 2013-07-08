@@ -155,6 +155,12 @@ class SQLiteStore(object):
         cur.executemany("INSERT INTO store (section, project, data) VALUES (:section, :project, :data)", inserts)
         self.db.commit()
 
+    def delete_project(self, project):
+        cur = self.db.cursor()
+        cur.execute("DELETE FROM store WHERE project=?", (project, ))
+        self.db.commit()
+        return cur.rowcount >= 1
+
     def get_projects(self):
         cur = self.db.cursor()
         cur.execute("SELECT DISTINCT project FROM store")
