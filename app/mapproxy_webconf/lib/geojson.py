@@ -1,6 +1,6 @@
 from mapproxy.grid import tile_grid, GridError
 from mapproxy.srs import SRS, generate_envelope_points
-from mapproxy.script.scales import scale_to_res
+from mapproxy.script.scales import scale_to_res, res_to_scale
 
 from mapproxy_webconf import constants
 from mapproxy_webconf import defaults
@@ -78,6 +78,11 @@ class ConfigGeoJSONGrid(object):
             min(gridbbox[2], mapbbox[2]),
             min(gridbbox[3], mapbbox[3])
         ]
+
+    @property
+    def scales(self):
+        return [res_to_scale(res, self._dpi, self._units) for res in self.tilegrid.resolutions]
+
 
 def polygons(config, tiles, labeled=True):
     for tile in tiles:
