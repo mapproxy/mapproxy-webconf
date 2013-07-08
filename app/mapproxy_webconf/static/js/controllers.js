@@ -26,6 +26,7 @@ function BaseListCtrl($scope, MessageService, TranslationService, service, _sect
         delete copiedData.name;
         var newItem = $.extend({}, {'data': service.model}, {'data': copiedData});
         service.current(newItem);
+        MessageService.message(_section, 'copy_success', item.data.name + ' ' +TranslationService.translate('successfuly copied'));
     };
     $scope.newItem = function() {
         $scope.selected = undefined;

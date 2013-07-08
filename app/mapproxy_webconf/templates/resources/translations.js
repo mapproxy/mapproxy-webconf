@@ -34,5 +34,6 @@
     "Successful deleted": "${ _('Successful deleted') }",
     "Structure successful updated": "${ _('Structure successful updated') }",
     "Can not delete because of dependencies": "${ _('Can not delete because of dependencies') }",
-    "Create MapProxy Config": "${ _('Create MapProxy Config') }"
+    "Create MapProxy Config": "${ _('Create MapProxy Config') }",
+    "successfuly copied": "${ _('successfuly copied') }"
 }
