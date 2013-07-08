@@ -1508,7 +1508,7 @@ function DisplayCalculatedTilesCtrl($scope, DataShareService) {
     });
 };
 
-function CreateProjectCtrl($scope, $http, $window, MessageService) {
+function ProjectCtrl($scope, $http, $window, MessageService) {
     $scope.project = {};
 
     $scope.createProject = function() {
@@ -1521,5 +1521,17 @@ function CreateProjectCtrl($scope, $http, $window, MessageService) {
             .error(function(error) {
                 MessageService.message('project', 'create_error', error.error);
             });
-    }
+    };
+    $scope.deleteProject = function(event, name) {
+        safePreventDefaults(event);
+        $http.post($scope.deleteURL, {'name': name})
+            .success(function(response) {
+                safeApply($scope, function() {
+                   $window.location.href = $window.location.href;
+               });
+            })
+            .error(function(error) {
+                MessageService.message('project', 'delete_error', error.error);
+            });
+    };
 }

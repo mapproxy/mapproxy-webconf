@@ -490,9 +490,9 @@ def create_project(storage):
             storage._init_project(name)
             return {'url': app.get_url('configuration', project=name)}
 
-@app.route('/project/delete', 'GET', name='delete_project')
+@app.route('/project/delete', 'POST', name='delete_project')
 def delete_project(storage):
-    project = request.query.get('project', None)
+    project = request.json.get('name', None)
     response.status = 404
     if project:
         if storage.delete_project(project):
