@@ -1473,6 +1473,7 @@ function ProjectDefaultsCtrl($scope, PAGE_LEAVE_MSG, ProjectDefaults, MessageSer
         var srsID = $.inArray(srs, $scope.defaults.data.srs);
         if(srsID !== -1) {
             $scope.defaults.data.srs.splice(srsID, 1);
+            $scope.form.$dirty = true;
         }
     }
 
