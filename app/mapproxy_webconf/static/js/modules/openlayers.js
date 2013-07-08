@@ -563,7 +563,10 @@ directive('olGridExtension', function($parse, GRID_STYLING, GRID_AS_GEOJSON_URL,
         transclude: false,
         repalce: true,
         templateUrl: GRID_EXTENSION_TEMPLATE_URL,
-        scope: 'element',
+        scope: {
+            olGridData: '&olGridExtension',
+            olGridScales: '=olGridScales'
+        },
         controller: function($scope, $element, $attrs) {
             $scope.preventDefaultsStopPropagation = function(event) {
                 if(angular.isDefined(event)) {
@@ -620,8 +623,6 @@ directive('olGridExtension', function($parse, GRID_STYLING, GRID_AS_GEOJSON_URL,
             };
         },
         link: function(scope, element, attrs, olMapCtrl) {
-            scope.olGridData = $parse(attrs.olGridExtension);
-
             olMapCtrl.registerExtension('layers', function() {
                 olMapCtrl.olmapBinds.numZoomLevels = scope.maxLevel;
                 scope.layer = angular.copy(scope._layer);
