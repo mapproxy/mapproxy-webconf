@@ -19,6 +19,13 @@ class ConfigGeoJSONGrid(object):
         self._dpi = float(dpi) if dpi else constants.OGC_DPI
         self._grid_bbox = map(float, grid_bbox) if grid_bbox else None
 
+        if self._res:
+            self._num_levels = len(self._res)
+        elif self._scales:
+            self._num_levels = len(self._scales)
+        else:
+            self._num_levels = None
+
         try:
             self.level = int(level)
         except TypeError:
@@ -57,7 +64,7 @@ class ConfigGeoJSONGrid(object):
 
     @property
     def tilegrid(self):
-        return tile_grid(srs=self.grid_srs, bbox=self._grid_bbox, bbox_srs=self.grid_bbox_srs, origin=self.origin, res=self.res)
+        return tile_grid(srs=self.grid_srs, bbox=self._grid_bbox, bbox_srs=self.grid_bbox_srs, origin=self.origin, res=self.res, num_levels=self._num_levels)
 
     @property
     def view_bbox(self):
