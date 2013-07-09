@@ -1,6 +1,8 @@
 html,
 body {
   height: 100%;
+  /*font-family: Verdana,sans-serif;*/
+  /*font-size: 14px;*/
 }
 
 body {
@@ -24,36 +26,6 @@ a {
     min-height: 100%;
     height: auto !important;
     height: 100%;
-}
-
-.navbar {
-    border-top: 3px solid #2AA4B5;
-    background-image: 0;
-}
-
-.navbar .nav {
-  margin-top: 8px;
-}
-
-.navbar .nav > .active > a,
-.navbar .nav > .active > a:hover,
-.navbar .nav > .active > a:focus {
-  background-color: inherit;
-  padding: 0;
-  margin-top: 10px;
-  margin-left: 15px;
-  margin-right: 10px;
-  margin-bottom: 10px;
-  border-bottom: 2px solid #FF9738;
-  -webkit-box-shadow: inherit;
-     -moz-box-shadow: inherit;
-          box-shadow: inherit;
-}
-
-
-
-.sitebar-wrapper {
-    background-color: #2AA4B5;
 }
 
 .shadow {
@@ -307,23 +279,74 @@ input[type="color"]:focus,
     min-height: 300px !important;
 }
 
-.nav.tab-menu {
-    margin-top: 1.7em;
-    margin-left: 1em;
-    margin-bottom: 0;
-    border: 0;
+.navbar {
+    border-top: 3px solid #2AA4B5;
+    background-image: 0;
+}
+
+.navbar .brand {
+  padding: 5px 20px;
+}
+
+.navbar .brand h1, .navbar .brand a{
+    display: inline;
+}
+.navbar .brand h1 {
+  color: #3A3740;
+  top: 7px;
+  position: relative;
+  font-size: 28px;
+}
+
+.navbar .nav {
+  margin-top: 30px;
+}
+
+.navbar .nav > li > a {
+  padding: 0;
+  margin-left: 15px;
+  margin-right: 10px;
+}
+
+.navbar .nav > .active > a,
+.navbar .nav > .active > a:hover,
+.navbar .nav > .active > a:focus {
+  background-color: inherit;
+  padding: 0;
+  margin-left: 15px;
+  margin-right: 10px;
+  border-bottom: 2px solid #FF9738;
+  -webkit-box-shadow: inherit;
+     -moz-box-shadow: inherit;
+          box-shadow: inherit;
 }
 
 
-.nav.tab-menu > li > a {
-    color: white;
-}
+/*.nav-tabs > li  {
+  margin-bottom: 0;
+  margin-top: 2px;
+}*/
 
 .nav > li > a:hover,
 .nav > li > a:focus {
   text-decoration: none;
   background-color: white;
   border-bottom: 0;
+}
+
+.sitebar-wrapper {
+    background-color: #2AA4B5;
+}
+
+.nav.tab-menu {
+    margin-left: 1em;
+    margin-bottom: 0;
+    margin-top: 3px;
+    border: 0;
+}
+
+.nav.tab-menu > li > a {
+    color: white;
 }
 
 .nav.tab-menu > li.active > a,
@@ -334,8 +357,9 @@ input[type="color"]:focus,
 .tab-menu-header {
     margin-right: 1em;
     margin-bottom: 0;
-    margin-top: 0.5em;
+    margin-top: 0;
     color: white;
+    font-size: 25.5px;
 }
 
 hr.formLine {
