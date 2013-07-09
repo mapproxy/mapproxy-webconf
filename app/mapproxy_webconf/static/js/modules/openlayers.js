@@ -95,9 +95,11 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
         controller: function($scope, $element, $attrs) {
             $scope.eventHandlers = {
                 updateMapScaleResolution: function() {
-                    $scope.currentResolution = $scope.map.getResolution();
-                    $scope.currentScale = $scope.map.getScale();
-                    $scope.currentDPI = $scope.olmapBinds.dpi || DPI;
+                    safeApply($scope, function() {
+                        $scope.currentResolution = $scope.map.getResolution();
+                        $scope.currentScale = $scope.map.getScale();
+                        $scope.currentDPI = $scope.olmapBinds.dpi || DPI;
+                    });
                 }
             };
 
