@@ -362,29 +362,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     $scope.map.zoomToMaxExtent();
                 }
             };
-            $scope.destroyMap = function(saveChanges) {
-                if(angular.isDefined($scope._draw)) {
-                    $scope._draw.deactivate()
-                }
-                if(angular.isDefined($scope._modify)) {
-                    $scope._modify.deactivate();
-                }
-                if(saveChanges) {
-                    var newGeometries = [];
-                    angular.forEach($scope.drawLayer.features, function(feature) {
-                        var geometry = feature.geometry.bounds.toArray();
-                        newGeometries.push({
-                            'type': $scope.drawLayer._allowedGeometry,
-                            'coordinates': geometry
-                        });
-                    });
-
-                    angular.forEach($scope.olmapBinds.layers.vector, function(layer) {
-                        if(layer.name == $scope.drawLayer.name) {
-                            layer.geometries = newGeometries;
-                        }
-                    })
-                }
+            $scope.destroyMap = function() {
                 if(angular.isDefined($scope.extensions.destroy)) {
                     angular.forEach($scope.extensions.destroy, function(func) {
                         func($scope.map);
@@ -443,18 +421,11 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
 
                     prepareMap();
 
-
                     $($element).dialog({
                         width:'auto',
                         modal: true,
                         title: $scope.olmapBinds.title,
-                        close: function() {
-                            if(angular.isUndefined($scope.unsavedChanges)) {
-                                $scope.destroyMap(false)
-                            } else  {
-                                $scope.destroyMap($scope.unsavedChanges)
-                            }
-                        }
+                        close: $scope.destroyMap
                     });
                 }
             });
