@@ -468,7 +468,9 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
     };
     $scope.validBBox = function() {
         var bbox = $scope.source.data.coverage.bbox
-        var empty = isEmpty(bbox);
+        if(isEmpty(bbox)) {
+            return false;
+        }
         var nonValues = false;
         for(var i = 0; i < 4; i++) {
             if(bbox[i] == undefined || bbox[i] == null) {
@@ -476,7 +478,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
                 break
             }
         }
-        return !empty && !nonValues && bbox.length == 4;
+        return !nonValues && bbox.length == 4;
     };
     $scope.addCoverage = function(event) {
         safePreventDefaults(event);
