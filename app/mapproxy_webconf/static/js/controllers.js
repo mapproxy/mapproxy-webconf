@@ -311,6 +311,10 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
 
         $scope.form.$setPristine();
 
+        if($scope.source.data.coverage.polygon.length > 0) {
+            $scope.custom.bboxSelected = false;
+        }
+
         if($scope.source._manual) {
             $scope.editareaBinds.visible = true;
         } else {
