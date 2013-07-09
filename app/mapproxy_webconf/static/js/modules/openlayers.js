@@ -79,7 +79,12 @@ constant('DEFAULT_VECTOR_STYLING', {
     }
 }).
 
-directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeout, DEFAULT_VECTOR_STYLING, OPENLAYERSMAP_TEMPLATE_URL, LAYERSWITCHER_TEMPLATE_URL, DPI, NUM_ZOOM_LEVELS) {
+constant('GEOMETRY_TYPES', {
+    'RECT': 'rect',
+    'POLYGON': 'polygon'
+}).
+
+directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeout, DEFAULT_VECTOR_STYLING, OPENLAYERSMAP_TEMPLATE_URL, LAYERSWITCHER_TEMPLATE_URL, DPI, NUM_ZOOM_LEVELS, GEOMETRY_TYPES) {
     return {
         restrict: 'A',
         scope: {
@@ -305,14 +310,17 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
 
                 if(angular.isDefined(layer.geometries)) {
                     angular.forEach(layer.geometries, function(geometry) {
+                    angular.forEach(geometries, function(geometry) {
                         switch(geometry.type) {
                             case 'bbox':
+                            case 'rect':
                                 var bbox = new OpenLayers.Bounds(geometry.coordinates);
                                 var feature = new OpenLayers.Feature.Vector(bbox.toGeometry());
+                                feature._drawType = GEOMETRY_TYPES.RECT;
                                 newLayer.addFeatures([feature]);
                                 break;
                         }
-                    })
+                    });
                 }
                 if(layer.zoomToDataExtent) {
                     $scope.dataExtent = newLayer.getDataExtent();
