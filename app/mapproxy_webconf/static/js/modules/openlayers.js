@@ -376,6 +376,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 $scope.dataExtent = undefined;
                 $scope.mapLayers = [];
                 $scope.drawLayer = undefined;
+                $scope.olmapBinds.proj = $scope.olmapBinds.proj.projCode;
                 $scope.olmapBinds.visible = false;
 
                 safeApply($scope);
