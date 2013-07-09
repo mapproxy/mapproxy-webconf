@@ -265,7 +265,8 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 if(!($scope.olmapBinds.proj instanceof OpenLayers.Projection)) {
                     $scope.olmapBinds.proj = new OpenLayers.Projection($scope.olmapBinds.proj);
                 }
-                if(!($scope.olmapBinds.extent instanceof OpenLayers.Bounds)) {
+
+                if(angular.isDefined($scope.olmapBinds.extent) && !($scope.olmapBinds.extent instanceof OpenLayers.Bounds)) {
                     $scope.olmapBinds.extent = new OpenLayers.Bounds($scope.olmapBinds.extent);
                 }
 
