@@ -571,11 +571,18 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
                 'name': 'Coverage',
                 'isDrawLayer': true,
                 'geometries': function() {
-                    var geometries = []
-                    if($scope.validBBox()) {
+                    var geometries = [];
+                    if($scope.custom.bboxSelected) {
+                        if($scope.validBBox()) {
+                            geometries.push({
+                                'type': 'bbox',
+                                'coordinates': $scope.source.data.coverage.bbox
+                            })
+                        }
+                    } else {
                         geometries.push({
-                            'type': 'bbox',
-                            'coordinates': $scope.source.data.coverage.bbox
+                            'type': 'polygon',
+                            'coordinates': $scope.source.data.coverage.polygon
                         })
                     }
                     return geometries;
