@@ -512,25 +512,11 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
         safePreventDefaults(event);
         var bbox = $scope.validBBox() ? $scope.source.data.coverage.bbox : undefined;
         var srs = $scope.source.data.coverage.srs || SRS;
-        var coverage = {
-            'name': 'Coverage',
-            'zoomToDataExtent': angular.isDefined(bbox),
-            'isDrawLayer': true,
-            'maxFeatures': 1,
-            'allowedGeometry': 'bbox'
-        }
-        if(angular.isDefined(bbox)) {
-            coverage['geometries'] = [{
-                'type': 'bbox',
-                'coordinates': bbox
-            }];
-        }
         $scope.olmapBinds = {
             visible: true,
             proj: srs,
             extent: bbox,
             layers: {
-                'vector': [coverage],
                 'background': [{
                     title: BACKGROUND_SERVICE_TITLE,
                     url: BACKGROUND_SERVICE_URL,
@@ -601,6 +587,31 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
             safeApply($scope);
         }
     };
+    $scope.provideEditorData = function() {
+        var editorData = {
+            'layer': {
+                'name': 'Coverage',
+                'isDrawLayer': true,
+                'geometries': function() {
+                    var geometries = []
+                    if($scope.validBBox()) {
+                        geometries.push({
+                            'type': 'bbox',
+                            'coordinates': $scope.source.data.coverage.bbox
+                        })
+                    }
+                    return geometries;
+                }
+            },
+            'setResultGeometries': function(geometries) {
+                if(geometries.length == 1 && geometries[0].type == 'rect') {
+                    var bbox = geometries[0].coordinates[0].concat(geometries[0].coordinates[2]);
+                    $scope.source.data.coverage.bbox = bbox;
+                }
+            }
+        }
+        return editorData;
+    }
 
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {
