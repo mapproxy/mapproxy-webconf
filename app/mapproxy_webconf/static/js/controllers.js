@@ -595,35 +595,32 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
                     return geometries;
                 }
             },
-            'setResultGeometries': function(geometries) {
-                if(geometries[0].type == 'rect') {
-                    var bbox = geometries[0].coordinates[0].concat(geometries[0].coordinates[2]);
-                    $scope.source.data.coverage.bbox = bbox;
-                    $scope.source.data.coverage.bbox_srs = $scope.olmapBinds.proj;
-                    $scope.source.data.coverage.polygon = [];
-                    $scope.source.data.coverage.polygon_srs = undefined;
-                    $scope.custom.bboxSelected = true;
-                } else if(geometries[0].type == 'polygon') {
-                    $scope.source.data.coverage.polygon = [];
-                    angular.forEach(geometries, function(geometry) {
-                        $scope.source.data.coverage.polygon = $scope.source.data.coverage.polygon.concat(geometry.coordinates)
-                    });
-                    $scope.source.data.coverage.polygon = [$scope.source.data.coverage.polygon]
-                    $scope.source.data.coverage.bbox_polygon = $scope.olmapBinds.proj;
-                    $scope.source.data.coverage.bbox = [];
-                    $scope.source.data.coverage.bbox_srs = undefined;
-                    $scope.custom.bboxSelected = false;
-                } else {
-                    $scope.source.data.coverage.bbox = [];
-                    $scope.source.data.coverage.polygon = [];
-                    $scope.custom.bboxSelected = true;
-                }
-                safeApply($scope);
-            }
+            'setResultGeometry': $scope.setResultGeometry
         }
         return editorData;
-    }
-
+    };
+    $scope.setResultGeometry = function(geometry) {
+        console.log($scope.olmapBinds.proj.projCode);
+        if(geometry.type == 'rect') {
+            var bbox = geometry.coordinates[0].concat(geometry.coordinates[2]);
+            $scope.source.data.coverage.bbox = bbox;
+            $scope.source.data.coverage.bbox_srs = $scope.olmapBinds.proj.projCode;
+            $scope.source.data.coverage.polygon = [];
+            $scope.source.data.coverage.polygon_srs = undefined;
+            $scope.custom.bboxSelected = true;
+        } else if(geometry.type == 'polygon') {
+            $scope.source.data.coverage.polygon = [geometry.coordinates]
+            $scope.source.data.coverage.bbox_polygon = $scope.olmapBinds.proj.projCode;
+            $scope.source.data.coverage.bbox = [];
+            $scope.source.data.coverage.bbox_srs = undefined;
+            $scope.custom.bboxSelected = false;
+        } else {
+            $scope.source.data.coverage.bbox = [];
+            $scope.source.data.coverage.polygon = [];
+            $scope.custom.bboxSelected = true;
+        }
+        safeApply($scope);
+    };
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {
         'units': 'm',
