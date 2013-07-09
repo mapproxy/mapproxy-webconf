@@ -378,7 +378,9 @@ var sourceModel = {
     },
     'coverage': {
         'bbox': [],
-        'srs': undefined
+        'bbox_srs': undefined,
+        'polygon': [],
+        'polygon_srs': undefined
     },
     'supported_formats': [],
     'min_res_scale': undefined,
