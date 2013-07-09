@@ -293,6 +293,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
 
     var setSource = function() {
         $scope.source = MapproxySources.current();
+
         $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.source);
         //if equal, we have a clean new source
         if(angular.equals($scope.source.data, MapproxySources.model)) {
@@ -480,6 +481,13 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
         }
         return !nonValues && bbox.length == 4;
     };
+    $scope.hasCoverage = function() {
+        if($scope.custom.bboxSelected) {
+            return $scope.validBBox();
+        } else {
+            return angular.isDefined($scope.source.data.coverage.polygon) && !isEmpty($scope.source.data.coverage.polygon);
+        }
+    }
     $scope.addCoverage = function(event) {
         safePreventDefaults(event);
         var bbox = WMSSources.coverage($scope.source.data.req.url);
@@ -495,7 +503,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
             }
         }
     };
-    $scope.showCoverageInMap = function(event) {
+    $scope.showMap = function(event) {
         safePreventDefaults(event);
         var bbox = $scope.validBBox() ? $scope.source.data.coverage.bbox : undefined;
         var srs = $scope.custom.bboxSelected ? $scope.source.data.coverage.bbox_srs : $scope.source.data.coverage.polygon_srs;
