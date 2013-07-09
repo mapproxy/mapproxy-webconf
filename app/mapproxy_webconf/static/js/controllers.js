@@ -474,25 +474,6 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
         }
         return !empty && !nonValues && bbox.length == 4;
     };
-    $scope.isEmptyBBox = function() {
-        return isEmpty($scope.source.data.coverage.bbox);
-    };
-    $scope.fillBBox = function(event) {
-        safePreventDefaults(event);
-        if(isEmpty($scope.source.data.coverage.bbox)) {
-            $scope.source.data.coverage.bbox = angular.copy(BBOXES[$scope.source.data.coverage.srs]);
-        } else {
-            var haveDefaultBBox = false;
-            angular.forEach(BBOXES, function(bbox) {
-                if(!haveDefaultBBox && angular.equals(bbox, $scope.source.data.coverage.bbox)) {
-                    haveDefaultBBox = true;
-                }
-            });
-            if(haveDefaultBBox) {
-                $scope.source.data.coverage.bbox = angular.copy(BBOXES[$scope.source.data.coverage.srs]);
-            }
-        }
-    };
     $scope.addCoverage = function(event) {
         safePreventDefaults(event);
         var bbox = WMSSources.coverage($scope.source.data.req.url);
