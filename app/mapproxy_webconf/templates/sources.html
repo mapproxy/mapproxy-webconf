@@ -36,15 +36,16 @@
            ng-repeat="item in filtered = (list | filter: {data.name:search})"
            ng-click="editItem($event, item)">
         <li>
-          <i ng-show="item._manual" class="icon-pencil"></i>
+          <i ng-show="item._manual" class="icon-pencil" title="${_('edit manual')}"></i>
           {{item.data.name}}
           <i class="icon-remove"
             dialog="ask"
             dialog-title="${ _('Confirm!') }"
             dialog-text="${ _('Really remove source') }: {{item.data.name}}?"
-            callback="removeItem($event, item)">
+            callback="removeItem($event, item)"
+            title="${_('delete')}">
           </i>
-           <i class="icon-share" ng-click="copyItem($event, item)"></i>
+           <i class="icon-share" ng-click="copyItem($event, item)" title="${_('copy')}"></i>
         </li>
       </div>
     </ul>
@@ -109,7 +110,7 @@
                 <div ng-repeat="layer in source.data.req.layers" class="label">
                   {{layer}}
                   <span ng-show="layerTitle(layer)">({{layerTitle(layer)}})</span>
-                  <i class="icon-remove" ng-click="remove(layer)"></i>
+                  <i class="icon-remove" ng-click="remove(layer)" title="${_('delete')}"></i>
                 </div>
               </div>
             </div>
@@ -233,7 +234,7 @@
               <div name="supported_srs" id="supported_srs" class="well well-small input-large">
                 <span class="badge" ng-repeat="srs in source.data.supported_srs">
                   {{srs}}
-                  <i class="icon-remove" ng-click="removeSRS($event, srs)"></i>
+                  <i class="icon-remove" ng-click="removeSRS($event, srs)" title="${_('delete')}"></i>
                 </span>
               </div>
               <div class="input-append"
@@ -318,13 +319,14 @@
       <div ng-repeat="wms in wms_list" class="wms accordion-group">
         <div class="accordion-heading" toggle-element="next">
           <div class="accordion-toggle">{{wms.data.title}}</div>
-          <i class="icon-globe" ng-click="showMap($event, wms)"></i>
-          <i class="icon-refresh"  ng-click="refreshCapabilities($event, wms)"></i>
+          <i class="icon-globe" ng-click="showMap($event, wms)" title="${_('show in map')}"></i>
+          <i class="icon-refresh"  ng-click="refreshCapabilities($event, wms)" title="${_('refresh')}"></i>
           <i class="icon-remove"
              dialog="ask"
              dialog-title="${ _('Confirm!') }"
              dialog-text="${ _('Really remove WMS:') } {{wms.data.title}}?"
-             callback="removeCapabilities(wms)">
+             callback="removeCapabilities(wms)"
+             title="${_('delete')}">
           </i>
         </div>
         <div class="accordion-body" ng-show="isOpen()">

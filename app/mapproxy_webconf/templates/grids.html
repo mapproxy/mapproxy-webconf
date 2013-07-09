@@ -21,16 +21,17 @@
             ng-repeat="item in filtered = (list | filter: {data.name:search}) | orderBy:'name'"
             ng-click="editItem($event, item)">
         <li>
-          <i ng-show="item._manual" class="icon-pencil"></i>
+          <i ng-show="item._manual" class="icon-pencil" title="${_('edit manual')}"></i>
           <i ng-show="item._locked || item.default" class="icon-ok"></i>
           {{item.data.name}}
           <i class="icon-remove"
             dialog="ask"
             dialog-title="${ _('Confirm!') }"
             dialog-text="${ _('Really remove grid:') } {{item.data.name}}?"
-            callback="removeItem($event, item)">
+            callback="removeItem($event, item)"
+            title="${_('delete')}">
           </i>
-          <i class="icon-share" ng-click="copyItem($event, item)"></i>
+          <i class="icon-share" ng-click="copyItem($event, item)" title="${_('copy')}"></i>
         </li>
       </div>
     </ul>
@@ -41,7 +42,7 @@
            ng-click="editItem($event, item)">
         <li>
           {{item.data.name}}
-          <i class="icon-share" ng-click="copyItem($event, item)"></i>
+          <i class="icon-share" ng-click="copyItem($event, item)" title="${_('copy')}"></i>
         </li>
       </div>
     </ul>

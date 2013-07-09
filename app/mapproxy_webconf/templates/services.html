@@ -11,7 +11,7 @@
            ng-repeat="(service, data) in services.data"
            ng-click="show(service)">
         <li>
-          <i ng-show="data.active" class="icon-ok"></i>
+          <i ng-show="data.active" class="icon-ok" title="${ _('service is activated') }"></i>
               {{translate(service)}}</li>
       </div>
     </ul>
