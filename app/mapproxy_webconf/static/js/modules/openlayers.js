@@ -546,12 +546,15 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
             });
 
             olMapCtrl.registerExtension('toolbar', function(toolbar) {
-                var modifyControl = scope.modifyTool(scope.drawLayer);
+                scope.modifyControl = scope.modifyTool(scope.drawLayer);
+                scope.deleteControl = scope.deleteTool(scope.drawLayer, null, scope.modifyControl);
+                scope.drawRectControl = scope.drawRectTool(scope.drawLayer);
+                scope.drawPolygonControl = scope.drawPolygonTool(scope.drawLayer)
                 toolbar.addControls([
-                    scope.deleteTool(scope.drawLayer, null, modifyControl),
-                    modifyControl,
-                    scope.drawRectTool(scope.drawLayer),
-                    scope.drawPolygonTool(scope.drawLayer)
+                    scope.deleteControl,
+                    scope.modifyControl,
+                    scope.drawRectControl,
+                    scope.drawPolygonControl
                 ]);
             });
 
@@ -559,6 +562,10 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
                 var olEditorData = scope.olEditorData(scope, {})();
                 olEditorData.setResultGeometries(scope.extractGeometries(scope.drawLayer))
 
+                scope.modifyControl.deactivate();
+                scope.deleteControl.deactivate();
+                scope.drawRectControl.deactivate();
+                scope.drawPolygonControl.deactivate();
                 scope.drawLayer.destroy();
                 delete scope.drawLayer;
             });
