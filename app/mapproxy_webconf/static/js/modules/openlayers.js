@@ -309,7 +309,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 var newLayer = new OpenLayers.Layer.Vector(layer.name, options);
 
                 if(angular.isDefined(layer.geometries)) {
-                    angular.forEach(layer.geometries, function(geometry) {
+                    var geometries = angular.isFunction(layer.geometries) ? layer.geometries() : layer.geometries;
                     angular.forEach(geometries, function(geometry) {
                         switch(geometry.type) {
                             case 'bbox':
