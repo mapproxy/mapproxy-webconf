@@ -16,7 +16,7 @@ constant('DEFAULT_VECTOR_STYLING', {
         hoverStrokeColor: "red",
         hoverStrokeOpacity: 1,
         hoverStrokeWidth: 0.2,
-        pointRadius: 0,
+        pointRadius: 6,
         hoverPointRadius: 1,
         hoverPointUnit: "%",
         pointerEvents: "visiblePainted",
@@ -679,7 +679,7 @@ directive('olGridExtension', function($parse, GRID_AS_GEOJSON_URL, DEFAULT_VECTO
                             ratio: 1
                     })],
                     styleMap: new OpenLayers.StyleMap({
-                        "default": new OpenLayers.Style($.extend(true, {}, DEFAULT_VECTOR_STYLING['default']), {
+                        "default": new OpenLayers.Style($.extend(true, {}, DEFAULT_VECTOR_STYLING['default'], {pointRadius: 0}), {
                         rules: [
                             new OpenLayers.Rule({
                                 filter: new OpenLayers.Filter.Function({
