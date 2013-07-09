@@ -589,10 +589,29 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
                 }
             },
             'setResultGeometries': function(geometries) {
-                if(geometries.length == 1 && geometries[0].type == 'rect') {
+                if(geometries[0].type == 'rect') {
                     var bbox = geometries[0].coordinates[0].concat(geometries[0].coordinates[2]);
                     $scope.source.data.coverage.bbox = bbox;
+                    $scope.source.data.coverage.bbox_srs = $scope.olmapBinds.proj;
+                    $scope.source.data.coverage.polygon = [];
+                    $scope.source.data.coverage.polygon_srs = undefined;
+                    $scope.custom.bboxSelected = true;
+                } else if(geometries[0].type == 'polygon') {
+                    $scope.source.data.coverage.polygon = [];
+                    angular.forEach(geometries, function(geometry) {
+                        $scope.source.data.coverage.polygon = $scope.source.data.coverage.polygon.concat(geometry.coordinates)
+                    });
+                    $scope.source.data.coverage.polygon = [$scope.source.data.coverage.polygon]
+                    $scope.source.data.coverage.bbox_polygon = $scope.olmapBinds.proj;
+                    $scope.source.data.coverage.bbox = [];
+                    $scope.source.data.coverage.bbox_srs = undefined;
+                    $scope.custom.bboxSelected = false;
+                } else {
+                    $scope.source.data.coverage.bbox = [];
+                    $scope.source.data.coverage.polygon = [];
+                    $scope.custom.bboxSelected = true;
                 }
+                safeApply($scope);
             }
         }
         return editorData;
