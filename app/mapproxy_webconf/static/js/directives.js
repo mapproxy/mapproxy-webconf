@@ -427,8 +427,8 @@ directive('labeled', function($parse, $templateCache) {
             };
 
             scope.name = attrs.nameFor;
-
             scope.formName = attrs.formName || 'form';
+            scope.tooltipContent = attrs.tooltipContent;
 
             //form element object
             if($.inArray(scope.name, Object.keys(scope[scope.formName])) != -1) {

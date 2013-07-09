@@ -261,6 +261,9 @@ input[type="color"]:focus,
   width: 350px;
 }
 
+.tooltip-inner {
+  text-align: left;
+}
 .tooltip.left {
   margin-left: -10px;
 }

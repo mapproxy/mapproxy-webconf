@@ -73,12 +73,17 @@ directive('tooltip', function(tooltipMapper) {
                 $(element).attr('data-original-title', content);
                 $(element).tooltip({
                     html: true,
+                    container: 'body',
                     placement: scope.tooltipPlacement,
                     delay: { show: 200, hide: 300 }
                 });
             };
             var initFromService = function() {
                 var tooltipData = tooltipMapper.tooltips[attrs.tooltip];
+                if(angular.isUndefined(tooltipData)) {
+                    return false;
+                }
+
                 if(angular.isDefined(tooltipData.title)) {
                     initPopover(tooltipData.content, tooltipData.title);
                 } else {
