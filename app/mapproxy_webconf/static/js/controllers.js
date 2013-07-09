@@ -505,13 +505,12 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
     };
     $scope.showMap = function(event) {
         safePreventDefaults(event);
-        var bbox = $scope.validBBox() ? $scope.source.data.coverage.bbox : undefined;
         var srs = $scope.custom.bboxSelected ? $scope.source.data.coverage.bbox_srs : $scope.source.data.coverage.polygon_srs;
         srs = srs || SRS;
+
         $scope.olmapBinds = {
             visible: true,
             proj: srs,
-            extent: bbox,
             layers: {
                 'background': [{
                     title: BACKGROUND_SERVICE_TITLE,
