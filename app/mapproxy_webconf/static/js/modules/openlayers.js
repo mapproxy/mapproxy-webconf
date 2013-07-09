@@ -490,11 +490,11 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
                     f.feature._drawType = this.type;
                 }
             };
-            $scope.deleteTool = function(layer) {
+            $scope.deleteTool = function(layer, selectControl, modifyControl) {
                 var options = {
                     displayClass: "olControlDeleteFeature",
-                    selectControl: $scope._select,
-                    modifyControl: $scope._modify
+                    selectControl: selectControl,
+                    modifyControl: modifyControl
                 };
                 var control = new OpenLayers.Control.DeleteFeature(layer, options);
                 return control;
@@ -562,9 +562,10 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
             });
 
             olMapCtrl.registerExtension('toolbar', function(toolbar) {
+                var modifyControl = scope.modifyTool(scope.drawLayer);
                 toolbar.addControls([
-                    scope.deleteTool(scope.drawLayer),
-                    scope.modifyTool(scope.drawLayer),
+                    scope.deleteTool(scope.drawLayer, null, modifyControl),
+                    modifyControl,
                     scope.drawRectTool(scope.drawLayer),
                     scope.drawPolygonTool(scope.drawLayer)
                 ]);
