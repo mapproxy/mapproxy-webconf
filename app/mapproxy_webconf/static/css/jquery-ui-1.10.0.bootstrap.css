@@ -150,6 +150,9 @@
   -khtml-opacity: 0.90;
   -moz-opacity: 0.90;
   opacity: 0.90;
+  background-color: white;
+  border: 0;
+  outline: 0;
 }
 
 .ui-dialog .ui-dialog-content {
