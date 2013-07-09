@@ -231,14 +231,26 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 if(angular.isDefined(layer.geometries)) {
                     var geometries = angular.isFunction(layer.geometries) ? layer.geometries() : layer.geometries;
                     angular.forEach(geometries, function(geometry) {
+                        var feature = undefined;
                         switch(geometry.type) {
                             case 'bbox':
                             case 'rect':
                                 var bbox = new OpenLayers.Bounds(geometry.coordinates);
-                                var feature = new OpenLayers.Feature.Vector(bbox.toGeometry());
+                                feature = new OpenLayers.Feature.Vector(bbox.toGeometry());
                                 feature._drawType = GEOMETRY_TYPES.RECT;
-                                newLayer.addFeatures([feature]);
                                 break;
+                            case 'polygon':
+                                var points = [];
+                                angular.forEach(geometry.coordinates[0], function(point) {
+                                    points.push(new OpenLayers.Geometry.Point(point[0], point[1]))
+                                });
+                                var polygon = new OpenLayers.Geometry.Polygon(new OpenLayers.Geometry.LinearRing(points));
+                                feature = new OpenLayers.Feature.Vector(polygon);
+                                feature._drawType = GEOMETRY_TYPES.POLYGON;
+                                break;
+                        }
+                        if(angular.isDefined(feature)) {
+                            newLayer.addFeatures([feature]);
                         }
                     });
                 }
