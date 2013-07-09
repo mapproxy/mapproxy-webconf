@@ -372,14 +372,14 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     $scope.map.destroy();
                     delete $scope.map;
                 }
-                $scope.layerSwitcherMaximized = false;
-                $scope.dataExtent = undefined;
-                $scope.mapLayers = [];
-                $scope.drawLayer = undefined;
-                $scope.olmapBinds.proj = $scope.olmapBinds.proj.projCode;
-                $scope.olmapBinds.visible = false;
 
-                safeApply($scope);
+                safeApply($scope, function() {
+                    $scope.layerSwitcherMaximized = false;
+                    $scope.dataExtent = undefined;
+                    $scope.mapLayers = [];
+                    $scope.drawLayer = undefined;
+                    $scope.olmapBinds.visible = false;
+                });
             };
 
             var registerExtension = function(type, func) {
