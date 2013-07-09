@@ -4,11 +4,11 @@ angular.module('mapproxy_gui.openlayers', []).
 //OpenLayers.Feature.Vector.style
 constant('DEFAULT_VECTOR_STYLING', {
     'default': {
-        fillColor: "#ee9900",
-        fillOpacity: 0.4,
+        fillColor: "#bbb",
+        fillOpacity: 0.25,
         hoverFillColor: "white",
         hoverFillOpacity: 0.8,
-        strokeColor: "#ee9900",
+        strokeColor: "#777",
         strokeOpacity: 1,
         strokeWidth: 1,
         strokeLinecap: "round",
@@ -16,15 +16,15 @@ constant('DEFAULT_VECTOR_STYLING', {
         hoverStrokeColor: "red",
         hoverStrokeOpacity: 1,
         hoverStrokeWidth: 0.2,
-        pointRadius: 6,
+        pointRadius: 0,
         hoverPointRadius: 1,
         hoverPointUnit: "%",
         pointerEvents: "visiblePainted",
         cursor: "inherit",
-        fontColor: "#000000",
+        fontColor: "#555",
         labelAlign: "cm",
         labelOutlineColor: "white",
-        labelOutlineWidth: 3
+        labelOutlineWidth: 0
     },
     'select': {
         fillColor: "blue",
@@ -547,16 +547,8 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
     }
 }).
 
-constant('GRID_STYLING', {
-    'fillOpacity': 0.25,
-    'fillColor': '#bbb',
-    'strokeColor': '#777',
-    'fontColor': '#555',
-    'pointRadius': 0,
-    'labelOutlineWidth': 0
-}).
 
-directive('olGridExtension', function($parse, GRID_STYLING, GRID_AS_GEOJSON_URL, DEFAULT_VECTOR_STYLING, GRID_START_LEVEL, GRID_MAX_LEVEL, GRID_EXTENSION_TEMPLATE_URL) {
+directive('olGridExtension', function($parse, GRID_AS_GEOJSON_URL, DEFAULT_VECTOR_STYLING, GRID_START_LEVEL, GRID_MAX_LEVEL, GRID_EXTENSION_TEMPLATE_URL) {
     return {
         restrict: 'A',
         require: '^olMap',
@@ -654,7 +646,7 @@ directive('olGridExtension', function($parse, GRID_STYLING, GRID_AS_GEOJSON_URL,
                             ratio: 1
                     })],
                     styleMap: new OpenLayers.StyleMap({
-                        "default": new OpenLayers.Style($.extend(true, {}, DEFAULT_VECTOR_STYLING['default'], GRID_STYLING), {
+                        "default": new OpenLayers.Style($.extend(true, {}, DEFAULT_VECTOR_STYLING['default']), {
                         rules: [
                             new OpenLayers.Rule({
                                 filter: new OpenLayers.Filter.Function({
