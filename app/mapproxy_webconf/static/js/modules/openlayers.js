@@ -540,7 +540,7 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
         link: function(scope, element, attrs, olMapCtrl) {
             olMapCtrl.registerExtension('layers', function() {
                 var olEditorData = scope.olEditorData(scope, {})();
-                olEditorData.layer['zoomToExtent'] = !isEmpty(olEditorData.layer.geometries());
+                olEditorData.layer['zoomToDataExtent'] = !isEmpty(olEditorData.layer.geometries());
                 scope.drawLayer = olMapCtrl.createVectorLayer(olEditorData.layer, olEditorData.layerOptions);
             });
 
