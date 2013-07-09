@@ -112,9 +112,22 @@
               <img src="${ get_url('static', filepath='img/logo.png') }">
             </a>
             <ul class="nav">
-              <li><a href="${ get_url('projects') }">${ _('Projects') }</a></li>
+              <li class="
+                %if defined('active') and active == 'projects':
+                  active
+                %end
+                ">
+                <a href="${ get_url('projects') }">${ _('Projects') }</a>
+              </li>
+
               %if defined('project') and project != None:
-                <li><a href="${ get_url('configuration', project=project) }">${ _('Configuration') }</a></li>
+              <li class="
+                %if defined('active') and active == 'conf':
+                  active
+                %end
+              ">
+                <a href="${ get_url('configuration', project=project) }">${ _('Configuration') }</a>
+              </li>
               %end
             </ul>
 
