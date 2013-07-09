@@ -578,21 +578,19 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
                 'name': 'Coverage',
                 'isDrawLayer': true,
                 'geometries': function() {
-                    var geometries = [];
-                    if($scope.custom.bboxSelected) {
-                        if($scope.validBBox()) {
-                            geometries.push({
-                                'type': 'bbox',
-                                'coordinates': $scope.source.data.coverage.bbox
-                            })
-                        }
-                    } else {
-                        geometries.push({
+                    var geometry = undefined;
+                    if($scope.custom.bboxSelected && $scope.validBBox()) {
+                        geometry = {
+                            'type': 'bbox',
+                            'coordinates': $scope.source.data.coverage.bbox
+                        };
+                    } else if(!isEmpty($scope.source.data.coverage.polygon)) {
+                        geometry = {
                             'type': 'polygon',
                             'coordinates': $scope.source.data.coverage.polygon
-                        })
+                        };
                     }
-                    return geometries;
+                    return angular.isDefined(geometry) ? [geometry] : [];
                 }
             },
             'setResultGeometry': $scope.setResultGeometry
