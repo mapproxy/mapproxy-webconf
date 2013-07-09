@@ -94,25 +94,6 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
         templateUrl: OPENLAYERSMAP_TEMPLATE_URL,
         controller: function($scope, $element, $attrs) {
             $scope.eventHandlers = {
-                checkMaxFeaturesAfterAddOrActivate: function() {
-                    if(this.drawControl._disabled) {
-                        this.drawControl.deactivate();
-                    } else if(this.drawLayer.features.length >= this.drawLayer._maxFeatures) {
-                        this.drawControl.deactivate();
-                        OpenLayers.Element.addClass(this.drawControl.panel_div, 'itemDisabled');
-                        this.drawControl._disabled = true;
-                    }
-                },
-                checkMaxFeaturesAfterDelete: function() {
-                    if(this.drawLayer.features.length < this.drawLayer._maxFeatures) {
-                        OpenLayers.Element.removeClass(this.drawControl.panel_div, 'itemDisabled');
-                        this.drawControl._disabled = false;
-                    }
-                },
-                noticeChanges: function() {
-                    $scope.unsavedChanges = true;
-                    safeApply($scope)
-                },
                 updateMapScaleResolution: function() {
                     $scope.currentResolution = $scope.map.getResolution();
                     $scope.currentScale = $scope.map.getScale();
@@ -169,75 +150,12 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 $scope.toolbar = new OpenLayers.Control.Panel({
                     'displayClass': 'customEditingToolbar'
                 });
-                $scope._select = new OpenLayers.Control.SelectFeature($scope.drawLayer, {
-                    displayClass: "olControlSelectFeature"
-                });
-                $scope._draw = undefined;
 
-                switch($scope.drawLayer._allowedGeometry) {
-                    case 'bbox':
-                        $scope._draw = new OpenLayers.Control.DrawFeature(
-                            $scope.drawLayer,
-                            OpenLayers.Handler.RegularPolygon, {
-                                displayClass: "olControlDrawFeatureRect",
-                                handlerOptions: {
-                                    sides: 4,
-                                    irregular: true
-                                }
-                            }
-                        );
-                        break;
-                }
-                $scope._modify = new OpenLayers.Control.ModifyFeature($scope.drawLayer, {
-                    displayClass: "olControlModifyFeature",
-                    mode: OpenLayers.Control.ModifyFeature.RESIZE |
-                          OpenLayers.Control.ModifyFeature.DRAG |
-                          OpenLayers.Control.ModifyFeature.RESHAPE
-                });
-                $scope._delete = new OpenLayers.Control.DeleteFeature($scope.drawLayer, {
-                    displayClass: "olControlDeleteFeature",
-                    selectControl: $scope._select,
-                    modifyControl: $scope._modify
+                angular.forEach($scope.extensions.toolbar, function(func) {
+                    func($scope.toolbar);
                 });
 
-                $scope.toolbar.addControls([$scope._select, $scope._draw, $scope._modify, $scope._delete]);
                 $scope.map.addControl($scope.toolbar)
-
-                if(angular.isDefined($scope.drawLayer._maxFeatures)) {
-                    if($scope.drawLayer.features.length >= $scope.drawLayer._maxFeatures) {
-                        OpenLayers.Element.addClass($scope._draw.panel_div, 'itemDisabled');
-                        $scope._draw._disabled = true;
-                    }
-                    var eventData = {
-                        'drawLayer': $scope.drawLayer,
-                        'drawControl': $scope._draw,
-                        'scope': $scope
-                    };
-                    $scope._draw.events.register(
-                        'featureadded',
-                        eventData,
-                        $scope.eventHandlers.checkMaxFeaturesAfterAddOrActivate);
-                    $scope._draw.events.register(
-                        'activate',
-                        eventData,
-                        $scope.eventHandlers.checkMaxFeaturesAfterAddOrActivate);
-                    $scope._delete.events.register(
-                        'featuredeleted',
-                        eventData,
-                        $scope.eventHandlers.checkMaxFeaturesAfterDelete);
-                }
-                $scope.drawLayer.events.register(
-                    'featureadded',
-                    null,
-                    $scope.eventHandlers.noticeChanges);
-                $scope._delete.events.register(
-                    'featuredeleted',
-                    null,
-                    $scope.eventHandlers.noticeChanges);
-                $scope.drawLayer.events.register(
-                    'featuremodified',
-                    null,
-                    $scope.eventHandlers.noticeChanges);
             };
 
             //Layers
@@ -412,7 +330,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     $scope.map.events.register('zoomend', null, $scope.eventHandlers.updateMapScaleResolution);
                 }
 
-                if($attrs.mapToolbar && $scope.drawLayer) {
+                if(angular.isDefined($scope.extensions.toolbar)) {
                     initToolbar();
                 }
                 if($attrs.mapLayerSwitcher) {
@@ -555,6 +473,111 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
     }
 }).
 
+directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY_TYPES) {
+    return {
+        restrict: 'A',
+        require: '^olMap',
+        transclude: false,
+        replace: true,
+        scope: {
+            olEditorData: '&olEditorExtension'
+        },
+        controller: function($scope, $element, $attrs) {
+            $scope.eventHandlers = {
+                addType: function(f) {
+                    f.feature._drawType = this.type;
+                }
+            };
+            $scope.deleteTool = function(layer) {
+                var options = {
+                    displayClass: "olControlDeleteFeature",
+                    selectControl: $scope._select,
+                    modifyControl: $scope._modify
+                };
+                var control = new OpenLayers.Control.DeleteFeature(layer, options);
+                return control;
+            };
+            $scope.modifyTool = function(layer) {
+                var options = {
+                    displayClass: "olControlModifyFeature",
+                    mode: OpenLayers.Control.ModifyFeature.RESIZE |
+                          OpenLayers.Control.ModifyFeature.DRAG |
+                          OpenLayers.Control.ModifyFeature.RESHAPE
+                };
+                var control = new OpenLayers.Control.ModifyFeature(layer, options);
+                return control;
+            };
+            $scope.drawRectTool = function(layer) {
+                var handler = OpenLayers.Handler.RegularPolygon;
+                var handlerOptions = {
+                    sides: 4,
+                    irregular: true
+                };
+                var options = {
+                    displayClass: "olControlDrawFeatureRect",
+                    handlerOptions: handlerOptions
+                };
+                var control = new OpenLayers.Control.DrawFeature(layer, handler, options);
+                control.events.register('featureadded', {'type': GEOMETRY_TYPES.RECT}, $scope.eventHandlers.addType)
+                return control;
+            };
+            $scope.drawPolygonTool = function(layer) {
+                var handler = OpenLayers.Handler.Polygon;
+                var handlerOptions = {};
+                var options = {
+                    displayClass: "olControlDrawFeaturePolygon",
+                    handlerOptions: handlerOptions
+                };
+                var control = new OpenLayers.Control.DrawFeature(layer, handler, options);
+                control.events.register('featureadded', {'type': GEOMETRY_TYPES.POLYGON}, $scope.eventHandlers.addType)
+                return control;
+            };
+            $scope.extractGeometries = function(layer) {
+                var geometries = [];
+                angular.forEach(layer.features, function(feature) {
+                    switch(feature._drawType) {
+                        case GEOMETRY_TYPES.RECT:
+                        case GEOMETRY_TYPES.POLYGON:
+                            var geometry = {
+                                'type': feature._drawType,
+                                'coordinates': []
+                            }
+                            angular.forEach(feature.geometry.components[0].components, function(point) {
+                                geometry.coordinates.push([point.x, point.y])
+                            });
+                            geometries.push(geometry);
+                            break;
+                    };
+                });
+                return geometries;
+            }
+        },
+        link: function(scope, element, attrs, olMapCtrl) {
+            olMapCtrl.registerExtension('layers', function() {
+                var olEditorData = scope.olEditorData(scope, {})();
+                olEditorData.layer['zoomToExtent'] = !isEmpty(olEditorData.layer.geometries());
+                scope.drawLayer = olMapCtrl.createVectorLayer(olEditorData.layer, olEditorData.layerOptions);
+            });
+
+            olMapCtrl.registerExtension('toolbar', function(toolbar) {
+                toolbar.addControls([
+                    scope.deleteTool(scope.drawLayer),
+                    scope.modifyTool(scope.drawLayer),
+                    scope.drawRectTool(scope.drawLayer),
+                    scope.drawPolygonTool(scope.drawLayer)
+                ]);
+            });
+
+            olMapCtrl.registerExtension('destroy', function() {
+                var olEditorData = scope.olEditorData(scope, {})();
+                olEditorData.setResultGeometries(scope.extractGeometries(scope.drawLayer))
+
+                scope.drawLayer.destroy();
+                delete scope.drawLayer;
+            });
+        }
+    };
+}).
 
 directive('olGridExtension', function($parse, GRID_AS_GEOJSON_URL, DEFAULT_VECTOR_STYLING, GRID_START_LEVEL, GRID_MAX_LEVEL, GRID_EXTENSION_TEMPLATE_URL) {
     return {
