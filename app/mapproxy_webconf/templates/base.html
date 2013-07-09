@@ -51,34 +51,35 @@
         var app = angular.module('mapproxy_gui', ['angular.extensions', 'mapproxy_gui.directives', 'mapproxy_gui.services', 'mapproxy_gui.validators', 'mapproxy_gui.messages', 'mapproxy_gui.tooltips', 'mapproxy_gui.openlayers']);
 
       /* app defaults */
-        app.value('PAGE_LEAVE_MSG', PAGE_LEAVE_MSG);
-        app.value('SRS', SRS);
-        app.value('NON_TRANSPARENT_FORMATS', NON_TRANSPARENT_FORMATS);
-        app.value('BACKGROUND_SERVICE_TITLE', BACKGROUND_SERVICE_TITLE);
-        app.value('BACKGROUND_SERVICE_URL', BACKGROUND_SERVICE_URL);
-        app.value('BACKGROUND_SERVICE_LAYER', BACKGROUND_SERVICE_LAYER);
-        app.value('MAPPROXY_DEFAULT_GRID_SRS', MAPPROXY_DEFAULT_GRID_SRS);
-        app.value('BBOXES', BBOXES);
+        app.value('PAGE_LEAVE_MSG', "${ _('You have unsaved changes in this form. Realy leave the page and disgard unsaved changes?') }");
+        app.value('SRS', "EPSG:4326");
+        app.value('NON_TRANSPARENT_FORMATS', ["JPEG", "GIF"]);
+        app.value('BACKGROUND_SERVICE_TITLE', '${ _("Background Layer") }');
+        app.value('BACKGROUND_SERVICE_URL', "http://osm.omniscale.net/proxy/service?");
+        app.value('BACKGROUND_SERVICE_LAYER', "osm");
+        app.value('MAPPROXY_DEFAULT_GRID_SRS', ["EPSG:4326", "EPSG:900913", "EPSG:3857", "EPSG:102100", "EPSG:102113"]);
+        app.value('BBOXES', {
+          'EPSG:4326': [-180, -90, 180, 90],
+          'EPSG:3857': [-20037508.342789236,-20037508.342789236,20037508.342789236,20037508.342789236],
+          'EPSG:900913': [-20037508.342789236,-20037508.342789236,20037508.342789236,20037508.342789236]
+        });
 
         %if defined('project'):
           app.value('CREATE_CONFIG_URL', '${ get_url('write_config', project=project)}');
         % end
 
-
       /* OpenLayers directive defaults */
         angular.module('mapproxy_gui.openlayers').value('GRID_AS_GEOJSON_URL', "${ get_url('grid_as_geojson') }");
         angular.module('mapproxy_gui.openlayers').value('LAYERSWITCHER_TEMPLATE_URL', "${ get_url('angular_template', filename='layerswitcher') }");
         angular.module('mapproxy_gui.openlayers').value('OPENLAYERSMAP_TEMPLATE_URL', "${ get_url('angular_template', filename='openlayersmap') }");
-        angular.module('mapproxy_gui.openlayers').value('DPI', DPI);
-        angular.module('mapproxy_gui.openlayers').value('NUM_ZOOM_LEVELS', NUM_ZOOM_LEVELS);
-        angular.module('mapproxy_gui.openlayers').value('GRID_START_LEVEL', GRID_START_LEVEL);
-        angular.module('mapproxy_gui.openlayers').value('GRID_MAX_LEVEL', GRID_MAX_LEVEL);
+        angular.module('mapproxy_gui.openlayers').value('DPI', 72);
+        angular.module('mapproxy_gui.openlayers').value('NUM_ZOOM_LEVELS', 16);
+        angular.module('mapproxy_gui.openlayers').value('GRID_START_LEVEL', 0);
+        angular.module('mapproxy_gui.openlayers').value('GRID_MAX_LEVEL', 20);
         angular.module('mapproxy_gui.openlayers').value('GRID_EXTENSION_TEMPLATE_URL', "${ get_url('angular_template', filename='openlayers_gridextension.html') }");
 
       /* Message directive defaults */
-        angular.module('mapproxy_gui.messages').value('FADEOUT_DELAY', FADEOUT_DELAY);
-
-        angular.module('mapproxy_gui.messages').value('FADEOUT_DELAY', FADEOUT_DELAY);
+        angular.module('mapproxy_gui.messages').value('FADEOUT_DELAY', 2000);
 
       /* Other directive defaults */
         angular.module('mapproxy_gui.directives').value('EDITAREA_TEMPLATE_URL', "${ get_url('angular_template', filename='editarea') }");

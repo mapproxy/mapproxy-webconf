@@ -26,30 +26,33 @@ function BaseListCtrl($scope, MessageService, TranslationService, service, _sect
         delete copiedData.name;
         var newItem = $.extend({}, {'data': service.model}, {'data': copiedData});
         service.current(newItem);
+        MessageService.message(_section, 'copy_success', item.data.name + ' ' +TranslationService.translate('successfuly copied'));
     };
     $scope.newItem = function() {
         $scope.selected = undefined;
         service.current({'data': service.model});
     };
 
-    $scope._messageService = MessageService;
-    $scope.$watch('_messageService.messages.' + _section + '.load_success', function() {
+    if(!angular.isDefined($scope.$root[_section+'_messageService'])) {
+        $scope.$root[_section+'_messageService'] = MessageService;
+    }
+    $scope.$root.$watch(_section + '_messageService.messages.' + _section + '.load_success', function() {
         //we must wrap this in a function, so we can overwrite refreshList in child
         $scope.refreshList()
     });
-    $scope.$watch('_messageService.messages.' + _section + '.add_success', function() {
+    $scope.$root.$watch(_section + '_messageService.messages.' + _section + '.add_success', function() {
         $scope.selected = service.last();
         $scope.refreshList();
     });
-    $scope.$watch('_messageService.messages.' + _section + '.update_success', function() {
+    $scope.$root.$watch(_section + '_messageService.messages.' + _section + '.update_success', function() {
         $scope.selected = service.last();
         $scope.refreshList();
     });
-    $scope.$watch('_messageService.messages.' + _section + '.delete_success', function() {
+    $scope.$root.$watch(_section + '_messageService.messages.' + _section + '.delete_success', function() {
         $scope.refreshList();
         service.current({'data': service.model});
     });
-    $scope.$watch('_messageService.messages.' + _section + '.delete_has_dependencies', function(messageObject) {
+    $scope.$root.$watch(_section + '_messageService.messages.' + _section + '.delete_has_dependencies', function(messageObject) {
         if(angular.isDefined(messageObject)) {
             var dialogContent = '<ul>';
             angular.forEach(messageObject.message, function(_dependencies, name) {
@@ -86,7 +89,7 @@ function BaseListCtrl($scope, MessageService, TranslationService, service, _sect
             })
             MessageService.removeMessage(messageObject['section'], messageObject['action']);
         }
-    })
+    });
 };
 
 function SourceListCtrl($injector, $scope, TranslationService, MapproxySources) {
@@ -646,7 +649,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
 
     $(window).on('beforeunload', function() {
         if($scope.form.$dirty || $scope.editareaBinds.dirty) {
-            return TranslationService.translate(PAGE_LEAVE_MSG);
+            return PAGE_LEAVE_MSG;
         }
     });
 };
@@ -788,7 +791,7 @@ function MapproxyCacheFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Messa
 
     $(window).on('beforeunload', function() {
         if($scope.form.$dirty || $scope.editareaBinds.dirty) {
-            return TranslationService.translate(PAGE_LEAVE_MSG);
+            return PAGE_LEAVE_MSG;
         }
     });
 };
@@ -1088,7 +1091,7 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
 
     $(window).on('beforeunload', function() {
         if($scope.form.$dirty || $scope.editareaBinds.dirty) {
-            return TranslationService.translate(PAGE_LEAVE_MSG);
+            return PAGE_LEAVE_MSG;
         }
     });
 };
@@ -1243,7 +1246,7 @@ function MapproxyLayerFormCtrl($scope, $http, PAGE_LEAVE_MSG, TranslationService
 
     $(window).on('beforeunload', function() {
         if($scope.form.$dirty || $scope.editareaBinds.dirty) {
-            return TranslationService.translate(PAGE_LEAVE_MSG);
+            return PAGE_LEAVE_MSG;
         }
     });
 };
@@ -1343,7 +1346,7 @@ function MapproxyGlobalsFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Mes
 
     $(window).on('beforeunload', function() {
         if($scope.form.$dirty || $scope.editareaBinds.dirty) {
-            return TranslationService.translate(PAGE_LEAVE_MSG);
+            return PAGE_LEAVE_MSG;
         }
     });
 };
@@ -1448,7 +1451,7 @@ function MapproxyServicesCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Mappro
 
     $(window).on('beforeunload', function() {
         if($scope.form.$dirty) {
-            return TranslationService.translate(PAGE_LEAVE_MSG);
+            return PAGE_LEAVE_MSG;
         }
     });
 };
@@ -1493,7 +1496,7 @@ function ProjectDefaultsCtrl($scope, PAGE_LEAVE_MSG, ProjectDefaults, MessageSer
 
     $(window).on('beforeunload', function() {
         if($scope.form.$dirty) {
-            return TranslationService.translate(PAGE_LEAVE_MSG);
+            return PAGE_LEAVE_MSG;
         }
     });
 };

@@ -109,9 +109,9 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     safeApply($scope)
                 },
                 updateMapScaleResolution: function() {
-                    $($scope.map.div).find('._mapScaleResolution .resolutionArea').html($scope.map.getResolution());
-                    $($scope.map.div).find('._mapScaleResolution .scaleArea').html($scope.map.getScale())
-                    $($scope.map.div).find('._mapScaleResolution .dpi').html($scope.olmapBinds.dpi)
+                    $scope.currentResolution = $scope.map.getResolution();
+                    $scope.currentScale = $scope.map.getScale();
+                    $scope.currentDPI = $scope.olmapBinds.dpi || DPI;
                 }
             };
 

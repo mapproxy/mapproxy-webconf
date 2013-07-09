@@ -10,7 +10,6 @@
     "Yes": "${ _('Yes') }",
     "No": "${ _('No') }",
     "OK": "${ _('OK') }",
-    "You have unsaved changes in this form. Realy leave the page and disgard unsaved changes?": "${ _('You have unsaved changes in this form. Realy leave the page and disgard unsaved changes?') }",
     "Name": "${ _('Name') }",
     "URL": "${ _('URL') }",
     "Layers": "${ _('Layers') }",
@@ -34,5 +33,6 @@
     "Successful deleted": "${ _('Successful deleted') }",
     "Structure successful updated": "${ _('Structure successful updated') }",
     "Can not delete because of dependencies": "${ _('Can not delete because of dependencies') }",
-    "Create MapProxy Config": "${ _('Create MapProxy Config') }"
+    "Create MapProxy Config": "${ _('Create MapProxy Config') }",
+    "successfuly copied": "${ _('successfuly copied') }"
 }

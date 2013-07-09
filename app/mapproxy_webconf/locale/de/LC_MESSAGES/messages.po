@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-07-08 13:42+0200\n"
-"PO-Revision-Date: 2013-07-08 13:44+0100\n"
+"POT-Creation-Date: 2013-07-08 14:35+0200\n"
+"PO-Revision-Date: 2013-07-08 14:36+0100\n"
 "Last-Translator: \n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -115,12 +115,12 @@ msgstr "Für den Layer \"%(layer)s\" wurde die angegebene Source \"%(source)s\" 
 msgid "Missing services section"
 msgstr "Es ist kein Bereich services definiert."
 
-#: mapproxy_webconf/config.py:180
+#: mapproxy_webconf/config.py:172
 #, python-format
 msgid "grid %(grid)s contains invalid value in scales section"
 msgstr "Das Grid \"%(grid)s\" beinhaltet ungültige Werte im Abschnitt Scales"
 
-#: mapproxy_webconf/config.py:228
+#: mapproxy_webconf/config.py:212
 #, python-format
 msgid "%(type)s %(name)s contains invalid value in %(item)s item"
 msgstr "Der Wert für %(item)s im Abschnitt %(type)s %(name)s ist ungültig"
@@ -1040,4 +1040,8 @@ msgstr "Kann aufgrund von Abhängigkeiten nicht gelöscht werden"
 #: mapproxy_webconf/templates/resources/translations.js:37
 msgid "Create MapProxy Config"
 msgstr "MapProxy Konfiguration erstellen"
+
+#: mapproxy_webconf/templates/resources/translations.js:38
+msgid "successfuly copied"
+msgstr "erfolgreich kopiert"
 

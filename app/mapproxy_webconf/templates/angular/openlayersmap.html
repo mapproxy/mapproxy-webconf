@@ -12,8 +12,8 @@
        ng-click="$event.stopPropagation();"
        ng-dblclick="$event.stopPropagation();"
        ng-show="olmapBinds.showScaleRes">
-    <div>Resolution <span class="resolutionArea"></span></div>
-    <div>Scale 1:<span class="scaleArea"></span>  (<span class="dpi"></span> DPI)</div>
+    <div>Resolution {{currentResolution}}</div>
+    <div>Scale 1:{{currentScale}}  ({{currentDPI}} DPI)</div>
   </div>
   <span ng-transclude></span>
 </div>

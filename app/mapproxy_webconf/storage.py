@@ -173,7 +173,7 @@ class SQLiteStore(object):
         for row in cur.fetchall():
             yield row['project']
 
-    def get_all(self, section, project, default=DEFAULT_VALUE, with_rank=False, with_id=False, with_manual=False, with_locked=False):
+    def get_all(self, section, project, default=DEFAULT_VALUE, with_rank=False, with_id=False, with_manual=False, with_locked=False, with_section=False):
         if default is DEFAULT_VALUE:
             default = {}
 
@@ -198,7 +198,8 @@ class SQLiteStore(object):
                 data['_rank'] = row['rank']
             if with_locked:
                 data['_locked'] = row['locked']
-
+            if with_section:
+                data['_section'] = section
             if append_data:
                 result.append(data)
             else:
