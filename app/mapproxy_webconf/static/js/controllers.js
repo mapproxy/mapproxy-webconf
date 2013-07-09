@@ -620,7 +620,8 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {
         'units': 'm',
-        'resSelected': false
+        'resSelected': false,
+        'bboxSelected': true
     };
     $scope.defaults = {'data': ProjectDefaults.model};
 
