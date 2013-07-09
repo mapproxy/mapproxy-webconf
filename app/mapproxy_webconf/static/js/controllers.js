@@ -491,14 +491,15 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
                 };
             } else {
                 $scope.source.data.coverage.bbox = bbox;
-                $scope.source.data.coverage.srs = SRS;
+                $scope.source.data.coverage.bbox_srs = SRS;
             }
         }
     };
     $scope.showCoverageInMap = function(event) {
         safePreventDefaults(event);
         var bbox = $scope.validBBox() ? $scope.source.data.coverage.bbox : undefined;
-        var srs = $scope.source.data.coverage.srs || SRS;
+        var srs = $scope.custom.bboxSelected ? $scope.source.data.coverage.bbox_srs : $scope.source.data.coverage.polygon_srs;
+        srs = srs || SRS;
         $scope.olmapBinds = {
             visible: true,
             proj: srs,
