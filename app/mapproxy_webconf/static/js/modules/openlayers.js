@@ -519,14 +519,20 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
                 control.events.register('featureadded', {'type': GEOMETRY_TYPES.POLYGON}, $scope.eventHandlers.addType)
                 return control;
             };
-            $scope.extractGeometries = function(layer) {
-                var geometries = [];
-                angular.forEach(layer.features, function(feature) {
-                    var geometry = feature.geometry.clone();
-                    geometry['_drawType'] = feature._drawType;
-                    geometries.push(geometry);
-                });
-                return geometries;
+            $scope.extractGeometry = function(layer) {
+                var geometry = false;
+                if(layer.features.length == 1) {
+                    geometry = layer.features[0].geometry.clone()
+                    geometry['_drawType'] = layer.features[0]._drawType;
+                } else if(layer.features.length > 1) {
+                    var polygons = []
+                    angular.forEach(layer.features, function(feature) {
+                        polygons.push(feature.geometry.clone());
+                    });
+                    geometry = new OpenLayers.Geometry.MultiPolygon(polygons);
+                    geometry._drawType = GEOMETRY_TYPES.POLYGON;
+                }
+                return geometry;
             }
         },
         link: function(scope, element, attrs, olMapCtrl) {
@@ -552,7 +558,7 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
             olMapCtrl.registerExtension('destroy', function() {
                 var olEditorData = scope.olEditorData(scope, {})();
 
-                olEditorData.setResultGeometries(scope.extractGeometries(scope.drawLayer));
+                olEditorData.setResultGeometry(scope.extractGeometry(scope.drawLayer));
 
                 scope.modifyControl.deactivate();
                 scope.deleteControl.deactivate();
