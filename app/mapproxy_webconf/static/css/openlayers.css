@@ -222,6 +222,16 @@ div.olControlSelectFeatureItemInactive {
     background-repeat: no-repeat;
 }
 
+/* Draw Polygon */
+.olControlDrawFeaturePolygonItemInactive {
+    background-image: url(../img/draw_polygon_off.png);
+    background-repeat: no-repeat;
+}
+.olControlDrawFeaturePolygonItemActive {
+    background-image: url(../img/draw_polygon_on.png);
+    background-repeat: no-repeat;
+}
+
 /* Modify */
 .olControlModifyFeatureItemActive {
     background-image: url(../img/multi_toolbar.png);

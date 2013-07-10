@@ -141,7 +141,7 @@ var MapproxyBaseService = function(_section, _model, _preloadedData) {
             if(angular.isDefined(_this._rootScope))
                 _this._rootScope.$broadcast(_this._section + '.current');
         } else {
-            return angular.copy($.extend({}, {'data': _this._model}, _this._item));
+            return angular.copy($.extend(true, {}, {'data': _this._model}, _this._item));
         }
     };
     this.last = function() {
@@ -378,7 +378,9 @@ var sourceModel = {
     },
     'coverage': {
         'bbox': [],
-        'srs': undefined
+        'bbox_srs': undefined,
+        'polygon': [],
+        'polygon_srs': undefined
     },
     'supported_formats': [],
     'min_res_scale': undefined,

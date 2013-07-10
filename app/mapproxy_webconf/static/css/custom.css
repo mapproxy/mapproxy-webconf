@@ -682,3 +682,9 @@ dl#config-index-list dd{
 .alert-block > p {
   margin-bottom: 10px;
 }
+
+.scrollable {
+  height: 250px;
+  overflow-x:hidden;
+  overflow-y:auto;
+}

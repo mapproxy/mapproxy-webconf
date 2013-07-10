@@ -164,65 +164,100 @@
             </div>
             <hr class="formLine">
             <div labeled='input_label_toggleable'
-                 name-for="bbox_3"
                  tooltip-content="sources_coverage"
-                 text="${ _('Coverage BBOX') }">
-              <div class="text-center">
-                <input type="number"
-                       placeholder="${ _('North') }"
-                       float
-                       ng-model="source.data.coverage.bbox[3]"
-                       class="input-large"
-                       id="bbox_3"
-                       ng-disabled="grid._locked||grid.default"
-                       name="bbox_3"/>
-                <br>
-                <input type="number"
-                       placeholder="${ _('West') }"
-                       float
-                       ng-model="source.data.coverage.bbox[0]"
-                       class="input-large"
-                       id="bbox_0"
-                       ng-disabled="grid._locked||grid.default"
-                       name="bbox_0"/>
-                <input type="number"
-                       placeholder="${ _('East') }"
-                       float
-                       ng-model="source.data.coverage.bbox[2]"
-                       class="input-large"
-                       id="bbox_2"
-                       ng-disabled="grid._locked||grid.default"
-                       name="bbox_2"/>
-                <br>
-                <input type="number"
-                       placeholder="${ _('South') }"
-                       float
-                       ng-model="source.data.coverage.bbox[1]"
-                       class="input-large"
-                       id="bbox_1"
-                       ng-disabled="grid._locked||grid.default"
-                       name="bbox_1"/>
+                 text="${ _('Coverage') }">
+              <div class="btn-group switch pull-right"
+                   ng-model="custom.bboxSelected"
+                   data-toggle-name="is_private"
+                   data-toggle="buttons-radio"
+                   id="units">
+                <button type="button"
+                        ng-click="custom.bboxSelected=true;"
+                        class="btn btn-small"
+                        ng-class="{'active': custom.bboxSelected}"
+                        data-toggle="button">
+                  ${ _('BBox') }
+                </button>
+                <button type="button"
+                        ng-click="custom.bboxSelected=false;"
+                        class="btn btn-small"
+                        ng-class="{'active': !custom.bboxSelected}"
+                        data-toggle="button">
+                  ${ _('Polygon') }
+                </button>
+              </div>
+              <br>
+              <div labeled='input_label'
+                   name-for="bbox_3"
+                   ng-show="custom.bboxSelected"
+                   text="${ _('Coverage BBOX') }">
+                <div class="text-center">
+                  <input type="number"
+                         placeholder="${ _('North') }"
+                         float
+                         ng-model="source.data.coverage.bbox[3]"
+                         class="input-large"
+                         id="bbox_3"
+                         ng-disabled="grid._locked||grid.default"
+                         name="bbox_3"/>
+                  <br>
+                  <input type="number"
+                         placeholder="${ _('West') }"
+                         float
+                         ng-model="source.data.coverage.bbox[0]"
+                         class="input-large"
+                         id="bbox_0"
+                         ng-disabled="grid._locked||grid.default"
+                         name="bbox_0"/>
+                  <input type="number"
+                         placeholder="${ _('East') }"
+                         float
+                         ng-model="source.data.coverage.bbox[2]"
+                         class="input-large"
+                         id="bbox_2"
+                         ng-disabled="grid._locked||grid.default"
+                         name="bbox_2"/>
+                  <br>
+                  <input type="number"
+                         placeholder="${ _('South') }"
+                         float
+                         ng-model="source.data.coverage.bbox[1]"
+                         class="input-large"
+                         id="bbox_1"
+                         ng-disabled="grid._locked||grid.default"
+                         name="bbox_1"/>
+                </div>
+                <button class="btn btn-small"
+                        ng-disabled="!source.data.req.url"
+                        ng-click="addCoverage($event)"
+                        id="form_load_coverage">
+                  ${ _('Use coverage from WMS') }
+                </button>
+                <div labeled="input_label" name-for="coverage_bbox_srs" text="${ _('Coverage SRS') }">
+                  <select class="input-xlarge"
+                          ng-model="source.data.coverage.bbox_srs"
+                          id="coverage_bbox_srs"
+                          name="coverage_bbox_srs"
+                          ng-options="srs as srs for srs in defaults.data.srs">
+                  </select>
+                </div>
+              </div>
+              <div ng-show="!custom.bboxSelected" labeled="input_label" name-for="coverage_polygon" text="${ _('Coverage polygon') }">
+                <pre ng-bind="source.data.coverage.polygon|json" class="scrollable"></pre>
+                <div labeled="input_label" name-for="coverage_polygon_srs" text="${ _('Coverage SRS') }">
+                  <select class="input-xlarge"
+                          ng-model="source.data.coverage.polygon_srs"
+                          id="coverage_polygon_srs"
+                          name="coverage_polygon_srs"
+                          ng-options="srs as srs for srs in defaults.data.srs">
+                  </select>
+                </div>
               </div>
               <button class="btn btn-small"
-                      ng-disabled="!source.data.req.url"
-                      ng-click="addCoverage($event)"
-                      id="form_load_coverage">
-                ${ _('Use coverage from WMS') }
-              </button>
-              <div labeled="input_label" name-for="coverage_srs" text="${ _('Coverage SRS') }">
-                <select class="input-xlarge"
-                        ng-model="source.data.coverage.srs"
-                        id="coverage_srs"
-                        name="coverage_srs"
-                        ng-change="fillBBox()"
-                        ng-options="srs for srs in defaults.data.srs">
-                </select>
-              </div>
-              <button class="btn btn-small"
-                      ng-click="showCoverageInMap()"
-                      ng-disabled="!isEmptyBBox() && !validBBox()">
-                <span ng-show="!isEmptyBBox()">${ _('Show coverage in map') }</span>
-                <span ng-show="isEmptyBBox()">${ _('Create coverage in map') }</span>
+                      ng-click="showMap()"
+                      ng-disabled="allowMap()">
+                <span ng-show="hasCoverage()">${ _('Show coverage in map') }</span>
+                <span ng-show="!hasCoverage()">${ _('Create coverage in map') }</span>
               </button>
               <span message-handler="error"
                     message-types="olMap.showMap_error">
@@ -278,8 +313,8 @@
       </fieldset>
       <div ol-map="olmapBinds"
            map-hidden="true"
-           map-layer-switcher="true"
-           map-toolbar="true">
+           map-layer-switcher="true">
+        <div ol-editor-extension="provideEditorData"></div>
       </div>
     </form>
     <div editarea="editareaBinds"

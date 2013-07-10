@@ -293,6 +293,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
 
     var setSource = function() {
         $scope.source = MapproxySources.current();
+
         $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.source);
         //if equal, we have a clean new source
         if(angular.equals($scope.source.data, MapproxySources.model)) {
@@ -310,6 +311,12 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
         extractMinMaxRes($scope, $scope.source);
 
         $scope.form.$setPristine();
+
+        if(!isEmpty($scope.source.data.coverage.polygon) && isEmpty($scope.source.data.coverage.bbox)) {
+            $scope.custom.bboxSelected = false;
+        } else {
+            $scope.custom.bboxSelected = true;
+        }
 
         if($scope.source._manual) {
             $scope.editareaBinds.visible = true;
@@ -464,7 +471,9 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
     };
     $scope.validBBox = function() {
         var bbox = $scope.source.data.coverage.bbox
-        var empty = isEmpty(bbox);
+        if(isEmpty(bbox)) {
+            return false;
+        }
         var nonValues = false;
         for(var i = 0; i < 4; i++) {
             if(bbox[i] == undefined || bbox[i] == null) {
@@ -472,27 +481,15 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
                 break
             }
         }
-        return !empty && !nonValues && bbox.length == 4;
+        return !nonValues && bbox.length == 4;
     };
-    $scope.isEmptyBBox = function() {
-        return isEmpty($scope.source.data.coverage.bbox);
-    };
-    $scope.fillBBox = function(event) {
-        safePreventDefaults(event);
-        if(isEmpty($scope.source.data.coverage.bbox)) {
-            $scope.source.data.coverage.bbox = angular.copy(BBOXES[$scope.source.data.coverage.srs]);
+    $scope.hasCoverage = function() {
+        if($scope.custom.bboxSelected) {
+            return $scope.validBBox();
         } else {
-            var haveDefaultBBox = false;
-            angular.forEach(BBOXES, function(bbox) {
-                if(!haveDefaultBBox && angular.equals(bbox, $scope.source.data.coverage.bbox)) {
-                    haveDefaultBBox = true;
-                }
-            });
-            if(haveDefaultBBox) {
-                $scope.source.data.coverage.bbox = angular.copy(BBOXES[$scope.source.data.coverage.srs]);
-            }
+            return angular.isDefined($scope.source.data.coverage.polygon) && !isEmpty($scope.source.data.coverage.polygon);
         }
-    };
+    }
     $scope.addCoverage = function(event) {
         safePreventDefaults(event);
         var bbox = WMSSources.coverage($scope.source.data.req.url);
@@ -504,33 +501,19 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
                 };
             } else {
                 $scope.source.data.coverage.bbox = bbox;
-                $scope.source.data.coverage.srs = SRS;
+                $scope.source.data.coverage.bbox_srs = SRS;
             }
         }
     };
-    $scope.showCoverageInMap = function(event) {
+    $scope.showMap = function(event) {
         safePreventDefaults(event);
-        var bbox = $scope.validBBox() ? $scope.source.data.coverage.bbox : undefined;
-        var srs = $scope.source.data.coverage.srs || SRS;
-        var coverage = {
-            'name': 'Coverage',
-            'zoomToDataExtent': angular.isDefined(bbox),
-            'isDrawLayer': true,
-            'maxFeatures': 1,
-            'allowedGeometry': 'bbox'
-        }
-        if(angular.isDefined(bbox)) {
-            coverage['geometries'] = [{
-                'type': 'bbox',
-                'coordinates': bbox
-            }];
-        }
+        var srs = $scope.custom.bboxSelected ? $scope.source.data.coverage.bbox_srs : $scope.source.data.coverage.polygon_srs;
+        srs = srs || SRS;
+
         $scope.olmapBinds = {
             visible: true,
             proj: srs,
-            extent: bbox,
             layers: {
-                'vector': [coverage],
                 'background': [{
                     title: BACKGROUND_SERVICE_TITLE,
                     url: BACKGROUND_SERVICE_URL,
@@ -539,16 +522,6 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
                 }]
             }
         };
-        var unregisterCoverageWatch = $scope.$watch('olmapBinds.layers.vector[0].geometries', function(newValue, oldValue) {
-            if(!angular.equals(newValue, oldValue)) {
-                if(angular.equals(newValue, [])) {
-                    $scope.source.data.coverage.bbox = [];
-                } else {
-                    $scope.source.data.coverage.bbox = newValue[0].coordinates;
-                }
-                unregisterCoverageWatch();
-            }
-        }, true);
     };
     $scope.resetForm = function(event) {
         safePreventDefaults(event);
@@ -601,11 +574,55 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
             safeApply($scope);
         }
     };
-
+    $scope.provideEditorData = function() {
+        var editorData = {
+            'layer': {
+                'name': 'Coverage',
+                'isDrawLayer': true,
+                'geometries': function() {
+                    var geometry = undefined;
+                    if($scope.custom.bboxSelected && $scope.validBBox()) {
+                        geometry = {
+                            'type': 'bbox',
+                            'coordinates': $scope.source.data.coverage.bbox
+                        };
+                    } else if(!isEmpty($scope.source.data.coverage.polygon)) {
+                        geometry = $scope.source.data.coverage.polygon
+                    }
+                    return angular.isDefined(geometry) ? [geometry] : [];
+                }
+            },
+            'setResultGeometry': $scope.setResultGeometry
+        }
+        return editorData;
+    };
+    $scope.setResultGeometry = function(geometry) {
+        safeApply($scope, function() {
+            if(geometry) {
+                if(geometry.type == 'rect') {
+                    $scope.source.data.coverage.bbox = geometry.bbox;
+                    $scope.source.data.coverage.polygon = angular.fromJson(geometry.geojson);
+                    $scope.source.data.coverage.bbox_srs = $scope.olmapBinds.proj.projCode;
+                    $scope.source.data.coverage.polygon_srs = $scope.olmapBinds.proj.projCode;
+                } else if(geometry.type == 'Polygon') {
+                    $scope.source.data.coverage.bbox = []
+                    $scope.source.data.coverage.polygon = angular.fromJson(geometry.geojson);
+                    $scope.source.data.coverage.bbox_srs = $scope.olmapBinds.proj.projCode;
+                    $scope.source.data.coverage.polygon_srs = $scope.olmapBinds.proj.projCode;
+                    $scope.custom.bboxSelected = false;
+                }
+            } else {
+                $scope.source.data.coverage.bbox = [];
+                $scope.source.data.coverage.polygon = [];
+                $scope.custom.bboxSelected = true;
+            }
+        });
+    };
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {
         'units': 'm',
-        'resSelected': false
+        'resSelected': false,
+        'bboxSelected': true
     };
     $scope.defaults = {'data': ProjectDefaults.model};
 
