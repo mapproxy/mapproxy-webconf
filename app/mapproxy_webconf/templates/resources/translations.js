@@ -1,4 +1,4 @@
-{
+var translationsDict = {
     "Change URL": "${ _('Change URL') }",
     "Keep URL": "${ _('Keep URL') }",
     "Change url and insert layer": "${ _('Change url and insert layer') }",
