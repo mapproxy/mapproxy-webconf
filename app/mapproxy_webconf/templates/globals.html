@@ -4,7 +4,9 @@
 
 %def leftblock():
   <div ng-controller="MapproxyGlobalsChooserCtrl" ng-show="!_editarea_visible">
-    <h3>${ _('Globals') }</h3>
+    <h3>${ _('Globals') }
+      <i class="icon-question-sign help" tooltip="globals_list"></i>
+    </h3>
     <ul class="vertical-list">
       <div class="{{getClasses(global)}}"
            ng-repeat="(global, data) in globals.data"
@@ -19,8 +21,10 @@
 
 %def middleblock():
   <script type="text/ng-template" id="cache.html">
-    <h3>${ _('cache') }</h3>
-    <div labeled="input_label" name-for="cache_meta_size" text="${ _('Meta size') }">
+    <h3>${ _('cache') }
+        <i class="icon-question-sign help" tooltip="globals_cache"></i>
+    </h3>
+    <div labeled="input_label" name-for="cache_meta_size" text="${ _('Meta size') }" tooltip-content="globals_cache_meta_size">
       <input type="number"
              min=0
              ng-model="globals.data.cache.meta_size[0]"
@@ -34,7 +38,7 @@
              id="cache_meta_size_1"
              name="cache_meta_size_1"/>
     </div>
-    <div labeled="input_label" name-for="cache_meta_buffer" text="${ _('Meta buffer') }">
+    <div labeled="input_label" name-for="cache_meta_buffer" text="${ _('Meta buffer') }" tooltip-content="globals_cache_meta_buffer">
       <input type="number"
              min=1
              ng-model="globals.data.cache.meta_buffer"
@@ -43,10 +47,13 @@
     </div>
   </script>
   <script type="text/ng-template" id="image.html">
-    <h3>${ _('image') }</h3>
+    <h3>${ _('image') }
+      <i class="icon-question-sign help" tooltip="globals_image"></i>
+    </h3>
     <div labeled="input_label"
          name-for="image_resampling_method"
-         text="${ _('Resampling method') }">
+         text="${ _('Resampling method') }"
+         tooltip-content="globals_image_resampling_method">
       <select ng-model="globals.data.image.resampling_method"
               id="image_resampling_method"
               name="image_resampling_method">
@@ -55,7 +62,7 @@
         <option value="bicubic">Bicubic</option>
       </select>
     </div>
-    <div labeled="checkbox_label" name-for="image_paletted" text="${ _('Paletted') }">
+    <div labeled="checkbox_label" name-for="image_paletted" text="${ _('Paletted') }" tooltip-content="globals_image_paletted">
       <input type="checkbox" ng-model="globals.data.image.paletted" id="image_paletted" name="image_paletted">
     </div>
   </script>
