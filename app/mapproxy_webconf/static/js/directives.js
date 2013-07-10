@@ -191,9 +191,6 @@ directive('droppable', function($parse) {
 
                 safeApply(scope, function() {
                     ngModelCtrl.$setViewValue(scope.items);
-                    if(angular.isDefined(scope.items)) {
-                        ngModelCtrl.$setValidity('required', true);
-                    }
                     ngModelCtrl.$render();
                 });
             };
@@ -213,9 +210,6 @@ directive('droppable', function($parse) {
                 }
 
                 ngModelCtrl.$setViewValue(scope.items);
-                if(angular.isUndefined(scope.items)) {
-                    ngModelCtrl.$setValidity('required', false);
-                }
             };
             scope.insertCallback = function(insert) {
                 if(insert) {
@@ -286,6 +280,22 @@ directive('droppable', function($parse) {
             angular.forEach(scope.accepts, function(acceptClass) {
                 acceptClasses.push('.'+acceptClass);
             });
+
+            // copied and modified from angular/src/ng/directive/select.js:selectDirective.link
+            // required validator
+            if (attrs.required || attrs.ngRequired) {
+                var requiredValidator = function(value) {
+                    ngModelCtrl.$setValidity('required', angular.isDefined(scope.items));
+                    return value;
+                };
+
+                ngModelCtrl.$parsers.push(requiredValidator);
+                ngModelCtrl.$formatters.unshift(requiredValidator);
+
+                attrs.$observe('required', function() {
+                    requiredValidator(ngModelCtrl.$viewValue);
+                });
+            }
 
             $(element).droppable({
                 accept: acceptClasses.toString(),
