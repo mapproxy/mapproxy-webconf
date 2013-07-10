@@ -50,6 +50,33 @@
     "sources_add_srs_manual": {
         "content": "Fügen Sie hier die SRS manuell hinzu. Bitte geben Sie hier den EPSG-Code an. Zum Beispiel: EPSG:31467"
     },
+    "grids_list": {
+        "content": "Hier finden Sie eine Übersicht über die von Ihnen definierten und standardmässig bereitgestellten Grids."
+    },
+    "grids_default_list": {
+        "content": "<p>MapProxy stellt Ihnen einige DefaultGrids zur Verfügung. Diese können Sie direkt in den Caches verwenden.</p> Die Default-Grids können nicht bearbeitet werden. Wenn Sie Einstellungen ändern möchten können Sie die Grids kopieren und entsprechend anpassen."
+    },
+    "grid_name": {
+        "content": "Definieren Sie hier einen eindeutigen Namen des Grids."
+    },
+    "grid_srs": {
+        "content": "Wählen Sie hier das Koordinatensystem des Grids aus. Ist das benötigte Koordinatensystem nicht in der Liste vorhanden können Sie dieses in den Projekteinstellungen hinzufügen."
+    },
+    "grid_bbox": {
+        "content": "Geben Sie die Bounding Box an in welchem Bereich das Grid gültig sein soll"
+    },
+    "grid_bbox_srs": {
+        "content": "Die Bounding Box können Sie in dem gewünschten SRS angeben."
+    },
+    "grid_calculate_tiles": {
+        "content": "Berechnen Sie sich die Anzahl der Kacheln die das Grid verwendet. Die Level & Daten werden Ihnen in der rechten Spalte angzeigt."
+    },
+    "grid_origin": {
+        "content": "<p>Standardmässig ist der Kachelnullpunkt des Gitters unten links ausgerichtet. Für den WMTS Standard trannsformiert MapProxy diese nach oben links. Für benutzerdefinierte Grds können die Einstellungen zudem noch angepasst werden.</p> SW / LL definiert den Kachelnullpunkt unten links. NW / UL oben links vom Gitter."
+    },
+    "grid_scale": {
+        "content": "Geben Sie hier die Resolutions/Maßstäbe an, an denen MapProxy cachen soll."
+    },
     "cache_name": {
         "content": "Geben Sie den Namen des Caches ein. Dieser dient später zur eindeutigen Identifikation. Bitte beachten Sie das ein Cache nicht den selben Namen tragen kann wie eine Source."
     },

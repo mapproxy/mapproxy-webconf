@@ -9,7 +9,9 @@
       <span class="icon-plus-sign icon-white" ></span>
       ${ _('Create new grid') }
     </button>
-    <h3>${ _('User defined grids') }</h3>
+    <h3>${ _('User defined grids') }
+        <i class="icon-question-sign help" tooltip="grids_list"></i>
+    </h3>
     <span message-handler="success" message-types="grids.delete_success,grids.copy_success"></span>
     <span message-handler="error" message-types="grids.load_error,grids.delete_error"></span>
     <div>
@@ -35,7 +37,9 @@
         </li>
       </div>
     </ul>
-    <h3>${ _('Default grids') }</h3>
+    <h3>${ _('Default grids') }
+      <i class="icon-question-sign help" tooltip="grids_default_list"></i>
+    </h3>
     <ul class="vertical-list">
       <div class="{{isSelected(item)}}"
            ng-repeat="item in defaultGrids | orderBy:'name'"
@@ -59,11 +63,13 @@
       <h3 ng-show="formTitle=='default'">${ _('Default grid') }</h3>
       <form name="form" id="form" novalidate>
         <!-- name -->
-        <div labeled="input_label" name-for="name" text="${ _('Name') }">
+        <div labeled="input_label" name-for="name" text="${ _('Name') }"
+          tooltip-content="grid_name">
           <input required type="text" ng-model="grid.data.name" id="name" ng-disabled="grid._locked||grid.default" name="name" class="input-large"/>
         </div>
         <!-- SRS -->
-        <div labeled="input_label" name-for="srs" text="${ _('SRS') }">
+        <div labeled="input_label" name-for="srs" text="${ _('SRS') }"
+        tooltip-content="grid_srs">
           <select ng-model="grid.data.srs"
                   id="srs"
                   ng-options="srs for srs in defaults.data.srs"
@@ -73,7 +79,8 @@
         </div>
         <hr class="formLine">
         <!-- BBox -->
-        <div labeled="input_label" name-for="bbox_3" text="${ _('BBox') }">
+        <div labeled="input_label" name-for="bbox_3" text="${ _('BBox') }"
+          tooltip-content="grid_bbox">
           <div class="text-center">
             <input type="number"
                    placeholder="${ _('North') }"
@@ -112,7 +119,8 @@
           </div>
         </div>
         <!-- BBox SRS -->
-        <div labeled="input_label" name-for="bbox_srs" text="${ _('BBox SRS') }">
+        <div labeled="input_label" name-for="bbox_srs" text="${ _('BBox SRS') }"
+        tooltip-content="grid_bbox_srs">
           <select ng-model="grid.data.bbox_srs"
                   id="bbox_srs"
                   ng-options="srs for srs in defaults.data.srs"
@@ -126,12 +134,14 @@
                 ng-click="calculateTiles(!custom.resSelected)"
                 ng-disabled="!grid.data.srs">
           ${ _('Calculate tiles') }
+           <i class="icon-question-sign help" tooltip="grid_calculate_tiles"></i>
          </button>
         <hr>
         <!-- origin -->
         <div labeled='input_label_toggleable'
             name-for="origin"
-            text="${ _('Origin') }">
+            text="${ _('Origin') }"
+            tooltip-content="grid_origin">
         <div>
           <select ng-model="grid.data.origin"
                   id="origin"
@@ -144,7 +154,8 @@
         </div>
         <hr>
         <div labeled='input_label_toggleable'
-            text="${ _('Resolutions') }">
+            text="${ _('Resolutions') }"
+            tooltip-content="grid_scale">
         <!-- units to calculate -->
           <div class="btn-group switch pull-right"
                ng-model="grid.data.units"
