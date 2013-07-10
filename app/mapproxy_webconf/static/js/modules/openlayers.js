@@ -81,7 +81,9 @@ constant('DEFAULT_VECTOR_STYLING', {
 
 constant('GEOMETRY_TYPES', {
     'RECT': 'rect',
-    'POLYGON': 'polygon'
+    'BBOX': 'bbox',
+    'POLYGON': 'Polygon',
+    'MULTIPOLYGON': 'MultiPolygon'
 }).
 
 directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeout, DEFAULT_VECTOR_STYLING, OPENLAYERSMAP_TEMPLATE_URL, LAYERSWITCHER_TEMPLATE_URL, DPI, NUM_ZOOM_LEVELS, GEOMETRY_TYPES) {
