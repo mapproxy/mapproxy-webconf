@@ -476,18 +476,14 @@ service('DataShareService', function($rootScope) {
     }
 }).
 
-factory('TranslationService', function($http) {
+factory('TranslationService', function() {
     var translationService = {
         translations: {},
-        loaded: false,
-        loadDict: function(url) {
-            $http.get(url, {cache: false}).success(function(data) {
-                translationService.translations = data;
-                translationService.loaded = true;
-            }); //XXXkai: error handling
+        setDict: function(dict) {
+            translationService.translations = dict;
         },
         translate: function(key) {
-            return translationService.translations[key];
+            return translationService.translations[key]
         }
     }
     return translationService;

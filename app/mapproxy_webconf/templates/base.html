@@ -12,6 +12,7 @@
       %css()
     % end
 
+    <script type="text/javascript" src="${ get_url('resource', filename='translations.js') }"></script>
     % if defined('preload_block') and hasattr(preload_block, '__call__'):
       <script type="text/javascript">
         %preload_block()
@@ -91,8 +92,7 @@
             $rootScope.PROJECT = '${ project }';
           %end
           tooltipMapper.loadDict("${ get_url('resource', filename='tooltips.%s.js' % language) }");
-          TranslationService.loadDict("${ get_url('resource', filename='translations.js') }");
-
+          TranslationService.setDict(translationsDict);
         });
 
         /* set placeholder text for ie9 and browser who not support placeholder */
