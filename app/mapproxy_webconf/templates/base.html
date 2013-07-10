@@ -109,12 +109,26 @@
         <div class="navbar-inner">
           <div>
             <a class="brand" href="/">
-              <img src="${ get_url('static', filepath='img/logo.png') }">
+              <img width="52" height="55" src="${ get_url('static', filepath='img/logo.png') }" alt="MapProxy Logo">
+              <h1>MapProxy</h1>
             </a>
             <ul class="nav">
-              <li><a href="${ get_url('projects') }">${ _('Projects') }</a></li>
+              <li class="
+                %if defined('active') and active == 'projects':
+                  active
+                %end
+                ">
+                <a href="${ get_url('projects') }">${ _('Projects') }</a>
+              </li>
+
               %if defined('project') and project != None:
-                <li><a href="${ get_url('configuration', project=project) }">${ _('Configuration') }</a></li>
+              <li class="
+                %if defined('active') and active == 'conf':
+                  active
+                %end
+              ">
+                <a href="${ get_url('configuration', project=project) }">${ _('Configuration') }</a>
+              </li>
               %end
             </ul>
 

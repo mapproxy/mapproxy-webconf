@@ -43,15 +43,16 @@
              ng-repeat="item in filtered = (list | filter:{data.title:search}) | orderBy:'_rank'"
              ng-click="editItem($event, item)">
           <li>
-            <i ng-show="item._manual" class="icon-pencil"></i>
+            <i ng-show="item._manual" class="icon-pencil" title="${_('edit manual')}"></i>
             {{item.data.title}} ({{item.data.name}})
             <i class="icon-remove pull-right"
                dialog="ask"
                dialog-title="${ _('Confirm!') }"
                dialog-text="${ _('Really remove layer:') } {{item.data.title}} ({{item.data.name}})?"
-               callback="removeItem($event, item)">
+               callback="removeItem($event, item)"
+               title="${_('delete')}">
             </i>
-            <i class="icon-share" ng-click="copyItem($event, item)"></i>
+            <i class="icon-share" ng-click="copyItem($event, item)" title="${_('copy')}"></i>
           </li>
         </div>
       </ul>
@@ -98,7 +99,7 @@
              class="input-xlarge insertable-list uneditable-input">
           <div ng-repeat="source in layer.data.sources" class="label">
             <span ng-bind="showName(source)"></span>
-            <i class="icon-remove" ng-click="remove(source)"></i>
+            <i class="icon-remove" ng-click="remove(source)" title="${_('delete')}"></i>
           </div>
         </div>
       </div>

@@ -24,7 +24,10 @@
 
 <script type="text/ng-template" id="input_label">
   <div class="control-group" ng-class="{'error': invalid, 'warning': warning}">
-    <label class="control-label" for="{{name}}">{{getText()}}:</label>
+    <label class="control-label" for="{{name}}">{{getText()}}:
+        <i ng-show=tooltipContent class="icon-question-sign help" tooltip="{{tooltipContent}}"></i>
+      </span>
+  </label>
     <div class="controls">
       <span ng-transclude></span>
       <i class="pull-right icon-warning-sign help"
@@ -44,11 +47,11 @@
            toggle-element="next"
            set-focus>
       <span class="control-icons">
-        <i class="icon-chevron-right"></i>
-        <i class="icon-chevron-down" ng-show=false></i>
+        <i class="icon-chevron-right" title="${ _('show content') }"></i>
+        <i class="icon-chevron-down" ng-show=false title="${ _('hide content') }"></i>
       </span>
       {{getText()}}
-      <i class="icon-question-sign pull-right help" tooltip="uncommonInputs"></i>
+      <i ng-show=tooltipContent class="icon-question-sign pull-right help" tooltip="{{tooltipContent}}"></i>
     </label>
 
     <div class="controls" ng-show="false">

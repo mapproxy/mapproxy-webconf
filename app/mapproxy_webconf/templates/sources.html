@@ -27,6 +27,7 @@
     </span>
     <div>
       <input type="text" ng-model="search" placeholder="${ _('Filter') }..." class="input-large"/>
+      <i class="icon-question-sign pull-right help" tooltip="filter"></i>
       <span ng-show="list.length - filtered.length" ng-click="search=''">
         ${ _('Not shown sources') }: {{list.length - filtered.length}}
       </span>
@@ -36,15 +37,16 @@
            ng-repeat="item in filtered = (list | filter: {data.name:search})"
            ng-click="editItem($event, item)">
         <li>
-          <i ng-show="item._manual" class="icon-pencil"></i>
+          <i ng-show="item._manual" class="icon-pencil" title="${_('edit manual')}"></i>
           {{item.data.name}}
           <i class="icon-remove"
             dialog="ask"
             dialog-title="${ _('Confirm!') }"
             dialog-text="${ _('Really remove source') }: {{item.data.name}}?"
-            callback="removeItem($event, item)">
+            callback="removeItem($event, item)"
+            title="${_('delete')}">
           </i>
-           <i class="icon-share" ng-click="copyItem($event, item)"></i>
+           <i class="icon-share" ng-click="copyItem($event, item)" title="${_('copy')}"></i>
         </li>
       </div>
     </ul>
@@ -73,7 +75,7 @@
             <p>${ _('Replace service URL deletes all layers depends to it!') }</p>
           </div>
           <div ng-show="true">
-            <div labeled="input_label" name-for="name" text="${ _('Name') }">
+            <div labeled="input_label" name-for="name" text="${ _('Name') }" tooltip-content="sources_name">
               <input class="input-xlarge"
                      type="text"
                      required
@@ -81,7 +83,7 @@
                      id="name"
                      name="name"/>
             </div>
-            <div id="source_wms_url" labeled="input_label" name-for="req_url" text="${ _('URL') }">
+            <div id="source_wms_url" labeled="input_label" name-for="req_url" text="${ _('URL') }" tooltip-content="sources_url">
               <input id="req_url"
                      name="req_url"
                      class="input-xlarge"
@@ -94,7 +96,7 @@
                      accepts="wms_source"
                      use-key-for-value="data.url"/>
             </div>
-            <div labeled="input_label" name-for="req_layers" text="${ _('Layer') }" >
+            <div labeled="input_label" name-for="req_layers" text="${ _('Layer') }" tooltip-content="sources_layers" >
               <div droppable
                    sortable
                    required
@@ -109,14 +111,15 @@
                 <div ng-repeat="layer in source.data.req.layers" class="label">
                   {{layer}}
                   <span ng-show="layerTitle(layer)">({{layerTitle(layer)}})</span>
-                  <i class="icon-remove" ng-click="remove(layer)"></i>
+                  <i class="icon-remove" ng-click="remove(layer)" title="${_('delete')}"></i>
                 </div>
               </div>
             </div>
             <div class="input-append"
                  labeled="input_label"
                  name-for="add_layer_manual"
-                 text="${ _('Manual add layer') }">
+                 text="${ _('Manual add layer') }"
+                 tooltip-content="sources_manual_add_layers">
               <input type="text"
                      id="add_layer_manual"
                      name="add_layer_manual"
@@ -130,18 +133,9 @@
               </button>
             </div>
             <hr class="formLine">
-            <div labeled='checkbox_label'
-                 name-for="req_transparent"
-                 text="${ _('Transparency') }"
-                 warning="{{warningLogic.checkImageSettings()}}"
-                 warning-msg="${ _('Selectet image format(s) not support transparency.') }">
-              <input type="checkbox"
-                     ng-model="source.data.req.transparent"
-                     id="req_transparent"
-                     name="req_transparent"/>
-            </div>
             <div labeled="input_label"
                  name-for="supported_formats"
+                 tooltip-content="sources_supported_formats"
                  text="${ _('Supported formats') }"
                  warning="{{warningLogic.checkImageSettings()}}"
                  warning-msg="${ _('Selectet image format(s) not support transparency.') }">
@@ -158,8 +152,19 @@
                 ${ _('Clear selection') }
               </button>
             </div>
+            <div labeled='checkbox_label'
+                 name-for="req_transparent"
+                 text="${ _('Transparency') }"
+                 warning="{{warningLogic.checkImageSettings()}}"
+                 warning-msg="${ _('Selectet image format(s) not support transparency.') }">
+              <input type="checkbox"
+                     ng-model="source.data.req.transparent"
+                     id="req_transparent"
+                     name="req_transparent"/>
+            </div>
             <hr class="formLine">
             <div labeled='input_label_toggleable'
+                 tooltip-content="sources_coverage"
                  text="${ _('Coverage') }">
               <div class="btn-group switch pull-right"
                    ng-model="custom.bboxSelected"
@@ -259,7 +264,9 @@
               </span>
             </div>
             <hr class="formLine">
-            <div labeled="input_label_toggleable" name-for="supported_srs" text="${ _('Supported SRS') }">
+            <div labeled="input_label_toggleable" name-for="supported_srs"
+              text="${ _('Supported SRS') }"
+              tooltip-content="sources_supported_srs">
               <button class="btn btn-small pull-right"
                       ng-click="loadSRS($event)"
                       ng-disabled="!source.data.req.url">
@@ -268,13 +275,14 @@
               <div name="supported_srs" id="supported_srs" class="well well-small input-large">
                 <span class="badge" ng-repeat="srs in source.data.supported_srs">
                   {{srs}}
-                  <i class="icon-remove" ng-click="removeSRS($event, srs)"></i>
+                  <i class="icon-remove" ng-click="removeSRS($event, srs)" title="${_('delete')}"></i>
                 </span>
               </div>
               <div class="input-append"
                    labeled="input_label"
                    name-for="add_srs_manual"
-                   text="${ _('Manual add SRS') }">
+                   text="${ _('Manual add SRS') }"
+                   tooltip-content="sources_add_srs_manual">
                 <input type="text"
                        id="add_srs_manual"
                        name="add_srs_manual"
@@ -324,7 +332,9 @@
 
 %def rightblock():
   <div ng-controller="TreeCtrl">
-    <h3>${ _('Available WMS') }</h3>
+    <h3>${ _('Available WMS') }
+        <i class="icon-question-sign help" tooltip="source_available_wms"></i>
+    </h3>
     <script type="text/ng-template"  id="wms_layer_renderer">
       <div ng-click="show_infos(layer)" class="label droppable_name">
         <i class="icon-plus pull-left"
@@ -353,13 +363,14 @@
       <div ng-repeat="wms in wms_list" class="wms accordion-group">
         <div class="accordion-heading" toggle-element="next">
           <div class="accordion-toggle">{{wms.data.title}}</div>
-          <i class="icon-globe" ng-click="showMap($event, wms)"></i>
-          <i class="icon-refresh"  ng-click="refreshCapabilities($event, wms)"></i>
+          <i class="icon-globe" ng-click="showMap($event, wms)" title="${_('show in map')}"></i>
+          <i class="icon-refresh"  ng-click="refreshCapabilities($event, wms)" title="${_('refresh')}"></i>
           <i class="icon-remove"
              dialog="ask"
              dialog-title="${ _('Confirm!') }"
              dialog-text="${ _('Really remove WMS:') } {{wms.data.title}}?"
-             callback="removeCapabilities(wms)">
+             callback="removeCapabilities(wms)"
+             title="${_('delete')}">
           </i>
         </div>
         <div class="accordion-body" ng-show="isOpen()">
@@ -394,7 +405,7 @@
     </div>
     <hr>
     <form name="form" novalidate>
-      <div class="input-append" labeled="input_label" name-for="url"  text="${ _('Load WMS') }">
+      <div class="input-append" labeled="input_label" name-for="url" tooltip-content="sources_add_wms"  text="${ _('Load WMS') } ">
         <input type="url" required name="url" ng-model="capabilities.url" id="url" unique="{{wms_urls}}">
         <button class="btn btn-small" ng-click="addCapabilities()" ng-disabled="!form.$valid">${ _('Add') }</button>
       </div>

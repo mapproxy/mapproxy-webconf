@@ -1,4 +1,5 @@
-<div labeled="input_label_toggleable" name-for="units" text="${ _('Resolutions / Scales') }">
+<div labeled="input_label_toggleable" name-for="units"
+  text="${ _('Resolutions / Scales') }" tooltip-conent="min_max_res">
   <div class="btn-group switch pull-right"
        ng-model="custom.units"
        data-toggle-name="is_private"
@@ -33,15 +34,18 @@
       ${ _('Resolution') }
     </button>
   </div>
-  <div labeled="input_label" name-for="min_res" text="${ _('min_res') }" ng-show="custom.resSelected">
+  <div labeled="input_label" name-for="min_res" text="${ _('min_res') }"
+    ng-show="custom.resSelected" tooltip-content="min_res">
     <input type="text"
            float
            id="min_res"
            name="min_res"
            ng-model="custom.min_res"
-           class="input-medium"/>
+           class="input-medium"
+           />
   </div>
-  <div labeled="input_label" name-for="max_res" text="${ _('max_res') }" ng-show="custom.resSelected">
+  <div labeled="input_label" name-for="max_res" text="${ _('max_res') }"
+    ng-show="custom.resSelected" tooltip-content="max_res">
     <input type="text"
            float
            id="max_res"
@@ -49,7 +53,8 @@
            class="input-medium"
            name="max_res"/>
   </div>
-  <div labeled="input_label" name-for="min_res" text="${ _('min_scale') }" ng-show="!custom.resSelected">
+  <div labeled="input_label" name-for="min_res" text="${ _('min_scale') }"
+    ng-show="!custom.resSelected" tooltip-content="min_scale">
     <input type="text"
            float
            id="min_res"
@@ -57,7 +62,8 @@
            ng-model="custom.min_res"
            class="input-medium"/>
   </div>
-  <div labeled="input_label" name-for="max_res" text="${ _('max_scale') }" ng-show="!custom.resSelected">
+  <div labeled="input_label" name-for="max_res" text="${ _('max_scale') }"
+    ng-show="!custom.resSelected" tooltip-content="max_scale">
     <input type="text"
            float
            id="max_res"

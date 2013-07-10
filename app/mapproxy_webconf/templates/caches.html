@@ -26,15 +26,16 @@
            ng-repeat="item in filtered = (list | filter:{data.name:search}) | orderBy:'name'"
            ng-click="editItem($event, item)">
         <li>
-          <i ng-show="item._manual" class="icon-pencil"></i>
+          <i ng-show="item._manual" class="icon-pencil" title="${_('edit manual')}"></i>
           {{item.data.name}}
           <i class="icon-remove"
              dialog="ask"
              dialog-title="${ _('Confirm!') }"
              dialog-text="${ _('Really remove cache:') } {{item.data.name}}?"
-             callback="removeItem($event, item)">
+             callback="removeItem($event, item)"
+             title="${_('delete')}">
           </i>
-          <i class="icon-share" ng-click="copyItem($event, item)"></i>
+          <i class="icon-share" ng-click="copyItem($event, item)" title="${_('copy')}"></i>
         </li>
       </div>
     </ul>
@@ -67,7 +68,7 @@
              use-key-for-value="_id">
           <div ng-repeat="source in cache.data.sources" class="label">
             <span ng-bind="showName(source)"></span>
-            <i class="icon-remove" ng-click="remove(source)"></i>
+            <i class="icon-remove" ng-click="remove(source)" title="${_('delete')}"></i>
           </div>
         </div>
       </div>
@@ -82,7 +83,7 @@
              use-key-for-value="_id">
           <div ng-repeat="grid in cache.data.grids" class="label">
             <span ng-bind="showName(grid)"></span>
-            <i class="icon-remove" ng-click="remove(grid)"></i>
+            <i class="icon-remove" ng-click="remove(grid)" title="${_('delete')}"></i>
           </div>
         </div>
       </div>
@@ -203,8 +204,8 @@
              ng-repeat="item in filtered = (list.concat(defaultGrids) | filter: {data.name:search}) | orderBy:'name'"
              item-data="{{item}}">
           <li class="droppable_name" ng-class="{'locked-grid': item._locked}">
-            <i ng-show="item._locked || item.default" class="icon-ok"></i>
-            <i ng-show="!item._locked && !item.default" class="icon-warning-sign"></i>
+            <i ng-show="item._locked || item.default" class="icon-ok" title="${_('grid is locked and ready to use')}"></i>
+            <i ng-show="!item._locked && !item.default" class="icon-warning-sign" title="${_('grid is open')}"></i>
             {{item.data.name}}
             <i class="icon-info-sign pull-right"
                tooltip="tooltip"
