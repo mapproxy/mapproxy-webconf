@@ -312,7 +312,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
 
         $scope.form.$setPristine();
 
-        if(angular.isDefined($scope.source.data.coverage.polygon) && $scope.source.data.coverage.bbox.length == 0) {
+        if(!isEmpty($scope.source.data.coverage.polygon) && isEmpty($scope.source.data.coverage.bbox)) {
             $scope.custom.bboxSelected = false;
         } else {
             $scope.custom.bboxSelected = true;
