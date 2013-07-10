@@ -593,12 +593,11 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
                     return angular.isDefined(geometry) ? [geometry] : [];
                 }
             },
-            'setResultGeometry': $scope.setResultGeometry
+            'setResultGeometries': $scope.setResultGeometries
         }
         return editorData;
     };
-    $scope.setResultGeometry = function(geometry) {
-        console.log($scope.olmapBinds.proj.projCode);
+    $scope.setResultGeometries = function(geometries) {
         safeApply($scope, function() {
             if(geometry.type == 'rect') {
                 var bbox = geometry.coordinates[0].concat(geometry.coordinates[2]);
