@@ -127,6 +127,27 @@
     },
     "service_wms_md_access_constraints": {
         "content": "Über die Zugriffsbeschränkungen können Sie die Lizenz der Karten angeben. Also ob diese zum Beispiel nur für den privaten Gebrauch genutzt werden können."
+    },
+    "globals_list": {
+        "content": "In diesem Bereich können die internen Einstellungen konfiguriert werden, die in allen Beriech von MapProxy verwendet werden."
+    },
+    "globals_cache": {
+        "content": "Definieren Sie hier die globalen Cache Optionen von MapProxy."
+    },
+    "globals_cache_meta_size": {
+        "content": "<p>MapProxy fragt mehrere Kacheln in einer Anfrage ab. Über die Metasize können Sie angeben wie viele Kacheln in einer Anfrage abgefragt werden sollen. Standardmässig wird eine Metasize von 4x4 verwendet.</p> Bei einer Metasize mit den Werten 4 x 4 fragt MapProxy 16 Kacheln in einer Anfrage ab. Bei einer Kachelgröße von 256x256 Pixeln wird also eine Anfrage von 1024x1024 Pixeln an den WMS gesendet."
+    },
+    "globals_cache_meta_buffer": {
+        "content": "<p>Um das Problem mit abgeschnittenen Beschriftungen an Kachelgrenzen zu verbessern verfügt MapProxy über einen so genannten Metabuffer.</p> MapProxy vergrößert mit dem Metabuffer die Meta-Anfrage in jede Richtung um die angegebene Pixelanzahl. Standardmässig wird ein Metabuffer von 200 Pixeln verwendet."
+    },
+    "globals_image": {
+        "content": "Legen Sie hier die Optionen für die von MapProxy generierten Bilder fest."
+    },
+    "globals_image_resampling_method": {
+        "content": "<p>Die Resampling Methode wird verwendet wenn Bilder transformiert oder skaliert werden.</p> Die Option <em>Nearest</e> ist die schnellste und <em>Bicubic</em> die langsamste. Optisch bekommen Sie das beste Resultat wenn Sie <em>Bilinear</em> oder <em>Bicubic</em> auswählen. Die Option <em>Bicubic</em> erhöht den Kontrast und sollte daher für Vektordaten genutzt werden."
+    },
+    "globals_image_paletted": {
+        "content": "Über diese Option können Sie zwischen 8bit und 24bit PNG Bilder wählen. Standardmässig sind 8bit PNG Bilder aktiviert. Deaktivieren Sie paletted wenn Sie 24bit PNG Bilder benötigen."
     }
 
 }

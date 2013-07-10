@@ -11,6 +11,7 @@
     <div class="controls">
       <label class="control-label" for="{{name}}">
         <span ng-transclude></span> {{getText()}}
+        <i ng-show=tooltipContent class="icon-question-sign help" tooltip="{{tooltipContent}}"></i>
         <span ng-include="'error_messages'" class="text-error"></span>
         <i class="pull-right icon-warning-sign help"
            ng-show="warning"
