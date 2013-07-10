@@ -131,7 +131,10 @@
               </li>
               %end
             </ul>
-
+            <div class="pull-right language-select">
+              <a href="?language=en">EN</a>
+              <a href="?language=de">DE</a>
+            </div>
             %if defined('project') and project != None:
             <div class="pull-right project-name">
                 <span class="text-info">${ _('working on project') }: <strong>${project}</strong></span>

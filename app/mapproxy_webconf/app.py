@@ -34,9 +34,10 @@ SimpleTemplate.defaults["demo"] = configuration.get_bool('app', 'demo')
 SimpleTemplate.defaults["language"] = configuration.get('app', 'language')
 
 try:
-    translation = gettext.translation('messages', os.path.join(os.path.dirname(os.path.realpath(__file__)), 'locale'), ['de'])
-    _ = translation.ugettext
-    SimpleTemplate.defaults["_"] = _
+    translations = {
+        'de': gettext.translation('messages', os.path.join(os.path.dirname(os.path.realpath(__file__)), 'locale'), ['de']),
+        'en': gettext.translation('messages', os.path.join(os.path.dirname(os.path.realpath(__file__)), 'locale'), ['en']),
+    }
 except IOError as e:
     print e
 
@@ -49,6 +50,20 @@ def require_project(func):
             return func(**kwargs)
         else:
             abort(404)
+    return decorator
+
+def translate(func):
+    def decorator(storage, **kwargs):
+        if 'storage' in inspect.getargspec(func).args:
+                kwargs['storage'] = storage
+        language = request.query.get('language', None)
+        if language and language in ['de', 'en']:
+            response.set_cookie('mp-gui_language', language, path='/')
+        else:
+            language = request.get_cookie('mp-gui_language', 'de')
+        translations[language].install()
+        SimpleTemplate.defaults["_"] = _
+        return func(**kwargs)
     return decorator
 
 ## error_pages
@@ -216,10 +231,12 @@ rest_grids.setup_routing(app)
 ## other
 
 @app.route('/', name='index')
+@translate
 def index():
     return template('index')
 
 @app.route('/projects', name='projects')
+@translate
 def projects(storage):
     projects = {}
     for project in storage.get_projects():
@@ -238,17 +255,20 @@ def projects(storage):
     return template('projects', projects=projects)
 
 @app.route('/project/<project>/conf', name='configuration')
+@translate
 @require_project
 def conf_index(project):
     return template('config_index', project=project)
 
 @app.route('/project/<project>', name='project_defaults')
+@translate
 @require_project
 def project_defaults(project, storage):
     defaults = json.dumps(rest_defaults.list(project, storage))
     return template('project_defaults', project=project, defaults=defaults)
 
 @app.route('/project/<project>/conf/sources', name='sources')
+@translate
 @require_project
 def sources(project, storage):
     wms_capabilities = json.dumps(rest_wms_capabilities.list(project, storage))
@@ -258,6 +278,7 @@ def sources(project, storage):
     return template('sources', project=project, wms_capabilities=wms_capabilities, sources=sources, caches=caches, defaults=defaults)
 
 @app.route('/project/<project>/conf/grids', name='grids')
+@translate
 @require_project
 def grids(project, storage):
     grids = json.dumps(rest_grids.list(project, storage))
@@ -265,6 +286,7 @@ def grids(project, storage):
     return template('grids', project=project, grids=grids, defaults=defaults)
 
 @app.route('/project/<project>/conf/caches', name='caches')
+@translate
 @require_project
 def caches(project, storage):
     sources = json.dumps(rest_sources.list(project, storage))
@@ -273,6 +295,7 @@ def caches(project, storage):
     return template('caches', project=project, sources=sources, caches=caches, grids=grids)
 
 @app.route('/project/<project>/conf/layers', name='layers')
+@translate
 @require_project
 def layers(project, storage):
     sources = json.dumps(rest_sources.list(project, storage))
@@ -283,12 +306,14 @@ def layers(project, storage):
     return template('layers', project=project, sources=sources, caches=caches, layers=layers, grids=grids, defaults=defaults)
 
 @app.route('/project/<project>/conf/globals', name='globals')
+@translate
 @require_project
 def globals(project, storage):
     _globals = json.dumps(rest_globals.list(project, storage))
     return template('globals', project=project, _globals=_globals)
 
 @app.route('/project/<project>/conf/services', name='services')
+@translate
 @require_project
 def services(project, storage):
     defaults = json.dumps(rest_defaults.list(project, storage))
@@ -296,6 +321,7 @@ def services(project, storage):
     return template('services', project=project, defaults=defaults, services=services)
 
 @app.route('/conf/<project>/write_config', 'POST', name='write_config')
+@translate
 @require_project
 def write_config(project, storage):
     if configuration.get_bool('app', 'demo'):
@@ -309,7 +335,6 @@ def write_config(project, storage):
         response.status = 400
         return {'error': _('creating mapproxy config failed')}
 
-
 @app.route('/favicon.ico')
 def get_favicon():
     return static('favicon.ico')
@@ -319,10 +344,12 @@ def static(filepath):
     return static_file(filepath, root=os.path.join(os.path.dirname(__file__), 'static'))
 
 @app.route('/template/<filename>', name='angular_template')
+@translate
 def angular_template(filename):
     return template(os.path.join(os.path.dirname(__file__), 'templates/angular', filename))
 
 @app.route('/resources/<filename>', name='resource')
+@translate
 def resources(filename):
     file_location = os.path.join(os.path.dirname(__file__), 'templates/resources')
     return template(os.path.join(file_location, filename))
@@ -497,7 +524,6 @@ def delete_project(storage):
     if project:
         if storage.delete_project(project):
             response.status = 204
-
 
 def init_app(storage_dir):
     app.install(storage.SQLiteStorePlugin(os.path.join(configuration.get('app', 'storage_path'), configuration.get('app', 'sqlite_db'))))

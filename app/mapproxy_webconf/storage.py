@@ -2,19 +2,12 @@ import errno
 import inspect
 import os
 import sqlite3
-import gettext
 import yaml
 import json
 
 from bottle import PluginError
 
 from mapproxy_webconf import utils, defaults
-
-try:
-    translation = gettext.translation('messages', os.path.join(os.path.dirname(os.path.realpath(__file__)), 'locale'), ['de'])
-    _ = translation.ugettext
-except IOError as e:
-    print e
 
 class YAMLStorePlugin(object):
     name = 'yamlstore'

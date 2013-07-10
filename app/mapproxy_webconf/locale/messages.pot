@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-07-10 13:14+0200\n"
+"POT-Creation-Date: 2013-07-10 15:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,51 +17,51 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: mapproxy_webconf/app.py:62
+#: mapproxy_webconf/app.py:67
 msgid "Page not found"
 msgstr ""
 
-#: mapproxy_webconf/app.py:65
+#: mapproxy_webconf/app.py:70
 msgid "Internal server error"
 msgstr ""
 
-#: mapproxy_webconf/app.py:145 mapproxy_webconf/app.py:171
+#: mapproxy_webconf/app.py:150 mapproxy_webconf/app.py:176
 msgid "missing URL"
 msgstr ""
 
-#: mapproxy_webconf/app.py:150
+#: mapproxy_webconf/app.py:155
 msgid "no capabilities document found"
 msgstr ""
 
-#: mapproxy_webconf/app.py:154
+#: mapproxy_webconf/app.py:159
 msgid "invalid URL"
 msgstr ""
 
-#: mapproxy_webconf/app.py:314
+#: mapproxy_webconf/app.py:329
 msgid "creating mapproxy config successful"
 msgstr ""
 
-#: mapproxy_webconf/app.py:317
+#: mapproxy_webconf/app.py:332
 msgid "creating mapproxy config failed"
 msgstr ""
 
-#: mapproxy_webconf/app.py:344
+#: mapproxy_webconf/app.py:360
 msgid "creating yaml failed"
 msgstr ""
 
-#: mapproxy_webconf/app.py:353
+#: mapproxy_webconf/app.py:369
 msgid "parsing yaml failed"
 msgstr ""
 
-#: mapproxy_webconf/app.py:378
+#: mapproxy_webconf/app.py:394
 msgid "Missing data"
 msgstr ""
 
-#: mapproxy_webconf/app.py:483
+#: mapproxy_webconf/app.py:499
 msgid "Given grid bbox is invalid for used grid srs"
 msgstr ""
 
-#: mapproxy_webconf/app.py:495
+#: mapproxy_webconf/app.py:511
 #, python-format
 msgid "Project \"%(name)s\" already exists"
 msgstr ""
@@ -320,7 +320,7 @@ msgstr ""
 #: mapproxy_webconf/templates/grids.html:230
 #: mapproxy_webconf/templates/layers.html:25
 #: mapproxy_webconf/templates/layers.html:115
-#: mapproxy_webconf/templates/project_defaults.html:39
+#: mapproxy_webconf/templates/project_defaults.html:41
 #: mapproxy_webconf/templates/services.html:186
 #: mapproxy_webconf/templates/sources.html:307
 #: mapproxy_webconf/templates/angular/editarea.html:16
@@ -487,7 +487,7 @@ msgid "Default grid"
 msgstr ""
 
 #: mapproxy_webconf/templates/grids.html:71
-#: mapproxy_webconf/templates/project_defaults.html:19
+#: mapproxy_webconf/templates/project_defaults.html:21
 #: mapproxy_webconf/templates/services.html:36
 #: mapproxy_webconf/templates/resources/translations.js:20
 msgid "SRS"
@@ -645,22 +645,22 @@ msgstr ""
 msgid "infotext_default_settings"
 msgstr ""
 
-#: mapproxy_webconf/templates/project_defaults.html:15
+#: mapproxy_webconf/templates/project_defaults.html:16
 msgid "DPI"
 msgstr ""
 
-#: mapproxy_webconf/templates/project_defaults.html:27
+#: mapproxy_webconf/templates/project_defaults.html:29
 msgid "Add SRS"
 msgstr ""
 
-#: mapproxy_webconf/templates/project_defaults.html:30
+#: mapproxy_webconf/templates/project_defaults.html:32
 #: mapproxy_webconf/templates/sources.html:132
 #: mapproxy_webconf/templates/sources.html:294
 #: mapproxy_webconf/templates/sources.html:410
 msgid "Add"
 msgstr ""
 
-#: mapproxy_webconf/templates/project_defaults.html:44
+#: mapproxy_webconf/templates/project_defaults.html:46
 #: mapproxy_webconf/templates/projects.html:48
 msgid "To configuration"
 msgstr ""

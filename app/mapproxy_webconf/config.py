@@ -1,17 +1,9 @@
-import os
 import yaml
 import ConfigParser as _ConfigParser
-import gettext
 from mapproxy.config.spec import validate_mapproxy_conf
 from mapproxy.script.scales import scale_to_res
 from mapproxy_webconf import utils
 from mapproxy_webconf.constants import OGC_DPI, UNIT_FACTOR
-
-try:
-    translation = gettext.translation('messages', os.path.join(os.path.dirname(os.path.realpath(__file__)), 'locale'), ['de'])
-    _ = translation.ugettext
-except IOError as e:
-    print e
 
 class ConfigError(Exception):
     pass
