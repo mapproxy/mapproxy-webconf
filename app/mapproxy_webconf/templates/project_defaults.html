@@ -12,11 +12,13 @@
   <hr>
   <form ng-controller="ProjectDefaultsCtrl" name="form">
     <fieldset>
-      <div labeled="input_label" name-for="dpi" text="${ _('DPI') }">
+      <div labeled="input_label" name-for="dpi"
+        text="${ _('DPI') }" tooltip-content="default_config_dpi">
         <input float name="dpi" id="dpi" class="input-small" ng-model="defaults.data.dpi" type="number">
       </div>
       <hr>
-      <div labeled="input_label" name-for="default_srs" text="${ _('SRS') }">
+      <div labeled="input_label" name-for="default_srs"
+        text="${ _('SRS') }" tooltip-content="default_config_srs">
         <div name="default_srs" id="default_srs" class="well well-small">
           <span class="badge" ng-repeat="srs in defaults.data.srs">{{srs}}
             <i class="icon-remove" ng-click="removeSRS($event, srs)"></i>
@@ -24,7 +26,7 @@
         </div>
       </div>
 
-      <div class="input-append" labeled="input_label" name-for="new_srs" text="${ _('Add SRS') }">
+      <div class="input-append" labeled="input_label" name-for="new_srs" text="${ _('Add SRS') }" tooltip-content="default_config_add_srs">
         <input type="text" id="new_srs" name="new_srs" class="input-small" ng-model="custom.newSRS">
         <button class="btn btn-small" ng-click="addSRS($event)" ng-disabled="!custom.newSRS">
           ${ _('Add') }
