@@ -598,19 +598,19 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
     };
     $scope.setResultGeometry = function(geometry) {
         safeApply($scope, function() {
-            if(geometry.type == 'rect') {
-                var bbox = geometry.coordinates[0].concat(geometry.coordinates[2]);
-                $scope.source.data.coverage.bbox = bbox;
-                $scope.source.data.coverage.bbox_srs = $scope.olmapBinds.proj.projCode;
-                $scope.source.data.coverage.polygon = [];
-                $scope.source.data.coverage.polygon_srs = undefined;
-                $scope.custom.bboxSelected = true;
-            } else if(geometry.type == 'polygon') {
-                $scope.source.data.coverage.polygon = [geometry.coordinates]
-                $scope.source.data.coverage.polygon_srs = $scope.olmapBinds.proj.projCode;
-                $scope.source.data.coverage.bbox = [];
-                $scope.source.data.coverage.bbox_srs = undefined;
-                $scope.custom.bboxSelected = false;
+            if(geometry) {
+                if(geometry.type == 'rect') {
+                    $scope.source.data.coverage.bbox = geometry.bbox;
+                    $scope.source.data.coverage.polygon = angular.fromJson(geometry.geojson);
+                    $scope.source.data.coverage.bbox_srs = $scope.olmapBinds.proj.projCode;
+                    $scope.source.data.coverage.polygon_srs = $scope.olmapBinds.proj.projCode;
+                } else if(geometry.type == 'Polygon') {
+                    $scope.source.data.coverage.bbox = []
+                    $scope.source.data.coverage.polygon = angular.fromJson(geometry.geojson);
+                    $scope.source.data.coverage.bbox_srs = $scope.olmapBinds.proj.projCode;
+                    $scope.source.data.coverage.polygon_srs = $scope.olmapBinds.proj.projCode;
+                    $scope.custom.bboxSelected = false;
+                }
             } else {
                 $scope.source.data.coverage.bbox = [];
                 $scope.source.data.coverage.polygon = [];
