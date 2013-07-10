@@ -587,10 +587,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
                             'coordinates': $scope.source.data.coverage.bbox
                         };
                     } else if(!isEmpty($scope.source.data.coverage.polygon)) {
-                        geometry = {
-                            'type': 'polygon',
-                            'coordinates': $scope.source.data.coverage.polygon
-                        };
+                        geometry = $scope.source.data.coverage.polygon
                     }
                     return angular.isDefined(geometry) ? [geometry] : [];
                 }
