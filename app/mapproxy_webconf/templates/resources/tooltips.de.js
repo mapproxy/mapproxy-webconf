@@ -175,6 +175,15 @@
     },
     "globals_image_paletted": {
         "content": "Über diese Option können Sie zwischen 8bit und 24bit PNG Bilder wählen. Standardmässig sind 8bit PNG Bilder aktiviert. Deaktivieren Sie paletted wenn Sie 24bit PNG Bilder benötigen."
+    },
+    "default_config_dpi": {
+        "content": "<p>Der DPI Wert wird für die Berechnung verwendet. Hier sollte der selbe Wert eingestellt werden der auch vom Client oder dem Server genutzt wird. Häufige Werte sind 72 oder 96dpi. </p>Standardmässig werden 91dpi – der Wert des OGC WMS in der Version 1.3.0 – verwendet."
+    },
+     "default_config_srs": {
+        "content": "Die hier angegebenen Koordinatensysteme stehen in den Auswahllisten in der Anwendung zur Verfügung."
+    },
+     "default_config_add_srs": {
+        "content": "Fügen Sie hier Koordinatensysteme für die Auswahl hinzu. Das Format muss wie folgt angegeben sein: EPSG:xxxx"
     }
 
 }
