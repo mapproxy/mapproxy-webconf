@@ -221,7 +221,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
             };
             var createVectorLayer = function(layer, options) {
                 options = options || {};
-
+                var format = new OpenLayers.Format.GeoJSON();
                 if(!angular.isDefined(options.styleMap)) {
                     options.styleMap = new OpenLayers.StyleMap($.extend(true,
                         {}, DEFAULT_VECTOR_STYLING, layer.style
@@ -234,20 +234,15 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     var geometries = angular.isFunction(layer.geometries) ? layer.geometries() : layer.geometries;
                     angular.forEach(geometries, function(geometry) {
                         var feature = undefined;
-                        switch(geometry.type) {
-                            case 'bbox':
-                            case 'rect':
+                        switch(geometry['type']) {
+                            case GEOMETRY_TYPES.BBOX:
                                 var bbox = new OpenLayers.Bounds(geometry.coordinates);
                                 feature = new OpenLayers.Feature.Vector(bbox.toGeometry());
                                 feature._drawType = GEOMETRY_TYPES.RECT;
                                 break;
-                            case 'polygon':
-                                var points = [];
-                                angular.forEach(geometry.coordinates[0], function(point) {
-                                    points.push(new OpenLayers.Geometry.Point(point[0], point[1]))
-                                });
-                                var polygon = new OpenLayers.Geometry.Polygon(new OpenLayers.Geometry.LinearRing(points));
-                                feature = new OpenLayers.Feature.Vector(polygon);
+                            case GEOMETRY_TYPES.POLYGON:
+                            case GEOMETRY_TYPES.MULTIPOLYGON:
+                                feature = format.read(geometry)[0];
                                 feature._drawType = GEOMETRY_TYPES.POLYGON;
                                 break;
                         }
