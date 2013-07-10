@@ -518,18 +518,31 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
             };
             $scope.extractGeometry = function(layer) {
                 var geometry = false;
+                var format = new OpenLayers.Format.GeoJSON();
+                var _drawType = false;
+                var _bbox = false;
                 if(layer.features.length == 1) {
                     geometry = layer.features[0].geometry.clone()
-                    geometry['_drawType'] = layer.features[0]._drawType;
+                    if(layer.features[0]._drawType == GEOMETRY_TYPES.RECT) {
+                        _bbox = geometry.getBounds().toArray();
+                    }
+                    _drawType = layer.features[0]._drawType;
                 } else if(layer.features.length > 1) {
                     var polygons = []
                     angular.forEach(layer.features, function(feature) {
                         polygons.push(feature.geometry.clone());
                     });
                     geometry = new OpenLayers.Geometry.MultiPolygon(polygons);
-                    geometry._drawType = GEOMETRY_TYPES.POLYGON;
+                    _drawType = GEOMETRY_TYPES.POLYGON;
                 }
-                return geometry;
+                if(geometry) {
+                    return {
+                        'type': _drawType,
+                        'bbox': _bbox,
+                        'geojson': format.write(geometry)
+                    }
+                }
+                return false;
             }
         },
         link: function(scope, element, attrs, olMapCtrl) {
