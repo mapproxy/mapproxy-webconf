@@ -16,7 +16,7 @@
     <span message-handler="error" message-types="caches.load_error,caches.delete_error"></span>
     <div>
       <input type="text" ng-model="search" placeholder="${ _('Filter') }..." class="input-large"/>
-      <br>
+      <i class="icon-question-sign pull-right help" tooltip="filter"></i>
       <span ng-show="list.length - filtered.length" ng-click="search=''">
         ${ _('Not shown caches') }: {{list.length - filtered.length}}
       </span>
@@ -49,12 +49,12 @@
       <h3 ng-show="formTitle=='new'">${ _('New cache') }</h3>
       <h3 ng-show="formTitle=='edit'">${ _('Edit cache') }</h3>
       <!-- name -->
-      <div labeled="input_label" name-for="cache_name" text="${ _('Name') }">
+      <div labeled="input_label" name-for="cache_name" text="${ _('Name') }" tooltip-content="cache_name">
           <input required class="input-xlarge" type="text" ng-model="cache.data.name" id="cache_name" name="cache_name"/>
       </div>
       <!-- sources -->
         <!-- change-callback MUST provide parameters callback and new_data -->
-      <div labeled="input_label" name-for="sources" text="${ _('Sources') }">
+      <div labeled="input_label" name-for="sources" text="${ _('Sources') }" tooltip-content="cache_sources">
         <div class="input-xlarge insertable-list uneditable-input"
              droppable
              sortable
@@ -72,7 +72,7 @@
           </div>
         </div>
       </div>
-      <div labeled="input_label" name-for="grids" text="${ _('Grids') }">
+      <div labeled="input_label" name-for="grids" text="${ _('Grids') }" tooltip-content="cache_grids">
         <div class="input-xlarge insertable-list uneditable-input"
              droppable
              accepts="mapproxy_grid"
@@ -88,15 +88,15 @@
         </div>
       </div>
       <hr>
-      <div labeled='input_label_toggleable' text="${ _('Format') }">
-        <div labeled="input_label" name-for="format" text="${ _('Format') }">
+      <div labeled='input_label_toggleable' text="${ _('Format') }" tooltip-content="cache_format">
+        <div labeled="input_label" name-for="format" text="${ _('Format') }" tooltip-content="cache_image_format">
           <select class="input-xlarge" ng-model="cache.data.format" id="format" name="format">
             <option value="mixed">Mixed</option>
             <option value="image/png">Image/PNG</option>
             <option value="image/jpeg">Image/JPEG</option>
           </select>
         </div>
-        <div labeled="input_label" name-for="request_format" text="${ _('Request format') }">
+        <div labeled="input_label" name-for="request_format" text="${ _('Request format') }" tooltip-content="cache_request_format">
           <select class="input-xlarge" ng-model="cache.data.request_format" id="request_format" name="request_format">
             <option value="image/png">Image/PNG</option>
             <option value="image/jpeg">Image/JPEG</option>
@@ -131,11 +131,12 @@
 %def rightblock():
   <div>
     <span ng-controller="SourceListCtrl">
-      <h3>${ _('Sources') }</h3>
+      <h3>${ _('Sources') }
+        <i class="icon-question-sign help" tooltip="cache_sources_list"></i>
+      </h3>
       <span message-handler="error" message-types="sources.load_error"></span>
       <div>
         <input type="text" ng-model="search" placeholder="${ _('Filter') }..." class="input-large"/>
-        <br>
         <span ng-show="list.length - filtered.length" ng-click="search=''">
           ${ _('Not shown sources') }: {{list.length - filtered.length}}
         </span>
@@ -159,7 +160,9 @@
     </span>
     <hr>
     <span ng-controller="CacheListCtrl">
-      <h3>${ _('Caches') }</h3>
+      <h3>${ _('Caches') }
+        <i class="icon-question-sign help" tooltip="cache_caches_list"></i>
+      </h3>
       <span message-handler="error" message-types="caches.load_error"></span>
       <div>
         <input type="text" ng-model="search" placeholder="${ _('Filter') }..." class="input-large"/>
@@ -188,7 +191,9 @@
     </span>
     <hr>
     <div ng-controller="GridListCtrl">
-      <h3>${ _('Grids') }</h3>
+      <h3>${ _('Grids') }
+        <i class="icon-question-sign help" tooltip="cache_grids_list"></i>
+      </h3>
       <span message-handler="error" message-types="grids.load_error"></span>
       <div>
         <input type="text" ng-model="search" placeholder="${ _('Filter') }..." class="input-large"/>
