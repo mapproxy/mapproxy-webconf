@@ -6,7 +6,7 @@
         "content": "Über den Filter können Sie die Auswahl Ihrer Elemente einschränken."
     },
     "source_available_wms": {
-        "content": "Fügen Sie hier vorhanden WMS-Dienste hinzu um diese als Source für den MapProxy verwenden zu können. Nach dem Hinzufügen können Sie die per Drag & Drop zur Sources ziehen. <br><br>Über die <strong>Weltkugel</strong> haben Sie die Möglichkeit sich den Dienst anzuschauen."
+        "content": "<p>Fügen Sie hier vorhanden WMS-Dienste hinzu um diese als Source für den MapProxy verwenden zu können. Nach dem Hinzufügen können Sie die per Drag & Drop zur Sources ziehen.</p> Über die <strong>Weltkugel</strong> haben Sie die Möglichkeit sich den Dienst anzuschauen."
     },
     "sources_name": {
         "content": "Geben Sie hier den Namen der Quelle ein. Dieser dient später zur eindeutigen Identifikation."
@@ -72,10 +72,10 @@
         "content": "Ziehen Sie die gewünschte Sources per Drag & Drop in den Bereich <em>Sources</em> im ausgewählten Cache."
     },
     "cache_caches_list": {
-        "content": "Auch Caches können als Quelle für Caches verwendet werden. Ziehen Sie den gewünchsten Cache in den Bereich Sources"
+        "content": "Auch Caches können als Quelle für Caches verwendet werden. Ziehen Sie den gewünschten Cache in den Bereich Sources"
     },
     "cache_grids_list": {
-        "content": "Wählen Sie das passende Grid für Ihren Cache aus. Falls Grids im nachhinein verändert werden muss der Cache unter umständen geändert werden. Nutzen Sie daher, wenn möglich, nur fertige Grids."
+        "content": "Wählen Sie das passende Grid für Ihren Cache aus. Falls Grids im Nachhinein verändert werden muss der Cache unter umständen geändert werden. Nutzen Sie daher, wenn möglich, nur fertige Grids."
     },
     "layer_name": {
         "content": "Geben Sie hier den Namen des Layers ein. Dieser dient später zur eindeutigen Identifikation."
@@ -87,10 +87,47 @@
         "content": "Als Quellen für den Layer können Sie Caches oder Sources verwenden. Die Quellen werden von unten nach oben von MapProxy abgefragt."
     },
     "layer_caches_list": {
-        "content": "Ziehen Sie den gewünchsten Cache in den Bereich Sources zum Layer."
+        "content": "Ziehen Sie den gewünschten Cache in den Bereich Sources zum Layer."
     },
     "layer_sources_list": {
         "content": "Sie können auch ungecachtee Dienste in einem Layer verwenden. Ziehen Sie den gewünschten Dienst per Drag & Drop in den Bereich <em>Sources</em>."
+    },
+    "services_demo": {
+        "content": "<p>Der MapProxy-Demodienst ermöglicht es Ihnen die MapProxy Konfiguration zu testen. Hier finden Sie die Möglichkeit den Dienst in unterschiedlichen Koordinatensystem und Formen abzurufen. </p>Für den Produktivbetrieb empfehlen wir den Dienst zu deaktivieren."
+    },
+    "services_kml": {
+        "content": "Nach dem Aktivieren der KML Option können Sie den Dienst über die KML-Schnittstelle abrufen. Der Dienst kann dann zum Beispiel in Google Earth eingebunden werden."
+    },
+    "services_tms": {
+        "content": "Der Tile Map Serivce (TMS) ist ein OSGeo-Standard der die Karten in Kachelform bereitstellt. Der Dienst eignet sich besonders für Webanwendungen."
+    },
+    "services_wms": {
+        "content": "Über den Web Map Serivice (WMS) können Sie die Dienste zum Beispiel in Desktop-GI-Systeme einbinden."
+    },
+    "services_wmts": {
+        "content": "Der WMTS-Standard ist der OGC Kachelstandard. Er wird von einigen Desktop- und Web-Systemen unterstützt."
+    },
+    "service_wms_title": {
+        "content": "Der WMTS-Standard ist der OGC Kachelstandard. Er wird von einigen Desktop- und Web-Systemen unterstützt."
+    },
+    "service_wms_srs": {
+        "content": "Der WMTS-Standard ist der OGC Kachelstandard. Er wird von einigen Desktop- und Web-Systemen unterstützt."
+    },
+    "service_wms_metadata": {
+        "content": "<p>Die Metadaten des WMS Dienstes werden im Capabilities-Dokument angegeben. Diese Informationen dienen dem Nutzer als zusätzliche Informaitonsquelle.</p> Die Daten sind optional und können auch freigelassen werden."
+    },
+    "service_wms_md_abstract": {
+        "content": "Beschreiben Sie hier kurz den Inhalt des Dienstes."
+    },
+    "service_wms_md_online_resource": {
+        "content": "Geben Sie hier die Online-Resource an unter dem der Dienst erreichbar ist."
+    },
+    "service_wms_md_contact": {
+        "content": "<p>Bei Fragen zum Dienst soll durch die Kontaktdaten die Möglichkeit geschaffen werden einen Ansprechpartner zu finden. Tragen Sie daher hier die Kontaktdaten ein.</p> Die Daten müssen nicht vollständig angegeben werden. Leere Felder werden von MapProxy einfach ignoriert."
+    },
+    "service_wms_md_access_constraints": {
+        "content": "Über die Zugriffsbeschränkungen können Sie die Lizenz der Karten angeben. Also ob diese zum Beispiel nur für den privaten Gebrauch genutzt werden können."
     }
+
 }
 
