@@ -238,7 +238,7 @@
                 </div>
               </div>
               <div ng-show="!custom.bboxSelected" labeled="input_label" name-for="coverage_polygon" text="${ _('Coverage polygon') }">
-                <pre ng-bind="source.data.coverage.polygon|json"></pre>
+                <pre ng-bind="source.data.coverage.polygon|json" class="scrollable"></pre>
                 <div labeled="input_label" name-for="coverage_polygon_srs" text="${ _('Coverage SRS') }">
                   <select class="input-xlarge"
                           ng-model="source.data.coverage.polygon_srs"
