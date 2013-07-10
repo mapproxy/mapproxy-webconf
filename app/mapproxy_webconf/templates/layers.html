@@ -68,7 +68,7 @@
       <h3 ng-show="formTitle=='new'">${ _('New layer') }</h3>
       <h3 ng-show="formTitle=='edit'">${ _('Edit layer') }</h3>
       <!-- name -->
-      <div labeled="input_label" name-for="layer_name" text="${ _('Name') }">
+      <div labeled="input_label" name-for="layer_name" text="${ _('Name') }" tooltip-content="layer_name">
         <input required
                type="text"
                ng-model="layer.data.name"
@@ -77,7 +77,7 @@
                name="layer_name"/>
       </div>
       <!-- title -->
-      <div labeled="input_label" name-for="layer_title" text="${ _('Title') }">
+      <div labeled="input_label" name-for="layer_title" text="${ _('Title') }" tooltip-content="layer_title">
         <input required
                type="text"
                ng-model="layer.data.title"
@@ -86,7 +86,7 @@
                name="layer_title"/>
       </div>
       <!-- sources -->
-      <div labeled="input_label" name-for="sources" text="${ _('Sources') }">
+      <div labeled="input_label" name-for="sources" text="${ _('Sources') }" tooltip-content="layer_sources">
         <div required
              droppable
              sortable
@@ -139,7 +139,9 @@
 %def rightblock():
   <div>
     <span ng-controller="CacheListCtrl">
-      <h3>${ _('Caches') }</h3>
+      <h3>${ _('Caches') }
+        <i class="icon-question-sign help" tooltip="layer_caches_list"></i>
+      </h3>
       <span message-handler="error" message-types="caches.load_error"></span>
       <div>
         <input type="text" ng-model="search" placeholder="${ _('Filter') }..."/>
@@ -167,7 +169,9 @@
     </span>
     <hr>
     <span ng-controller="SourceListCtrl">
-      <h3>${ _('Sources') }</h3>
+      <h3>${ _('Sources') }
+        <i class="icon-question-sign help" tooltip="layer_sources_list"></i>
+      </h3>
       <span message-handler="error" message-types="sources.load_error"></span>
       <div>
         <input type="text" ng-model="search" placeholder="${ _('Filter') }..."/>

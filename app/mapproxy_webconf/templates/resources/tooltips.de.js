@@ -9,7 +9,7 @@
         "content": "Fügen Sie hier vorhanden WMS-Dienste hinzu um diese als Source für den MapProxy verwenden zu können. Nach dem Hinzufügen können Sie die per Drag & Drop zur Sources ziehen. <br><br>Über die <strong>Weltkugel</strong> haben Sie die Möglichkeit sich den Dienst anzuschauen."
     },
     "sources_name": {
-        "content": "Geben Sie hier den Namen der Quelle ein. Dieser dient später zur Eindeutigen Identifikation."
+        "content": "Geben Sie hier den Namen der Quelle ein. Dieser dient später zur eindeutigen Identifikation."
     },
     "sources_url":{
         "content": "Über die URL der Quelle wird der Dienst abgefragt. Diese können Sie per Hand eingeben oder per Drag & Drop aus dem rechts verfügbaren WMS hinzufügen."
@@ -76,6 +76,21 @@
     },
     "cache_grids_list": {
         "content": "Wählen Sie das passende Grid für Ihren Cache aus. Falls Grids im nachhinein verändert werden muss der Cache unter umständen geändert werden. Nutzen Sie daher, wenn möglich, nur fertige Grids."
+    },
+    "layer_name": {
+        "content": "Geben Sie hier den Namen des Layers ein. Dieser dient später zur eindeutigen Identifikation."
+    },
+    "layer_title": {
+        "content": "Der Titel des Layers wird im Capabilities-Dokument angezeigt und dient in GI-Systemen zur Identifikation. Wählen Sie hier daher eine möglichst sprechnede Beschreibung."
+    },
+    "layer_sources": {
+        "content": "Als Quellen für den Layer können Sie Caches oder Sources verwenden. Die Quellen werden von unten nach oben von MapProxy abgefragt."
+    },
+    "layer_caches_list": {
+        "content": "Ziehen Sie den gewünchsten Cache in den Bereich Sources zum Layer."
+    },
+    "layer_sources_list": {
+        "content": "Sie können auch ungecachtee Dienste in einem Layer verwenden. Ziehen Sie den gewünschten Dienst per Drag & Drop in den Bereich <em>Sources</em>."
     }
 }
 
