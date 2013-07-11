@@ -285,7 +285,8 @@ directive('droppable', function($parse) {
             // required validator
             if ((attrs.required || attrs.ngRequired) && element.is("div")) {
                 var requiredValidator = function(value) {
-                    ngModelCtrl.$setValidity('required', angular.isDefined(scope.items));
+                    var valid = angular.isDefined(value) && !isEmpty(value);
+                    ngModelCtrl.$setValidity('required', valid);
                     return value;
                 };
 
@@ -295,6 +296,8 @@ directive('droppable', function($parse) {
                 attrs.$observe('required', function() {
                     requiredValidator(ngModelCtrl.$viewValue);
                 });
+
+                scope.$watch(attrs.ngModel, requiredValidator, true);
             }
 
             $(element).droppable({
