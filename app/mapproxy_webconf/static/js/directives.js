@@ -283,7 +283,7 @@ directive('droppable', function($parse) {
 
             // copied and modified from angular/src/ng/directive/select.js:selectDirective.link
             // required validator
-            if (attrs.required || attrs.ngRequired) {
+            if ((attrs.required || attrs.ngRequired) && element.is("div")) {
                 var requiredValidator = function(value) {
                     ngModelCtrl.$setValidity('required', angular.isDefined(scope.items));
                     return value;
