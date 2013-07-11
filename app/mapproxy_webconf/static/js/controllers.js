@@ -1302,6 +1302,8 @@ function MapproxyGlobalsFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Mes
         var globals = MapproxyGlobals.list();
         if(globals.length > 0) {
             $scope.globals = angular.copy(globals[0]);
+        } else {
+            $scope.globals = angular.copy({'data': MapproxyGlobals.model});
         }
         DataShareService.data('globals', $scope.globals);
         $scope.editareaBinds.editareaValue = $scope.globals;
