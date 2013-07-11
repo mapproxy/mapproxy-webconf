@@ -89,8 +89,9 @@
               %end
             </ul>
             <div class="pull-right language-select">
-              <a href="?language=en">EN</a>
-              <a href="?language=de">DE</a>
+              % for lang in get('supported_languages', []):
+                <a href="?language=${ lang }">${ lang.upper() }</a>
+              % end
             </div>
             %if defined('project') and project != None:
             <div class="pull-right project-name">
