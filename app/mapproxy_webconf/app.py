@@ -497,7 +497,7 @@ def validate_grid_params():
     config = ConfigGeoJSONGrid(**grid_params)
     try:
         config.grid_bbox
-        return {'scales': config.scales}
+        return {'scales': [round(scale, 3) for scale in config.scales]}
     except InvalidTransformationException:
         response.status = 400
         return {'error': _('Given grid bbox is invalid for used grid srs')}
