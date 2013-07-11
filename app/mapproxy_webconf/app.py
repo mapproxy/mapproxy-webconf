@@ -31,7 +31,6 @@ app = bottle.Bottle()
 bottle.TEMPLATE_PATH = [os.path.join(os.path.dirname(__file__), 'templates')]
 SimpleTemplate.defaults["get_url"] = app.get_url
 SimpleTemplate.defaults["demo"] = configuration.get_bool('app', 'demo')
-SimpleTemplate.defaults["language"] = configuration.get('app', 'language')
 
 try:
     translations = {
@@ -60,8 +59,9 @@ def translate(func):
         if language and language in ['de', 'en']:
             response.set_cookie('mp-gui_language', language, path='/')
         else:
-            language = request.get_cookie('mp-gui_language', 'de')
+            language = request.get_cookie('mp-gui_language', configuration.get('app', 'language'))
         translations[language].install()
+        SimpleTemplate.defaults["language"] = language
         SimpleTemplate.defaults["_"] = _
         return func(**kwargs)
     return decorator
