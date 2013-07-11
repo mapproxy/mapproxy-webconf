@@ -87,9 +87,9 @@
       </div>
       <!-- sources -->
       <div labeled="input_label" name-for="sources" text="${ _('Sources') }" tooltip-content="layer_sources">
-        <div required
-             droppable
+        <div droppable
              sortable
+             required
              accepts="mapproxy_source,mapproxy_cache"
              allow-array="true"
              ng-model="layer.data.sources"
