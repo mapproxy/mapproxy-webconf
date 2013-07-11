@@ -507,7 +507,12 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
             };
             $scope.drawPolygonTool = function(layer) {
                 var handler = OpenLayers.Handler.Polygon;
-                var handlerOptions = {};
+                var handlerOptions = {
+                    // XXXholeModifier
+                    // see ticket mg-130
+                    // holeModifier: 'shiftKey',
+                    // freehandToggle: null
+                };
                 var options = {
                     displayClass: "olControlDrawFeaturePolygon",
                     handlerOptions: handlerOptions
