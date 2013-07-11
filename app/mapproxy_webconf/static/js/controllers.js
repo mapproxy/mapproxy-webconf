@@ -214,11 +214,11 @@ function MapProxyConfigCtrl($scope, $http, MessageService, TranslationService, C
         $http.post(CREATE_CONFIG_URL)
             .success(function(message) {
                 var dialogContent = "<div>" + message.success + "</div>";
-                dialogElement.append($(dialogContent))
+                dialogElement.append($(dialogContent));
                 $(dialogElement).dialog(dialogOptions);
-            }).error(function () {
+            }).error(function (message) {
                 var dialogContent = "<div>" + message.error + "</div>";
-                dialogElement.append($(dialogContent))
+                dialogElement.append($(dialogContent));
                 $(dialogElement).dialog(dialogOptions);
             });
     };
