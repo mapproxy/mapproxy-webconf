@@ -605,7 +605,7 @@ directive('olGridExtension', function($parse, GRID_AS_GEOJSON_URL, DEFAULT_VECTO
                     var level = {'level': i}
                     level['name'] = i;
                     if($scope.olGridScales) {
-                        level['name'] += ' (1 : ' + $scope.olGridScales[i] + ')';
+                        level['name'] += ' (1:' + $scope.olGridScales[i] + ')';
                     }
                     levels.push(level);
                 }
