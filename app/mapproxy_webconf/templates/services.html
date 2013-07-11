@@ -17,8 +17,6 @@
               {{translate(service)}}</li>
       </div>
     </ul>
-    <hr>
-    <div id="_editarea_toggle_button_container"></div>
   </div>
 %end
 
@@ -190,6 +188,7 @@
               id="form_reset">
         ${ _('Reset') }
       </button>
+      <div class="pull-right" id="_editarea_toggle_button_container"></div>
     </form>
     <div editarea="editareaBinds"
          yaml-URL="${get_url('json_to_yaml')}"
