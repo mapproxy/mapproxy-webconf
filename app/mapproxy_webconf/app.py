@@ -351,8 +351,10 @@ def angular_template(filename):
 @app.route('/resources/<filename>', name='resource')
 @translate
 def resources(filename):
-    file_location = os.path.join(os.path.dirname(__file__), 'templates/resources')
-    return template(os.path.join(file_location, filename))
+    tpl_file = os.path.join(os.path.dirname(__file__), 'templates/resources', filename)
+    if not os.path.exists(tpl_file):
+        abort(404)
+    return template(tpl_file)
 
 @app.route('/yaml', 'POST', name='json_to_yaml')
 def create_yaml():
