@@ -354,6 +354,8 @@ def resources(filename):
     tpl_file = os.path.join(os.path.dirname(__file__), 'templates/resources', filename)
     if not os.path.exists(tpl_file):
         abort(404)
+    if filename.split('.')[-1] == 'js':
+        response.content_type = 'application/javascript'
     return template(tpl_file)
 
 @app.route('/yaml', 'POST', name='json_to_yaml')
