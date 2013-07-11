@@ -176,6 +176,8 @@ def mapproxy_conf_from_storage(storage, project):
 
     if layers:
         mapproxy_conf['layers'] = [replace_ids_layer(l, id_map) for l in layers]
+        for layer in mapproxy_conf['layers']:
+            layer['sources'] = list(reversed(layer['sources']))
     if used_caches:
         mapproxy_conf['caches'] = id_dict_to_named_dict(dict((k, replace_ids_cache(caches[k], id_map)) for k in used_caches))
     if used_sources:
@@ -186,8 +188,7 @@ def mapproxy_conf_from_storage(storage, project):
     if 'sources' in mapproxy_conf:
         for source in mapproxy_conf['sources'].values():
             if 'req' in source and 'layers' in source['req']:
-                source['req']['layers'] = ','.join(source['req']['layers'])
-
+                source['req']['layers'] = ','.join(reversed(source['req']['layers']))
     return mapproxy_conf
 
 def clear_min_max_res_scales(data_elements, element_type, defaults):
