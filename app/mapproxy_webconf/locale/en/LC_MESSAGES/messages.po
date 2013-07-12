@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-07-12 10:43+0200\n"
+"POT-Creation-Date: 2013-07-12 13:32+0200\n"
 "PO-Revision-Date: 2013-07-10 15:45+0100\n"
 "Last-Translator: \n"
 "Language-Team: en <LL@li.org>\n"
@@ -45,27 +45,27 @@ msgstr ""
 msgid "creating mapproxy config failed"
 msgstr ""
 
-#: mapproxy_webconf/app.py:332
+#: mapproxy_webconf/app.py:331
 msgid "creating yaml failed"
 msgstr ""
 
-#: mapproxy_webconf/app.py:341
+#: mapproxy_webconf/app.py:340
 msgid "parsing yaml failed"
 msgstr ""
 
-#: mapproxy_webconf/app.py:366
+#: mapproxy_webconf/app.py:365
 msgid "Missing data"
 msgstr ""
 
-#: mapproxy_webconf/app.py:470
+#: mapproxy_webconf/app.py:469
 msgid "Given grid bbox is invalid for used grid srs"
 msgstr ""
 
-#: mapproxy_webconf/app.py:473
+#: mapproxy_webconf/app.py:472
 msgid "Given grid could not be displayed in map srs"
 msgstr ""
 
-#: mapproxy_webconf/app.py:485
+#: mapproxy_webconf/app.py:484
 #, python-format
 msgid "Project \"%(name)s\" already exists"
 msgstr ""
@@ -149,11 +149,11 @@ msgstr ""
 msgid "missing JSON data"
 msgstr ""
 
-#: mapproxy_webconf/lib/geojson.py:150
+#: mapproxy_webconf/lib/geojson.py:149
 msgid "Given bbox can not be used with given SRS"
 msgstr ""
 
-#: mapproxy_webconf/lib/geojson.py:156
+#: mapproxy_webconf/lib/geojson.py:155
 msgid "Too many tiles. Please zoom in."
 msgstr ""
 
@@ -313,7 +313,7 @@ msgstr ""
 #: mapproxy_webconf/templates/grids.html:230
 #: mapproxy_webconf/templates/layers.html:25
 #: mapproxy_webconf/templates/layers.html:115
-#: mapproxy_webconf/templates/project_defaults.html:41
+#: mapproxy_webconf/templates/project_defaults.html:43
 #: mapproxy_webconf/templates/services.html:184
 #: mapproxy_webconf/templates/sources.html:307
 #: mapproxy_webconf/templates/angular/editarea.html:16
@@ -480,7 +480,7 @@ msgid "Default grid"
 msgstr ""
 
 #: mapproxy_webconf/templates/grids.html:71
-#: mapproxy_webconf/templates/project_defaults.html:21
+#: mapproxy_webconf/templates/project_defaults.html:22
 #: mapproxy_webconf/templates/services.html:34
 #: mapproxy_webconf/templates/resources/translations.js:20
 msgid "SRS"
@@ -630,30 +630,30 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: mapproxy_webconf/templates/project_defaults.html:10
+#: mapproxy_webconf/templates/project_defaults.html:11
 msgid "Project defaults"
 msgstr ""
 
-#: mapproxy_webconf/templates/project_defaults.html:11
+#: mapproxy_webconf/templates/project_defaults.html:12
 msgid "infotext_default_settings"
 msgstr ""
 
-#: mapproxy_webconf/templates/project_defaults.html:16
+#: mapproxy_webconf/templates/project_defaults.html:17
 msgid "DPI"
 msgstr ""
 
-#: mapproxy_webconf/templates/project_defaults.html:29
+#: mapproxy_webconf/templates/project_defaults.html:31
 msgid "Add SRS"
 msgstr ""
 
-#: mapproxy_webconf/templates/project_defaults.html:32
+#: mapproxy_webconf/templates/project_defaults.html:34
 #: mapproxy_webconf/templates/sources.html:132
 #: mapproxy_webconf/templates/sources.html:294
 #: mapproxy_webconf/templates/sources.html:410
 msgid "Add"
 msgstr ""
 
-#: mapproxy_webconf/templates/project_defaults.html:46
+#: mapproxy_webconf/templates/project_defaults.html:48
 #: mapproxy_webconf/templates/projects.html:48
 msgid "To configuration"
 msgstr ""
@@ -940,15 +940,19 @@ msgstr ""
 msgid "Invalid integer"
 msgstr ""
 
-#: mapproxy_webconf/templates/angular/base_templates.html:51
-msgid "show content"
+#: mapproxy_webconf/templates/angular/base_templates.html:7
+msgid "Invalid character(s)"
 msgstr ""
 
 #: mapproxy_webconf/templates/angular/base_templates.html:52
+msgid "show content"
+msgstr ""
+
+#: mapproxy_webconf/templates/angular/base_templates.html:53
 msgid "hide content"
 msgstr ""
 
-#: mapproxy_webconf/templates/angular/base_templates.html:80
+#: mapproxy_webconf/templates/angular/base_templates.html:81
 msgid "An error occured"
 msgstr ""
 

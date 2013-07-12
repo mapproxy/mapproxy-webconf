@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-07-12 10:43+0200\n"
-"PO-Revision-Date: 2013-07-12 10:44+0100\n"
+"POT-Creation-Date: 2013-07-12 13:32+0200\n"
+"PO-Revision-Date: 2013-07-12 13:33+0100\n"
 "Last-Translator: \n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -46,27 +46,27 @@ msgstr "MapProxy Konfiguration wurde erfolgreich erstellt"
 msgid "creating mapproxy config failed"
 msgstr "Das Erstellen der MapProxy Konfiguration ist fehlgeschlagen"
 
-#: mapproxy_webconf/app.py:332
+#: mapproxy_webconf/app.py:331
 msgid "creating yaml failed"
 msgstr "Das Erstellen der YAML-Datei ist fehlgeschlagen"
 
-#: mapproxy_webconf/app.py:341
+#: mapproxy_webconf/app.py:340
 msgid "parsing yaml failed"
 msgstr "Das Lesen der YAML-Datei fehlgeschlagen"
 
-#: mapproxy_webconf/app.py:366
+#: mapproxy_webconf/app.py:365
 msgid "Missing data"
 msgstr "Fehlende Daten"
 
-#: mapproxy_webconf/app.py:470
+#: mapproxy_webconf/app.py:469
 msgid "Given grid bbox is invalid for used grid srs"
 msgstr "Die angegebene Boundingbox ist für das angegebene Koordinatensystem ungültig"
 
-#: mapproxy_webconf/app.py:473
+#: mapproxy_webconf/app.py:472
 msgid "Given grid could not be displayed in map srs"
 msgstr "Das angegebene Grid kann nicht im Koordinatensystem der Karte angezeigt werden"
 
-#: mapproxy_webconf/app.py:485
+#: mapproxy_webconf/app.py:484
 #, python-format
 msgid "Project \"%(name)s\" already exists"
 msgstr "Erstellen nicht möglich. Es existiert bereits ein Projekt mit dem Namen \"%(name)s\""
@@ -145,11 +145,11 @@ msgstr "Invalide JSON Daten"
 msgid "missing JSON data"
 msgstr "Fehlende JSON Daten"
 
-#: mapproxy_webconf/lib/geojson.py:150
+#: mapproxy_webconf/lib/geojson.py:149
 msgid "Given bbox can not be used with given SRS"
 msgstr "Die Bounding Box kann mit dem ausgewählten Koordinatensystem nicht verwendet werden"
 
-#: mapproxy_webconf/lib/geojson.py:156
+#: mapproxy_webconf/lib/geojson.py:155
 msgid "Too many tiles. Please zoom in."
 msgstr ""
 "Zu viele Kacheln. \n"
@@ -311,7 +311,7 @@ msgstr "Request Format"
 #: mapproxy_webconf/templates/grids.html:230
 #: mapproxy_webconf/templates/layers.html:25
 #: mapproxy_webconf/templates/layers.html:115
-#: mapproxy_webconf/templates/project_defaults.html:41
+#: mapproxy_webconf/templates/project_defaults.html:43
 #: mapproxy_webconf/templates/services.html:184
 #: mapproxy_webconf/templates/sources.html:307
 #: mapproxy_webconf/templates/angular/editarea.html:16
@@ -472,7 +472,7 @@ msgid "Default grid"
 msgstr "Default Grid"
 
 #: mapproxy_webconf/templates/grids.html:71
-#: mapproxy_webconf/templates/project_defaults.html:21
+#: mapproxy_webconf/templates/project_defaults.html:22
 #: mapproxy_webconf/templates/services.html:34
 #: mapproxy_webconf/templates/resources/translations.js:20
 msgid "SRS"
@@ -620,30 +620,30 @@ msgstr "Layer bearbeiten"
 msgid "Title"
 msgstr "Titel"
 
-#: mapproxy_webconf/templates/project_defaults.html:10
+#: mapproxy_webconf/templates/project_defaults.html:11
 msgid "Project defaults"
 msgstr "Defaultwerte des Projekts"
 
-#: mapproxy_webconf/templates/project_defaults.html:11
+#: mapproxy_webconf/templates/project_defaults.html:12
 msgid "infotext_default_settings"
 msgstr "TODO: Infotexte Default Settings"
 
-#: mapproxy_webconf/templates/project_defaults.html:16
+#: mapproxy_webconf/templates/project_defaults.html:17
 msgid "DPI"
 msgstr "DPI"
 
-#: mapproxy_webconf/templates/project_defaults.html:29
+#: mapproxy_webconf/templates/project_defaults.html:31
 msgid "Add SRS"
 msgstr "Koordinatensystem hinzufügen"
 
-#: mapproxy_webconf/templates/project_defaults.html:32
+#: mapproxy_webconf/templates/project_defaults.html:34
 #: mapproxy_webconf/templates/sources.html:132
 #: mapproxy_webconf/templates/sources.html:294
 #: mapproxy_webconf/templates/sources.html:410
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: mapproxy_webconf/templates/project_defaults.html:46
+#: mapproxy_webconf/templates/project_defaults.html:48
 #: mapproxy_webconf/templates/projects.html:48
 msgid "To configuration"
 msgstr "Konfiguration bearbeiten"
@@ -930,15 +930,19 @@ msgstr "Keine gültige Gleitkommazahl"
 msgid "Invalid integer"
 msgstr "Keine gültige ganze Zahl"
 
-#: mapproxy_webconf/templates/angular/base_templates.html:51
+#: mapproxy_webconf/templates/angular/base_templates.html:7
+msgid "Invalid character(s)"
+msgstr "Ungültige(s) Zeichen"
+
+#: mapproxy_webconf/templates/angular/base_templates.html:52
 msgid "show content"
 msgstr "Einblenden"
 
-#: mapproxy_webconf/templates/angular/base_templates.html:52
+#: mapproxy_webconf/templates/angular/base_templates.html:53
 msgid "hide content"
 msgstr "Ausblenden"
 
-#: mapproxy_webconf/templates/angular/base_templates.html:80
+#: mapproxy_webconf/templates/angular/base_templates.html:81
 msgid "An error occured"
 msgstr "Es ist ein Fehler aufgetreten"
 
