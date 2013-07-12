@@ -659,6 +659,12 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
         }
     });
 
+    $scope.$watch('_messageService.messages.sources.add_success + _messageService.messages.sources.update_success', function() {
+        safeApply($scope, function() {
+            $scope.form.$setPristine();
+        });
+    });
+
     $scope.$watch('source', function() {
             $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.source);
         }, true
@@ -789,6 +795,12 @@ function MapproxyCacheFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Messa
     $scope._messageService = MessageService;
 
     $scope.$watch('_messageService.messages.grids.load_success', refreshGrids);
+
+    $scope.$watch('_messageService.messages.caches.add_success + _messageService.messages.caches.update_success', function() {
+        safeApply($scope, function() {
+            $scope.form.$setPristine();
+        });
+    });
 
     $scope.$watch('editareaBinds.save', function(save) {
         if(save) {
@@ -1108,6 +1120,12 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
         }
     });
 
+    $scope.$watch('_messageService.messages.grids.add_success + _messageService.messages.grids.update_success', function() {
+        safeApply($scope, function() {
+            $scope.form.$setPristine();
+        });
+    });
+
     $(window).on('beforeunload', function() {
         if($scope.form.$dirty || $scope.editareaBinds.dirty) {
             return PAGE_LEAVE_MSG;
@@ -1246,6 +1264,11 @@ function MapproxyLayerFormCtrl($scope, $http, PAGE_LEAVE_MSG, TranslationService
         if(defaults.length > 0) {
             $scope.defaults = defaults[0];
         }
+    });
+    $scope.$watch('_messageService.messages.layers.add_success + _messageService.messages.layers.update_success', function() {
+        safeApply($scope, function() {
+            $scope.form.$setPristine();
+        });
     });
     $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
         if(wasVisible && !isVisible) {
