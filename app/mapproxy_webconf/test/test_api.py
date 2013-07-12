@@ -319,6 +319,14 @@ class TestProjectAPI(ServerAPITest):
         resp = self.app.post_json('/project/delete', {'name': 'test'})
         assert resp.status_code == 204
 
+    def test_create_project_with_empty_data(self):
+        resp = self.app.post_json('/project/create', {}, status=400)
+        assert resp.json.has_key('error')
+
+    def test_create_project_without_data(self):
+        resp = self.app.post_json('/project/create', status=400)
+        assert resp.json.has_key('error')
+
 
 class TestGeoOpperations(ServerAPITest):
     def test_scales_to_res_to_scales(self):
