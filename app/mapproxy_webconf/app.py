@@ -478,8 +478,14 @@ def create_project(storage):
         storage._init_project(name)
         redirect(app.get_url('configuration', project=name))
     else:
-        name = request.json.get('name')
-        if not name or storage.exist_project(name):
+        if not request.json:
+            response.status = 400
+            return {'error': _('Invalid request')}
+        name = request.json.get('name', None)
+        if not name:
+            response.status = 400
+            return {'error': _('No project name given')}
+        elif storage.exist_project(name):
             response.status = 400
             return {'error': _('Project "%(name)s" already exists') % ({'name': name})}
         else:

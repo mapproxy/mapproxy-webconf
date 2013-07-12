@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-07-12 13:32+0200\n"
+"POT-Creation-Date: 2013-07-12 16:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -65,7 +65,15 @@ msgstr ""
 msgid "Given grid could not be displayed in map srs"
 msgstr ""
 
-#: mapproxy_webconf/app.py:484
+#: mapproxy_webconf/app.py:483
+msgid "Invalid request"
+msgstr ""
+
+#: mapproxy_webconf/app.py:487
+msgid "No project name given"
+msgstr ""
+
+#: mapproxy_webconf/app.py:490
 #, python-format
 msgid "Project \"%(name)s\" already exists"
 msgstr ""
@@ -124,7 +132,7 @@ msgstr ""
 msgid "grid %(grid)s contains invalid value in scales section"
 msgstr ""
 
-#: mapproxy_webconf/config.py:205
+#: mapproxy_webconf/config.py:207
 #, python-format
 msgid "%(type)s %(name)s contains invalid value in %(item)s item"
 msgstr ""
@@ -149,11 +157,11 @@ msgstr ""
 msgid "missing JSON data"
 msgstr ""
 
-#: mapproxy_webconf/lib/geojson.py:149
+#: mapproxy_webconf/lib/geojson.py:151
 msgid "Given bbox can not be used with given SRS"
 msgstr ""
 
-#: mapproxy_webconf/lib/geojson.py:155
+#: mapproxy_webconf/lib/geojson.py:157
 msgid "Too many tiles. Please zoom in."
 msgstr ""
 

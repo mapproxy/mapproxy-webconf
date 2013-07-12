@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-07-12 13:32+0200\n"
-"PO-Revision-Date: 2013-07-12 13:33+0100\n"
+"POT-Creation-Date: 2013-07-12 16:36+0200\n"
+"PO-Revision-Date: 2013-07-12 16:36+0100\n"
 "Last-Translator: \n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -66,7 +66,15 @@ msgstr "Die angegebene Boundingbox ist für das angegebene Koordinatensystem ung
 msgid "Given grid could not be displayed in map srs"
 msgstr "Das angegebene Grid kann nicht im Koordinatensystem der Karte angezeigt werden"
 
-#: mapproxy_webconf/app.py:484
+#: mapproxy_webconf/app.py:483
+msgid "Invalid request"
+msgstr "Ungültige Anfrage"
+
+#: mapproxy_webconf/app.py:487
+msgid "No project name given"
+msgstr "Bitte geben Sie einen Namen für das Projekt an"
+
+#: mapproxy_webconf/app.py:490
 #, python-format
 msgid "Project \"%(name)s\" already exists"
 msgstr "Erstellen nicht möglich. Es existiert bereits ein Projekt mit dem Namen \"%(name)s\""
@@ -124,7 +132,7 @@ msgstr "Es ist kein Bereich services definiert."
 msgid "grid %(grid)s contains invalid value in scales section"
 msgstr "Das Grid \"%(grid)s\" beinhaltet ungültige Werte im Abschnitt Scales"
 
-#: mapproxy_webconf/config.py:205
+#: mapproxy_webconf/config.py:207
 #, python-format
 msgid "%(type)s %(name)s contains invalid value in %(item)s item"
 msgstr "Der Wert für %(item)s im Abschnitt %(type)s %(name)s ist ungültig"
@@ -145,11 +153,11 @@ msgstr "Invalide JSON Daten"
 msgid "missing JSON data"
 msgstr "Fehlende JSON Daten"
 
-#: mapproxy_webconf/lib/geojson.py:149
+#: mapproxy_webconf/lib/geojson.py:151
 msgid "Given bbox can not be used with given SRS"
 msgstr "Die Bounding Box kann mit dem ausgewählten Koordinatensystem nicht verwendet werden"
 
-#: mapproxy_webconf/lib/geojson.py:155
+#: mapproxy_webconf/lib/geojson.py:157
 msgid "Too many tiles. Please zoom in."
 msgstr ""
 "Zu viele Kacheln. \n"
