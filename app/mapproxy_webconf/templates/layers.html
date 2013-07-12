@@ -111,7 +111,7 @@
                 ng-click="addLayer()"
                 ng-disabled="!form.$valid||form.$pristine"
                 id="form_save"
-                ng-class="{'btn-success': form.$valid}">
+                ng-class="{'btn-success': form.$valid&&!form.$pristine}">
           ${ _('Save') }
         </button>
         <button class="btn btn-small" ng-click="resetForm()">

@@ -226,7 +226,7 @@
                   ng-click="addGrid($event)"
                   ng-disabled="grid._locked||grid.default||!form.$valid||form.$pristine"
                   id="form_save"
-                  ng-class="{'btn-success': form.$valid&&!grid._locked}">
+                  ng-class="{'btn-success': form.$valid&&!grid._locked&&!form.$pristine}">
             ${ _('Save') }
           </button>
           <button class="btn btn-small"

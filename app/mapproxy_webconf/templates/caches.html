@@ -109,7 +109,7 @@
                 ng-click="addCache($event)"
                 ng-disabled="!form.$valid||form.$pristine"
                 id="form_save"
-                ng-class="{'btn-success': form.$valid}">
+                ng-class="{'btn-success': form.$valid&&!form.$pristine}">
           ${ _('Save') }
         </button>
         <button class="btn btn-small" ng-click="resetForm($event)">${ _('Reset') }</button>
