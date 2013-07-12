@@ -7,46 +7,48 @@
 %end
 
 %def middleblock():
-  <h4>${ _('Project defaults') }</h4>
-  <p>${ _('infotext_default_settings') }</p>
-  <hr>
-  <form ng-controller="ProjectDefaultsCtrl" name="form">
-    <fieldset>
-      <div labeled="input_label" name-for="dpi"
-        text="${ _('DPI') }" tooltip-content="default_config_dpi">
-        <input float name="dpi" id="dpi" class="input-small" ng-model="defaults.data.dpi" type="number">
-      </div>
-      <hr>
-      <div labeled="input_label" name-for="default_srs"
-        text="${ _('SRS') }" tooltip-content="default_config_srs">
-        <div name="default_srs" id="default_srs" class="well well-small">
-          <span class="badge" ng-repeat="srs in defaults.data.srs">{{srs}}
-            <i class="icon-remove" ng-click="removeSRS($event, srs)"></i>
-          </span>
+  <div ng-controller="ProjectDefaultsCtrl">
+    <h4>${ _('Project defaults') }</h4>
+    <p>${ _('infotext_default_settings') }</p>
+    <hr>
+    <form name="form">
+      <fieldset>
+        <div labeled="input_label" name-for="dpi"
+          text="${ _('DPI') }" tooltip-content="default_config_dpi">
+          <input float name="dpi" id="dpi" class="input-small" ng-model="defaults.data.dpi" type="number">
         </div>
-      </div>
+        <hr>
+        <div labeled="input_label" name-for="default_srs"
+          text="${ _('SRS') }" tooltip-content="default_config_srs">
+          <div name="default_srs" id="default_srs" class="well well-small">
+            <span class="badge" ng-repeat="srs in defaults.data.srs">{{srs}}
+              <i class="icon-remove" ng-click="removeSRS($event, srs)"></i>
+            </span>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+    <div class="input-append" labeled="input_label" name-for="new_srs" text="${ _('Add SRS') }" tooltip-content="default_config_add_srs">
+      <input type="text" id="new_srs" name="new_srs" class="input-small" ng-model="custom.newSRS">
+      <button class="btn btn-small" ng-click="addSRS($event)" ng-disabled="!custom.newSRS">
+        ${ _('Add') }
+      </button>
+    </div>
+    <hr>
+    <div class="pull-left">
+      <button class="btn btn-small"
+              ng-click="save($event)"
+              ng-disabled="!form.$valid || !form.$dirty"
+              ng-class="{'btn-success': form.$valid && form.$dirty}">
+        ${ _('Save') }
+      </button>
+    </div>
+    <div class="pull-right">
+      <a href="${ get_url('configuration', project=project) }" class="btn btn-small">
+        ${ _('To configuration') } &rarr;
+      </a>
+    </div>
 
-      <div class="input-append" labeled="input_label" name-for="new_srs" text="${ _('Add SRS') }" tooltip-content="default_config_add_srs">
-        <input type="text" id="new_srs" name="new_srs" class="input-small" ng-model="custom.newSRS">
-        <button class="btn btn-small" ng-click="addSRS($event)" ng-disabled="!custom.newSRS">
-          ${ _('Add') }
-        </button>
-      </div>
-      <hr>
-      <div class="pull-left">
-        <button class="btn btn-small"
-                ng-click="save($event)"
-                ng-disabled="!form.$valid || !form.$dirty"
-                ng-class="{'btn-success': form.$valid && form.$dirty}">
-          ${ _('Save') }
-        </button>
-      </div>
-      <div class="pull-right">
-        <a href="${ get_url('configuration', project=project) }" class="btn btn-small">
-          ${ _('To configuration') } &rarr;
-        </a>
-      </div>
-    </fieldset>
     <div>
       <span message-handler="success"
             message-types="defaults.add_success,defaults.update_success">
@@ -55,7 +57,8 @@
             message-types="defaults.load_error,defaults.add_error,defaults.update_error,defaults.form_error">
       </span>
     </div>
-  </form>
+  </div>
+
 %end
 
 %rebase base_config leftblock=leftblock, middleblock=middleblock, preload_block=preload_block, project=get('project')

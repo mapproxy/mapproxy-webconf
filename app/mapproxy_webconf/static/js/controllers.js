@@ -1518,13 +1518,14 @@ function ProjectDefaultsCtrl($scope, PAGE_LEAVE_MSG, ProjectDefaults, MessageSer
         if($.inArray($scope.custom.newSRS, $scope.defaults.data.srs) === -1) {
             $scope.defaults.data.srs.push($scope.custom.newSRS);
             $scope.custom.newSRS = undefined;
+            $scope.form.$setDirty();
         }
     };
     $scope.removeSRS = function(event, srs) {
         var srsID = $.inArray(srs, $scope.defaults.data.srs);
         if(srsID !== -1) {
             $scope.defaults.data.srs.splice(srsID, 1);
-            $scope.form.$dirty = true;
+            $scope.form.$setDirty();
         }
     }
 
