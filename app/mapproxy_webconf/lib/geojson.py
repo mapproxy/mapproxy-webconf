@@ -47,9 +47,11 @@ class ConfigGeoJSONGrid(object):
             self.level = int(level)
         except TypeError:
             self.level = None
-
-        self.tilegrid = tile_grid(srs=self.grid_srs, bbox=_grid_bbox, bbox_srs=self.grid_bbox_srs, origin=self.origin, res=self.res, num_levels=self._num_levels)
-        self.validate_tile_bbox_for_level_0()
+        if self.grid_srs:
+            self.tilegrid = tile_grid(srs=self.grid_srs, bbox=_grid_bbox, bbox_srs=self.grid_bbox_srs, origin=self.origin, res=self.res, num_levels=self._num_levels)
+            self.validate_tile_bbox_for_level_0()
+        else:
+            self.tilegrid = None
 
     def transform_grid_bbox(self, _grid_bbox=None):
         if not _grid_bbox:
