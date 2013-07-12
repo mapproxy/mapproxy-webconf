@@ -40,7 +40,7 @@ var isEmpty = function(item) {
         });
         return empty;
     } else {
-        return item == undefined || item == [] || item == {} || item == null || item == '';
+        return item == undefined || item == [] || item == {} || item == null || item == '' || item == Object();
     }
 };
 
