@@ -224,7 +224,7 @@
         <div class="pull-left">
           <button class="btn btn-small"
                   ng-click="addGrid($event)"
-                  ng-disabled="grid._locked||grid.default||!form.$valid"
+                  ng-disabled="grid._locked||grid.default||!form.$valid||form.$pristine"
                   id="form_save"
                   ng-class="{'btn-success': form.$valid&&!grid._locked}">
             ${ _('Save') }

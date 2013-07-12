@@ -301,7 +301,7 @@
         <div class="pull-left">
           <button class="btn btn-small"
                   ng-click="addSource($event)"
-                  ng-disabled="!form.$valid"
+                  ng-disabled="!form.$valid||form.$pristine"
                   id="form_save"
                   ng-class="{'btn-success': form.$valid}">
             ${ _('Save') }
