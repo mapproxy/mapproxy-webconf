@@ -177,7 +177,9 @@ def mapproxy_conf_from_storage(storage, project):
     if layers:
         mapproxy_conf['layers'] = [replace_ids_layer(l, id_map) for l in layers]
         for layer in mapproxy_conf['layers']:
-            layer['sources'] = list(reversed(layer['sources']))
+            if layer.has_key('sources'):
+                layer['sources'] = list(reversed(layer['sources']))
+
     if used_caches:
         mapproxy_conf['caches'] = id_dict_to_named_dict(dict((k, replace_ids_cache(caches[k], id_map)) for k in used_caches))
     if used_sources:
