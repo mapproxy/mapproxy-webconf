@@ -4,8 +4,7 @@ from mapproxy.grid import tile_grid
 from mapproxy.srs import SRS
 
 from mapproxy_webconf import defaults
-from mapproxy_webconf.lib.geojson import ConfigGeoJSONGrid, polygons, point_feature, polygon_feature, features
-from mapproxy_webconf.lib.grid import InvalidTransformationException
+from mapproxy_webconf.lib.geojson import ConfigGeoJSONGrid, polygons, point_feature, polygon_feature, features, InvalidGridBBoxTransformationException, InvalidTileBBoxTransformationException
 
 GLOBAL_BBOX_4326 = [-180.0, -90.0, 180.0, 90.0]
 GLOBAL_BBOX_4326_ALIGNED = [-180, -85.05112877, 180, 85.05112877]
@@ -49,18 +48,16 @@ class TestConfigGeoJSONGrid(object):
 
     def test_all_bboxes_in_grid_srs(self):
         #global
-        config = ConfigGeoJSONGrid(grid_srs='EPSG:4326', map_srs='EPSG:3857', grid_bbox_srs='EPSG:3857', request_bbox=GLOBAL_BBOX_3857, grid_bbox=GLOBAL_BBOX_3857)
-        assert_list_almost_equal(config.map_bbox, GLOBAL_BBOX_4326_ALIGNED)
-        assert_list_almost_equal(config.grid_bbox, GLOBAL_BBOX_4326_ALIGNED)
+        with assert_raises(InvalidTileBBoxTransformationException) as cm:
+            config = ConfigGeoJSONGrid(grid_srs='EPSG:4326', map_srs='EPSG:3857', grid_bbox_srs='EPSG:3857', request_bbox=GLOBAL_BBOX_3857, grid_bbox=GLOBAL_BBOX_3857)
+        assert cm.exception.message == 'Invalid transformation for tile in level 0'
 
-        config = ConfigGeoJSONGrid(grid_srs='EPSG:4326', map_srs='EPSG:3857', grid_bbox_srs='EPSG:4326', request_bbox=GLOBAL_BBOX_3857, grid_bbox=GLOBAL_BBOX_4326)
-        assert_list_almost_equal(config.map_bbox, GLOBAL_BBOX_4326_ALIGNED)
-        assert_list_almost_equal(config.grid_bbox, GLOBAL_BBOX_4326)
+        with assert_raises(InvalidTileBBoxTransformationException) as cm:
+            config = ConfigGeoJSONGrid(grid_srs='EPSG:4326', map_srs='EPSG:3857', grid_bbox_srs='EPSG:4326', request_bbox=GLOBAL_BBOX_3857, grid_bbox=GLOBAL_BBOX_4326)
+        assert cm.exception.message == 'Invalid transformation for tile in level 0'
 
-        config = ConfigGeoJSONGrid(grid_srs='EPSG:3857', map_srs='EPSG:4326', grid_bbox_srs='EPSG:4326', request_bbox=GLOBAL_BBOX_4326, grid_bbox=[-180, -90, 180, 270])
-        assert config.map_bbox == None
-        with assert_raises(InvalidTransformationException) as cm:
-            config.grid_bbox
+        with assert_raises(InvalidGridBBoxTransformationException) as cm:
+            config = ConfigGeoJSONGrid(grid_srs='EPSG:3857', map_srs='EPSG:4326', grid_bbox_srs='EPSG:4326', request_bbox=GLOBAL_BBOX_4326, grid_bbox=[-180, -90, 180, 270])
         assert cm.exception.message == 'Invalid transformation for grid_bbox'
 
         config = ConfigGeoJSONGrid(grid_srs='EPSG:3857', map_srs='EPSG:4326', grid_bbox_srs='EPSG:3857', request_bbox=GLOBAL_BBOX_4326, grid_bbox=GLOBAL_BBOX_3857)
@@ -77,10 +74,8 @@ class TestConfigGeoJSONGrid(object):
         assert_list_almost_equal(config.grid_bbox, LOCAL_BBOX_3857_2)
 
         #overglobal
-        config = ConfigGeoJSONGrid(grid_srs='EPSG:3857', map_srs='EPSG:4326', grid_bbox_srs='EPSG:4326', request_bbox=OVERGLOBAL_BBOX_4326, grid_bbox=GLOBAL_BBOX_4326)
-        assert config.map_bbox == None
-        with assert_raises(InvalidTransformationException) as cm:
-            config.grid_bbox
+        with assert_raises(InvalidGridBBoxTransformationException) as cm:
+            config = ConfigGeoJSONGrid(grid_srs='EPSG:3857', map_srs='EPSG:4326', grid_bbox_srs='EPSG:4326', request_bbox=OVERGLOBAL_BBOX_4326, grid_bbox=GLOBAL_BBOX_4326)
         assert cm.exception.message == 'Invalid transformation for grid_bbox'
 
 def test_view_box():
@@ -121,9 +116,8 @@ def test_view_box():
     config = ConfigGeoJSONGrid(grid_bbox=[-10, -30, 10, 30], request_bbox=LOCAL_BBOX_4326_1, grid_srs=grid_srs, grid_bbox_srs=grid_bbox_srs, map_srs=map_srs, level=level)
     assert_list_almost_equal(config.view_bbox, [-1113194.9079327343, -2273030.92698769, 1113194.9079327343, 2273030.926987689])
 
-    config = ConfigGeoJSONGrid(grid_srs='EPSG:3857', map_srs='EPSG:4326', grid_bbox_srs='EPSG:4326', request_bbox=OVERGLOBAL_BBOX_4326, grid_bbox=GLOBAL_BBOX_4326)
-    with assert_raises(InvalidTransformationException) as cm:
-        config.view_bbox
+    with assert_raises(InvalidGridBBoxTransformationException) as cm:
+        config = ConfigGeoJSONGrid(grid_srs='EPSG:3857', map_srs='EPSG:4326', grid_bbox_srs='EPSG:4326', request_bbox=OVERGLOBAL_BBOX_4326, grid_bbox=GLOBAL_BBOX_4326)
     assert cm.exception.message == 'Invalid transformation for grid_bbox'
 
 def test_global_polygon():
@@ -148,9 +142,8 @@ def test_global_polygon():
     result = list(polygons(config, [(0, 0, 0)], False))[0]
     assert_point_list_almost_equal(result[0][0], GLOBAL_POLYGON_4326)
 
-    config = ConfigGeoJSONGrid(grid_srs='EPSG:3857', map_srs='EPSG:4326', grid_bbox_srs='EPSG:4326', request_bbox=OVERGLOBAL_BBOX_4326, grid_bbox=GLOBAL_BBOX_4326)
-    with assert_raises(InvalidTransformationException) as cm:
-        config.grid_bbox
+    with assert_raises(InvalidGridBBoxTransformationException) as cm:
+        config = ConfigGeoJSONGrid(grid_srs='EPSG:3857', map_srs='EPSG:4326', grid_bbox_srs='EPSG:4326', request_bbox=OVERGLOBAL_BBOX_4326, grid_bbox=GLOBAL_BBOX_4326)
     assert cm.exception.message == 'Invalid transformation for grid_bbox'
 
 def test_local_polygon():
@@ -228,7 +221,6 @@ class TestFeatureCreation(object):
         assert len(result) == 4
 
         level = 0
-        config = ConfigGeoJSONGrid(grid_srs='EPSG:3857', map_srs='EPSG:4326', level=level, grid_bbox_srs='EPSG:4326', request_bbox=OVERGLOBAL_BBOX_4326, grid_bbox=GLOBAL_BBOX_4326)
-        with assert_raises(InvalidTransformationException) as cm:
-            features(config)
+        with assert_raises(InvalidGridBBoxTransformationException) as cm:
+            config = ConfigGeoJSONGrid(grid_srs='EPSG:3857', map_srs='EPSG:4326', level=level, grid_bbox_srs='EPSG:4326', request_bbox=OVERGLOBAL_BBOX_4326, grid_bbox=GLOBAL_BBOX_4326)
         assert cm.exception.message == 'Invalid transformation for grid_bbox'
