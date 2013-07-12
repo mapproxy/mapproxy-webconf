@@ -470,6 +470,9 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
         }
     };
     $scope.validBBox = function() {
+        if(angular.isUndefined($scope.source.data.coverage)) {
+            return false;
+        }
         var bbox = $scope.source.data.coverage.bbox
         if(isEmpty(bbox)) {
             return false;
