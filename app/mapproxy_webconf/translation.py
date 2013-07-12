@@ -45,6 +45,6 @@ class TranslationPlugin(object):
 
     def install_language(self, language):
         self.language = language
-        self.translations[self.language].install()
+        self.translations[self.language].install(unicode=True)
         SimpleTemplate.defaults["language"] = self.language
         SimpleTemplate.defaults["_"] = _
