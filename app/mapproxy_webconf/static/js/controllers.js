@@ -960,6 +960,7 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
     $scope.allowMap = function(event) {
         safePreventDefaults(event);
         if(angular.isUndefined($scope.grid.data.srs) ||
+           angular.isUndefined($scope.grid.data.bbox) ||
            !$scope.validBBox() ||
            angular.isUndefined($scope.grid.data.bbox_srs)) {
             return false;
