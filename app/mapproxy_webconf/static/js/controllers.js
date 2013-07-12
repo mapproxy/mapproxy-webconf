@@ -1004,7 +1004,8 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
         var gridData = {
             'srs': $scope.grid.data.srs,
             'bbox_srs': $scope.grid.data.bbox_srs,
-            'origin': $scope.grid.data.origin
+            'origin': $scope.grid.data.origin,
+            'map_srs': $scope.custom.mapSRS
         };
         if(!isEmpty($scope.grid.data.bbox)) {
             gridData.grid_bbox = $scope.grid.data.bbox;

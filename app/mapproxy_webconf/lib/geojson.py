@@ -7,7 +7,13 @@ from mapproxy.script.scales import scale_to_res, res_to_scale
 
 from mapproxy_webconf import constants
 from mapproxy_webconf import defaults
-from mapproxy_webconf.lib.grid import is_valid_transformation, InvalidTransformationException
+from mapproxy_webconf.lib.grid import is_valid_transformation
+
+class InvalidGridBBoxTransformationException(Exception):
+    pass
+
+class InvalidTileBBoxTransformationException(Exception):
+    pass
 
 try:
     translation = gettext.translation('messages', os.path.join(os.path.dirname(os.path.realpath(__file__)), 'locale'), ['de'])
@@ -26,7 +32,9 @@ class ConfigGeoJSONGrid(object):
         self._scales = map(float, scales) if scales else None
         self._units = 1 if units == 'm' else constants.UNIT_FACTOR
         self._dpi = float(dpi) if dpi else constants.OGC_DPI
-        self._grid_bbox = map(float, grid_bbox) if grid_bbox else None
+
+        _grid_bbox = map(float, grid_bbox) if grid_bbox else None
+        self.grid_bbox = self.transform_grid_bbox(_grid_bbox)
 
         if self._res:
             self._num_levels = len(self._res)
@@ -39,6 +47,26 @@ class ConfigGeoJSONGrid(object):
             self.level = int(level)
         except TypeError:
             self.level = None
+
+        self.tilegrid = tile_grid(srs=self.grid_srs, bbox=self.grid_bbox, bbox_srs=self.grid_bbox_srs, origin=self.origin, res=self.res, num_levels=self._num_levels)
+        self.validate_tile_bbox_for_level_0()
+
+    def transform_grid_bbox(self, _grid_bbox=None):
+        if not _grid_bbox:
+            return None
+        if self.grid_bbox_srs:
+            _grid_bbox = self.grid_bbox_srs.align_bbox(_grid_bbox)
+            if self.grid_srs:
+                if is_valid_transformation(_grid_bbox, self.grid_bbox_srs, self.grid_srs):
+                    return self.grid_bbox_srs.transform_bbox_to(self.grid_srs, _grid_bbox)
+                else:
+                    raise InvalidGridBBoxTransformationException('Invalid transformation for grid_bbox')
+        return _grid_bbox if _grid_bbox else self._grid_bbox
+
+    def validate_tile_bbox_for_level_0(self):
+        tile_bbox = self.tilegrid.tile_bbox((0,0,0))
+        if not is_valid_transformation(tile_bbox, self.grid_srs, self.map_srs):
+            raise InvalidTileBBoxTransformationException('Invalid transformation for tile in level 0')
 
     @property
     def res(self):
@@ -58,22 +86,6 @@ class ConfigGeoJSONGrid(object):
 
         temp = self.map_srs.transform_bbox_to(self.grid_srs, self.request_bbox)
         return temp
-
-    @property
-    def grid_bbox(self):
-        _grid_bbox = None
-        if self.grid_bbox_srs:
-            _grid_bbox = self.grid_bbox_srs.align_bbox(self._grid_bbox)
-            if self.grid_srs:
-                if is_valid_transformation(_grid_bbox, self.grid_bbox_srs, self.grid_srs):
-                    return self.grid_bbox_srs.transform_bbox_to(self.grid_srs, _grid_bbox)
-                else:
-                    raise InvalidTransformationException('Invalid transformation for grid_bbox')
-        return _grid_bbox if _grid_bbox else self._grid_bbox
-
-    @property
-    def tilegrid(self):
-        return tile_grid(srs=self.grid_srs, bbox=self._grid_bbox, bbox_srs=self.grid_bbox_srs, origin=self.origin, res=self.res, num_levels=self._num_levels)
 
     @property
     def view_bbox(self):
@@ -98,8 +110,7 @@ def polygons(config, tiles, labeled=True):
         if not tile:
             continue
 
-        tile_bbox = config.tilegrid.tile_bbox(tile, True)
-
+        tile_bbox = config.tilegrid.tile_bbox(tile)
         linestring = generate_envelope_points(tile_bbox, defaults.TILE_POLYGON_POINTS)
         linestring = list(config.grid_srs.transform_to(config.map_srs, linestring)) if config.map_srs and config.grid_srs else list(linestring)
         polygon = [linestring + [linestring[0]]]

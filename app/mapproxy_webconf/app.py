@@ -22,9 +22,8 @@ from .utils import requires_json
 from .capabilities import parse_capabilities_url
 from .constants import OGC_DPI, UNIT_FACTOR
 
-from .lib.geojson import ConfigGeoJSONGrid, features
-from .lib.grid import is_valid_transformation, InvalidTransformationException
-
+from .lib.geojson import ConfigGeoJSONGrid, features, InvalidGridBBoxTransformationException, InvalidTileBBoxTransformationException
+from .lib.grid import is_valid_transformation
 configuration = config.ConfigParser.from_file('./config.ini')
 
 app = bottle.Bottle()
@@ -462,13 +461,15 @@ def grid_as_geojson():
 @app.route('/validate_grid_params', 'POST', name='validate_grid_params')
 def validate_grid_params():
     grid_params = prepare_grid_params(request.json)
-    config = ConfigGeoJSONGrid(**grid_params)
     try:
-        config.grid_bbox
+        config = ConfigGeoJSONGrid(**grid_params)
         return {'scales': [round(scale, 3) for scale in config.scales]}
-    except InvalidTransformationException:
+    except InvalidGridBBoxTransformationException:
         response.status = 400
         return {'error': _('Given grid bbox is invalid for used grid srs')}
+    except InvalidTileBBoxTransformationException:
+        response.status = 400
+        return {'error': _('Given grid could not be displayed in map srs')}
 
 @app.route('/project/create', ['GET', 'POST'], name='create_project')
 def create_project(storage):

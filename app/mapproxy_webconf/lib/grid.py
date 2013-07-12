@@ -1,9 +1,6 @@
 from mapproxy_webconf import constants
 from mapproxy_webconf import defaults
 
-class InvalidTransformationException(Exception):
-    pass
-
 def is_valid_transformation(bbox, source_srs, dest_srs):
     """
     >>> source_srs = SRS(4326)
