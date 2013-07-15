@@ -606,23 +606,31 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
     };
     $scope.setResultGeometry = function(geometry) {
         safeApply($scope, function() {
+            var change = false;
             if(geometry) {
                 if(geometry.type == 'rect') {
                     $scope.source.data.coverage.bbox = geometry.bbox;
                     $scope.source.data.coverage.polygon = angular.fromJson(geometry.geojson);
                     $scope.source.data.coverage.bbox_srs = $scope.olmapBinds.proj.projCode;
                     $scope.source.data.coverage.polygon_srs = $scope.olmapBinds.proj.projCode;
+                    change = true;
                 } else if(geometry.type == 'Polygon') {
                     $scope.source.data.coverage.bbox = []
                     $scope.source.data.coverage.polygon = angular.fromJson(geometry.geojson);
                     $scope.source.data.coverage.bbox_srs = $scope.olmapBinds.proj.projCode;
                     $scope.source.data.coverage.polygon_srs = $scope.olmapBinds.proj.projCode;
                     $scope.custom.bboxSelected = false;
+                    change = true;
                 }
             } else {
+                change = angular.isDefined($scope.source.data.coverage.bbox) && $scope.source.data.coverage.bbox != [];
                 $scope.source.data.coverage.bbox = [];
+                change = change || angular.isDefined($scope.source.data.coverage.polygon) && $scope.source.data.coverage.polygon != [];
                 $scope.source.data.coverage.polygon = [];
                 $scope.custom.bboxSelected = true;
+            }
+            if(change) {
+                $scope.form.$setDirty();
             }
         });
     };
