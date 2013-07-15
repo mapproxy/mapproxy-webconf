@@ -206,6 +206,7 @@
              name-for="map_srs"
              text="${ _('Map SRS') }">
           <select ng-options="srs for srs in defaults.data.srs"
+                  noop
                   id="map_srs"
                   name="map_srs"
                   ng-model="custom.mapSRS">
