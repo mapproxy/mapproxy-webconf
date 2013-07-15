@@ -121,6 +121,7 @@
                  text="${ _('Manual add layer') }"
                  tooltip-content="sources_manual_add_layers">
               <input type="text"
+                     noop
                      id="add_layer_manual"
                      name="add_layer_manual"
                      ng-model="custom.layer_manual"
@@ -284,6 +285,7 @@
                    text="${ _('Manual add SRS') }"
                    tooltip-content="sources_add_srs_manual">
                 <input type="text"
+                       noop
                        id="add_srs_manual"
                        name="add_srs_manual"
                        ng-model="custom.srs_manual"

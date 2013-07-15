@@ -102,4 +102,34 @@ directive('unique', function() {
             });
         }
     }
+}).
+
+directive('noop', function($parse) {
+    return {
+        require: 'ngModel',
+        link: function(scope, elm, attrs, ctrl) {
+            var ngModelGet = $parse(attrs.ngModel),
+            ngModelSet = ngModelGet.assign;
+
+            ctrl.$setViewValue = function(value) {
+                this.$viewValue = value;
+
+                angular.forEach(this.$parsers, function(fn) {
+                    value = fn(value);
+                });
+
+                if (this.$modelValue !== value) {
+                    this.$modelValue = value;
+                    ngModelSet(scope, value);
+                    angular.forEach(this.$viewChangeListeners, function(listener) {
+                        try {
+                            listener();
+                        } catch(e) {
+                            $exceptionHandler(e);
+                        }
+                    })
+                }
+            }
+        }
+    };
 });
