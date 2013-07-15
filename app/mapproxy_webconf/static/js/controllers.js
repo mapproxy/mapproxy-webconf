@@ -753,8 +753,12 @@ function MapproxyCacheFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Messa
     $scope.prepareForEditarea = function(cache) {
         return $scope.replaceIdsWithNames($.extend(true, {'data': {'name': ''}}, cache));
     };
-    $scope.checkName = function(callback, new_item) {
-        callback($scope.cache.data.name !== new_item.data.name)
+    $scope.checkSource = function(callback, new_item) {
+        if(angular.isDefined($scope.cache._id)) {
+            callback($scope.cache._id != new_item._id && $scope.cache.data.name != new_item.data.name)
+        } else {
+            callback($scope.cache.data.name !== new_item.data.name)
+        }
     };
     $scope.addCache = function(event) {
         helper.safePreventDefaults(event);
