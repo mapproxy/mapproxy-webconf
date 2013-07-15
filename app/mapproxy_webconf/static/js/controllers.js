@@ -296,6 +296,9 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
         $scope.source = MapproxySources.current();
 
         $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.source);
+
+        $scope.form.$setPristine();
+
         //if equal, we have a clean new source
         if(angular.equals($scope.source.data, MapproxySources.model)) {
             $scope.formTitle = 'new';
@@ -305,13 +308,13 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
         //the only case, we have a not clean source without name is after copy one
         } else if(angular.isUndefined($scope.source.data.name)) {
             $scope.formTitle = 'new';
+            $scope.form.$dirty = true;
         } else {
             $scope.formTitle = 'edit';
         }
 
         extractMinMaxRes($scope, $scope.source);
 
-        $scope.form.$setPristine();
 
         if(!helper.isEmpty($scope.source.data.coverage.polygon) && helper.isEmpty($scope.source.data.coverage.bbox)) {
             $scope.custom.bboxSelected = false;
@@ -704,13 +707,16 @@ function MapproxyCacheFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Messa
         $scope.cache = MapproxyCaches.current();
         $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.cache);
 
-        if(angular.equals($scope.cache.data, MapproxyCaches.model) || angular.isUndefined($scope.cache.data.name)) {
+        $scope.form.$setPristine();
+
+        if(angular.equals($scope.cache.data, MapproxyCaches.model)) {
             $scope.formTitle = 'new';
-        } else {
+        } else if(angular.isUndefined($scope.cache.data.name)) {
+            $scope.formTitle = 'new';
+            $scope.form.$dirty = true;
+        }else {
             $scope.formTitle = 'edit';
         }
-
-        $scope.form.$setPristine();
 
         if($scope.cache._manual) {
             $scope.editareaBinds.visible = true;
@@ -895,10 +901,13 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
             $scope.grid.data.bbox = [null, null, null, null];
         }
 
+        $scope.form.$setPristine();
+
         if(angular.equals($scope.grid.data, MapproxyGrids.model)) {
             $scope.formTitle = 'new';
         } else if(angular.isUndefined($scope.grid.data.name)) {
             $scope.formTitle = 'new';
+            $scope.form.$dirty = true;
         } else {
             $scope.formTitle = 'edit';
         }
@@ -907,7 +916,6 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
             $scope.formTitle = 'default';
             $scope.editareaBinds.visible = false;
         } else {
-            $scope.form.$setPristine();
             if($scope.grid._manual) {
                 $scope.editareaBinds.visible = true;
             } else {
@@ -1161,10 +1169,14 @@ function MapproxyLayerFormCtrl($scope, $http, PAGE_LEAVE_MSG, TranslationService
 
     var setLayer = function() {
         $scope.layer = MapproxyLayers.current();
+
+        $scope.form.$setPristine();
+
         if(angular.equals($scope.layer.data, MapproxyLayers.model)) {
             $scope.formTitle = 'new';
         } else if(angular.isUndefined($scope.layer.data.name)) {
             $scope.formTitle = 'new';
+            $scope.form.$dirty = true;
         } else {
             $scope.formTitle = 'edit';
         }
@@ -1172,8 +1184,6 @@ function MapproxyLayerFormCtrl($scope, $http, PAGE_LEAVE_MSG, TranslationService
         $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.layer);
 
         extractMinMaxRes($scope, $scope.layer);
-
-        $scope.form.$setPristine();
 
         if($scope.layer._manual) {
             $scope.editareaBinds.visible = true;
