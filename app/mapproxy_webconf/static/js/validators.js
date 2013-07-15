@@ -105,6 +105,7 @@ directive('unique', function() {
 }).
 
 directive('noop', function($parse) {
+    // validator don't change form states $pristine and $dirty
     return {
         require: 'ngModel',
         link: function(scope, elm, attrs, ctrl) {
