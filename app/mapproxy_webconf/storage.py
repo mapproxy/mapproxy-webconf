@@ -246,8 +246,7 @@ class SQLiteStore(object):
         locked = data.pop('_locked', False)
         data.pop('_id', None)
         data.pop('_layers', None)
-
-        data = json.dumps(data['data'])
+        data = json.dumps(data.get('data', {}))
 
         cur = self.db.cursor()
         cur.execute("UPDATE store SET data = ?, parent = ?, rank = ?, manual = ?, locked = ? WHERE id = ? AND SECTION = ? AND project = ?",
