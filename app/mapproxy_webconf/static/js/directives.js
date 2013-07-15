@@ -420,7 +420,7 @@ directive('labeled', function($parse, $templateCache) {
                    scope.name &&
                    angular.isDefined(scope[scope.formName]) &&
                    angular.isDefined(scope[scope.formName][scope.name])) {
-                    scope.$watch(scope.formName + '.' + scope.name + '.$invalid', function(val) {
+                    scope.$watch(scope.formName + '.' + scope.name + '.$invalid+' + scope.formName + '.' + scope.name + '.$pristine', function(val) {
                         var invalid = Boolean(val);
                         var pristine = scope[scope.formName][scope.name].$pristine;
                         scope.invalid = invalid && !pristine;
