@@ -133,4 +133,34 @@ directive('noop', function($parse) {
             }
         }
     };
+}).
+
+directive('bbox', function() {
+    return {
+        require: 'ngModel',
+        link: function(scope, elm, attrs, ctrl) {
+            var containsNonValue = function(bbox) {
+                var hasNonValue = false;
+                $.each(bbox, function(idx, elem) {
+                    if(elem === undefined || elem === null) {
+                        hasNonValue = true;
+                    }
+                });
+                return hasNonValue;
+            };
+            scope.$watch(attrs.ngModel, function(viewValue) {
+                if(isEmpty(viewValue)) {
+                    ctrl.$setValidity('bbox', true);
+                } else if(angular.isUndefined(viewValue) ||
+                          !angular.isArray(viewValue) ||
+                          viewValue.length != 4 ||
+                          containsNonValue(viewValue)) {
+                    ctrl.$setValidity('bbox', false);
+                } else {
+                    ctrl.$setValidity('bbox', true);
+                }
+
+            }, true)
+        }
+    };
 });

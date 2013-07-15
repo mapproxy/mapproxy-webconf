@@ -192,7 +192,7 @@
                    name-for="bbox_3"
                    ng-show="custom.bboxSelected"
                    text="${ _('Coverage BBOX') }">
-                <div class="text-center">
+                <div class="text-center" bbox name="bbox" ng-model="source.data.coverage.bbox">
                   <input type="number"
                          placeholder="${ _('North') }"
                          float
