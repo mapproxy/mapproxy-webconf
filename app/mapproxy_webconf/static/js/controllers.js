@@ -531,6 +531,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
     };
     $scope.resetForm = function(event) {
         helper.safePreventDefaults(event);
+        $scope.form.$setPristine();
         setSource();
     };
     $scope.addLayerManual = function(event) {
@@ -792,6 +793,7 @@ function MapproxyCacheFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Messa
     };
     $scope.resetForm = function(event) {
         helper.safePreventDefaults(event);
+        $scope.form.$setPristine();
         setCache();
     };
     $scope.showName = function(_id) {
@@ -988,6 +990,7 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
     }
     $scope.resetForm = function(event) {
         helper.safePreventDefaults(event);
+        $scope.form.$setPristine();
         setGrid();
     };
     $scope.allowMap = function(event) {
@@ -1235,6 +1238,7 @@ function MapproxyLayerFormCtrl($scope, $http, PAGE_LEAVE_MSG, TranslationService
     };
     $scope.resetForm = function(event) {
         helper.safePreventDefaults(event);
+        $scope.form.$setPristine();
         setLayer();
     };
     $scope.layerTitle = function(name) {
@@ -1370,6 +1374,7 @@ function MapproxyGlobalsFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Mes
     };
     $scope.reset = function(event) {
         helper.safePreventDefaults(event);
+        $scope.form.$setPristine();
         setGlobals();
     };
 
@@ -1468,6 +1473,7 @@ function MapproxyServicesCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Mappro
     };
     $scope.reset = function(event) {
         helper.safePreventDefaults(event);
+        $scope.form.$setPristine();
         setServices();
     };
 
