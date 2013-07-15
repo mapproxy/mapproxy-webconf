@@ -507,6 +507,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
                 $scope.source.data.coverage.bbox = bbox;
                 $scope.source.data.coverage.bbox_srs = SRS;
             }
+            $scope.form.$setDirty();
         }
     };
     $scope.showMap = function(event) {
