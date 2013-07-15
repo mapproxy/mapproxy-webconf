@@ -9,8 +9,15 @@ var MapproxyBaseService = function(_section, _model, _preloadedData) {
     this._rootScope;
     this._resource;
     this._messageService;
-    this._preloadedData = _preloadedData;
     this.error;
+
+    if(angular.isDefined(_preloadedData)) {
+        _this._preloadedData = {};
+        angular.forEach(_preloadedData, function(dataObject, idx) {
+            dataObject.data = $.extend(true, {}, _this._model, dataObject.data);
+            _this._preloadedData[idx] = dataObject;
+        });
+    }
 
     this._errorMessageHandler = function(error) {
         _this._rootScope.$broadcast(_this._section + '.' + _this._action + '_error');
