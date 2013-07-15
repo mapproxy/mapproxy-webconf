@@ -527,6 +527,11 @@ input.droppable-active, div.droppable-active {
     opacity: 0.1;
 }
 
+.icon-warning-sign {
+    cursor: pointer;
+    opacity: 0.9;
+}
+
 .vertical-list li:hover .icon-share:hover,
 .vertical-list li:hover .icon-remove:hover,
 .vertical-list li:hover .icon-info-sign:hover,
@@ -535,6 +540,7 @@ input.droppable-active, div.droppable-active {
 .accordion-heading i.icon-remove:hover,
 .icon-remove:hover,
 .icon-question-sign:hover,
+.icon-warning-sign:hover,
 .icon-info-sign:hover,
 .icon-share:hover,
 .icon-globe:hover,
