@@ -189,7 +189,7 @@
               </div>
               <br>
               <div labeled='input_label'
-                   name-for="bbox_3"
+                   name-for="bbox"
                    ng-show="custom.bboxSelected"
                    text="${ _('Coverage BBOX') }">
                 <div class="text-center" bbox name="bbox" ng-model="source.data.coverage.bbox">
@@ -228,20 +228,20 @@
                          ng-disabled="grid._locked||grid.default"
                          name="bbox_1"/>
                 </div>
-                <button class="btn btn-small"
-                        ng-disabled="!source.data.req.url"
-                        ng-click="addCoverage($event)"
-                        id="form_load_coverage">
-                  ${ _('Use coverage from WMS') }
-                </button>
-                <div labeled="input_label" name-for="coverage_bbox_srs" text="${ _('Coverage SRS') }">
-                  <select class="input-xlarge"
-                          ng-model="source.data.coverage.bbox_srs"
-                          id="coverage_bbox_srs"
-                          name="coverage_bbox_srs"
-                          ng-options="srs as srs for srs in defaults.data.srs">
-                  </select>
-                </div>
+              </div>
+              <button class="btn btn-small"
+                      ng-disabled="!source.data.req.url"
+                      ng-click="addCoverage($event)"
+                      id="form_load_coverage">
+                ${ _('Use coverage from WMS') }
+              </button>
+              <div labeled="input_label" name-for="coverage_bbox_srs" text="${ _('Coverage SRS') }">
+                <select class="input-xlarge"
+                        ng-model="source.data.coverage.bbox_srs"
+                        id="coverage_bbox_srs"
+                        name="coverage_bbox_srs"
+                        ng-options="srs as srs for srs in defaults.data.srs">
+                </select>
               </div>
               <div ng-show="!custom.bboxSelected" labeled="input_label" name-for="coverage_polygon" text="${ _('Coverage polygon') }">
                 <pre ng-bind="source.data.coverage.polygon|json" class="scrollable"></pre>
