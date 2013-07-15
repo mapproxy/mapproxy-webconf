@@ -347,6 +347,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
                     } else {
                         $scope.source.data.supported_srs.push(srs);
                     }
+                    $scope.form.$setDirty();
                 }
             });
         }
@@ -539,6 +540,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
             } else {
                 $scope.source.data.req.layers.push(new_layer);
             }
+            $scope.form.$setDirty();
             $scope.custom.layer_manual = undefined;
         }
     };
@@ -550,6 +552,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
             } else {
                 $scope.source.data.supported_srs.push($scope.custom.srs_manual);
             }
+            $scope.form.$setDirty();
             $scope.custom.srs_manual = undefined;
         }
     };
