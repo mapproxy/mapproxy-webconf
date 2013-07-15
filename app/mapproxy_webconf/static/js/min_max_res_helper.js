@@ -12,6 +12,7 @@ var convertMinMaxRes = function(scope, http, url, mode) {
         }).success(function(response) {
             scope.custom.min_res = response.result[0];
             scope.custom.max_res = response.result[1];
+            scope.form.$pristine = false;
         });
     }
 };

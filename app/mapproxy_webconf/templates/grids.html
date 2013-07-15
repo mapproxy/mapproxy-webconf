@@ -162,7 +162,7 @@
                data-toggle-name="is_private"
                data-toggle="buttons-radio">
             <button type="button"
-                    ng-click="grid.data.units='m'"
+                    ng-click="grid.data.units='m';form.$pristine=false;"
                     class="btn btn-small"
                     ng-class="{'active': grid.data.units=='m'}"
                     data-toggle="button"
@@ -170,7 +170,7 @@
               ${ _('Meters') }
             </button>
             <button type="button"
-                    ng-click="grid.data.units='d'"
+                    ng-click="grid.data.units='d';form.$pristine=false;"
                     class="btn btn-small"
                     ng-class="{'active': grid.data.units=='d'}"
                     data-toggle="button"

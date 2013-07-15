@@ -6,14 +6,14 @@
        data-toggle="buttons-radio"
        id="units">
     <button type="button"
-            ng-click="custom.units='m'"
+            ng-click="custom.units='m';form.$pristine=false;"
             class="btn btn-small"
             ng-class="{'active': custom.units=='m'}"
             data-toggle="button">
       ${ _('Meters') }
     </button>
     <button type="button"
-            ng-click="custom.units='d'"
+            ng-click="custom.units='d';form.$pristine=false;"
             class="btn btn-small"
             ng-class="{'active': custom.units=='d'}"
             data-toggle="button">

@@ -852,6 +852,7 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
                 "mode": mode
             }).success(function(response) {
                 $scope.custom.res_scales = response.result;
+                $scope.form.$pristine = false;
             });
         }
     };
