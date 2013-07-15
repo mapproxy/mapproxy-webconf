@@ -7,7 +7,7 @@ angular.module('angular.extensions', [])
     var fn = $parse(attr['ngFocus']);
     element.bind('focus', function(event) {
       fn(scope, {$event:event});
-      safeApply(scope);
+      helper.safeApply(scope);
     });
   }
 }])
@@ -17,7 +17,7 @@ angular.module('angular.extensions', [])
     var fn = $parse(attr['ngBlur']);
     element.bind('blur', function(event) {
       fn(scope, {$event:event});
-      safeApply(scope);
+      helper.safeApply(scope);
     });
   }
 }]);
