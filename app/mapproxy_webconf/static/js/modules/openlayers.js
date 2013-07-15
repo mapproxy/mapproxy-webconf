@@ -422,6 +422,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     $($element).dialog({
                         width:'auto',
                         modal: true,
+                        draggable: false,
                         title: $scope.olmapBinds.title,
                         close: $scope.destroyMap
                     });
