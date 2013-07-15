@@ -1011,7 +1011,7 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
                         success(function(response) {
                             $scope.olmapBinds.extent = response.bbox,
                             $scope.olmapBinds.proj = $scope.custom.mapSRS,
-                            $scope.olmapBinds.title = $scope.grid.data.name,
+                            $scope.olmapBinds.title = 'Grid: "' + $scope.grid.data.name +'"',
                             $scope.olmapBinds.visible = true;
                         }).
                         error(function(response) {
@@ -1021,7 +1021,7 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
                 } else {
                     $scope.olmapBinds.extent = $scope.grid.data.bbox;
                     $scope.olmapBinds.proj = $scope.custom.mapSRS;
-                    $scope.olmapBinds.title = $scope.grid.data.name;
+                    $scope.olmapBinds.title = 'Grid: "' + $scope.grid.data.name +'"';
                     $scope.olmapBinds.visible = true;
                 }
             }).
