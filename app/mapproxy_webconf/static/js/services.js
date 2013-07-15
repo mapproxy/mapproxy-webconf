@@ -72,7 +72,7 @@ var MapproxyBaseService = function(_section, _model, _preloadedData) {
             item.$save({action: _this._section},
                 function(result) {
                     result._section = _this._section;
-                    result.data = $.extend(true, {}, {'data': _this._model}, result.data);
+                    result.data = $.extend(true, {}, _this._model, result.data);
                     _this._items[result._id] = result;
                     _this._successMessageHandler(_this._translationService.translate('Successful added'));
                     if(angular.isDefined(_this._rootScope)) {
@@ -85,7 +85,7 @@ var MapproxyBaseService = function(_section, _model, _preloadedData) {
             _this._beforeRequest();
             item.$update({action: _this._section, id: item._id}, function(result) {
                 result._section = _this._section;
-                result.data = $.extend(true, {}, {'data': _this._model}, result.data);
+                result.data = $.extend(true, {}, _this._model, result.data);
                 _this._items[result._id] = result;
                 _this._successMessageHandler(_this._translationService.translate('Successful updated'));
                 if(angular.isDefined(_this._rootScope)) {
