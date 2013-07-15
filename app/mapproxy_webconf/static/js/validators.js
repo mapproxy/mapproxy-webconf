@@ -149,6 +149,7 @@ directive('bbox', function() {
                 return hasNonValue;
             };
             scope.$watch(attrs.ngModel, function(viewValue) {
+                ctrl.$pristine = false;
                 if(helper.isEmpty(viewValue)) {
                     ctrl.$setValidity('bbox', true);
                 } else if(angular.isUndefined(viewValue) ||
