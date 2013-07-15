@@ -50,6 +50,7 @@ var MapproxyBaseService = function(_section, _model, _preloadedData) {
             if(result) {
                 angular.forEach(result, function(item) {
                     item._section = _this._section;
+                    item.data = $.extend(true, {}, _this._model, item.data)
                     _this._items[item._id] = item;
                 });
                 _this._loaded = true;
