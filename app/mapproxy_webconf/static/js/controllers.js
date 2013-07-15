@@ -264,6 +264,7 @@ function TreeCtrl($scope, SRS, MessageService, WMSSources, ProjectDefaults) {
             extent: extent,
             singleWMSRequest: true,
             showScaleRes: true,
+            title: wms.data.title,
             layers: {'wms': wms.data.layer.layers},
             url: wms.data.url,
             dpi: $scope.defaults.data.dpi
