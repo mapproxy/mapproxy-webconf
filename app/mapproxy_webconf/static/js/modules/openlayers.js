@@ -471,6 +471,21 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
             $scope.eventHandlers = {
                 addType: function(f) {
                     f.feature._drawType = this.type;
+                },
+                switchModifyType: function(f) {
+                    switch(f.feature._drawType) {
+                        case GEOMETRY_TYPES.RECT:
+                        case GEOMETRY_TYPES.BBOX:
+                            this.control.mode = OpenLayers.Control.ModifyFeature.RESIZE |
+                                                OpenLayers.Control.ModifyFeature.DRAG |
+                                                OpenLayers.Control.ModifyFeature.RESHAPE;
+                            break;
+                        case GEOMETRY_TYPES.POLYGON:
+                        case GEOMETRY_TYPES.MULTIPOLYGON:
+                            this.control.mode = OpenLayers.Control.ModifyFeature.DRAG |
+                                                OpenLayers.Control.ModifyFeature.RESHAPE;
+                            break;
+                    }
                 }
             };
             $scope.deleteTool = function(layer, selectControl, modifyControl) {
@@ -490,6 +505,7 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
                           OpenLayers.Control.ModifyFeature.RESHAPE
                 };
                 var control = new OpenLayers.Control.ModifyFeature(layer, options);
+                layer.events.register('beforefeaturemodified', {control: control}, $scope.eventHandlers.switchModifyType);
                 return control;
             };
             $scope.drawRectTool = function(layer) {
