@@ -10,17 +10,17 @@ function BaseListCtrl($scope, MessageService, TranslationService, service, _sect
         return class_;
     };
     $scope.editItem = function(event, item) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
         $scope.selected = item;
         service.current(item);
     };
     $scope.removeItem = function(event, item) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
         $scope.selected = undefined;
         service.remove(item);
     };
     $scope.copyItem = function(event, item) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
         $scope.selected = undefined;
         var copiedData = angular.copy(item.data);
         delete copiedData.name;
@@ -107,7 +107,7 @@ function SourceListCtrl($injector, $scope, TranslationService, MapproxySources) 
         if(angular.isDefined(source.data.req.transparent)) {
             data['Transparency'] = (source.data.req.transparent ? 'Yes' : 'No');
         }
-        return generateInfoDialogContent(data, TranslationService);
+        return helper.generateInfoDialogContent(data, TranslationService);
     };
 };
 
@@ -137,7 +137,7 @@ function CacheListCtrl($injector, $scope, TranslationService, MapproxySources, M
         if(angular.isDefined(cache.data.format)) {
             data['Format'] = cache.data.format;
         }
-        return generateInfoDialogContent(data, TranslationService);
+        return helper.generateInfoDialogContent(data, TranslationService);
     };
 };
 
@@ -174,7 +174,7 @@ function GridListCtrl($injector, $scope, TranslationService, MapproxyGrids) {
             data['Origin'] = grid.data.origin;
         }
 
-        return generateInfoDialogContent(data, TranslationService);
+        return helper.generateInfoDialogContent(data, TranslationService);
     };
 };
 
@@ -313,7 +313,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
 
         $scope.form.$setPristine();
 
-        if(!isEmpty($scope.source.data.coverage.polygon) && isEmpty($scope.source.data.coverage.bbox)) {
+        if(!helper.isEmpty($scope.source.data.coverage.polygon) && helper.isEmpty($scope.source.data.coverage.bbox)) {
             $scope.custom.bboxSelected = false;
         } else {
             $scope.custom.bboxSelected = true;
@@ -367,7 +367,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
                     'click': function() {
                         $(this).dialog("close");
                         $scope.source.data.req.layers = undefined;
-                        safeApply($scope)
+                        helper.safeApply($scope)
                         callback(true);
                     }
                 },
@@ -421,7 +421,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
                         $(this).dialog("close");
                         $scope.source.data.req.url = new_data.sourceURL;
                         $scope.source.data.req.layers = undefined;
-                        safeApply($scope)
+                        helper.safeApply($scope)
                         callback(true);
                     }
                 }
@@ -439,16 +439,16 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
         }
     };
     $scope.addSource = function(event) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
 
-        $scope.source = clearData($scope.source)
+        $scope.source = helper.clearData($scope.source)
 
         var errorMsg = false;
         if(angular.isUndefined($scope.source.data.name)) {
             errorMsg = TranslationService.translate("Name required.");
         } else {
             //found is the section of element with $scope.source.data.name if found
-            var found = nameExistInService(
+            var found = helper.nameExistInService(
                 $scope.source.data.name,
                 $scope.source._id,
                 MapproxySources,
@@ -476,7 +476,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
             return false;
         }
         var bbox = $scope.source.data.coverage.bbox
-        if(isEmpty(bbox)) {
+        if(helper.isEmpty(bbox)) {
             return false;
         }
         var nonValues = false;
@@ -492,11 +492,11 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
         if($scope.custom.bboxSelected) {
             return $scope.validBBox();
         } else {
-            return angular.isDefined($scope.source.data.coverage.polygon) && !isEmpty($scope.source.data.coverage.polygon);
+            return angular.isDefined($scope.source.data.coverage.polygon) && !helper.isEmpty($scope.source.data.coverage.polygon);
         }
     }
     $scope.addCoverage = function(event) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
         var bbox = WMSSources.coverage($scope.source.data.req.url);
         if(bbox) {
             if(angular.isUndefined($scope.source.data.coverage)) {
@@ -512,7 +512,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
         }
     };
     $scope.showMap = function(event) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
         var srs = $scope.custom.bboxSelected ? $scope.source.data.coverage.bbox_srs : $scope.source.data.coverage.polygon_srs;
         srs = srs || SRS;
 
@@ -530,11 +530,11 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
         };
     };
     $scope.resetForm = function(event) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
         setSource();
     };
     $scope.addLayerManual = function(event) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
         var new_layer = $scope.custom.layer_manual;
         if(angular.isDefined(new_layer)) {
             if(!angular.isArray($scope.source.data.req.layers)) {
@@ -547,7 +547,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
         }
     };
     $scope.addSRSManual = function(event) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
         if($.inArray($scope.custom.srs_manual, $scope.source.data.supported_srs) === -1) {
             if(angular.isUndefined($scope.source.data.supported_srs)) {
                 $scope.source.data.supported_srs = [$scope.custom.srs_manual];
@@ -559,7 +559,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
         }
     };
     $scope.removeSRS = function(event, srs) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
         var supportedSRSID = $.inArray(srs, $scope.source.data.supported_srs);
         if(supportedSRSID !== -1) {
             $scope.source.data.supported_srs.splice(supportedSRSID, 1);
@@ -572,14 +572,14 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
         if(!$scope.custom.resSelected) {
             $scope.custom.resSelected = true;
             convertMinMaxRes($scope, $http, $scope.custom.scalesToResURL, 'to_res');
-            safeApply($scope);
+            helper.safeApply($scope);
         }
     };
     $scope.getScale = function() {
         if($scope.custom.resSelected) {
             $scope.custom.resSelected = false;
             convertMinMaxRes($scope, $http, $scope.custom.resToScalesURL, 'to_scale');
-            safeApply($scope);
+            helper.safeApply($scope);
         }
     };
     $scope.provideEditorData = function() {
@@ -594,7 +594,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
                             'type': 'bbox',
                             'coordinates': $scope.source.data.coverage.bbox
                         };
-                    } else if(!isEmpty($scope.source.data.coverage.polygon)) {
+                    } else if(!helper.isEmpty($scope.source.data.coverage.polygon)) {
                         geometry = $scope.source.data.coverage.polygon
                     }
                     return angular.isDefined(geometry) ? [geometry] : [];
@@ -605,7 +605,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
         return editorData;
     };
     $scope.setResultGeometry = function(geometry) {
-        safeApply($scope, function() {
+        helper.safeApply($scope, function() {
             var change = false;
             if(geometry) {
                 if(geometry.type == 'rect') {
@@ -676,7 +676,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
     });
 
     $scope.$watch('_messageService.messages.sources.add_success + _messageService.messages.sources.update_success', function() {
-        safeApply($scope, function() {
+        helper.safeApply($scope, function() {
             $scope.form.$setPristine();
         });
     });
@@ -757,16 +757,16 @@ function MapproxyCacheFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Messa
         callback($scope.cache.data.name !== new_item.data.name)
     };
     $scope.addCache = function(event) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
 
-        $scope.cache = clearData($scope.cache);
+        $scope.cache = helper.clearData($scope.cache);
 
         var errorMsg = false;
         if(angular.isUndefined($scope.cache.data.name)) {
             errorMsg = TranslationService.translate("Name required.");
         } else {
             //found is the section of element with $scope.cache.data.name if found
-            var found = nameExistInService(
+            var found = helper.nameExistInService(
                 $scope.cache.data.name,
                 $scope.cache._id,
                 MapproxyCaches,
@@ -787,7 +787,7 @@ function MapproxyCacheFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Messa
         }
     };
     $scope.resetForm = function(event) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
         setCache();
     };
     $scope.showName = function(_id) {
@@ -813,7 +813,7 @@ function MapproxyCacheFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Messa
     $scope.$watch('_messageService.messages.grids.load_success', refreshGrids);
 
     $scope.$watch('_messageService.messages.caches.add_success + _messageService.messages.caches.update_success', function() {
-        safeApply($scope, function() {
+        helper.safeApply($scope, function() {
             $scope.form.$setPristine();
         });
     });
@@ -908,24 +908,24 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
             }
         }
 
-        safeApply($scope);
+        helper.safeApply($scope);
     };
 
     $scope.prepareForEditarea = function(data) {
         return $.extend(true, {'data': {'name': ""}}, data);
     };
     $scope.addGrid = function(event) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
         if(!$scope.editareaBinds.save) {
             addScalesResTo($scope.grid.data);
         }
 
-        $scope.grid = clearData($scope.grid);
+        $scope.grid = helper.clearData($scope.grid);
 
         var errorMsg = false;
         if(angular.isUndefined($scope.grid.data.name)) {
             errorMsg = TranslationService.translate("Name required.");
-        } else if(nameExistInService(
+        } else if(helper.nameExistInService(
             $scope.grid.data.name,
             $scope.grid._id,
             MapproxyGrids,
@@ -945,13 +945,13 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
         }
     };
     $scope.lockGrid = function(event) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
 
         $scope.grid._locked = true;
         $scope.addGrid();
     };
     $scope.unlockGrid = function(event) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
         $scope.grid._locked = false;
         $scope.addGrid();
     };
@@ -982,11 +982,11 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
         });
     }
     $scope.resetForm = function(event) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
         setGrid();
     };
     $scope.allowMap = function(event) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
         if(angular.isUndefined($scope.grid.data.srs) ||
            angular.isUndefined($scope.grid.data.bbox) ||
            !$scope.validBBox() ||
@@ -996,7 +996,7 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
         return true;
     };
     $scope.showMap = function(event) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
         var data = $scope.provideGridData();
 
         $http.post($scope.checkGridParameterURL, data).
@@ -1036,7 +1036,7 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
             'origin': $scope.grid.data.origin,
             'map_srs': $scope.custom.mapSRS
         };
-        if(!isEmpty($scope.grid.data.bbox)) {
+        if(!helper.isEmpty($scope.grid.data.bbox)) {
             gridData.grid_bbox = $scope.grid.data.bbox;
         }
         addScalesResTo(gridData);
@@ -1048,7 +1048,7 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
     };
     $scope.validBBox = function() {
         var bbox = $scope.grid.data.bbox
-        var empty = isEmpty(bbox);
+        var empty = helper.isEmpty(bbox);
         var nonValues = false;
         for(var i = 0; i < 4; i++) {
             if(bbox[i] == undefined || bbox[i] == null) {
@@ -1059,8 +1059,8 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
         return !empty && !nonValues && bbox.length == 4;
     };
     $scope.fillBBox = function(event) {
-        safePreventDefaults(event);
-        if(isEmpty($scope.grid.data.bbox)) {
+        helper.safePreventDefaults(event);
+        if(helper.isEmpty($scope.grid.data.bbox)) {
             $scope.grid.data.bbox = angular.copy(BBOXES[$scope.grid.data.bbox_srs]);
         } else {
             var haveDefaultBBox = false;
@@ -1137,7 +1137,7 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
     });
 
     $scope.$watch('_messageService.messages.grids.add_success + _messageService.messages.grids.update_success', function() {
-        safeApply($scope, function() {
+        helper.safeApply($scope, function() {
             $scope.form.$setPristine();
         });
     });
@@ -1199,14 +1199,14 @@ function MapproxyLayerFormCtrl($scope, $http, PAGE_LEAVE_MSG, TranslationService
         return layer;
     };
     $scope.addLayer = function(event) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
 
-        $scope.layer = clearData($scope.layer)
+        $scope.layer = helper.clearData($scope.layer)
 
         var errorMsg = false;
         if(angular.isUndefined($scope.layer.data.name)) {
             errorMsg = TranslationService.translate("Name required.");
-        } else if(nameExistInService(
+        } else if(helper.nameExistInService(
             $scope.layer.data.name,
             $scope.layer._id,
             MapproxyLayers,
@@ -1229,7 +1229,7 @@ function MapproxyLayerFormCtrl($scope, $http, PAGE_LEAVE_MSG, TranslationService
         }
     };
     $scope.resetForm = function(event) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
         setLayer();
     };
     $scope.layerTitle = function(name) {
@@ -1246,14 +1246,14 @@ function MapproxyLayerFormCtrl($scope, $http, PAGE_LEAVE_MSG, TranslationService
         if(!$scope.custom.resSelected) {
             $scope.custom.resSelected = true;
             convertMinMaxRes($scope, $http, $scope.custom.scalesToResURL, 'to_res');
-            safeApply($scope);
+            helper.safeApply($scope);
         }
     };
     $scope.getScale = function() {
         if($scope.custom.resSelected) {
             $scope.custom.resSelected = false;
             convertMinMaxRes($scope, $http, $scope.custom.resToScalesURL, 'to_scale');
-            safeApply($scope);
+            helper.safeApply($scope);
         }
     };
 
@@ -1282,7 +1282,7 @@ function MapproxyLayerFormCtrl($scope, $http, PAGE_LEAVE_MSG, TranslationService
         }
     });
     $scope.$watch('_messageService.messages.layers.add_success + _messageService.messages.layers.update_success', function() {
-        safeApply($scope, function() {
+        helper.safeApply($scope, function() {
             $scope.form.$setPristine();
         });
     });
@@ -1356,7 +1356,7 @@ function MapproxyGlobalsFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Mes
         $scope.template = DataShareService.data('global');
     };
     $scope.save = function(event) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
         $scope.globals._manual = $scope.editareaBinds.visible;
         MapproxyGlobals.add($scope.globals);
         $scope.form.$setPristine();
@@ -1364,7 +1364,7 @@ function MapproxyGlobalsFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Mes
         $scope.editareaBinds.save = false;
     };
     $scope.reset = function(event) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
         setGlobals();
     };
 
@@ -1454,7 +1454,7 @@ function MapproxyServicesCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Mappro
     };
 
     $scope.save = function(event) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
         $scope.services._manual = $scope.editareaBinds.visible;
         MapproxyServices.add($scope.services);
         $scope.form.$setPristine();
@@ -1462,7 +1462,7 @@ function MapproxyServicesCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Mappro
         $scope.editareaBinds.save = false;
     };
     $scope.reset = function(event) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
         setServices();
     };
 
@@ -1524,13 +1524,13 @@ function ProjectDefaultsCtrl($scope, PAGE_LEAVE_MSG, ProjectDefaults, MessageSer
         }
     };
     $scope.save = function(event) {
-        safePreventDefaults(event);
-        $scope.defaults = clearData($scope.defaults);
+        helper.safePreventDefaults(event);
+        $scope.defaults = helper.clearData($scope.defaults);
         ProjectDefaults.add($scope.defaults);
         $scope.form.$setPristine();
     };
     $scope.addSRS = function(event) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
         if($.inArray($scope.custom.newSRS, $scope.defaults.data.srs) === -1) {
             $scope.defaults.data.srs.push($scope.custom.newSRS);
             $scope.custom.newSRS = undefined;
@@ -1582,7 +1582,7 @@ function ProjectCtrl($scope, $http, $window, MessageService) {
     $scope.createProject = function() {
         $http.post($scope.createURL, {'name': $scope.project.name})
             .success(function(response) {
-                safeApply($scope, function() {
+                helper.safeApply($scope, function() {
                     $window.location.href = response.url;
                 });
             })
@@ -1591,10 +1591,10 @@ function ProjectCtrl($scope, $http, $window, MessageService) {
             });
     };
     $scope.deleteProject = function(event, name) {
-        safePreventDefaults(event);
+        helper.safePreventDefaults(event);
         $http.post($scope.deleteURL, {'name': name})
             .success(function(response) {
-                safeApply($scope, function() {
+                helper.safeApply($scope, function() {
                    $window.location.href = $window.location.href;
                });
             })

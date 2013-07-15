@@ -149,7 +149,7 @@ directive('bbox', function() {
                 return hasNonValue;
             };
             scope.$watch(attrs.ngModel, function(viewValue) {
-                if(isEmpty(viewValue)) {
+                if(helper.isEmpty(viewValue)) {
                     ctrl.$setValidity('bbox', true);
                 } else if(angular.isUndefined(viewValue) ||
                           !angular.isArray(viewValue) ||

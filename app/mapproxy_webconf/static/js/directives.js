@@ -52,7 +52,7 @@ directive('sortable', function() {
                     scope.items.splice(start, 1)[0]);
 
                 //tell angular $scope has changed
-                safeApply(scope, function() {
+                helper.safeApply(scope, function() {
                     ngModelCtrl.$setValidity('required', true);
                 });
             };
@@ -189,7 +189,7 @@ directive('droppable', function($parse) {
                 }
                 delete(scope.j_ui);
 
-                safeApply(scope, function() {
+                helper.safeApply(scope, function() {
                     ngModelCtrl.$setViewValue(scope.items);
                     ngModelCtrl.$render();
                 });
@@ -285,7 +285,7 @@ directive('droppable', function($parse) {
             // required validator
             if ((attrs.$attr.required || attrs.$attr.ngRequired) && element.is("div")) {
                 var requiredValidator = function(value) {
-                    var valid = angular.isDefined(value) && !isEmpty(value);
+                    var valid = angular.isDefined(value) && !helper.isEmpty(value);
                     ngModelCtrl.$setValidity('required', valid);
                     return value;
                 };
@@ -524,7 +524,7 @@ directive('extendableInputList', function($timeout, EXTENDABLE_INPUT_LIST_TEMPLA
                     } else {
                         $(element).find('#_extendableInputListNewInput').focus();
                     }
-                    safeApply(scope);
+                    helper.safeApply(scope);
                 }
             };
             scope.remove = function(id) {
@@ -575,7 +575,7 @@ directive('editarea', function($http, MessageService, EDITAREA_TEMPLATE_URL) {
                 var json = scope.editareaBinds.editareaValue.data;
                 $http.post(yamlURL, json)
                     .success(function(yaml) {
-                        if(!isEmpty(yaml)) {
+                        if(!helper.isEmpty(yaml)) {
                             _editareaElement.val(yaml);
                             _editareaElement.focus();
                         }
@@ -596,7 +596,7 @@ directive('editarea', function($http, MessageService, EDITAREA_TEMPLATE_URL) {
                 scope.editareaBinds.dirty = false;
                 scope.editareaErrorMsg = undefined;
                 if(unmanual) {
-                    safeApply(scope);
+                    helper.safeApply(scope);
                 }
             };
             scope.reset = function() {
@@ -627,7 +627,7 @@ directive('editarea', function($http, MessageService, EDITAREA_TEMPLATE_URL) {
                 }
             });
             _editareaElement.on('keyup', function(e) {
-                safeApply(scope, function() {
+                helper.safeApply(scope, function() {
                     scope.editareaBinds.dirty = true;
                 });
             });

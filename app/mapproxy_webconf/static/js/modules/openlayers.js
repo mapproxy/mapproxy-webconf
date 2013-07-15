@@ -97,7 +97,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
         controller: function($scope, $element, $attrs) {
             $scope.eventHandlers = {
                 updateMapScaleResolution: function() {
-                    safeApply($scope, function() {
+                    helper.safeApply($scope, function() {
                         $scope.currentResolution = $scope.map.getResolution();
                         $scope.currentScale = $scope.map.getScale();
                         $scope.currentDPI = $scope.olmapBinds.dpi || DPI;
@@ -370,7 +370,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     delete $scope.map;
                 }
 
-                safeApply($scope, function() {
+                helper.safeApply($scope, function() {
                     $scope.layerSwitcherMaximized = false;
                     $scope.dataExtent = undefined;
                     $scope.mapLayers = [];
@@ -554,7 +554,7 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
         link: function(scope, element, attrs, olMapCtrl) {
             olMapCtrl.registerExtension('layers', function() {
                 var olEditorData = scope.olEditorData(scope, {})();
-                olEditorData.layer['zoomToDataExtent'] = !isEmpty(olEditorData.layer.geometries());
+                olEditorData.layer['zoomToDataExtent'] = !helper.isEmpty(olEditorData.layer.geometries());
                 scope.drawLayer = olMapCtrl.createVectorLayer(olEditorData.layer, olEditorData.layerOptions);
             });
 

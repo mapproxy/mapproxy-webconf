@@ -28,12 +28,12 @@ var MapproxyBaseService = function(_section, _model, _preloadedData) {
                 if(angular.isObject(cleanData[key]) && !angular.isArray(cleanData[key])) {
                     _data[key] = cleanup(cleanData[key], data[key]);
                 } else {
-                    if(angular.isDefined(data) && !isEmpty(data)) {
+                    if(angular.isDefined(data) && !helper.isEmpty(data)) {
                         _data[key] = data[key]
                     }
                 }
             });
-            return !isEmpty(_data) ? _data : undefined;
+            return !helper.isEmpty(_data) ? _data : undefined;
         };
         return cleanup(_this._model, data);;
     };
