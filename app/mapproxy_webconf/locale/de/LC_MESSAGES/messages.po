@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-07-12 16:36+0200\n"
-"PO-Revision-Date: 2013-07-12 16:36+0100\n"
+"POT-Creation-Date: 2013-07-16 09:00+0200\n"
+"PO-Revision-Date: 2013-07-16 09:00+0100\n"
 "Last-Translator: \n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -242,7 +242,7 @@ msgstr "Manuell bearbeitet"
 #: mapproxy_webconf/templates/sources.html:44
 #: mapproxy_webconf/templates/sources.html:69
 #: mapproxy_webconf/templates/sources.html:74
-#: mapproxy_webconf/templates/sources.html:370
+#: mapproxy_webconf/templates/sources.html:372
 msgid "Confirm!"
 msgstr "Hinweis"
 
@@ -258,8 +258,8 @@ msgstr "Diesen Cache wirklich entfernen:"
 #: mapproxy_webconf/templates/layers.html:102
 #: mapproxy_webconf/templates/sources.html:47
 #: mapproxy_webconf/templates/sources.html:114
-#: mapproxy_webconf/templates/sources.html:278
-#: mapproxy_webconf/templates/sources.html:373
+#: mapproxy_webconf/templates/sources.html:279
+#: mapproxy_webconf/templates/sources.html:375
 msgid "delete"
 msgstr "Löschen"
 
@@ -316,12 +316,12 @@ msgstr "Request Format"
 
 #: mapproxy_webconf/templates/caches.html:113
 #: mapproxy_webconf/templates/globals.html:77
-#: mapproxy_webconf/templates/grids.html:230
+#: mapproxy_webconf/templates/grids.html:231
 #: mapproxy_webconf/templates/layers.html:25
 #: mapproxy_webconf/templates/layers.html:115
 #: mapproxy_webconf/templates/project_defaults.html:43
 #: mapproxy_webconf/templates/services.html:184
-#: mapproxy_webconf/templates/sources.html:307
+#: mapproxy_webconf/templates/sources.html:309
 #: mapproxy_webconf/templates/angular/editarea.html:16
 #: mapproxy_webconf/templates/angular/editarea.html:22
 msgid "Save"
@@ -329,10 +329,10 @@ msgstr "Speichern"
 
 #: mapproxy_webconf/templates/caches.html:115
 #: mapproxy_webconf/templates/globals.html:82
-#: mapproxy_webconf/templates/grids.html:235
+#: mapproxy_webconf/templates/grids.html:236
 #: mapproxy_webconf/templates/layers.html:118
 #: mapproxy_webconf/templates/services.html:189
-#: mapproxy_webconf/templates/sources.html:309
+#: mapproxy_webconf/templates/sources.html:311
 #: mapproxy_webconf/templates/angular/editarea.html:27
 msgid "Reset"
 msgstr "Zurücksetzen"
@@ -383,7 +383,7 @@ msgid "Configure the internal caches."
 msgstr "Der Cache des MapProxy unterschiedliche Grids und Sources beinhalten. Zudem können Sie hier das Format des Caches festlegen."
 
 #: mapproxy_webconf/templates/config_index.html:12
-#: mapproxy_webconf/templates/sources.html:384
+#: mapproxy_webconf/templates/sources.html:386
 #: mapproxy_webconf/templates/resources/translations.js:15
 msgid "Layers"
 msgstr "Layers"
@@ -487,27 +487,27 @@ msgid "SRS"
 msgstr "SRS"
 
 #: mapproxy_webconf/templates/grids.html:82
-#: mapproxy_webconf/templates/sources.html:179
+#: mapproxy_webconf/templates/sources.html:180
 msgid "BBox"
 msgstr "Bounding Box"
 
 #: mapproxy_webconf/templates/grids.html:86
-#: mapproxy_webconf/templates/sources.html:196
+#: mapproxy_webconf/templates/sources.html:197
 msgid "North"
 msgstr "Nord"
 
 #: mapproxy_webconf/templates/grids.html:95
-#: mapproxy_webconf/templates/sources.html:205
+#: mapproxy_webconf/templates/sources.html:206
 msgid "West"
 msgstr "West"
 
 #: mapproxy_webconf/templates/grids.html:103
-#: mapproxy_webconf/templates/sources.html:213
+#: mapproxy_webconf/templates/sources.html:214
 msgid "East"
 msgstr "Ost"
 
 #: mapproxy_webconf/templates/grids.html:112
-#: mapproxy_webconf/templates/sources.html:222
+#: mapproxy_webconf/templates/sources.html:223
 msgid "South"
 msgstr "Süd"
 
@@ -547,54 +547,54 @@ msgstr "Maßstäbe"
 msgid "Map SRS"
 msgstr "SRS der Karte"
 
-#: mapproxy_webconf/templates/grids.html:216
+#: mapproxy_webconf/templates/grids.html:217
 msgid "Show map"
 msgstr "In Karte anzeigen"
 
-#: mapproxy_webconf/templates/grids.html:261
+#: mapproxy_webconf/templates/grids.html:262
 msgid "Really lock the grid"
 msgstr "Grid abschließen"
 
-#: mapproxy_webconf/templates/grids.html:262
+#: mapproxy_webconf/templates/grids.html:263
 msgid "If you lock the grid, you won't be able to edit it again"
 msgstr "Durch das Abschließen des Grids stellen Sie sicher, dass die Einstellungen des Grids nicht nachträglich verändert werden"
 
-#: mapproxy_webconf/templates/grids.html:267
+#: mapproxy_webconf/templates/grids.html:268
 msgid "Lock"
 msgstr "Grid abschließen"
 
-#: mapproxy_webconf/templates/grids.html:272
-#: mapproxy_webconf/templates/grids.html:275
+#: mapproxy_webconf/templates/grids.html:273
+#: mapproxy_webconf/templates/grids.html:276
 msgid "Unlock"
 msgstr "Bearbeitung wieder aufnehmen"
 
-#: mapproxy_webconf/templates/grids.html:273
+#: mapproxy_webconf/templates/grids.html:274
 msgid "If you unlock this grid it you need to check settings of all caches you use this grid and delete all affacted caches from disk"
 msgstr "Wenn Sie die Bearbeitung des Grids wieder aufnehmen müssen Sie die Einstellungen aller Caches überprüfen, die dieses Grid verwenden. Zudem müssen alle bereits gecachten Daten gelöscht werden"
 
-#: mapproxy_webconf/templates/grids.html:285
+#: mapproxy_webconf/templates/grids.html:286
 msgid "Refresh"
 msgstr "Aktualisieren"
 
-#: mapproxy_webconf/templates/grids.html:293
+#: mapproxy_webconf/templates/grids.html:294
 msgid "Level"
 msgstr "Level"
 
-#: mapproxy_webconf/templates/grids.html:303
+#: mapproxy_webconf/templates/grids.html:304
 #: mapproxy_webconf/templates/angular/min_max_res.html:34
 msgid "Resolution"
 msgstr "Auflösung"
 
-#: mapproxy_webconf/templates/grids.html:309
+#: mapproxy_webconf/templates/grids.html:310
 #: mapproxy_webconf/templates/angular/min_max_res.html:28
 msgid "Scale"
 msgstr "Maßstab"
 
-#: mapproxy_webconf/templates/grids.html:316
+#: mapproxy_webconf/templates/grids.html:317
 msgid "Total tiles"
 msgstr "Kacheln gesammt"
 
-#: mapproxy_webconf/templates/grids.html:336
+#: mapproxy_webconf/templates/grids.html:337
 msgid "Tiles X * Tiles Y"
 msgstr "Kacheln X * Kacheln Y"
 
@@ -645,9 +645,9 @@ msgid "Add SRS"
 msgstr "Koordinatensystem hinzufügen"
 
 #: mapproxy_webconf/templates/project_defaults.html:34
-#: mapproxy_webconf/templates/sources.html:132
-#: mapproxy_webconf/templates/sources.html:294
-#: mapproxy_webconf/templates/sources.html:410
+#: mapproxy_webconf/templates/sources.html:133
+#: mapproxy_webconf/templates/sources.html:296
+#: mapproxy_webconf/templates/sources.html:412
 msgid "Add"
 msgstr "Hinzufügen"
 
@@ -817,7 +817,7 @@ msgid "Replace service URL deletes all layers depends to it!"
 msgstr "Service-URL und eingetragene Layer passen nicht zusammen. Beim Ersetzen wird die Layerliste automatisch geleert."
 
 #: mapproxy_webconf/templates/sources.html:86
-#: mapproxy_webconf/templates/sources.html:381
+#: mapproxy_webconf/templates/sources.html:383
 #: mapproxy_webconf/templates/resources/translations.js:14
 msgid "URL"
 msgstr "URL"
@@ -826,95 +826,95 @@ msgstr "URL"
 msgid "Manual add layer"
 msgstr "Layer manuell hinzufügen"
 
-#: mapproxy_webconf/templates/sources.html:139
+#: mapproxy_webconf/templates/sources.html:140
 msgid "Supported formats"
 msgstr "Unterstütze Bildformate"
 
-#: mapproxy_webconf/templates/sources.html:141
-#: mapproxy_webconf/templates/sources.html:159
+#: mapproxy_webconf/templates/sources.html:142
+#: mapproxy_webconf/templates/sources.html:160
 msgid "Selectet image format(s) not support transparency."
 msgstr "Das ausgewählte Bildformat unterstüzt keine Transparenz."
 
-#: mapproxy_webconf/templates/sources.html:152
+#: mapproxy_webconf/templates/sources.html:153
 msgid "Clear selection"
 msgstr "Auswahl leeren"
 
-#: mapproxy_webconf/templates/sources.html:157
+#: mapproxy_webconf/templates/sources.html:158
 #: mapproxy_webconf/templates/resources/translations.js:16
 msgid "Transparency"
 msgstr "Transparenz"
 
-#: mapproxy_webconf/templates/sources.html:168
+#: mapproxy_webconf/templates/sources.html:169
 #: mapproxy_webconf/templates/resources/translations.js:21
 msgid "Coverage"
 msgstr "Coverage"
 
-#: mapproxy_webconf/templates/sources.html:186
+#: mapproxy_webconf/templates/sources.html:187
 msgid "Polygon"
 msgstr "Polygon"
 
-#: mapproxy_webconf/templates/sources.html:193
+#: mapproxy_webconf/templates/sources.html:194
 msgid "Coverage BBOX"
 msgstr "Coverage Bounding Box"
 
-#: mapproxy_webconf/templates/sources.html:234
+#: mapproxy_webconf/templates/sources.html:236
 msgid "Use coverage from WMS"
 msgstr "Coverage des WMS benutzen"
 
-#: mapproxy_webconf/templates/sources.html:236
-#: mapproxy_webconf/templates/sources.html:247
+#: mapproxy_webconf/templates/sources.html:238
+#: mapproxy_webconf/templates/sources.html:248
 msgid "Coverage SRS"
 msgstr "Coverage SRS"
 
-#: mapproxy_webconf/templates/sources.html:245
+#: mapproxy_webconf/templates/sources.html:246
 msgid "Coverage polygon"
 msgstr "Coverage Polygon"
 
-#: mapproxy_webconf/templates/sources.html:259
+#: mapproxy_webconf/templates/sources.html:260
 msgid "Show coverage in map"
 msgstr "Coverage in Karte anzeigen"
 
-#: mapproxy_webconf/templates/sources.html:260
+#: mapproxy_webconf/templates/sources.html:261
 msgid "Create coverage in map"
 msgstr "Coverage in Karte erstellen"
 
-#: mapproxy_webconf/templates/sources.html:268
+#: mapproxy_webconf/templates/sources.html:269
 msgid "Supported SRS"
 msgstr "Unterstütze Koordinatensysteme"
 
-#: mapproxy_webconf/templates/sources.html:273
+#: mapproxy_webconf/templates/sources.html:274
 msgid "Add SRS from WMS"
 msgstr "SRS von WMS hinzufügen"
 
-#: mapproxy_webconf/templates/sources.html:284
+#: mapproxy_webconf/templates/sources.html:285
 msgid "Manual add SRS"
 msgstr "Koordinatensystem manuell hinzufügen"
 
-#: mapproxy_webconf/templates/sources.html:335
+#: mapproxy_webconf/templates/sources.html:337
 msgid "Available WMS"
 msgstr "Verfügbare WMS"
 
-#: mapproxy_webconf/templates/sources.html:366
+#: mapproxy_webconf/templates/sources.html:368
 msgid "show in map"
 msgstr "In Karte anzeigen"
 
-#: mapproxy_webconf/templates/sources.html:367
+#: mapproxy_webconf/templates/sources.html:369
 msgid "refresh"
 msgstr "Aktualisieren"
 
-#: mapproxy_webconf/templates/sources.html:371
+#: mapproxy_webconf/templates/sources.html:373
 msgid "Really remove WMS:"
 msgstr "Wirklich dieser WMS enternen:"
 
-#: mapproxy_webconf/templates/sources.html:378
+#: mapproxy_webconf/templates/sources.html:380
 msgid "Infos"
 msgstr "Informationen"
 
-#: mapproxy_webconf/templates/sources.html:404
+#: mapproxy_webconf/templates/sources.html:406
 msgid "Loading in progress"
 msgstr "Laden..."
 
-#: mapproxy_webconf/templates/sources.html:408
+#: mapproxy_webconf/templates/sources.html:410
 msgid "Load WMS"
 msgstr "WMS laden"
 
@@ -942,15 +942,19 @@ msgstr "Keine gültige ganze Zahl"
 msgid "Invalid character(s)"
 msgstr "Ungültige(s) Zeichen"
 
-#: mapproxy_webconf/templates/angular/base_templates.html:52
+#: mapproxy_webconf/templates/angular/base_templates.html:8
+msgid "Invalid bbox"
+msgstr "Ungültige Bounding Box"
+
+#: mapproxy_webconf/templates/angular/base_templates.html:53
 msgid "show content"
 msgstr "Einblenden"
 
-#: mapproxy_webconf/templates/angular/base_templates.html:53
+#: mapproxy_webconf/templates/angular/base_templates.html:54
 msgid "hide content"
 msgstr "Ausblenden"
 
-#: mapproxy_webconf/templates/angular/base_templates.html:81
+#: mapproxy_webconf/templates/angular/base_templates.html:82
 msgid "An error occured"
 msgstr "Es ist ein Fehler aufgetreten"
 
