@@ -10,7 +10,6 @@ from xml.etree.ElementTree import ParseError
 from mapproxy.client import http
 from mapproxy.script.scales import scale_to_res, res_to_scale
 from mapproxy.srs import SRS
-from mapproxy.grid import tile_grid
 
 from . import bottle
 from . import config
@@ -23,7 +22,7 @@ from .capabilities import parse_capabilities_url
 from .constants import OGC_DPI, UNIT_FACTOR
 
 from .lib.geojson import ConfigGeoJSONGrid, features, InvalidGridBBoxTransformationException, InvalidTileBBoxTransformationException
-from .lib.grid import is_valid_transformation
+from .lib import grid
 configuration = config.ConfigParser.from_file('./config.ini')
 
 app = bottle.Bottle()
@@ -383,24 +382,8 @@ def calculate_tiles():
     if scales:
         scales = [float(s) for s in scales]
 
-    if res is None and scales is not None:
-        res = [round(scale_to_res(scale, dpi, units), defaults.DECIMAL_PLACES) for scale in scales]
+    result = grid.calculate_tiles(name=name, srs=srs, bbox=bbox, bbox_srs=bbox_srs, origin=origin, res=res, scales=scales, dpi=dpi, units=units)
 
-    tilegrid = tile_grid(srs=srs, bbox=bbox, bbox_srs=bbox_srs, res=res, origin=origin, name=name)
-
-    result = []
-
-    for level, res in enumerate(tilegrid.resolutions):
-        tiles_in_x, tiles_in_y = tilegrid.grid_sizes[level]
-        total_tiles = tiles_in_x * tiles_in_y
-        result.append({
-            'level': level,
-            'resolution': res,
-            'scale': scales[level] if scales else res_to_scale(res, dpi, units),
-            'tiles_in_x': tiles_in_x,
-            'tiles_in_y': tiles_in_y,
-            'total_tiles': total_tiles
-        })
     return {'result': result}
 
 @app.route('/transform_bbox', 'POST', name="transform_bbox")
@@ -409,7 +392,7 @@ def transform_bbox():
     dest = SRS(request.json.get('dest'));
     bbox = source.align_bbox(request.json.get('bbox'));
 
-    if is_valid_transformation(bbox, source, dest):
+    if grid.is_valid_transformation(bbox, source, dest):
         transformed_bbox = source.transform_bbox_to(dest, bbox)
         return {'bbox': transformed_bbox}
     else:

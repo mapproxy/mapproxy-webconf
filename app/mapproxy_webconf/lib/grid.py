@@ -1,3 +1,6 @@
+from mapproxy.grid import tile_grid
+from mapproxy.script.scales import scale_to_res, res_to_scale
+
 from mapproxy_webconf import constants
 from mapproxy_webconf import defaults
 
@@ -58,3 +61,24 @@ def is_valid_transformation(bbox, source_srs, dest_srs):
                     return False
             return True
     return False
+
+def calculate_tiles(name, srs, bbox, bbox_srs, origin, res=None, scales=None, dpi=constants.OGC_DPI, units=1):
+    if res is None and scales is not None:
+        res = [round(scale_to_res(scale, dpi, units), defaults.DECIMAL_PLACES) for scale in scales]
+
+    tilegrid = tile_grid(srs=srs, bbox=bbox, bbox_srs=bbox_srs, res=res, origin=origin, name=name)
+
+    result = []
+
+    for level, res in enumerate(tilegrid.resolutions):
+        tiles_in_x, tiles_in_y = tilegrid.grid_sizes[level]
+        total_tiles = tiles_in_x * tiles_in_y
+        result.append({
+            'level': level,
+            'resolution': res,
+            'scale': scales[level] if scales else res_to_scale(res, dpi, units),
+            'tiles_in_x': tiles_in_x,
+            'tiles_in_y': tiles_in_y,
+            'total_tiles': total_tiles
+        })
+    return result
