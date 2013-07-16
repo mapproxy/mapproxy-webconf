@@ -39,7 +39,6 @@ function setDefaults(app, language, project, write_config_url) {
     app.value('BACKGROUND_SERVICE_TITLE', '${ _("Background Layer") }');
     app.value('BACKGROUND_SERVICE_URL', "http://osm.omniscale.net/proxy/service?");
     app.value('BACKGROUND_SERVICE_LAYER', "osm");
-    app.value('MAPPROXY_DEFAULT_GRID_SRS', ["EPSG:4326", "EPSG:900913", "EPSG:3857", "EPSG:102100", "EPSG:102113"]);
     app.value('BBOXES', {
         'EPSG:4326': [-180, -90, 180, 90],
         'EPSG:3857': [-20037508.342789236,-20037508.342789236,20037508.342789236,20037508.342789236],

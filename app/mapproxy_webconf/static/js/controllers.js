@@ -837,7 +837,7 @@ function MapproxyCacheFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Messa
     });
 };
 
-function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID_SRS, BACKGROUND_SERVICE_TITLE, BACKGROUND_SERVICE_URL, BACKGROUND_SERVICE_LAYER, BBOXES, $http, TranslationService, MessageService, DataShareService, ProjectDefaults, MapproxyGrids) {
+function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, BACKGROUND_SERVICE_TITLE, BACKGROUND_SERVICE_URL, BACKGROUND_SERVICE_LAYER, BBOXES, $http, TranslationService, MessageService, DataShareService, ProjectDefaults, MapproxyGrids) {
 
     var convertResScales = function(url, mode) {
         if($scope.custom.res_scales.length > 0) {
