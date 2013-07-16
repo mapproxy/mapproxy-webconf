@@ -471,7 +471,6 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
             $scope.formTitle = 'edit';
             $scope.form.$setPristine();
             $scope.editareaBinds.dirty = false;
-            $scope.editareaBinds.save = false;
         }
     };
     $scope.validBBox = function() {
@@ -638,6 +637,10 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
             }
         });
     };
+    $scope.saveFromEditarea = function() {
+        $scope.source = $scope.editareaBinds.editareaValue;
+        $scope.addSource();
+    };
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {
         'units': 'm',
@@ -652,20 +655,9 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
     $scope.editareaBinds = {
         editareaValue: $scope.prepareForEditarea($scope.source),
         visible: false,
-        dirty: false
+        dirty: false,
+        save: $scope.saveFromEditarea
     };
-
-    $scope.$watch('editareaBinds.save', function(save) {
-        if(save) {
-            $scope.source = $scope.editareaBinds.editareaValue;
-            $scope.addSource();
-        }
-    });
-    $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
-        if(wasVisible && !isVisible) {
-            $scope.addSource();
-        }
-    });
 
     MapproxySources.current($scope.source);
 
@@ -794,7 +786,6 @@ function MapproxyCacheFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Messa
             $scope.formTitle = 'edit';
             $scope.form.$setPristine();
             $scope.editareaBinds.dirty = false;
-            $scope.editareaBinds.save = false;
         }
     };
     $scope.resetForm = function(event) {
@@ -806,6 +797,10 @@ function MapproxyCacheFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Messa
         var name = MapproxySources.nameById(_id) || MapproxyCaches.nameById(_id) || MapproxyGrids.nameById(_id);
         return name ? name : _id;
     };
+    $scope.saveFromEditarea = function() {
+        $scope.cache = $scope.editareaBinds.editareaValue;
+        $scope.addCache();
+    };
 
     $scope.cache = {'data': MapproxyCaches.model}
     $scope.formTitle = 'new';
@@ -813,7 +808,8 @@ function MapproxyCacheFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Messa
     $scope.editareaBinds = {
         editareaValue: $scope.prepareForEditarea($scope.cache),
         visible: false,
-        dirty: false
+        dirty: false,
+        save: $scope.saveFromEditarea
     };
 
     MapproxyCaches.current($scope.cache);
@@ -828,18 +824,6 @@ function MapproxyCacheFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Messa
         helper.safeApply($scope, function() {
             $scope.form.$setPristine();
         });
-    });
-
-    $scope.$watch('editareaBinds.save', function(save) {
-        if(save) {
-            $scope.cache = $scope.editareaBinds.editareaValue;
-            $scope.addCache();
-        }
-    });
-    $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
-        if(wasVisible && !isVisible) {
-            $scope.addCache();
-        }
     });
 
     $scope.$watch('cache', function() {
@@ -929,9 +913,9 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
     $scope.prepareForEditarea = function(data) {
         return $.extend(true, {'data': {'name': ""}}, data);
     };
-    $scope.addGrid = function(event) {
+    $scope.addGrid = function(event, fromEditarea) {
         helper.safePreventDefaults(event);
-        if(!$scope.editareaBinds.save) {
+        if(!fromEditarea) {
             addScalesResTo($scope.grid.data);
         }
 
@@ -956,7 +940,6 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
             $scope.formTitle = 'edit';
             $scope.form.$setPristine();
             $scope.editareaBinds.dirty = false;
-            $scope.editareaBinds.save = false;
         }
     };
     $scope.lockGrid = function(event) {
@@ -1090,6 +1073,11 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
             }
         }
     };
+    $scope.saveFromEditarea = function() {
+        $scope.grid = $scope.editareaBinds.editareaValue;
+        $scope.addGrid(undefined, true);
+    };
+
     $scope.custom = {
         'res_scales': [],
         'resSelected': false,
@@ -1102,7 +1090,8 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
     $scope.editareaBinds = {
         editareaValue: $scope.prepareForEditarea($scope.grid),
         visible: false,
-        dirty: false
+        dirty: false,
+        save: $scope.saveFromEditarea
     };
 
     $scope.olmapBinds = {
@@ -1126,20 +1115,10 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, MAPPROXY_DEFAULT_GRID
         $scope.calculateTiles();
     });
 
-    $scope.$watch('editareaBinds.save', function(save) {
-        if(save) {
-            $scope.grid = $scope.editareaBinds.editareaValue;
-            $scope.addGrid();
-        }
-    });
-
     $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
         if(isVisible) {
             addScalesResTo($scope.grid.data);
             $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.grid);
-        }
-        if(wasVisible && !isVisible) {
-            $scope.addGrid();
         }
     });
 
@@ -1243,7 +1222,6 @@ function MapproxyLayerFormCtrl($scope, $http, PAGE_LEAVE_MSG, TranslationService
             $scope.formTitle = 'edit';
             $scope.form.$setPristine();
             $scope.editareaBinds.dirty = false;
-            $scope.editareaBinds.save = false;
         }
     };
     $scope.resetForm = function(event) {
@@ -1275,6 +1253,10 @@ function MapproxyLayerFormCtrl($scope, $http, PAGE_LEAVE_MSG, TranslationService
             helper.safeApply($scope);
         }
     };
+    $scope.saveFromEditarea = function() {
+        $scope.layer = $scope.editareaBinds.editareaValue;
+        $scope.addLayer();
+    };
 
     $scope.custom = {
         'units': 'm',
@@ -1288,7 +1270,8 @@ function MapproxyLayerFormCtrl($scope, $http, PAGE_LEAVE_MSG, TranslationService
     $scope.editareaBinds = {
         editareaValue: $scope.prepareForEditarea($scope.layer),
         visible: false,
-        dirty: false
+        dirty: false,
+        save: $scope.saveFromEditarea
     };
 
     $scope.$on('layers.current', setLayer);
@@ -1304,18 +1287,6 @@ function MapproxyLayerFormCtrl($scope, $http, PAGE_LEAVE_MSG, TranslationService
         helper.safeApply($scope, function() {
             $scope.form.$setPristine();
         });
-    });
-    $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
-        if(wasVisible && !isVisible) {
-            $scope.addLayer();
-        }
-    });
-
-    $scope.$watch('editareaBinds.save', function(save) {
-        if(save) {
-            $scope.layer = $scope.editareaBinds.editareaValue;
-            $scope.addLayer();
-        }
     });
     $scope.$watch('layer', function() {
         $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.layer);
@@ -1380,12 +1351,15 @@ function MapproxyGlobalsFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Mes
         MapproxyGlobals.add($scope.globals);
         $scope.form.$setPristine();
         $scope.editareaBinds.dirty = false;
-        $scope.editareaBinds.save = false;
     };
     $scope.reset = function(event) {
         helper.safePreventDefaults(event);
         $scope.form.$setPristine();
         setGlobals();
+    };
+    $scope.saveFromEditarea = function() {
+        $scope.globals = $scope.editareaBinds.editareaValue;
+        $scope.save();
     };
 
     $scope.globals = angular.copy({'data': MapproxyGlobals.model});
@@ -1395,7 +1369,8 @@ function MapproxyGlobalsFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Mes
     $scope.editareaBinds = {
         editareaValue: $scope.globals,
         visible: false,
-        dirty: false
+        dirty: false,
+        save: $scope.saveFromEditarea
     };
 
     $scope.template = "cache.html";
@@ -1407,17 +1382,8 @@ function MapproxyGlobalsFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Mes
     $scope.$watch('_messageService.messages.globals.update_success', setGlobals);
     $scope.$on('dss.global', setTemplate);
 
-    $scope.$watch('editareaBinds.save', function(save) {
-        if(save) {
-            $scope.globals = $scope.editareaBinds.editareaValue;
-            $scope.save();
-        }
-    });
     $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
         DataShareService.data('_editarea_visible', isVisible)
-        if(wasVisible && !isVisible) {
-            $scope.save();
-        }
     });
 
     $scope.$watch('globals', function() {
@@ -1479,12 +1445,15 @@ function MapproxyServicesCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Mappro
         MapproxyServices.add($scope.services);
         $scope.form.$setPristine();
         $scope.editareaBinds.dirty = false;
-        $scope.editareaBinds.save = false;
     };
     $scope.reset = function(event) {
         helper.safePreventDefaults(event);
         $scope.form.$setPristine();
         setServices();
+    };
+    $scope.saveFromEditarea = function() {
+        $scope.services = $scope.editareaBinds.editareaValue;
+        $scope.save();
     };
 
     $scope.services = angular.copy({'data': MapproxyServices.model});
@@ -1494,7 +1463,8 @@ function MapproxyServicesCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Mappro
     $scope.editareaBinds = {
         editareaValue: $scope.services,
         visible: false,
-        dirty: false
+        dirty: false,
+        save: $scope.saveFromEditarea
     }
 
     $scope.template = 'wms.html'
@@ -1516,17 +1486,8 @@ function MapproxyServicesCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Mappro
             $scope.defaults = defaults[0];
         }
     });
-    $scope.$watch('editareaBinds.save', function(save) {
-        if(save) {
-            $scope.services = $scope.editareaBinds.editareaValue;
-            $scope.save();
-        }
-    });
     $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
         DataShareService.data('_editarea_visible', isVisible)
-        if(wasVisible && !isVisible) {
-            $scope.save()
-        }
     });
     $scope.$on('dss.service', setTemplate);
 

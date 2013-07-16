@@ -587,16 +587,16 @@ directive('editarea', function($http, MessageService, EDITAREA_TEMPLATE_URL) {
                 $http.post(jsonURL, {"yaml": yaml})
                     .success(function(json) {
                         scope.editareaBinds.editareaValue.data = json;
-                        scope.editareaBinds.save = true;
+                        scope.editareaBinds.save();
                     })
                     .error(errorHandler);
             };
-            scope.leaveEditarea = function(unmanual) {
+            scope.leaveEditarea = function(manual) {
                 scope.editareaBinds.visible = false;
                 scope.editareaBinds.dirty = false;
                 scope.editareaErrorMsg = undefined;
-                if(unmanual) {
-                    helper.safeApply(scope);
+                if(manual) {
+                    scope.editareaBinds.save();
                 }
             };
             scope.reset = function() {
