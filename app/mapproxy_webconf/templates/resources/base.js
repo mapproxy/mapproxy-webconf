@@ -26,6 +26,7 @@ function include_requireds(path) {
     require("modules/messages.js");
     require("modules/tooltips.js");
     require("modules/openlayers.js")
+    require("modules/res_scales.js")
 };
 
 function setDefaults(app, language, project, write_config_url) {
@@ -59,6 +60,10 @@ function setDefaults(app, language, project, write_config_url) {
 
   /* Message directive defaults */
     angular.module('mapproxy_gui.messages').value('FADEOUT_DELAY', 2000);
+
+  /* ResScale directive defaults */
+    angular.module('mapproxy_gui.resScales').value('CONVERT_URL', "${ get_url('convert_res_scales') }");
+    angular.module('mapproxy_gui.resScales').value('TEMPLATE_URL', "${ get_url('angular_template', filename='res_scales.html') }");
 
   /* Other directive defaults */
     angular.module('mapproxy_gui.directives').value('EDITAREA_TEMPLATE_URL', "${ get_url('angular_template', filename='editarea') }");

@@ -46,7 +46,7 @@
     %end
     <script type="text/javascript">
       /* add directives and services*/
-        var app = angular.module('mapproxy_gui', ['angular.extensions', 'mapproxy_gui.directives', 'mapproxy_gui.services', 'mapproxy_gui.validators', 'mapproxy_gui.messages', 'mapproxy_gui.tooltips', 'mapproxy_gui.openlayers']);
+        var app = angular.module('mapproxy_gui', ['angular.extensions', 'mapproxy_gui.directives', 'mapproxy_gui.services', 'mapproxy_gui.validators', 'mapproxy_gui.messages', 'mapproxy_gui.tooltips', 'mapproxy_gui.openlayers', 'mapproxy_gui.resScales']);
 
         var project, write_config_url;
         %if defined('project'):
