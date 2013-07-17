@@ -338,8 +338,7 @@ def create_json():
         response.status = 400
         return {'error': _('parsing yaml failed')}
 
-@app.route('/res', 'POST', name='scales_to_res')
-@app.route('/scales', 'POST', name='res_to_scales')
+@app.route('/convert_res_scales', 'POST', name='convert_res_scales')
 def convert_res_scales():
     data = request.json.get('data', [])
     mode = request.json.get('mode', 'to_scale')
