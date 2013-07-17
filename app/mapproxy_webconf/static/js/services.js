@@ -346,6 +346,7 @@ var layerModel = {
     'name': undefined,
     'title': undefined,
     'sources': [],
+    'units': 'm',
     'min_res': undefined,
     'max_res': undefined,
     'min_res_scale': undefined,
