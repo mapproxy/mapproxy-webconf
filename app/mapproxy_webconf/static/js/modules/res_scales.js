@@ -87,9 +87,15 @@ directive('resScales', function($http, CONVERT_URL, TEMPLATE_URL, CONVERT_URL) {
                     $scope.$watch('data.resScales', function(value) {
                         if(angular.isDefined(value)) {
                             if($scope.resSelected) {
+                                if(!angular.equals($scope.binds.res, value)) {
+                                    $scope.form.$setDirty();
+                                }
                                 $scope.binds.res = value;
                                 $scope.binds.scales = [];
                             } else {
+                                if(!angular.equals($scope.binds.scale, value)) {
+                                    $scope.form.$setDirty();
+                                }
                                 $scope.binds.scales = value;
                                 $scope.binds.res = [];
                             }
