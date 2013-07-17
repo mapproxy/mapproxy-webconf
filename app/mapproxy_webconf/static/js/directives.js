@@ -528,8 +528,11 @@ directive('extendableInputList', function($timeout, EXTENDABLE_INPUT_LIST_TEMPLA
                 }
             };
             scope.remove = function(id) {
-                scope.extendableInputListBinds.splice(id, 1);
-                scope.items.splice(id, 1);
+                helper.safeApply(scope, function() {
+                    scope.extendableInputListBinds.splice(id, 1);
+                    scope.items.splice(id, 1);
+                    scope.form.$setDirty();
+                });
             };
 
             scope.$watch('extendableInputListBinds', function(newVal) {
