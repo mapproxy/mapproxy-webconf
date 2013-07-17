@@ -6,10 +6,6 @@
   var preloaded_defaults = ${!defaults};
 %end
 
-%def jsblock():
-  <script type="text/javascript" src="${ get_url('static', filepath='js/min_max_res_helper.js') }"></script>
-%end
-
 %def leftblock():
   <div ng-controller="LayerListCtrl">
     <button class="btn btn-small btn-add pull-right" ng-click="newItem()">
@@ -62,8 +58,7 @@
 %end
 
 %def middleblock():
-  <div ng-controller="MapproxyLayerFormCtrl"
-       ng-init="custom.scalesToResURL='${get_url('scales_to_res')}';custom.resToScalesURL='${get_url('res_to_scales')}';">
+  <div ng-controller="MapproxyLayerFormCtrl">
     <form name="form" novalidate ng-show="!editareaBinds.visible">
       <h3 ng-show="formTitle=='new'">${ _('New layer') }</h3>
       <h3 ng-show="formTitle=='edit'">${ _('Edit layer') }</h3>
@@ -104,7 +99,7 @@
         </div>
       </div>
       <hr>
-      <div ng-include src="'${ get_url('angular_template', filename='min_max_res') }'"></div>
+      <div res-scales="layer.data" mode="min_max" parent-form="form" dpi="defaults.data.dpi"></div>
       <hr>
       <div class="pull-left">
         <button class="btn btn-small"
@@ -200,4 +195,4 @@
   </div>
 %end
 
-%rebase base_config leftblock=leftblock, rightblock=rightblock, middleblock=middleblock, jsblock=jsblock, preload_block=preload_block, project=get('project'),  active='layers'
+%rebase base_config leftblock=leftblock, rightblock=rightblock, middleblock=middleblock, preload_block=preload_block, project=get('project'),  active='layers'

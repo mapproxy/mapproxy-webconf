@@ -313,9 +313,6 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
             $scope.formTitle = 'edit';
         }
 
-        extractMinMaxRes($scope, $scope.source);
-
-
         if(!helper.isEmpty($scope.source.data.coverage.polygon) && helper.isEmpty($scope.source.data.coverage.bbox)) {
             $scope.custom.bboxSelected = false;
         } else {
@@ -464,9 +461,6 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
             MessageService.message('sources', 'form_error', errorMsg);
         } else {
             $scope.source._manual = $scope.editareaBinds.visible;
-            if(!$scope.source._manual) {
-                insertMinMaxRes($scope, $scope.source);
-            }
             MapproxySources.add($scope.source);
             $scope.formTitle = 'edit';
             $scope.form.$setPristine();
@@ -571,20 +565,6 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
     $scope.layerTitle = function(layer) {
         return WMSSources.layerTitle($scope.source.data.req.url, layer);
     };
-    $scope.getResolution = function() {
-        if(!$scope.custom.resSelected) {
-            $scope.custom.resSelected = true;
-            convertMinMaxRes($scope, $http, $scope.custom.scalesToResURL, 'to_res');
-            helper.safeApply($scope);
-        }
-    };
-    $scope.getScale = function() {
-        if($scope.custom.resSelected) {
-            $scope.custom.resSelected = false;
-            convertMinMaxRes($scope, $http, $scope.custom.resToScalesURL, 'to_scale');
-            helper.safeApply($scope);
-        }
-    };
     $scope.provideEditorData = function() {
         var editorData = {
             'layer': {
@@ -643,8 +623,6 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
     };
     //must defined here if this controller should own all subelements of custom/source
     $scope.custom = {
-        'units': 'm',
-        'resSelected': false,
         'bboxSelected': true
     };
     $scope.defaults = {'data': ProjectDefaults.model};
@@ -838,46 +816,9 @@ function MapproxyCacheFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Messa
 };
 
 function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, BACKGROUND_SERVICE_TITLE, BACKGROUND_SERVICE_URL, BACKGROUND_SERVICE_LAYER, BBOXES, $http, TranslationService, MessageService, DataShareService, ProjectDefaults, MapproxyGrids) {
-
-    var convertResScales = function(url, mode) {
-        if($scope.custom.res_scales.length > 0) {
-            $http.post(url, {
-                "data": $scope.custom.res_scales,
-                "dpi": $scope.defaults.data.dpi,
-                "units": $scope.grid.data.units,
-                "mode": mode
-            }).success(function(response) {
-                $scope.custom.res_scales = response.result;
-                $scope.form.$pristine = false;
-            });
-        }
-    };
-
-    var addScalesResTo = function(obj) {
-        if($scope.custom.res_scales.length > 0) {
-            if($scope.custom.resSelected) {
-                delete obj.scales;
-                obj.res = $scope.custom.res_scales;
-            } else {
-                delete obj.res;
-                obj.scales = $scope.custom.res_scales
-            }
-        }
-    };
-
     var setGrid = function() {
         $scope.grid = MapproxyGrids.current();
         DataShareService.data('clearCalculatedTiles', true);
-        if(angular.isDefined($scope.grid.data.scales)) {
-            $scope.custom.res_scales = angular.copy($scope.grid.data.scales);
-            $scope.custom.resSelected = false;
-        } else if(angular.isDefined($scope.grid.data.res)) {
-            $scope.custom.res_scales = angular.copy($scope.grid.data.res);
-            $scope.custom.resSelected = true;
-        } else {
-            $scope.custom.res_scales = [];
-            $scope.custom.resSelected = false
-        }
 
         $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.grid);
 
@@ -915,9 +856,6 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, BACKGROUND_SERVICE_TI
     };
     $scope.addGrid = function(event, fromEditarea) {
         helper.safePreventDefaults(event);
-        if(!fromEditarea) {
-            addScalesResTo($scope.grid.data);
-        }
 
         $scope.grid = helper.clearData($scope.grid);
 
@@ -953,27 +891,16 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, BACKGROUND_SERVICE_TI
         $scope.grid._locked = false;
         $scope.addGrid();
     };
-    $scope.getResolutions = function(url) {
-        if(!$scope.custom.resSelected) {
-            $scope.custom.resSelected = true;
-            convertResScales(url, 'to_res');
-        }
-    };
-    $scope.getScales = function(url) {
-        if($scope.custom.resSelected) {
-            $scope.custom.resSelected = false;
-            convertResScales(url, 'to_scale');
-        }
-    };
     $scope.calculateTiles = function() {
         var data = {
             'srs': $scope.grid.data.srs,
             'bbox': $scope.grid.data.bbox,
             'bbox_srs': $scope.grid.data.bbox_srs,
             'name': $scope.grid.data.name,
-            'dpi': $scope.defaults.data.dpi
+            'dpi': $scope.defaults.data.dpi,
+            'res': helper.isEmpty($scope.grid.data.res) ? undefined : $scope.grid.data.res,
+            'scales': helper.isEmpty($scope.grid.data.scales) ? undefined : $scope.grid.data.scales
         };
-        data[$scope.custom.resSelected ? 'res' : 'scales'] = $scope.custom.res_scales.length > 0 ? $scope.custom.res_scales : undefined;
 
         $http.post($scope.calculateTilesURL, data).success(function(response) {
             DataShareService.data('calculatedTiles', response.result);
@@ -1079,8 +1006,6 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, BACKGROUND_SERVICE_TI
     };
 
     $scope.custom = {
-        'res_scales': [],
-        'resSelected': false,
         'mapSRS': SRS
     };
     $scope.grid = angular.copy({'data': MapproxyGrids.model});
@@ -1105,7 +1030,7 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, BACKGROUND_SERVICE_TI
                 baseLayer: true
             }]
         }
-    }
+    };
 
     MapproxyGrids.current($scope.grid);
 
@@ -1162,8 +1087,6 @@ function MapproxyLayerFormCtrl($scope, $http, PAGE_LEAVE_MSG, TranslationService
 
         $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.layer);
 
-        extractMinMaxRes($scope, $scope.layer);
-
         if($scope.layer._manual) {
             $scope.editareaBinds.visible = true;
         } else {
@@ -1199,7 +1122,6 @@ function MapproxyLayerFormCtrl($scope, $http, PAGE_LEAVE_MSG, TranslationService
         helper.safePreventDefaults(event);
 
         $scope.layer = helper.clearData($scope.layer)
-
         var errorMsg = false;
         if(angular.isUndefined($scope.layer.data.name)) {
             errorMsg = TranslationService.translate("Name required.");
@@ -1215,9 +1137,6 @@ function MapproxyLayerFormCtrl($scope, $http, PAGE_LEAVE_MSG, TranslationService
             MessageService.message('layers', 'form_error', errorMsg);
         } else {
             $scope.layer._manual = $scope.editareaBinds.visible;
-            if(!$scope.layer._manual) {
-                insertMinMaxRes($scope, $scope.layer);
-            }
             MapproxyLayers.add($scope.layer);
             $scope.formTitle = 'edit';
             $scope.form.$setPristine();
@@ -1239,29 +1158,13 @@ function MapproxyLayerFormCtrl($scope, $http, PAGE_LEAVE_MSG, TranslationService
         var name = MapproxySources.nameById(_id) || MapproxyCaches.nameById(_id);
         return name ? name : _id;
     };
-    $scope.getResolution = function() {
-        if(!$scope.custom.resSelected) {
-            $scope.custom.resSelected = true;
-            convertMinMaxRes($scope, $http, $scope.custom.scalesToResURL, 'to_res');
-            helper.safeApply($scope);
-        }
-    };
-    $scope.getScale = function() {
-        if($scope.custom.resSelected) {
-            $scope.custom.resSelected = false;
-            convertMinMaxRes($scope, $http, $scope.custom.resToScalesURL, 'to_scale');
-            helper.safeApply($scope);
-        }
-    };
     $scope.saveFromEditarea = function() {
         $scope.layer = $scope.editareaBinds.editareaValue;
         $scope.addLayer();
     };
 
-    $scope.custom = {
-        'units': 'm',
-        'resSelected': false
-    };
+    $scope.custom = {};
+
     $scope.defaults = {'data': ProjectDefaults.model};
     $scope.layer = angular.copy({'data': MapproxyLayers.model});
     MapproxyLayers.current($scope.layer);
@@ -1291,7 +1194,6 @@ function MapproxyLayerFormCtrl($scope, $http, PAGE_LEAVE_MSG, TranslationService
     $scope.$watch('layer', function() {
         $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.layer);
     }, true);
-
     $(window).on('beforeunload', function() {
         if($scope.form.$dirty || $scope.editareaBinds.dirty) {
             return PAGE_LEAVE_MSG;
