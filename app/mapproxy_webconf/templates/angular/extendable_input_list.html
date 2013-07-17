@@ -6,7 +6,7 @@
              name-for="eil_item"
              text="{{listPrefix}} {{$index}}"
              form-name="_eilForm">
-          <input type="text"
+          <input type="number"
                  class="_extendableInputListItem inputField input-medium"
                  float
                  ng-blur="update()"
@@ -23,7 +23,7 @@
   <div>
     <li class="form-horizontal">
       <div labeled="input_label" name-for="_extendableInputListNewInput" text="{{listPrefix}} {{extendableInputListBinds.length}}">
-          <input type="text"
+          <input type="number"
                  class="_extendableInputListItem inputField input-medium"
                  float
                  id="_extendableInputListNewInput"
@@ -38,7 +38,7 @@
   <div ng-show="showNext">
     <li class="form-horizontal">
       <div labeled="input_label" name-for="extendableInputListDummyInput" text="{{listPrefix}} {{extendableInputListBinds.length + 1}}">
-        <input type="text"
+        <input type="number"
                class="_extendableInputListItem inputField input-medium"
                float
                ng-focus="update()"
