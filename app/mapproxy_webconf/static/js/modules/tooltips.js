@@ -111,11 +111,18 @@ directive('tooltip', function(tooltipMapper) {
                     });
                 }
             } else {
-                var tooltipData;
-                if(tooltipMapper.loaded) {
-                    initFromService();
+                if(attrs.tooltip != "") {
+                    if(tooltipMapper.loaded) {
+                        initFromService();
+                    } else {
+                        scope.$on('tooltipsLoaded', initFromService);
+                    }
                 } else {
-                    scope.$on('tooltipsLoaded', initFromService);
+                    attrs.$observe('tooltip', function(val) {
+                        if(angular.isDefined(val) && val != "") {
+                            initFromService();
+                        }
+                    });
                 }
             }
         }
