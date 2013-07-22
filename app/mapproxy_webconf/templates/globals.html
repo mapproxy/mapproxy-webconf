@@ -23,18 +23,20 @@
         <i class="icon-question-sign help" tooltip="globals_cache"></i>
     </h3>
     <div labeled="input_label" name-for="cache_meta_size" text="${ _('Meta size') }" tooltip-content="globals_cache_meta_size">
-      <input type="number"
-             min=0
-             ng-model="globals.data.cache.meta_size[0]"
-             class="input-mini"
-             id="cache_meta_size"
-             name="cache_meta_size"/>
-      <input type="number"
-             min=0
-             ng-model="globals.data.cache.meta_size[1]"
-             class="input-mini"
-             id="cache_meta_size_1"
-             name="cache_meta_size_1"/>
+      <div class="text-center" list="2" ng-model="globals.data.cache.meta_size" name="cache_meta_size">
+        <input type="number"
+               min=0
+               ng-model="globals.data.cache.meta_size[0]"
+               class="input-mini"
+               id="cache_meta_size_0"
+               name="cache_meta_size_0"/>
+        <input type="number"
+               min=0
+               ng-model="globals.data.cache.meta_size[1]"
+               class="input-mini"
+               id="cache_meta_size_1"
+               name="cache_meta_size_1"/>
+      </div>
     </div>
     <div labeled="input_label" name-for="cache_meta_buffer" text="${ _('Meta buffer') }" tooltip-content="globals_cache_meta_buffer">
       <input type="number"

@@ -135,30 +135,31 @@ directive('noop', function($parse) {
     };
 }).
 
-directive('bbox', function() {
+directive('list', function() {
     return {
         require: 'ngModel',
         link: function(scope, elm, attrs, ctrl) {
-            var containsNonValue = function(bbox) {
+            var containsNonValue = function(list) {
                 var hasNonValue = false;
-                $.each(bbox, function(idx, elem) {
+                $.each(list, function(idx, elem) {
                     if(elem === undefined || elem === null) {
                         hasNonValue = true;
                     }
                 });
                 return hasNonValue;
             };
+            scope.listLength = parseInt(attrs.list);
             scope.$watch(attrs.ngModel, function(viewValue) {
                 ctrl.$pristine = false;
                 if(helper.isEmpty(viewValue)) {
-                    ctrl.$setValidity('bbox', true);
+                    ctrl.$setValidity('list', true);
                 } else if(angular.isUndefined(viewValue) ||
                           !angular.isArray(viewValue) ||
-                          viewValue.length != 4 ||
+                          viewValue.length != scope.listLength ||
                           containsNonValue(viewValue)) {
-                    ctrl.$setValidity('bbox', false);
+                    ctrl.$setValidity('list', false);
                 } else {
-                    ctrl.$setValidity('bbox', true);
+                    ctrl.$setValidity('list', true);
                 }
 
             }, true)
