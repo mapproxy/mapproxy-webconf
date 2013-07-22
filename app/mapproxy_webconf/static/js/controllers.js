@@ -965,7 +965,6 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, BACKGROUND_SERVICE_TI
         if(!helper.isEmpty($scope.grid.data.bbox)) {
             gridData.grid_bbox = $scope.grid.data.bbox;
         }
-        addScalesResTo(gridData);
         if(angular.isDefined(gridData.scales)) {
             gridData.units = $scope.grid.data.units;
             gridData.dpi = $scope.defaults.data.dpi;
@@ -1042,7 +1041,6 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, BACKGROUND_SERVICE_TI
 
     $scope.$watch('editareaBinds.visible', function(isVisible, wasVisible) {
         if(isVisible) {
-            addScalesResTo($scope.grid.data);
             $scope.editareaBinds.editareaValue = $scope.prepareForEditarea($scope.grid);
         }
     });
