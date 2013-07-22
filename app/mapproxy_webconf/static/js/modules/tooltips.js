@@ -96,13 +96,13 @@ directive('tooltip', function(tooltipMapper) {
                 } else {
                     initTooltip(content);
                 }
-            }
+            };
 
             scope.tooltipPlacement = attrs.tooltipPlacement || 'right';
 
             if(angular.isDefined(attrs.tooltipContent)) {
                 if(attrs.tooltipContent != "") {
-                    initFromAttrs(attrs.tooltipContent, attrs.tooltipTitle)
+                    initFromAttrs(attrs.tooltipContent, attrs.tooltipTitle);
                 } else {
                     attrs.$observe('tooltipContent', function(val) {
                         if(angular.isDefined(val) && val!="") {
@@ -120,7 +120,11 @@ directive('tooltip', function(tooltipMapper) {
                 } else {
                     attrs.$observe('tooltip', function(val) {
                         if(angular.isDefined(val) && val != "") {
-                            initFromService();
+                            if(tooltipMapper.loaded) {
+                                initFromService();
+                            } else {
+                                scope.$on('tooltipsLoaded', initFromService);
+                            }
                         }
                     });
                 }
