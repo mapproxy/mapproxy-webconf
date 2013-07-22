@@ -599,7 +599,7 @@ directive('editarea', function($http, MessageService, EDITAREA_TEMPLATE_URL) {
                 scope.editareaBinds.dirty = false;
                 scope.editareaErrorMsg = undefined;
                 if(manual) {
-                    scope.editareaBinds.save();
+                    scope.editareaBinds.save(true);
                 }
             };
             scope.reset = function() {

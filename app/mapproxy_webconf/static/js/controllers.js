@@ -1001,8 +1001,11 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, BACKGROUND_SERVICE_TI
             }
         }
     };
-    $scope.saveFromEditarea = function() {
+    $scope.saveFromEditarea = function(leaveEditarea) {
         $scope.grid = $scope.editareaBinds.editareaValue;
+        if(leaveEditarea && $scope.grid.data.res && $scope.grid.data.scales) {
+            delete $scope.grid.data.scales;
+        }
         $scope.addGrid(undefined, true);
     };
 
