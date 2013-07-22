@@ -93,7 +93,7 @@ directive('resScales', function($http, CONVERT_URL, TEMPLATE_URL, CONVERT_URL) {
                                 $scope.binds.res = value;
                                 $scope.binds.scales = [];
                             } else {
-                                if(!angular.equals($scope.binds.scale, value)) {
+                                if(!angular.equals($scope.binds.scales, value)) {
                                     $scope.form.$setDirty();
                                 }
                                 $scope.binds.scales = value;
