@@ -395,7 +395,9 @@ var sourceModel = {
     },
     'supported_formats': [],
     'min_res_scale': undefined,
-    'max_res_scale': undefined
+    'max_res_scale': undefined,
+    'min_res': undefined,
+    'max_res': undefined
 };
 var defaultsModel = {
     'dpi': undefined,
