@@ -66,8 +66,7 @@
         <div class="navbar-inner">
           <div>
             <a class="brand" href="/">
-              <img width="52" height="55" src="${ get_url('static', filepath='img/logo.png') }" alt="MapProxy Logo">
-              <h1>MapProxy</h1>
+              <img height="53" width="200" src="${ get_url('static', filepath='img/mapproxy_conf.png') }" alt="MapProxy Configuration Tool Logo">
             </a>
             <ul class="nav">
               <li class="
@@ -88,6 +87,7 @@
               </li>
               %end
             </ul>
+
             <ul class="loginbar pull-right">
               %if defined('project') and project != None:
                % if demo:
@@ -99,6 +99,7 @@
                   <span class="text-info">${ _('working on project') }: <strong>${project}</strong></span>
                 </li>
                % end
+              % end
               %if ( len(supported_languages) > 1):
                <li class="divider"></li>
                 %for lang in get('supported_languages', []):
@@ -106,8 +107,6 @@
                 % end
               %end
             </ul>
-            %end
-
           </div>
         </div>
       </div><!-- /.navbar -->
@@ -132,11 +131,26 @@
       <div class="contents container-fluid">
         <ul class="footer-nav">
           <li><a href="/">${ _('Home') }</a></li>
-          <li><a href="http://www.mapproxy.org/">${ _('Mapproxy') }</a></li>
-          <li><a href="http://omniscale.de/kontakt" target="_blank">${ _('Contact') }</a></li>
-          <li><a href="">${ _('Help') }</a></li>
+          <li><a href="http://www.mapproxy.org/">${ _('Mapproxy Homepage') }</a></li>
+
+          <li>
+            % if language == 'de':
+            <a href="http://omniscale.de/kontakt" target="_blank">
+            % else:
+            <a href="http://omniscale.com/contact" target="_blank">
+            % end
+
+            ${ _('Contact') }</a></li>
+          <li>
+            % if language == 'de':
+            <a href="http://omniscale.de/impressum" target="_blank">
+            % else:
+            <a href="http://omniscale.com/imprint" target="_blank">
+            % end
+
+            ${ _('Imprint') }</a></li>
         </ul>
-        <span id="copyright">&copy; 2013 - Omniscale GmbH & Co. KG</span>
+        <span id="copyright">&copy; 2014 - Omniscale GmbH & Co. KG</span>
       </div>
     </footer>
 
