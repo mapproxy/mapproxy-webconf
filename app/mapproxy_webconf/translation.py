@@ -3,6 +3,9 @@ import gettext
 
 from bottle import request, response, SimpleTemplate
 
+from . import config
+configuration = config.ConfigParser.from_file('./config.ini')
+
 class TranslationPlugin(object):
     name = 'translation'
 
@@ -15,7 +18,10 @@ class TranslationPlugin(object):
         except IOError as e:
             print e
 
-        self.supported_languages = self.translations.keys()
+        # read langauge from config file to get supported_langauges
+        self.supported_languages = configuration.get('app', 'supported_languages')
+        self.supported_languages = self.supported_languages.split(',')
+
         SimpleTemplate.defaults["supported_languages"] = self.supported_languages
         self.install_language(default_language if default_language in self.supported_languages else self.supported_languages[0])
 

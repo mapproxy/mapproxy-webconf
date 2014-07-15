@@ -88,15 +88,24 @@
               </li>
               %end
             </ul>
-            <div class="pull-right language-select">
-              % for lang in get('supported_languages', []):
-                <a href="?language=${ lang }">${ lang.upper() }</a>
-              % end
-            </div>
-            %if defined('project') and project != None:
-            <div class="pull-right project-name">
-                <span class="text-info">${ _('working on project') }: <strong>${project}</strong></span>
-            </div>
+            <ul class="loginbar pull-right">
+              %if defined('project') and project != None:
+               % if demo:
+                <li>
+                  <span class="text-info">${ _('demo modus') }</span>
+                </li>
+               % else:
+                <li>
+                  <span class="text-info">${ _('working on project') }: <strong>${project}</strong></span>
+                </li>
+               % end
+              %if ( len(supported_languages) > 1):
+               <li class="divider"></li>
+                %for lang in get('supported_languages', []):
+                <li><a href="?language=${ lang }">${ lang.upper() }</a></li>
+                % end
+              %end
+            </ul>
             %end
 
           </div>
