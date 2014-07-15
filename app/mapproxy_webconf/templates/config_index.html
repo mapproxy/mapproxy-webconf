@@ -1,29 +1,13 @@
 %def content():
-  <div class="span5">
-    <h3>${ _('Mapproxy configuration') }</h3>
-    <p>${ _('The MapProxy configuration is grouped into sections, each configures a different aspect of MapProxy. These are the following sections:') }</p>
-    <dl id="config-index-list" class="dl-horizontal">
-      <dt>${ _('Sources') }</dt>
-      <dd>${ _('Define where MapProxy can retrieve new data.') }</dd>
-      <dt>${ _('Grids') }</dt>
-      <dd>${ _('Define the grids that MapProxy uses to aligns cached images.') }</dd>
-      <dt>${ _('Caches') }</dt>
-      <dd>${ _('Configure the internal caches.') }</dd>
-      <dt>${ _('Layers') }</dt>
-      <dd>${ _('Configure the layers that MapProxy offers. Each layer can consist of multiple sources and caches.') }</dd>
-      <dt>${ _('Services') }</dt>
-      <dd>${ _('The services MapProxy offers, e.g. WMS or TMS.') }</dd>
-      <dt>${ _('Globals') }</dt>
-      <dd>${ _('Internals of MapProxy and default values that are used in the other configuration sections.') }</dd>
-  </div>
-  <div class="span4 offset1">
-      <h3>${ _('Default project settings') }</h3>
-      <dd>
-        <p>${ _('Info text define project default settings, e.g. DPI or additional SRS') }</p>
-        <p>
-          <a class="btn btn-small" href="${ get_url('project_defaults', project=project) }">${ _('To default settings') }</a>
-        </p>
-    </dl>
+    % if language == 'de':
+       % include content/de/config.html
+    % else:
+       % include content/en/config.html
+    % end
+   <div class="row-fluid">
+    <div class="span12">
+      <a class="btn btn-small" href="${ get_url('project_defaults', project=project) }">${ _('To default settings') }</a>
+    </div>
   </div>
 %end
 
