@@ -4,11 +4,9 @@
     % else:
        % include content/en/config.html
     % end
-   <div class="row-fluid">
-    <div class="span12">
       <a class="btn btn-small" href="${ get_url('project_defaults', project=project) }">${ _('To default settings') }</a>
-    </div>
   </div>
+</div>
 %end
 
 %rebase base_config base_content=content, project=get('project')

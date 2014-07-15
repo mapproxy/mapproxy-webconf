@@ -579,11 +579,11 @@ msgstr "Titel"
 
 #: mapproxy_webconf/templates/project_defaults.html:11
 msgid "Project defaults"
-msgstr "Defaultwerte des Projekts"
+msgstr "Grundeinstellungen des Projekts"
 
 #: mapproxy_webconf/templates/project_defaults.html:12
 msgid "infotext_default_settings"
-msgstr "TODO: Infotexte Default Settings"
+msgstr "Definieren Sie hier Werte die für das gesamte Projekt gültig sind. Hierzu gehören zum Beipsiel die Koordiantensystem die zur Verfügung gestellt werden sollen."
 
 #: mapproxy_webconf/templates/project_defaults.html:17
 msgid "DPI"
