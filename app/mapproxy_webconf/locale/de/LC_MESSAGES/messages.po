@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-07-15 10:14+0200\n"
+"POT-Creation-Date: 2014-07-15 11:20+0200\n"
 "PO-Revision-Date: 2014-07-15 09:47+0100\n"
 "Last-Translator: \n"
 "Language-Team: de <LL@li.org>\n"
@@ -188,26 +188,26 @@ msgstr "Projekte"
 msgid "Configuration"
 msgstr "Konfiguration"
 
-#: mapproxy_webconf/templates/base.html:98
+#: mapproxy_webconf/templates/base.html:96
+msgid "demo modus"
+msgstr ""
+
+#: mapproxy_webconf/templates/base.html:100
 msgid "working on project"
 msgstr "Aktuelles Projekt"
 
-#: mapproxy_webconf/templates/base.html:125
+#: mapproxy_webconf/templates/base.html:134
 msgid "Home"
 msgstr "Startseite"
 
-#: mapproxy_webconf/templates/base.html:126
-msgid "Mapproxy"
-msgstr "MapProxy"
+#: mapproxy_webconf/templates/base.html:135
+msgid "Mapproxy Homepage"
+msgstr "Mapproxy Homepage"
 
-#: mapproxy_webconf/templates/base.html:127
+#: mapproxy_webconf/templates/base.html:144
 #: mapproxy_webconf/templates/services.html:62
 msgid "Contact"
 msgstr "Kontakt"
-
-#: mapproxy_webconf/templates/base.html:128
-msgid "Help"
-msgstr "Hilfe"
 
 #: mapproxy_webconf/templates/base_config.html:11
 msgid "create configuration"
@@ -215,9 +215,7 @@ msgstr "Konfiguration erstellen"
 
 #: mapproxy_webconf/templates/base_config.html:16
 msgid "demo project - create mapproxy config not possible"
-msgstr ""
-"Demo Modus - Es wird nur eine temporäre MapProxy Konfiguration erstellt. "
-"Das Speichern der Konfiguration ist nicht möglich."
+msgstr "Demo Modus - Speichern der Konfiguration nicht möglich."
 
 #: mapproxy_webconf/templates/caches.html:11
 msgid "Create new cache"
@@ -609,7 +607,9 @@ msgstr "Konfiguration bearbeiten"
 
 #: mapproxy_webconf/templates/projects.html:4
 msgid "demo - you dont see all projects"
-msgstr "Demo - Projekte sind nicht sichtbar"
+msgstr ""
+"Der MapProxy GUI befindet sich im Demomodus. Sie können nur ein einzelnes"
+" Projekt im Demomodus erstellen und verwalten."
 
 #: mapproxy_webconf/templates/projects.html:5
 msgid "Create Project"
@@ -1117,3 +1117,10 @@ msgstr "MapProxy Konfiguration erstellen"
 #: mapproxy_webconf/templates/resources/translations.js:37
 msgid "successfuly copied"
 msgstr "wurde kopiert"
+
+#~ msgid "Mapproxy"
+#~ msgstr "MapProxy"
+
+#~ msgid "Help"
+#~ msgstr "Hilfe"
+

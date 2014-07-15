@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-07-15 10:14+0200\n"
+"POT-Creation-Date: 2014-07-15 11:20+0200\n"
 "PO-Revision-Date: 2013-07-10 15:45+0100\n"
 "Last-Translator: \n"
 "Language-Team: en <LL@li.org>\n"
@@ -174,25 +174,25 @@ msgstr ""
 msgid "Configuration"
 msgstr ""
 
-#: mapproxy_webconf/templates/base.html:98
+#: mapproxy_webconf/templates/base.html:96
+msgid "demo modus"
+msgstr ""
+
+#: mapproxy_webconf/templates/base.html:100
 msgid "working on project"
 msgstr ""
 
-#: mapproxy_webconf/templates/base.html:125
+#: mapproxy_webconf/templates/base.html:134
 msgid "Home"
 msgstr ""
 
-#: mapproxy_webconf/templates/base.html:126
-msgid "Mapproxy"
+#: mapproxy_webconf/templates/base.html:135
+msgid "Mapproxy Homepage"
 msgstr ""
 
-#: mapproxy_webconf/templates/base.html:127
+#: mapproxy_webconf/templates/base.html:144
 #: mapproxy_webconf/templates/services.html:62
 msgid "Contact"
-msgstr ""
-
-#: mapproxy_webconf/templates/base.html:128
-msgid "Help"
 msgstr ""
 
 #: mapproxy_webconf/templates/base_config.html:11
@@ -1082,43 +1082,9 @@ msgstr ""
 msgid "successfuly copied"
 msgstr ""
 
-#~ msgid "Mapproxy configuration"
+#~ msgid "Mapproxy"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "The MapProxy configuration is grouped "
-#~ "into sections, each configures a "
-#~ "different aspect of MapProxy. These are"
-#~ " the following sections:"
-#~ msgstr ""
-
-#~ msgid "Define where MapProxy can retrieve new data."
-#~ msgstr ""
-
-#~ msgid "Define the grids that MapProxy uses to aligns cached images."
-#~ msgstr ""
-
-#~ msgid "Configure the internal caches."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Configure the layers that MapProxy "
-#~ "offers. Each layer can consist of "
-#~ "multiple sources and caches."
-#~ msgstr ""
-
-#~ msgid "The services MapProxy offers, e.g. WMS or TMS."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Internals of MapProxy and default values"
-#~ " that are used in the other "
-#~ "configuration sections."
-#~ msgstr ""
-
-#~ msgid "Default project settings"
-#~ msgstr ""
-
-#~ msgid "Info text define project default settings, e.g. DPI or additional SRS"
+#~ msgid "Help"
 #~ msgstr ""
 

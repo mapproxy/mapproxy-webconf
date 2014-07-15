@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-07-15 10:14+0200\n"
+"POT-Creation-Date: 2014-07-15 11:20+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -174,25 +174,25 @@ msgstr ""
 msgid "Configuration"
 msgstr ""
 
-#: mapproxy_webconf/templates/base.html:98
+#: mapproxy_webconf/templates/base.html:96
+msgid "demo modus"
+msgstr ""
+
+#: mapproxy_webconf/templates/base.html:100
 msgid "working on project"
 msgstr ""
 
-#: mapproxy_webconf/templates/base.html:125
+#: mapproxy_webconf/templates/base.html:134
 msgid "Home"
 msgstr ""
 
-#: mapproxy_webconf/templates/base.html:126
-msgid "Mapproxy"
+#: mapproxy_webconf/templates/base.html:135
+msgid "Mapproxy Homepage"
 msgstr ""
 
-#: mapproxy_webconf/templates/base.html:127
+#: mapproxy_webconf/templates/base.html:144
 #: mapproxy_webconf/templates/services.html:62
 msgid "Contact"
-msgstr ""
-
-#: mapproxy_webconf/templates/base.html:128
-msgid "Help"
 msgstr ""
 
 #: mapproxy_webconf/templates/base_config.html:11
