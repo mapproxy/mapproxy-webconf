@@ -9,8 +9,8 @@
   <div ng-controller="SourceListCtrl">
     <div class="pull-right">
       <!-- konflikt mit bootstrap -->
-      <button class="btn btn-small btn-add pull-right" ng-click="newItem()">
-        <span class="icon-plus-sign icon-white" ></span>
+      <button class="btn btn-sm btn-add pull-right" ng-click="newItem()">
+        <span class="glyphicon glyphicon-plus-sign" ></span>
         ${ _('Create new source') }
       </button>
     </div>
@@ -22,8 +22,8 @@
           message-types="sources.load_error,sources.delete_error">
     </span>
     <div>
-      <input type="text" ng-model="search" placeholder="${ _('Filter') }..." class="input-large"/>
-      <i class="icon-question-sign pull-right help" tooltip="filter"></i>
+      <input type="text" ng-model="search" placeholder="${ _('Filter') }..." />
+      <i class="glyphicon glyphicon-question-sign pull-right help" tooltip="filter"></i>
       <span ng-show="list.length - filtered.length" ng-click="search=''">
         ${ _('Not shown sources') }: {{list.length - filtered.length}}
       </span>
@@ -33,16 +33,16 @@
            ng-repeat="item in filtered = (list | filter: {data.name:search})"
            ng-click="editItem($event, item)">
         <li>
-          <i ng-show="item._manual" class="icon-pencil" title="${_('edit manual')}"></i>
+          <i ng-show="item._manual" class="glyphicon glyphicon-pencil" title="${_('edit manual')}"></i>
           {{item.data.name}}
-          <i class="icon-remove"
+          <i class="glyphicon glyphicon-remove"
             dialog="ask"
             dialog-title="${ _('Confirm!') }"
             dialog-text="${ _('Really remove source') }: {{item.data.name}}?"
             callback="removeItem($event, item)"
             title="${_('delete')}">
           </i>
-           <i class="icon-share" ng-click="copyItem($event, item)" title="${_('copy')}"></i>
+           <i class="glyphicon glyphicon-share" ng-click="copyItem($event, item)" title="${_('copy')}"></i>
         </li>
       </div>
     </ul>
