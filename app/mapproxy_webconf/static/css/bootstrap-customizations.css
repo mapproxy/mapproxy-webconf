@@ -59,6 +59,22 @@
   margin-top: 10px;
 }
 
+.nav.tab-menu {
+  margin-left: 1em;
+  margin-bottom: 0;
+  margin-top: 3px;
+  border: 0;
+}
+
+.nav.tab-menu > li > a {
+  color: white;
+}
+
+.nav.tab-menu > li.active > a,
+.nav.tab-menu > li a:hover {
+  color: #3A3740;
+}
+
 .nav > li > a:hover,
 .nav > li > a:focus {
   text-decoration: none;
