@@ -91,6 +91,14 @@ ul.loginbar > li.divider {
     margin-bottom: 20px;
 }
 
+.middleblock {
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    padding-left: 1em;
+    padding-right: 1em;
+    min-height: 300px !important;
+}
+
 /* /content */
 
 /* footer */
