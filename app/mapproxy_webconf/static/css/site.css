@@ -162,3 +162,8 @@ dl#config-index-list dd{
 .alert-block > p {
   margin-bottom: 10px;
 }
+
+/* fix for footer overlap */
+#push {
+  height: 40px;
+}
