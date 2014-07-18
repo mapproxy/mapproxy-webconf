@@ -138,3 +138,19 @@ footer span#copyright {
   float: right;
 }
 /* /footer */
+
+/* config index */
+dl#config-index-list dt{
+  width: 80px;
+  text-align: left;
+}
+
+dl#config-index-list dd{
+  margin-left: 80px;
+  margin-bottom: 10px;
+}
+
+/* other */
+.alert-block > p {
+  margin-bottom: 10px;
+}
