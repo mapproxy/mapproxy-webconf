@@ -1,0 +1,69 @@
+/* navbar */
+.navbar {
+  border-top: 3px solid #2AA4B5;
+  background-image: 0;
+  border-radius: 0px;
+  padding-top: 10px;
+  margin-bottom: 0px;
+}
+
+.navbar .container {
+  width: 100%;
+}
+
+.navbar-brand {
+  padding: 5px 40px 5px 20px;
+}
+
+.navbar-brand h1,
+.navbar-brand a{
+    display: inline;
+}
+.navbar-brand h1 {
+  color: #3A3740;
+  top: 7px;
+  position: relative;
+  font-size: 28px;
+}
+
+.navbar .nav {
+  margin-top: 38px;
+  margin-bottom: 10px;
+}
+
+.navbar .nav > li > a {
+  padding: 0;
+  margin-left: 15px;
+  margin-right: 10px;
+  color: #777777;
+}
+
+.navbar .nav > .active > a,
+.navbar .nav > .active > a:hover,
+.navbar .nav > .active > a:focus {
+  background-color: inherit;
+  padding: 0;
+  margin-left: 15px;
+  margin-right: 10px;
+  border-bottom: 2px solid #FF9738;
+  -webkit-box-shadow: inherit;
+     -moz-box-shadow: inherit;
+          box-shadow: inherit;
+}
+
+.navbar-fixed-top .navbar-inner,
+.navbar-static-top .navbar-inner {
+  background-image: none;
+  background: 0;
+  box-shadow: none;
+  margin-top: 10px;
+}
+
+.nav > li > a:hover,
+.nav > li > a:focus {
+  text-decoration: none;
+  background-color: white;
+  border-bottom: 0;
+  color: #333333;
+}
+/* /navbar */

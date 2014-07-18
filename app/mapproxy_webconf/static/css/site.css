@@ -1,0 +1,140 @@
+html,
+body {
+  height: 100%;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 13px;
+}
+
+body {
+  background-color: #CCCBC9;
+  color: #3A3740;
+}
+
+a {
+  color: #2E3537;
+}
+
+h1, h2, h3 {
+    line-height: 40px;
+}
+
+#wrapper {
+  margin: 0px auto -43px;
+  background-color: #FFFFFF;
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+}
+
+#wrapper,
+footer {
+  width: 96%;
+  max-width: 1260px;
+}
+
+/* loginbar */
+
+ul.loginbar {
+  padding: 0;
+  margin-bottom: 0;
+  z-index: 9999;
+  position: relative;
+}
+
+ul.loginbar > li {
+  display: inline;
+  list-style: none;
+  padding-bottom: 15px;
+  cursor: default;
+  color: #787878;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+ul.loginbar > li > a,
+ul.loginbar > li > a:hover {
+  cursor: pointer;
+}
+
+ul.loginbar > li.divider {
+  margin-left: 2em;
+}
+/* /loginbar
+
+/* sitebar */
+.sitebar-wrapper {
+    background-color: #2AA4B5;
+    padding-top: 25px;
+}
+
+.sitebar-wrapper .container {
+  width: 100%;
+  padding-left: 40px;
+  padding-right: 40px;
+  /*height: 40px;*/
+}
+
+.tab-menu-header {
+    margin-right: 1em;
+    margin-bottom: 0;
+    margin-top: 0;
+    color: white;
+    font-size: 25.5px;
+}
+
+/* /sitebar */
+
+/* content */
+
+.content {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* /content */
+
+/* footer */
+footer {
+  border-bottom: 3px solid #2AA4B5;
+  background-color: #3A3740;
+  color: #65676B;
+  padding: 10px 0;
+  margin: 0 auto;
+
+  text-align: center;
+  /*height: 20px;*/
+}
+
+footer .container {
+    width: 100%;
+    height: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+footer a {
+  color: #CCCBC9;
+}
+
+
+footer ul.footer-nav  {
+  float: left;
+  font-size: 12px;
+}
+
+footer ul.footer-nav li {
+  display: inline-block;
+  color: #bbb;
+  margin-right: 20px;
+}
+
+footer ul.footer-nav li a:hover {
+  color: white;
+  border-bottom: none;
+  text-decoration: none;
+}
+
+footer span#copyright {
+  float: right;
+}
+/* /footer */
