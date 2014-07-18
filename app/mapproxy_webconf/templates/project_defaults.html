@@ -11,32 +11,40 @@
     <h4>${ _('Project defaults') }</h4>
     <p>${ _('infotext_default_settings') }</p>
     <hr>
-    <form name="form">
-      <fieldset>
+    <form name="form" role="form">
         <div labeled="input_label" name-for="dpi"
           text="${ _('DPI') }" tooltip-content="default_config_dpi">
-          <input float name="dpi" id="dpi" class="input-small" ng-model="defaults.data.dpi" type="number">
+          <div class="row">
+            <div class="col-sm-6">
+              <input float name="dpi" id="dpi" class="form-control" ng-model="defaults.data.dpi" type="number">
+            </div>
+          </div>
         </div>
         <hr>
         <div labeled="input_label" name-for="default_srs"
           text="${ _('SRS') }" tooltip-content="default_config_srs">
           <div name="default_srs" id="default_srs" class="well well-small">
             <span class="badge" ng-repeat="srs in defaults.data.srs">{{srs}}
-              <i class="icon-remove" ng-click="removeSRS($event, srs)"></i>
+              <i class="glyphicon glyphicon-remove" ng-click="removeSRS($event, srs)"></i>
             </span>
           </div>
         </div>
-      </fieldset>
     </form>
-    <div class="input-append" labeled="input_label" name-for="new_srs" text="${ _('Add SRS') }" tooltip-content="default_config_add_srs">
-      <input type="text" id="new_srs" name="new_srs" class="input-small" ng-model="custom.newSRS">
-      <button class="btn btn-small" ng-click="addSRS($event)" ng-disabled="!custom.newSRS">
-        ${ _('Add') }
-      </button>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="input-group" labeled="input_label" name-for="new_srs" text="${ _('Add SRS') }" tooltip-content="default_config_add_srs">
+          <input type="text" id="new_srs" name="new_srs" class="form-control" ng-model="custom.newSRS">
+          <span class="input-group-btn">
+            <button class="btn btn-default btn-sm" ng-click="addSRS($event)" ng-disabled="!custom.newSRS" type="button">
+              ${ _('Add') }
+            </button>
+          </span>
+        </div>
+      </div>
     </div>
     <hr>
     <div class="pull-left">
-      <button class="btn btn-small"
+      <button class="btn btn-default btn-sm"
               ng-click="save($event)"
               ng-disabled="!form.$valid || !form.$dirty"
               ng-class="{'btn-success': form.$valid && form.$dirty}">
@@ -44,11 +52,10 @@
       </button>
     </div>
     <div class="pull-right">
-      <a href="${ get_url('configuration', project=project) }" class="btn btn-small">
+      <a href="${ get_url('configuration', project=project) }" class="btn btn-default btn-sm">
         ${ _('To configuration') } &rarr;
       </a>
     </div>
-
     <div>
       <span message-handler="success"
             message-types="defaults.add_success,defaults.update_success">
