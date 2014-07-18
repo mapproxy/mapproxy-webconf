@@ -6,9 +6,7 @@
              float
              id="min_res"
              name="min_res"
-             ng-model="data.min_res"
-             class="input-medium"
-             />
+             ng-model="data.min_res"/>
     </div>
     <div labeled="input_label" name-for="max_res" text="${ _('max_res') }"
       ng-show="resSelected" tooltip-content="max_res">
@@ -16,7 +14,6 @@
              float
              id="max_res"
              ng-model="data.max_res"
-             class="input-medium"
              name="max_res"/>
     </div>
     <div labeled="input_label" name-for="min_scale" text="${ _('min_scale') }"
@@ -25,8 +22,7 @@
              float
              id="min_scale"
              name="min_scale"
-             ng-model="data.min_res_scale"
-             class="input-medium"/>
+             ng-model="data.min_res_scale"/>
     </div>
     <div labeled="input_label" name-for="max_scale" text="${ _('max_scale') }"
       ng-show="!resSelected" tooltip-content="max_scale">
@@ -34,7 +30,6 @@
              float
              id="max_scale"
              ng-model="data.max_res_scale"
-             class="input-medium"
              name="max_scale"/>
     </div>
   </script>
@@ -56,14 +51,14 @@
          id="units">
       <button type="button"
               ng-click="data.units='m';form.$pristine=false;"
-              class="btn btn-small"
+              class="btn btn-sm btn-default"
               ng-class="{'active': data.units=='m'}"
               data-toggle="button">
         ${ _('Meters') }
       </button>
       <button type="button"
               ng-click="data.units='d';form.$pristine=false;"
-              class="btn btn-small"
+              class="btn btn-sm btn-default"
               ng-class="{'active': data.units=='d'}"
               data-toggle="button">
         ${ _('Degrees') }
@@ -71,13 +66,13 @@
     </div>
     <div class="btn-group switch" data-toggle="buttons-radio">
       <button type="button"
-              class="btn btn-small"
+              class="btn btn-sm btn-default"
               ng-class="{'active': !resSelected}"
               ng-click="convert('to_scale')">
         ${ _('Scale') }
       </button>
       <button type="button"
-              class="btn btn-small"
+              class="btn btn-sm btn-default"
               ng-class="{'active': resSelected}"
               ng-click="convert('to_res')">
         ${ _('Resolution') }
