@@ -39,20 +39,20 @@
 </script>
 
 <script type="text/ng-template" id="input_label_toggleable">
-  <div class="form-group form-group-sm" ng-class="{'error': invalid, 'warning': warning}" toggle-group mode="multiShow">
-    <label for="{{name}}"
+  <div ng-class="{'error': invalid, 'warning': warning}" toggle-group mode="multiShow">
+    <label class="toggleable-label" for="{{name}}"
            toggle-element="next"
            set-focus>
       <span class="control-icons">
-        <i class="icon-chevron-right" title="${ _('show content') }"></i>
-        <i class="icon-chevron-down" ng-show=false title="${ _('hide content') }"></i>
+        <i class="glyphicon glyphicon-chevron-right" title="${ _('show content') }"></i>
+        <i class="glyphicon glyphicon-chevron-down" ng-show=false title="${ _('hide content') }"></i>
       </span>
       {{getText()}}
       <i ng-show=tooltipContent class="glyphicon glyphicon-question-sign pull-right help" tooltip="{{tooltipContent}}"></i>
     </label>
     <div class="controls" ng-show="false">
       <span ng-transclude></span>
-      <i class="pull-right icon-warning-sign help"
+      <i class="pull-right glyphicon glyphicon-warning-sign help"
          ng-show="warning"
          tooltip="tooltip"
          tooltip-content="{{warningMsg()}}">
@@ -64,14 +64,14 @@
 
 <script type="text/ng-template" id="success">
   <div class='text-success save_ok messsage-area' ng-show='false'>
-    <i class='icon-ok'></i>
+    <i class='glyphicon glyphicon-ok'></i>
     <strong>{{message}}</strong>
   </div>
 </script>
 
 <script type="text/ng-template" id="error">
   <div class='text-error messsage-area' ng-show='false'>
-    <i class='icon-remove-circle'></i>
+    <i class='glyphicon glyphicon-remove-circle'></i>
     <strong>${ _('An error occured') }</strong>
     <p>{{message}}</p>
   </div>
