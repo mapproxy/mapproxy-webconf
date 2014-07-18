@@ -28,17 +28,17 @@
 %def content():
   % if not defined('base_content'):
     % if defined('leftblock'):
-      <div class="span3 leftblock">
+      <div class="col-sm-3 leftblock">
         %leftblock()
       </div>
     % end
     % if defined('middleblock'):
-      <div class="span5 middleblock">
+      <div class="col-sm-5 middleblock">
         %middleblock()
       </div>
     % end
     % if defined('rightblock'):
-      <div class="span4 rightblock">
+      <div class="col-sm-4 rightblock">
         %rightblock()
       </div>
     % end
