@@ -158,9 +158,167 @@ dl#config-index-list dd{
   margin-bottom: 10px;
 }
 
+/* buttons */
+.btn-add {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #5CCBDA;
+  *background-color: #2AA4B5;
+  background-image: -moz-linear-gradient(top, #5CCBDA, #2AA4B5);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#5CCBDA), to(#2AA4B5));
+  background-image: -webkit-linear-gradient(top, #5CCBDA, #2AA4B5);
+  background-image: -o-linear-gradient(top, #5CCBDA, #2AA4B5);
+  background-image: linear-gradient(to bottom, #5CCBDA, #2AA4B5);
+  background-repeat: repeat-x;
+  border-color: #2AA4B5 #2AA4B5 #3A7E88;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff7ECFDA', endColorstr='#ff2AA4B5', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+.btn-add:hover,
+.btn-add:focus,
+.btn-add:active,
+.btn-add.active,
+.btn-add.disabled,
+.btn-add[disabled] {
+  color: #ffffff;
+  background-color: #2AA4B5;
+  *background-color: #2a85a0;
+}
+
+.btn-add:active,
+.btn-add.active {
+  background-color: #24748c \9;
+}
+
+/* /buttons */
+
+/* list options */
+ul.vertical-list {
+    list-style: none;
+    margin: 0;
+    max-height: 600px;
+    overflow: auto;
+}
+
+ul.vertical-list.small {
+    max-height: 300px;
+}
+
+ul.vertical-list li {
+  border-bottom: 1px solid #ccc;
+}
+
+ul.vertical-list > div:first-child  {
+  border-top: 1px solid #ccc;
+}
+
+ul.vertical-list div:hover,
+ul.vertical-list div:focus
+{
+  background-color: #eeeeee;
+}
+
+ul.vertical-list div.selected.active,
+ul.vertical-list div.selected {
+  background-color: #FF9738;
+  color: white;
+}
+
+ul.vertical-list div.active {
+    color: green;
+}
+
+ul.vertical-list li {
+    /*margin-left: 0.5em;*/
+    cursor: pointer;
+    white-space: normal;
+    padding: 0.5em;
+}
+
+ul.vertical-list li i.icon-remove,
+ul.vertical-list li i.icon-share {
+    float: right;
+    cursor: pointer;
+    margin-right: 4px;
+    margin-top: 4px;
+    height: 20px; // make clickable area bigger
+}
+
+ul.vertical-list div.selected li i.icon-remove {
+    background-image: url("../img/glyphicons-halflings-white.png");
+    opacity: 0.9;
+}
+ul.vertical-list div.selected li i.icon-share {
+    background-image: url("../img/glyphicons-halflings-white.png");
+    opacity: 0.9;
+}
+/* / list options */
+
+/* input fields */
+
+input:focus:invalid,
+textarea:focus:invalid,
+select:focus:invalid {
+  color: #A61D12;
+  border-color: #BF574F;
+}
+
+input:focus:invalid:focus,
+textarea:focus:invalid:focus,
+select:focus:invalid:focus {
+  border-color: #A61D12;
+  -webkit-box-shadow: 0 0 6px #f8b9b7;
+     -moz-box-shadow: 0 0 6px #f8b9b7;
+          box-shadow: 0 0 6px #f8b9b7;
+}
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus {
+  border-color: rgba(42, 164, 181, 1)
+  outline: 0;
+  outline: thin dotted \9;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(42, 164, 181, 0.5);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(42, 164, 181, 0.5);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(42, 164, 181, 0.5);
+}
+
+/* /input fields */
+
 /* other */
 .alert-block > p {
   margin-bottom: 10px;
+}
+
+.pointer,
+.toggle-element,
+.accordion_wms_source {
+    cursor: pointer;
+}
+
+hr.formLine {
+    margin: 10px 0;
+}
+
+.pointer,
+.toggle-element,
+.accordion_wms_source {
+    cursor: pointer;
 }
 
 /* fix for footer overlap */
