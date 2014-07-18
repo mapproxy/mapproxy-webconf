@@ -1,0 +1,42 @@
+.insertable-list {
+  min-height:10em;
+  cursor: default;
+  overflow: auto;
+}
+
+.insertable-list .label {
+  white-space: normal;
+  display: block;
+  padding: .5em;
+  margin-bottom: .2em;
+  text-shadow: none;
+  background-color: white;
+  color: black;
+  font-weight: normal;
+  border: 1px solid #999999;
+}
+
+.insertable-list .label .glyphicon-remove {
+  float: right;
+}
+
+.insertable-list .label:hover {
+  background-color: #eeeeee;
+  cursor: pointer;
+}
+
+input.droppable-active,
+div.droppable-active {
+  border: 1px solid #F89406;
+}
+
+.draggable-active {
+  width: 300px;
+  border: 1px solid #F89406 !important;
+  padding: 0.5em;
+  background-color: #eee;
+}
+
+.toggleable-label {
+  display: block  ;
+}

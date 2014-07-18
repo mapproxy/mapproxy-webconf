@@ -1,0 +1,39 @@
+.ui-front {
+  z-index: 1050;
+}
+
+dl.info-horizontal  {
+  margin-bottom: 0;
+  text-align: left;
+}
+
+/* info dialog */
+dl.info-horizontal dt {
+  width: 100px;
+  float: left;
+}
+
+dl.info-horizontal dd {
+  margin-left: 0;
+}
+
+/* config index */
+dl#config-index-list dt{
+  width: 80px;
+  text-align: left;
+}
+
+dl#config-index-list dd{
+  margin-left: 80px;
+  margin-bottom: 10px;
+}
+
+.alert-block > p {
+  margin-bottom: 10px;
+}
+
+.scrollable {
+  height: 250px;
+  overflow-x:hidden;
+  overflow-y:auto;
+}
