@@ -12,37 +12,37 @@
     <p>${ _('infotext_default_settings') }</p>
     <hr>
     <form name="form" role="form">
-        <div labeled="input_label" name-for="dpi"
-          text="${ _('DPI') }" tooltip-content="default_config_dpi">
-          <div class="row">
-            <div class="col-sm-6">
-              <input float name="dpi" id="dpi" class="form-control" ng-model="defaults.data.dpi" type="number">
-            </div>
+      <div labeled="input_label" name-for="dpi"
+        text="${ _('DPI') }" tooltip-content="default_config_dpi">
+        <div class="row">
+          <div class="col-sm-6">
+            <input float name="dpi" id="dpi" class="form-control" ng-model="defaults.data.dpi" type="number">
           </div>
         </div>
-        <hr>
-        <div labeled="input_label" name-for="default_srs"
-          text="${ _('SRS') }" tooltip-content="default_config_srs">
-          <div name="default_srs" id="default_srs" class="well well-small">
-            <span class="badge" ng-repeat="srs in defaults.data.srs">{{srs}}
-              <i class="glyphicon glyphicon-remove" ng-click="removeSRS($event, srs)"></i>
-            </span>
-          </div>
-        </div>
-    </form>
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="input-group" labeled="input_label" name-for="new_srs" text="${ _('Add SRS') }" tooltip-content="default_config_add_srs">
-          <input type="text" id="new_srs" name="new_srs" class="form-control" ng-model="custom.newSRS">
-          <span class="input-group-btn">
-            <button class="btn btn-default btn-sm" ng-click="addSRS($event)" ng-disabled="!custom.newSRS" type="button">
-              ${ _('Add') }
-            </button>
+      </div>
+      <hr class="formLine">
+      <div labeled="input_label" name-for="default_srs"
+        text="${ _('SRS') }" tooltip-content="default_config_srs">
+        <div name="default_srs" id="default_srs" class="well well-small">
+          <span class="badge" ng-repeat="srs in defaults.data.srs">{{srs}}
+            <i class="glyphicon glyphicon-remove" ng-click="removeSRS($event, srs)"></i>
           </span>
         </div>
       </div>
+    </form>
+    <div labeled="input_label" name-for="new_srs" text="${ _('Add SRS') }" tooltip-content="default_config_add_srs">
+      <div class="row">
+        <div class="col-sm-8">
+          <input type="text" id="new_srs" name="new_srs" class="form-control" ng-model="custom.newSRS">
+        </div>
+        <div class="col-sm-4">
+          <button class="btn btn-default btn-sm" ng-click="addSRS($event)" ng-disabled="!custom.newSRS" type="button">
+            ${ _('Add') }
+          </button>
+        </div>
+      </div>
     </div>
-    <hr>
+    <hr class="formLine">
     <div class="pull-left">
       <button class="btn btn-default btn-sm"
               ng-click="save($event)"

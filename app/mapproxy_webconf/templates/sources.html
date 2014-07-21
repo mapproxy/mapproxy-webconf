@@ -140,24 +140,28 @@
                 </div>
               </div>
             </div>
-            <!-- TODO: format input with appended button -->
-            <div class="input-append"
-                 labeled="input_label"
+            <div labeled="input_label"
                  name-for="add_layer_manual"
                  text="${ _('Manual add layer') }"
                  tooltip-content="sources_manual_add_layers">
-              <input type="text"
-                     noop
-                     id="add_layer_manual"
-                     name="add_layer_manual"
-                     ng-model="custom.layer_manual"
-                     class="input-medium"
-                     unique="{{source.data.req.layers}}"/>
-              <button class="btn btn-sm btn-default"
-                      ng-click="addLayerManual($event)"
-                      ng-disabled="!custom.layer_manual">
-                ${ _('Add') }
-              </button>
+              <div class="row">
+                <div class="col-sm-8">
+                  <input type="text"
+                         noop
+                         id="add_layer_manual"
+                         name="add_layer_manual"
+                         ng-model="custom.layer_manual"
+                         class="form-control"
+                         unique="{{source.data.req.layers}}"/>
+                </div>
+                <div class="col-sm-4">
+                  <button class="btn btn-sm btn-default pull-right"
+                          ng-click="addLayerManual($event)"
+                          ng-disabled="!custom.layer_manual">
+                    ${ _('Add') }
+                  </button>
+                </div>
+              </div>
             </div>
             <hr class="formLine">
             <div labeled="input_label"
@@ -334,23 +338,28 @@
                       ng-disabled="!source.data.req.url">
                 ${ _('Add SRS from WMS') }
               </button>
-              <!-- TODO: format input with appended button -->
-              <div class="input-append"
-                   labeled="input_label"
+              <div labeled="input_label"
                    name-for="add_srs_manual"
                    text="${ _('Manual add SRS') }"
                    tooltip-content="sources_add_srs_manual">
-                <input type="text"
-                       noop
-                       id="add_srs_manual"
-                       name="add_srs_manual"
-                       ng-model="custom.srs_manual"
-                       class="input-medium"/>
-                <button class="btn btn-sm btn-default"
-                        ng-click="addSRSManual($event)"
-                        ng-disabled="!custom.srs_manual">
-                  ${ _('Add') }
-                </button>
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <input type="text"
+                             noop
+                             id="add_srs_manual"
+                             name="add_srs_manual"
+                             ng-model="custom.srs_manual"
+                             class="form-control"/>
+                    </div>
+                    <div class="col-sm-4">
+                      <button class="btn btn-sm btn-default pull-right"
+                              ng-click="addSRSManual($event)"
+                              ng-disabled="!custom.srs_manual">
+                        ${ _('Add') }
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <hr class="formLine">
