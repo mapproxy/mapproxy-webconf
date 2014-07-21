@@ -6,17 +6,30 @@
 
 %def leftblock():
   <div ng-controller="CacheListCtrl">
-    <button class="btn btn-small btn-add pull-right" ng-click="newItem()">
-      <span class="icon-plus-sign icon-white" ></span>
+    <button class="btn btn-sm btn-add pull-right"
+            ng-click="newItem()">
+      <span class="glyphicon glyphicon-plus-sign" ></span>
       ${ _('Create new cache') }
     </button>
 
     <h3>${ _('Cache') }</h3>
-    <span message-handler="success" message-types="caches.delete_success,caches.copy_success"></span>
-    <span message-handler="error" message-types="caches.load_error,caches.delete_error"></span>
+    <span message-handler="success"
+          message-types="caches.delete_success,caches.copy_success"></span>
+    <span message-handler="error"
+          message-types="caches.load_error,caches.delete_error"></span>
     <div>
-      <input type="text" ng-model="search" placeholder="${ _('Filter') }..." class="input-large"/>
-      <i class="icon-question-sign pull-right help" tooltip="filter"></i>
+      <div class="row">
+        <div class="col-sm-10">
+          <input type="text"
+             ng-model="search"
+             placeholder="${ _('Filter') }..."
+             class="form-control"/>
+        </div>
+        <div class="col-sm-2">
+          <i class="glyphicon glyphicon-question-sign pull-right help"
+              tooltip="filter"></i>
+        </div>
+      </div>
       <span ng-show="list.length - filtered.length" ng-click="search=''">
         ${ _('Not shown caches') }: {{list.length - filtered.length}}
       </span>
@@ -26,16 +39,18 @@
            ng-repeat="item in filtered = (list | filter:{data.name:search}) | orderBy:'name'"
            ng-click="editItem($event, item)">
         <li>
-          <i ng-show="item._manual" class="icon-pencil" title="${_('edit manual')}"></i>
+          <i ng-show="item._manual" class="glyphicon glyphicon-pencil" title="${_('edit manual')}"></i>
           {{item.data.name}}
-          <i class="icon-remove"
+          <i class="glyphicon glyphicon-remove pull-right"
              dialog="ask"
              dialog-title="${ _('Confirm!') }"
              dialog-text="${ _('Really remove cache:') } {{item.data.name}}?"
              callback="removeItem($event, item)"
              title="${_('delete')}">
           </i>
-          <i class="icon-share" ng-click="copyItem($event, item)" title="${_('copy')}"></i>
+          <i class="glyphicon glyphicon-share pull-right"
+             ng-click="copyItem($event, item)"
+             title="${_('copy')}"></i>
         </li>
       </div>
     </ul>
@@ -45,17 +60,30 @@
 
 %def middleblock():
   <div ng-controller="MapproxyCacheFormCtrl">
-    <form name="form" ng-model="cache" ng-show="!editareaBinds.visible">
+    <form name="form"
+          ng-model="cache"
+          ng-show="!editareaBinds.visible">
       <h3 ng-show="formTitle=='new'">${ _('New cache') }</h3>
       <h3 ng-show="formTitle=='edit'">${ _('Edit cache') }</h3>
       <!-- name -->
-      <div labeled="input_label" name-for="cache_name" text="${ _('Name') }" tooltip-content="cache_name">
-          <input required class="input-xlarge" type="text" ng-model="cache.data.name" id="cache_name" name="cache_name"/>
+      <div labeled="input_label"
+           name-for="cache_name"
+           text="${ _('Name') }"
+           tooltip-content="cache_name">
+          <input required
+                 class="form-control"
+                 type="text"
+                 ng-model="cache.data.name"
+                 id="cache_name"
+                 name="cache_name"/>
       </div>
       <!-- sources -->
         <!-- change-callback MUST provide parameters callback and new_data -->
-      <div labeled="input_label" name-for="sources" text="${ _('Sources') }" tooltip-content="cache_sources">
-        <div class="input-xlarge insertable-list uneditable-input"
+      <div labeled="input_label"
+           name-for="sources"
+           text="${ _('Sources') }"
+           tooltip-content="cache_sources">
+        <div class="form-control insertable-list uneditable-input"
              droppable
              sortable
              required
@@ -66,14 +94,20 @@
              name="sources"
              id="sources"
              use-key-for-value="_id">
-          <div ng-repeat="source in cache.data.sources" class="label">
+          <div ng-repeat="source in cache.data.sources"
+               class="label">
             <span ng-bind="showName(source)"></span>
-            <i class="icon-remove" ng-click="remove(source)" title="${_('delete')}"></i>
+            <i class="glyphicon glyphicon-remove"
+               ng-click="remove(source)"
+               title="${_('delete')}"></i>
           </div>
         </div>
       </div>
-      <div labeled="input_label" name-for="grids" text="${ _('Grids') }" tooltip-content="cache_grids">
-        <div class="input-xlarge insertable-list uneditable-input"
+      <div labeled="input_label"
+           name-for="grids"
+           text="${ _('Grids') }"
+           tooltip-content="cache_grids">
+        <div class="form-control insertable-list uneditable-input"
              droppable
              accepts="mapproxy_grid"
              ng-model="cache.data.grids"
@@ -81,23 +115,40 @@
              name="grids"
              id="grids"
              use-key-for-value="_id">
-          <div ng-repeat="grid in cache.data.grids" class="label">
+          <div ng-repeat="grid in cache.data.grids"
+               class="label">
             <span ng-bind="showName(grid)"></span>
-            <i class="icon-remove" ng-click="remove(grid)" title="${_('delete')}"></i>
+            <i class="glyphicon glyphicon-remove"
+               ng-click="remove(grid)"
+               title="${_('delete')}"></i>
           </div>
         </div>
       </div>
       <hr>
-      <div labeled='input_label_toggleable' text="${ _('Format') }" tooltip-content="cache_format">
-        <div labeled="input_label" name-for="format" text="${ _('Format') }" tooltip-content="cache_image_format">
-          <select class="input-xlarge" ng-model="cache.data.format" id="format" name="format">
+      <div labeled='input_label_toggleable'
+           text="${ _('Format') }"
+           tooltip-content="cache_format">
+        <div labeled="input_label"
+             name-for="format"
+             text="${ _('Format') }"
+             tooltip-content="cache_image_format">
+          <select class="form-control"
+                  ng-model="cache.data.format"
+                  id="format"
+                  name="format">
             <option value="mixed">Mixed</option>
             <option value="image/png">Image/PNG</option>
             <option value="image/jpeg">Image/JPEG</option>
           </select>
         </div>
-        <div labeled="input_label" name-for="request_format" text="${ _('Request format') }" tooltip-content="cache_request_format">
-          <select class="input-xlarge" ng-model="cache.data.request_format" id="request_format" name="request_format">
+        <div labeled="input_label"
+             name-for="request_format"
+             text="${ _('Request format') }"
+             tooltip-content="cache_request_format">
+          <select class="form-control"
+                  ng-model="cache.data.request_format"
+                  id="request_format"
+                  name="request_format">
             <option value="image/png">Image/PNG</option>
             <option value="image/jpeg">Image/JPEG</option>
           </select>
@@ -105,16 +156,18 @@
       </div>
       <hr>
       <div class="pull-left">
-        <button class="btn btn-small"
+        <button class="btn btn-sm btn-default"
                 ng-click="addCache($event)"
                 ng-disabled="!form.$valid||form.$pristine"
                 id="form_save"
                 ng-class="{'btn-success': form.$valid&&!form.$pristine}">
           ${ _('Save') }
         </button>
-        <button class="btn btn-small" ng-click="resetForm($event)">${ _('Reset') }</button>
+        <button class="btn btn-sm btn-default"
+                ng-click="resetForm($event)">${ _('Reset') }</button>
       </div>
-      <div id="_editarea_toggle_button_container" class="pull-right"></div>
+      <div id="_editarea_toggle_button_container"
+           class="pull-right"></div>
     </form>
     <div editarea="editareaBinds"
          yaml-URL="${get_url('json_to_yaml')}"
@@ -122,8 +175,10 @@
          keep-empty-fields="name">
     </div>
     <div class="clear">
-      <span message-handler="success" message-types="caches.add_success,caches.update_success"></span>
-      <span message-handler="error" message-types="caches.add_error,caches.update_error,caches.form_error"></span>
+      <span message-handler="success"
+            message-types="caches.add_success,caches.update_success"></span>
+      <span message-handler="error"
+            message-types="caches.add_error,caches.update_error,caches.form_error"></span>
     </div>
   </div>
 %end
@@ -131,13 +186,17 @@
 %def rightblock():
   <div>
     <span ng-controller="SourceListCtrl">
-      <h3>${ _('Sources') }
-        <i class="icon-question-sign help" tooltip="cache_sources_list"></i>
-      </h3>
-      <span message-handler="error" message-types="sources.load_error"></span>
+      <h3 class="inline">${ _('Sources') }</h3>
+      <i class="glyphicon glyphicon-question-sign help"
+         tooltip="cache_sources_list"></i>
+      <span message-handler="error"
+            message-types="sources.load_error"></span>
       <div>
-        <input type="text" ng-model="search" placeholder="${ _('Filter') }..." class="input-large"/>
-        <span ng-show="list.length - filtered.length" ng-click="search=''">
+        <input type="text"
+               ng-model="search"
+               placeholder="${ _('Filter') }..." class="form-control"/>
+        <span ng-show="list.length - filtered.length"
+              ng-click="search=''">
           ${ _('Not shown sources') }: {{list.length - filtered.length}}
         </span>
       </div>
@@ -148,7 +207,7 @@
              item-data="{{item}}">
           <li class="droppable_name">
             {{item.data.name}}
-            <i class="icon-info-sign pull-right"
+            <i class="glyphicon glyphicon-info-sign pull-right"
                tooltip="tooltip"
                tooltip-placement="left"
                tooltip-content="{{getInfos(item)}}">
@@ -160,12 +219,16 @@
     </span>
     <hr>
     <span ng-controller="CacheListCtrl">
-      <h3>${ _('Caches') }
-        <i class="icon-question-sign help" tooltip="cache_caches_list"></i>
-      </h3>
-      <span message-handler="error" message-types="caches.load_error"></span>
+      <h3 class="inline">${ _('Caches') }</h3>
+      <i class="glyphicon glyphicon-question-sign help"
+         tooltip="cache_caches_list"></i>
+      <span message-handler="error"
+            message-types="caches.load_error"></span>
       <div>
-        <input type="text" ng-model="search" placeholder="${ _('Filter') }..." class="input-large"/>
+        <input type="text"
+               ng-model="search"
+               placeholder="${ _('Filter') }..."
+               class="form-control"/>
         <br>
         <span ng-show="list.length - filtered.length"
               ng-click="search=''">
@@ -179,7 +242,7 @@
              item-data="{{item}}">
           <li class="droppable_name">
             {{item.data.name}}
-            <i class="icon-info-sign pull-right"
+            <i class="glyphicon glyphicon-info-sign pull-right"
                tooltip="tooltip"
                tooltip-placement="left"
                tooltip-content="{{getInfos(item)}}">
@@ -191,12 +254,16 @@
     </span>
     <hr>
     <div ng-controller="GridListCtrl">
-      <h3>${ _('Grids') }
-        <i class="icon-question-sign help" tooltip="cache_grids_list"></i>
-      </h3>
-      <span message-handler="error" message-types="grids.load_error"></span>
+      <h3 class="inline">${ _('Grids') }</h3>
+      <i class="glyphicon glyphicon-question-sign help"
+         tooltip="cache_grids_list"></i>
+      <span message-handler="error"
+            message-types="grids.load_error"></span>
       <div>
-        <input type="text" ng-model="search" placeholder="${ _('Filter') }..." class="input-large"/>
+        <input type="text"
+               ng-model="search"
+               placeholder="${ _('Filter') }..."
+               class="form-control"/>
         <br>
         <span ng-show="(list.concat(defaultGrids)).length - filtered.length"
               ng-click="search=''">
@@ -208,11 +275,16 @@
              draggable
              ng-repeat="item in filtered = (list.concat(defaultGrids) | filter: {data.name:search}) | orderBy:'name'"
              item-data="{{item}}">
-          <li class="droppable_name" ng-class="{'locked-grid': item._locked}">
-            <i ng-show="item._locked || item.default" class="icon-ok" title="${_('grid is locked and ready to use')}"></i>
-            <i ng-show="!item._locked && !item.default" class="icon-warning-sign" title="${_('grid is open')}"></i>
+          <li class="droppable_name"
+              ng-class="{'locked-grid': item._locked}">
+            <i ng-show="item._locked || item.default"
+               class="glyphicon glyphicon-ok"
+               title="${_('grid is locked and ready to use')}"></i>
+            <i ng-show="!item._locked && !item.default"
+               class="glyphicon glyphicon-warning-sign"
+               title="${_('grid is open')}"></i>
             {{item.data.name}}
-            <i class="icon-info-sign pull-right"
+            <i class="glyphicon glyphicon-info-sign pull-right"
                tooltip="tooltip"
                tooltip-placement="left"
                tooltip-content="{{getInfos(item)}}">
