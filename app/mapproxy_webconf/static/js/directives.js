@@ -347,7 +347,7 @@ directive('dialog', function($parse, TranslationService) {
                         buttons = [
                             {
                                 'text': TranslationService.translate('Yes'),
-                                'class': 'btn btn-small',
+                                'class': 'btn btn-sm btn-default',
                                 'click': function() {
                                     $(this).dialog("close");
                                     scope.confirmCallback(scope);
@@ -356,7 +356,7 @@ directive('dialog', function($parse, TranslationService) {
                             },
                             {
                                 'text': TranslationService.translate('No'),
-                                'class': 'btn btn-small',
+                                'class': 'btn btn-sm btn-default',
                                 'click': function() {
                                     $(this).dialog("close");
                                     if(angular.isFunction(scope.refuseCallback)) {
@@ -370,7 +370,7 @@ directive('dialog', function($parse, TranslationService) {
                         buttons = [
                             {
                                 'text': TranslationService.translate('OK'),
-                                'class': 'btn btn-small',
+                                'class': 'btn btn-sm btn-default',
                                 'click': function() {
                                     $(this).dialog("close");
                                 }
@@ -442,7 +442,6 @@ directive('labeled', function($parse, $templateCache) {
             scope.name = attrs.nameFor;
             scope.formName = attrs.formName || 'form';
             scope.tooltipContent = attrs.tooltipContent;
-
             //form element object
             if($.inArray(scope.name, Object.keys(scope[scope.formName])) != -1) {
                 scope.angularElement = scope[scope.formName][scope.name];

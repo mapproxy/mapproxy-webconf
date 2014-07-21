@@ -363,7 +363,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
             var buttons = [
                 {
                     'text': TranslationService.translate('Change URL'),
-                    'class': 'btn btn-small',
+                    'class': 'btn btn-sm btn-default',
                     'click': function() {
                         $(this).dialog("close");
                         $scope.source.data.req.layers = undefined;
@@ -373,7 +373,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
                 },
                 {
                     'text': TranslationService.translate('Keep URL'),
-                    'class': 'btn btn-small',
+                    'class': 'btn btn-sm btn-default',
                     'click': function() {
                         $(this).dialog("close");
                         callback(false);
@@ -408,7 +408,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
             var buttons = [
                 {
                     'text': TranslationService.translate('Keep url and reject layer'),
-                    'class': 'btn btn-small',
+                    'class': 'btn btn-sm btn-default',
                     'click': function() {
                         $(this).dialog("close");
                         callback(false);
@@ -416,7 +416,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
                 },
                 {
                     'text': TranslationService.translate('Change url and insert layer'),
-                    'class': 'btn btn-small',
+                    'class': 'btn btn-sm btn-default',
                     'click': function() {
                         $(this).dialog("close");
                         $scope.source.data.req.url = new_data.sourceURL;
