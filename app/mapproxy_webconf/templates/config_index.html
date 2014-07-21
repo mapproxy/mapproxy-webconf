@@ -4,9 +4,8 @@
     % else:
        % include content/en/config.html
     % end
-      <a class="btn btn-small" href="${ get_url('project_defaults', project=project) }">${ _('To default settings') }</a>
+      <a class="btn btn-default btn-sm" href="${ get_url('project_defaults', project=project) }">${ _('To default settings') }</a>
   </div>
-</div>
 %end
 
 %rebase base_config base_content=content, project=get('project')

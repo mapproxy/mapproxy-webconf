@@ -190,6 +190,71 @@ dl#config-index-list dd{
   background-color: #24748c \9;
 }
 
+.btn-os {
+  background: none repeat scroll 0 0 #31A4B5;
+  border: medium none;
+  border-radius: 5px;
+  box-shadow: 0 4px rgba(0, 0, 0, 0.07);
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 600;
+  letter-spacing: 1px;
+  outline: medium none;
+  padding: 15px 30px;
+  position: relative;
+  text-decoration: none;
+  text-transform: uppercase;
+  border: 2px solid #31A4B5;
+}
+.btn-os.small, .btn-os.btn-sm {
+  padding: 8px 7px;
+  font-size: 12px;
+}
+
+.btn-os:hover, .btn-os:focus {
+  box-shadow: 0 3px rgba(0, 0, 0, 0.07);
+  color: #fff;
+  text-decoration: none;
+}
+.btn-os:active {
+  box-shadow: 0 2px rgba(0, 0, 0, 0.07);
+  color: #fff;
+  text-decoration: none;
+}
+.btn-os.white {
+  background: none repeat scroll 0 0 transparent;
+  border: 2px solid #fff;
+  box-shadow: none;
+  text-decoration: none;
+}
+
+.btn-os.white:hover, .btn-os.white:focus, .btn-os.white:active {
+  background: none repeat scroll 0 0 #fff;
+  box-shadow: 0 3px rgba(0, 0, 0, 0.1);
+  color: #31A4B5;
+  text-decoration: none;
+  top: 0;
+}
+
+.btn-os.colored {
+  color: #31A4B5;
+  background: none repeat scroll 0 0 transparent;
+  border: 2px solid #31A4B5;
+  box-shadow: none;
+  text-decoration: none;
+}
+
+.btn-os.colored:hover, .btn-os.white:focus, .btn-os.white:active {
+  background: none repeat scroll 0 0 #31A4B5;
+  box-shadow: 0 3px rgba(0, 0, 0, 0.1);
+  color: white;
+  text-decoration: none;
+  top: 0;
+}
+
 /* /buttons */
 
 /* list options */
@@ -390,6 +455,22 @@ hr.formLine {
 
 .inline {
   display: inline;
+}
+
+.bg-color-grey {
+  background-color: #f3f3f3;
+}
+
+.buffer {
+  padding: 30px;
+}
+
+.top-buffer-1 {
+  margin-top: 1em;
+}
+
+.top-buffer-2 {
+  margin-top: 1em;
 }
 
 /* fix for footer overlap */

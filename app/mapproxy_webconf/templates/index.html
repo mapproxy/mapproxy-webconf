@@ -1,11 +1,9 @@
 %def content():
-<div class="row-fluid">
-    % if language == 'de':
-       % include content/de/index.html
-    % else:
-       % include content/en/index.html
-    % end
-</div>
+  % if language == 'de':
+     % include content/de/index.html
+  % else:
+     % include content/en/index.html
+  % end
 % end
 
 %rebase base content=content, project=get('project')
