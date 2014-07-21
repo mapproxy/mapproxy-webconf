@@ -5,48 +5,62 @@
 
 %def leftblock():
   <div ng-controller="GridListCtrl">
-    <button class="btn btn-small btn-add pull-right" ng-click="newItem()">
-      <span class="icon-plus-sign icon-white" ></span>
+    <button class="btn btn-sm btn-add pull-right"
+            ng-click="newItem()">
+      <span class="glyphicon glyphicon-plus-sign" ></span>
       ${ _('Create new grid') }
     </button>
-    <h3>${ _('User defined grids') }
-        <i class="icon-question-sign help" tooltip="grids_list"></i>
-    </h3>
-    <span message-handler="success" message-types="grids.delete_success,grids.copy_success"></span>
-    <span message-handler="error" message-types="grids.load_error,grids.delete_error"></span>
+    <h3 class="inline">${ _('User defined grids') }</h3>
+    <i class="glyphicon glyphicon-question-sign help"
+       tooltip="grids_list"></i>
+    <span message-handler="success"
+          message-types="grids.delete_success,grids.copy_success"></span>
+    <span message-handler="error"
+          message-types="grids.load_error,grids.delete_error"></span>
     <div>
-      <input type="text" ng-model="search" placeholder="${ _('Filter') }..." class="input-large"/ >
-      <span ng-show="list.length - filtered.length" ng-click="search=''">${ _('Not shown grids') }: {{list.length - filtered.length}}</span>
+      <input type="text"
+             ng-model="search"
+             placeholder="${ _('Filter') }..."
+             class="form-control"/ >
+      <span ng-show="list.length - filtered.length"
+            ng-click="search=''">${ _('Not shown grids') }: {{list.length - filtered.length}}</span>
     </div>
     <ul class="vertical-list">
       <div class="{{isSelected(item)}}"
             ng-repeat="item in filtered = (list | filter: {data.name:search}) | orderBy:'name'"
             ng-click="editItem($event, item)">
         <li>
-          <i ng-show="item._manual" class="icon-pencil" title="${_('edit manual')}"></i>
-          <i ng-show="item._locked || item.default" class="icon-ok"></i>
+          <i ng-show="item._manual"
+             class="glyphicon glyphicon-pencil"
+             title="${_('edit manual')}"></i>
+          <i ng-show="item._locked || item.default"
+             class="glyphicon glyphicon-ok"></i>
           {{item.data.name}}
-          <i class="icon-remove"
+          <i class="glyphicon glyphicon-remove pull-right"
             dialog="ask"
             dialog-title="${ _('Confirm!') }"
             dialog-text="${ _('Really remove grid:') } {{item.data.name}}?"
             callback="removeItem($event, item)"
             title="${_('delete')}">
           </i>
-          <i class="icon-share" ng-click="copyItem($event, item)" title="${_('copy')}"></i>
+          <i class="glyphicon glyphicon-share pull-right"
+             ng-click="copyItem($event, item)"
+             title="${_('copy')}"></i>
         </li>
       </div>
     </ul>
-    <h3>${ _('Default grids') }
-      <i class="icon-question-sign help" tooltip="grids_default_list"></i>
-    </h3>
+    <h3 class="inline">${ _('Default grids') }</h3>
+    <i class="glyphicon glyphicon-question-sign help"
+       tooltip="grids_default_list"></i>
     <ul class="vertical-list">
       <div class="{{isSelected(item)}}"
            ng-repeat="item in defaultGrids | orderBy:'name'"
            ng-click="editItem($event, item)">
         <li>
           {{item.data.name}}
-          <i class="icon-share" ng-click="copyItem($event, item)" title="${_('copy')}"></i>
+          <i class="glyphicon glyphicon-share pull-right"
+             ng-click="copyItem($event, item)"
+             title="${_('copy')}"></i>
         </li>
       </div>
     </ul>
@@ -61,16 +75,29 @@
       <h3 ng-show="formTitle=='new'">${ _('New grid') }</h3>
       <h3 ng-show="formTitle=='edit'">${ _('Edit grid') }</h3>
       <h3 ng-show="formTitle=='default'">${ _('Default grid') }</h3>
-      <form name="form" id="form" novalidate>
+      <form name="form"
+            id="form"
+            novalidate>
         <!-- name -->
-        <div labeled="input_label" name-for="name" text="${ _('Name') }"
-          tooltip-content="grid_name">
-          <input required type="text" ng-model="grid.data.name" id="name" ng-disabled="grid._locked||grid.default" name="name" class="input-large"/>
+        <div labeled="input_label"
+             name-for="name"
+             text="${ _('Name') }"
+             tooltip-content="grid_name">
+          <input required
+                 type="text"
+                 ng-model="grid.data.name"
+                 id="name"
+                 ng-disabled="grid._locked||grid.default"
+                 name="name"
+                 class="form-control"/>
         </div>
         <!-- SRS -->
-        <div labeled="input_label" name-for="srs" text="${ _('SRS') }"
-        tooltip-content="grid_srs">
-          <select ng-model="grid.data.srs"
+        <div labeled="input_label"
+             name-for="srs"
+             text="${ _('SRS') }"
+             tooltip-content="grid_srs">
+          <select class="form-control"
+                  ng-model="grid.data.srs"
                   id="srs"
                   ng-options="srs for srs in defaults.data.srs"
                   ng-disabled="grid._locked||grid.default"
@@ -79,49 +106,66 @@
         </div>
         <hr class="formLine">
         <!-- BBox -->
-        <div labeled="input_label" name-for="bbox" text="${ _('BBox') }"
-          tooltip-content="grid_bbox">
+        <div labeled="input_label"
+             name-for="bbox"
+             text="${ _('BBox') }"
+             tooltip-content="grid_bbox">
           <div class="text-center" ng-model="grid.data.bbox" list="4" name="bbox">
-            <input type="number"
-                   placeholder="${ _('North') }"
-                   float
-                   ng-model="grid.data.bbox[3]"
-                   class="input-large"
-                   id="bbox_3"
-                   ng-disabled="grid._locked||grid.default"
-                   name="bbox_3"/>
-            <br>
-            <input type="number"
-                   placeholder="${ _('West') }"
-                   float
-                   ng-model="grid.data.bbox[0]"
-                   class="input-large"
-                   id="bbox_0"
-                   ng-disabled="grid._locked||grid.default"
-                   name="bbox_0"/>
-            <input type="number"
-                   placeholder="${ _('East') }"
-                   float
-                   ng-model="grid.data.bbox[2]"
-                   class="input-large"
-                   id="bbox_2"
-                   ng-disabled="grid._locked||grid.default"
-                   name="bbox_2"/>
-            <br>
-            <input type="number"
-                   placeholder="${ _('South') }"
-                   float
-                   ng-model="grid.data.bbox[1]"
-                   class="input-large"
-                   id="bbox_1"
-                   ng-disabled="grid._locked||grid.default"
-                   name="bbox_1"/>
+            <div class="row">
+              <div class="col-sm-6 col-sm-offset-3">
+                <input type="number"
+                       placeholder="${ _('North') }"
+                       float
+                       ng-model="grid.data.bbox[3]"
+                       class="form-control"
+                       id="bbox_3"
+                       ng-disabled="grid._locked||grid.default"
+                       name="bbox_3"/>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <input type="number"
+                       placeholder="${ _('West') }"
+                       float
+                       ng-model="grid.data.bbox[0]"
+                       class="form-control"
+                       id="bbox_0"
+                       ng-disabled="grid._locked||grid.default"
+                       name="bbox_0"/>
+              </div>
+              <div class="col-sm-6">
+                <input type="number"
+                       placeholder="${ _('East') }"
+                       float
+                       ng-model="grid.data.bbox[2]"
+                       class="form-control"
+                       id="bbox_2"
+                       ng-disabled="grid._locked||grid.default"
+                       name="bbox_2"/>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 col-sm-offset-3">
+                <input type="number"
+                       placeholder="${ _('South') }"
+                       float
+                       ng-model="grid.data.bbox[1]"
+                       class="form-control"
+                       id="bbox_1"
+                       ng-disabled="grid._locked||grid.default"
+                       name="bbox_1"/>
+              </div>
+            </div>
           </div>
         </div>
         <!-- BBox SRS -->
-        <div labeled="input_label" name-for="bbox_srs" text="${ _('BBox SRS') }"
-        tooltip-content="grid_bbox_srs">
-          <select ng-model="grid.data.bbox_srs"
+        <div labeled="input_label"
+             name-for="bbox_srs"
+             text="${ _('BBox SRS') }"
+             tooltip-content="grid_bbox_srs">
+          <select class="form-control"
+                  ng-model="grid.data.bbox_srs"
                   id="bbox_srs"
                   ng-options="srs for srs in defaults.data.srs"
                   ng-disabled="grid._locked||grid.default"
@@ -130,11 +174,12 @@
           </select>
         </div>
         <hr>
-        <button class="btn btn-small"
+        <button class="btn btn-sm btn-default"
                 ng-click="calculateTiles(!custom.resSelected)"
                 ng-disabled="!grid.data.srs">
           ${ _('Calculate tiles') }
-          <i class="icon-question-sign help" tooltip="grid_calculate_tiles"></i>
+          <i class="glyphicon glyphicon-question-sign help"
+             tooltip="grid_calculate_tiles"></i>
         </button>
         <hr>
         <!-- origin -->
@@ -142,7 +187,8 @@
              name-for="origin"
              text="${ _('Origin') }"
              tooltip-content="grid_origin">
-          <select ng-model="grid.data.origin"
+          <select class="form-control"
+                  ng-model="grid.data.origin"
                   id="origin"
                   ng-disabled="grid._locked||grid.default"
                   name="origin">
@@ -156,13 +202,14 @@
         <div labeled="input_label"
              name-for="map_srs"
              text="${ _('Map SRS') }">
-          <select ng-options="srs for srs in defaults.data.srs"
+          <select class="form-control"
+                  ng-options="srs for srs in defaults.data.srs"
                   noop
                   id="map_srs"
                   name="map_srs"
                   ng-model="custom.mapSRS">
           </select>
-          <button class="btn btn-small"
+          <button class="btn btn-sm btn-default"
                   ng-click="showMap($event)"
                   ng-disabled="!allowMap()">
             ${ _('Show map') }
@@ -174,14 +221,14 @@
         <hr class="formLine">
         <!-- buttons -->
         <div class="pull-left">
-          <button class="btn btn-small"
+          <button class="btn btn-sm btn-default"
                   ng-click="addGrid($event)"
                   ng-disabled="grid._locked||grid.default||!form.$valid||form.$pristine"
                   id="form_save"
                   ng-class="{'btn-success': form.$valid&&!grid._locked&&!form.$pristine}">
             ${ _('Save') }
           </button>
-          <button class="btn btn-small"
+          <button class="btn btn-sm btn-default"
                   ng-click="resetForm($event)"
                   ng-disabled="grid._locked||grid.default">
             ${ _('Reset') }
@@ -208,7 +255,7 @@
       </span>
     </div>
     <hr class="formLine">
-    <button class="pull-right btn btn-small btn-warning"
+    <button class="pull-right btn btn-sm btn-warning"
             dialog="ask"
             dialog-title="${ _('Really lock the grid') }: {{grid.data.name}}?"
             dialog-text="${ _('If you lock the grid, you won\'t be able to edit it again') }"
@@ -218,7 +265,7 @@
             id="form_lock">
       ${ _('Lock') }
     </button>
-    <button class="btn btn-small"
+    <button class="btn btn-sm btn-default"
             ng-show="grid._locked"
             dialog="ask"
             dialog-title="${ _('Unlock') }?"
@@ -234,57 +281,48 @@
 
 %def rightblock():
   <div ng-controller="DisplayCalculatedTilesCtrl">
-    <button class="btn btn-small pull-right" ng-click="refresh()" ng-show="calculatedTiles">${ _('Refresh') }</button>
+    <button class="btn btn-sm btn-default pull-right"
+            ng-click="refresh()"
+            ng-show="calculatedTiles">${ _('Refresh') }</button>
     <br ng-show="calculatedTiles">
     <hr ng-show="calculatedTiles">
-    <table class="table" ng-show="calculatedTiles">
+    <table class="table"
+           ng-show="calculatedTiles">
       <thead>
         <tr>
-          <th>
-            <span class="text-center">
-              ${ _('Level') }
-            </span>
+          <th class="text-left">${ _('Level') }</th>
+          <th class="text_center">
+            <div class="btn-group" data-toggle="buttons-radio" style="display: inline-block;">
+              <button type="button"
+                      class="btn btn-sm btn-default"
+                      ng-class="{'active': resSelected}"
+                      ng-click="resSelected=true;">
+                ${ _('Resolution') }
+              </button>
+              <button type="button"
+                      class="btn btn-sm btn-default"
+                      ng-class="{'active': !resSelected}"
+                      ng-click="resSelected=false;">
+                ${ _('Scale') }
+              </button>
+            </div>
           </th>
-          <th>
-            <span class="pull-right">
-              <div class="btn-group" data-toggle="buttons-radio" style="display: inline-block;">
-                <button type="button"
-                        class="btn btn-small"
-                        ng-class="{'active': resSelected}"
-                        ng-click="resSelected=true;">
-                  ${ _('Resolution') }
-                </button>
-                <button type="button"
-                        class="btn btn-small"
-                        ng-class="{'active': !resSelected}"
-                        ng-click="resSelected=false;">
-                  ${ _('Scale') }
-                </button>
-              </div>
-            </span>
-          </th>
-          <th>
-            <span class="pull-right">
-              ${ _('Total tiles') }
-            </span>
-          </th>
+          <th class="text-right">${ _('Total tiles') }</th>
         </tr>
       </thead>
       <tbody>
         <tr ng-repeat="row in calculatedTiles | orderBy:'level'">
-          <td>{{row.level}}</td>
-          <td ng-show="resSelected">
-            <span class="pull-right">
-              {{row.resolution | number:9}}
-            </span>
+          <td class="text-left">{{row.level}}</td>
+          <td ng-show="resSelected"
+              class="text-left">
+            {{row.resolution | number:9}}
           </td>
-          <td ng-show="!resSelected">
-            <span class="pull-left">
-              1 : {{row.scale | number}}
-            </span>
+          <td ng-show="!resSelected"
+              class="text-right">
+            1 : {{row.scale | number}}
           </td>
           <td tooltip="popover"
-              tooltip-placement="right"
+              tooltip-placement="bottom"
               tooltip-title="${ _('Tiles X * Tiles Y') }"
               tooltip-content="{{row.tiles_in_x|number}} * {{row.tiles_in_y|number}}">
             <span class="pull-right">
