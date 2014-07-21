@@ -1,0 +1,49 @@
+/* map */
+.olControlLayerSwitcher {
+  width: 27em;
+}
+
+.olControlLayerSwitcher .layersDiv .baseLayersDiv,
+.olControlLayerSwitcher .layersDiv .dataLayersDiv {
+  max-height: 250px;
+  max-width: 250px;
+  overflow: auto;
+}
+
+._layerSwitcher {
+  position: absolute;
+  top: 20px;
+  right: 5px;
+  z-index: 1500;
+}
+
+._layerSwitcher .layersDiv i {
+  background-image: url("../img/glyphicons-halflings-white.png");
+}
+
+.toggleLayerSwitcher {
+  position: absolute;
+}
+
+._mapScaleResolution {
+  display: block;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  z-index: 1500;
+  padding: 1px 6px 1px 4px;
+  background-color: #3a3740;
+  opacity: 0.9;
+  color: white;
+}
+
+.grid-extension-controls {
+  background-color: #3A3740;
+  color: white;
+  position: absolute;
+  text-align: right;
+  top: 25px;
+  right: 2px;
+  z-index: 1500;
+  padding: 5px;
+}
