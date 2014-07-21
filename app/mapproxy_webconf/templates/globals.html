@@ -3,10 +3,11 @@
 %end
 
 %def leftblock():
-  <div ng-controller="MapproxyGlobalsChooserCtrl" ng-show="!_editarea_visible">
-    <h3>${ _('Globals') }
-      <i class="icon-question-sign help" tooltip="globals_list"></i>
-    </h3>
+  <div ng-controller="MapproxyGlobalsChooserCtrl"
+       ng-show="!_editarea_visible">
+    <h3 class="inline">${ _('Globals') }</h3>
+    <i class="glyphicon glyphicon-question-sign help"
+       tooltip="globals_list"></i>
     <ul class="vertical-list">
       <div class="{{getClasses(global)}}"
            ng-repeat="(global, data) in globals.data"
@@ -19,71 +20,99 @@
 
 %def middleblock():
   <script type="text/ng-template" id="cache.html">
-    <h3>${ _('cache') }
-        <i class="icon-question-sign help" tooltip="globals_cache"></i>
-    </h3>
-    <div labeled="input_label" name-for="cache_meta_size" text="${ _('Meta size') }" tooltip-content="globals_cache_meta_size">
-      <div class="text-center" list="2" ng-model="globals.data.cache.meta_size" name="cache_meta_size">
-        <input type="number"
-               min=0
-               ng-model="globals.data.cache.meta_size[0]"
-               class="input-mini"
-               id="cache_meta_size_0"
-               name="cache_meta_size_0"/>
-        <input type="number"
-               min=0
-               ng-model="globals.data.cache.meta_size[1]"
-               class="input-mini"
-               id="cache_meta_size_1"
-               name="cache_meta_size_1"/>
+    <h3 class="inline">${ _('cache') }</h3>
+    <i class="glyphicon glyphicon-question-sign help"
+       tooltip="globals_cache"></i>
+    <div labeled="input_label"
+         name-for="cache_meta_size"
+         text="${ _('Meta size') }"
+         tooltip-content="globals_cache_meta_size">
+      <div class="text-center"
+           list="2"
+           ng-model="globals.data.cache.meta_size"
+           name="cache_meta_size">
+        <div class="row">
+          <div class="col-sm-6">
+            <input type="number"
+                   min=0
+                   ng-model="globals.data.cache.meta_size[0]"
+                   class="form-control"
+                   id="cache_meta_size_0"
+                   name="cache_meta_size_0"/>
+          </div>
+          <div class="col-sm-6">
+            <input type="number"
+                   min=0
+                   ng-model="globals.data.cache.meta_size[1]"
+                   class="form-control"
+                   id="cache_meta_size_1"
+                   name="cache_meta_size_1"/>
+          </div>
+        </div>
       </div>
     </div>
-    <div labeled="input_label" name-for="cache_meta_buffer" text="${ _('Meta buffer') }" tooltip-content="globals_cache_meta_buffer">
+    <div labeled="input_label"
+         name-for="cache_meta_buffer"
+         text="${ _('Meta buffer') }"
+         tooltip-content="globals_cache_meta_buffer">
       <input type="number"
              min=1
              ng-model="globals.data.cache.meta_buffer"
              id="cache_meta_buffer"
-             name="cache_meta_buffer"/>
+             name="cache_meta_buffer"
+             class="form-control"/>
     </div>
   </script>
   <script type="text/ng-template" id="image.html">
-    <h3>${ _('image') }
-      <i class="icon-question-sign help" tooltip="globals_image"></i>
-    </h3>
+    <h3 class="inline">${ _('image') }</h3>
+    <i class="glyphicon glyphicon-question-sign help"
+       tooltip="globals_image"></i>
     <div labeled="input_label"
          name-for="image_resampling_method"
          text="${ _('Resampling method') }"
          tooltip-content="globals_image_resampling_method">
       <select ng-model="globals.data.image.resampling_method"
               id="image_resampling_method"
-              name="image_resampling_method">
+              name="image_resampling_method"
+              class="form-control">
         <option value="nearest">Nearest</option>
         <option value="bilinear">Bilinear</option>
         <option value="bicubic">Bicubic</option>
       </select>
     </div>
-    <div labeled="checkbox_label" name-for="image_paletted" text="${ _('Paletted') }" tooltip-content="globals_image_paletted">
-      <input type="checkbox" ng-model="globals.data.image.paletted" id="image_paletted" name="image_paletted">
+    <div labeled="checkbox_label"
+         name-for="image_paletted"
+         text="${ _('Paletted') }"
+         tooltip-content="globals_image_paletted">
+      <input type="checkbox"
+             ng-model="globals.data.image.paletted"
+             id="image_paletted"
+             name="image_paletted"
+             class="form-control">
     </div>
   </script>
   <div ng-controller="MapproxyGlobalsFormCtrl">
     <h3 ng-show="globals._manual || editareaBinds.visible">${ _('Globals') }</h3>
-    <form name="form" novalidate ng-show="!editareaBinds.visible">
-      <div ng-include src="template"></div>
-      <hr>
-      <button class="btn btn-small"
+    <form name="form"
+          novalidate
+          ng-show="!editareaBinds.visible">
+      <div ng-include
+           src="template"></div>
+      <hr class="formLine">
+      <button class="btn btn-sm btn-default"
               ng-click="save($event)"
               id="form_save"
               ng-disabled="!form.$valid || !form.$dirty"
               ng-class="{'btn-success': form.$valid && form.$dirty}">
         ${ _('Save') }
       </button>
-      <button class="btn btn-small"
+      <button class="btn btn-sm btn-default"
               ng-click="reset($event)"
               id="form_reset">
         ${ _('Reset') }
       </button>
-      <div class="pull-right" id="_editarea_toggle_button_container"></div>
+      <div class="pull-right"
+           id="_editarea_toggle_button_container"></div>
     </form>
     <div editarea="editareaBinds"
          yaml-URL="${get_url('json_to_yaml')}"
