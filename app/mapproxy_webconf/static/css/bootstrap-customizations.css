@@ -88,3 +88,8 @@
 .well {
   margin-bottom: 5px;
 }
+
+.radio label,
+.checkbox label {
+  font-weight: bold;
+}
