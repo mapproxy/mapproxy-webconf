@@ -83,3 +83,8 @@
   color: #333333;
 }
 /* /navbar */
+
+/* other */
+.well {
+  margin-bottom: 5px;
+}

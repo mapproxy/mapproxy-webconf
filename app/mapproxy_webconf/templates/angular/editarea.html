@@ -1,5 +1,5 @@
 <div>
-  <button class='btn btn-small'
+  <button class='btn btn-sm btn-default'
           ng-show="!editareaBinds.visible"
           ng-click='editareaBinds.visible=true;'
           id='_editarea_toggle_button'>
@@ -7,45 +7,44 @@
   </button>
   <div ng-show='editareaBinds.visible'>
     <h3>${ _('Edit manual') }</h3>
-    <textarea class='input-xlarge edit-manual' id='_editarea' ng-disabled="ngDisabled"></textarea>
-    <div class="pull-left">
-      <button ng-show='!editareaBinds.editareaValue._manual'
-              ng-disabled="ngDisabled"
-              ng-click='save()'
-              class='btn btn-small'>
-        ${ _('Save') }
-      </button>
-      <button ng-click='save()'
-              ng-show='editareaBinds.editareaValue._manual'
-              ng-disabled="ngDisabled"
-              class='btn btn-small'>
-        ${ _('Save') }
-      </button>
-      <button ng-click='reset()'
-              ng-disabled="ngDisabled"
-              class='btn btn-small'>
-        ${ _('Reset') }
-      </button>
-    </div>
-    <div class="pull-right">
-      <button ng-click='leaveEditarea()'
-              ng-disabled="ngDisabled"
-              ng-show='!editareaBinds.editareaValue._manual'
-              class='btn btn-small'>
-        ${ _('Back to form edit') }
-      </button>
-      <button ng-show='editareaBinds.editareaValue._manual'
-              ng-disabled="ngDisabled"
-              class='btn btn-small'
-              dialog="ask"
-              dialog-title="${ _('Back to form editing title') }?"
-              dialog-text="${ _('Back to form editing info text - lose some inputs') }"
-              callback="leaveEditarea(true)">
-        ${ _('Back to form edit') }
-      </button>
-    </div>
-    <div class='text-center'>
-      <span message-handler="error" message-types="editarea.error"></span>
+    <textarea class='form-control edit-manual' id='_editarea' ng-disabled="ngDisabled"></textarea>
+    <div class="row">
+      <div class="col-sm-7">
+        <button ng-show='!editareaBinds.editareaValue._manual'
+                ng-disabled="ngDisabled"
+                ng-click='save()'
+                class='btn btn-sm btn-default'>
+          ${ _('Save') }
+        </button>
+        <button ng-click='save()'
+                ng-show='editareaBinds.editareaValue._manual'
+                ng-disabled="ngDisabled"
+                class='btn btn-sm btn-default'>
+          ${ _('Save') }
+        </button>
+        <button ng-click='reset()'
+                ng-disabled="ngDisabled"
+                class='btn btn-sm btn-default'>
+          ${ _('Reset') }
+        </button>
+      </div>
+      <div class="col-sm-5">
+        <button ng-click='leaveEditarea()'
+                ng-disabled="ngDisabled"
+                ng-show='!editareaBinds.editareaValue._manual'
+                class='btn btn-sm btn-default'>
+          ${ _('Back to form edit') }
+        </button>
+        <button ng-show='editareaBinds.editareaValue._manual'
+                ng-disabled="ngDisabled"
+                class='btn btn-sm btn-default'
+                dialog="ask"
+                dialog-title="${ _('Back to form editing title') }?"
+                dialog-text="${ _('Back to form editing info text - lose some inputs') }"
+                callback="leaveEditarea(true)">
+          ${ _('Back to form edit') }
+        </button>
+      </div>
     </div>
   </div>
 </div>

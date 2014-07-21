@@ -125,7 +125,7 @@
       <!-- sitebar-->
       <div class="sitebar-wrapper">
         <div class="shadow"></div>
-        <div class="sitebar container">
+        <div class="sitebar container-fluid">
           % if defined('site_navbar'):
             %site_navbar()
           % end
@@ -133,7 +133,7 @@
       </div>
       <!-- /navbar -->
       <!-- content -->
-      <div class="content container">
+      <div class="content container-fluid">
         <div class="row">
           % if defined('content'):
             %content()
@@ -144,7 +144,7 @@
       <div id="push"></div>
     </div>
     <footer>
-      <div class="container">
+      <div class="container-fluid">
         <ul class="footer-nav">
           <li><a href="/">${ _('Home') }</a></li>
           <li><a href="http://www.mapproxy.org/">${ _('Mapproxy Homepage') }</a></li>

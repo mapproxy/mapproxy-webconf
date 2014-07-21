@@ -9,7 +9,8 @@
   <div ng-controller="SourceListCtrl">
     <div class="pull-right">
       <!-- konflikt mit bootstrap -->
-      <button class="btn btn-sm btn-add pull-right" ng-click="newItem()">
+      <button class="btn btn-sm btn-add pull-right"
+              ng-click="newItem()">
         <span class="glyphicon glyphicon-plus-sign" ></span>
         ${ _('Create new source') }
       </button>
@@ -22,9 +23,20 @@
           message-types="sources.load_error,sources.delete_error">
     </span>
     <div>
-      <input type="text" ng-model="search" placeholder="${ _('Filter') }..." />
-      <i class="glyphicon glyphicon-question-sign pull-right help" tooltip="filter"></i>
-      <span ng-show="list.length - filtered.length" ng-click="search=''">
+      <div class="row">
+        <div class="col-sm-10">
+          <input class="form-control"
+                 type="text"
+                 ng-model="search"
+                 placeholder="${ _('Filter') }..." />
+        </div>
+        <div class="col-sm-2">
+          <i class="glyphicon glyphicon-question-sign help"
+             tooltip="filter"></i>
+        </div>
+      </div>
+      <span ng-show="list.length - filtered.length"
+            ng-click="search=''">
         ${ _('Not shown sources') }: {{list.length - filtered.length}}
       </span>
     </div>
@@ -33,16 +45,21 @@
            ng-repeat="item in filtered = (list | filter: {data.name:search})"
            ng-click="editItem($event, item)">
         <li>
-          <i ng-show="item._manual" class="glyphicon glyphicon-pencil" title="${_('edit manual')}"></i>
+          <i ng-show="item._manual"
+             class="glyphicon glyphicon-pencil"
+             title="${_('edit manual')}"></i>
           {{item.data.name}}
-          <i class="glyphicon glyphicon-remove"
-            dialog="ask"
-            dialog-title="${ _('Confirm!') }"
-            dialog-text="${ _('Really remove source') }: {{item.data.name}}?"
-            callback="removeItem($event, item)"
-            title="${_('delete')}">
+          <i class="glyphicon glyphicon-remove pull-right"
+             dialog="ask"
+             dialog-title="${ _('Confirm!') }"
+             dialog-text="${ _('Really remove source') }: {{item.data.name}}?"
+             callback="removeItem($event, item)"
+             title="${_('delete')}">
           </i>
-           <i class="glyphicon glyphicon-share" ng-click="copyItem($event, item)" title="${_('copy')}"></i>
+          <i class="glyphicon glyphicon-share pull-right"
+             ng-click="copyItem($event, item)"
+             title="${_('copy')}">
+          </i>
         </li>
       </div>
     </ul>
@@ -53,7 +70,8 @@
 
 %def middleblock():
   <div ng-controller="MapproxySourceFormCtrl">
-    <form name="form" novalidate ng-show="!editareaBinds.visible">
+    <form name="form"
+          novalidate ng-show="!editareaBinds.visible">
       <h3 ng-show="formTitle=='new'">${ _('New source') }</h3>
       <h3 ng-show="formTitle=='edit'">${ _('Edit source') }</h3>
       <fieldset>
@@ -70,18 +88,25 @@
             <p>${ _('Replace service URL deletes all layers depends to it!') }</p>
           </div>
           <div ng-show="true">
-            <div labeled="input_label" name-for="name" text="${ _('Name') }" tooltip-content="sources_name">
-              <input class="input-xlarge"
+            <div labeled="input_label"
+                 name-for="name"
+                 text="${ _('Name') }"
+                 tooltip-content="sources_name">
+              <input class="form-control"
                      type="text"
                      required
                      ng-model="source.data.name"
                      id="name"
                      name="name"/>
             </div>
-            <div id="source_wms_url" labeled="input_label" name-for="req_url" text="${ _('URL') }" tooltip-content="sources_url">
+            <div id="source_wms_url"
+                 labeled="input_label"
+                 name-for="req_url"
+                 text="${ _('URL') }"
+                 tooltip-content="sources_url">
               <input id="req_url"
                      name="req_url"
-                     class="input-xlarge"
+                     class="form-control"
                      type="url"
                      value="{{source.data.wms_source}}"
                      ng-model="source.data.req.url"
@@ -91,7 +116,10 @@
                      accepts="wms_source"
                      use-key-for-value="data.url"/>
             </div>
-            <div labeled="input_label" name-for="req_layers" text="${ _('Layer') }" tooltip-content="sources_layers" >
+            <div labeled="input_label"
+                 name-for="req_layers"
+                 text="${ _('Layer') }"
+                 tooltip-content="sources_layers" >
               <div droppable
                    sortable
                    required
@@ -101,15 +129,18 @@
                    name="req_layers"
                    id="req_layers"
                    use-key-for-value="name"
-                   class="input-xlarge insertable-list uneditable-input"
+                   class="form-control insertable-list uneditable-input"
                    insert-callback="checkURL(callback, new_data)">
                 <div ng-repeat="layer in source.data.req.layers" class="label">
                   {{layer}}
                   <span ng-show="layerTitle(layer)">({{layerTitle(layer)}})</span>
-                  <i class="icon-remove" ng-click="remove(layer)" title="${_('delete')}"></i>
+                  <i class="glyphicon glyphicon-remove"
+                     ng-click="remove(layer)"
+                     title="${_('delete')}"></i>
                 </div>
               </div>
             </div>
+            <!-- TODO: format input with appended button -->
             <div class="input-append"
                  labeled="input_label"
                  name-for="add_layer_manual"
@@ -122,7 +153,7 @@
                      ng-model="custom.layer_manual"
                      class="input-medium"
                      unique="{{source.data.req.layers}}"/>
-              <button class="btn btn-small"
+              <button class="btn btn-sm btn-default"
                       ng-click="addLayerManual($event)"
                       ng-disabled="!custom.layer_manual">
                 ${ _('Add') }
@@ -135,7 +166,8 @@
                  text="${ _('Supported formats') }"
                  warning="{{warningLogic.checkImageSettings()}}"
                  warning-msg="${ _('Selectet image format(s) not support transparency.') }">
-              <select name="supported_formats"
+              <select class="form-control"
+                      name="supported_formats"
                       id="supported_formats"
                       multiple="multiple"
                       ng-model="source.data.supported_formats">
@@ -143,7 +175,7 @@
                 <option value="JPEG">JPEG</option>
                 <option value="GIF">GIF</option>
               </select>
-              <button class="btn btn-small"
+              <button class="btn btn-sm btn-default"
                       ng-click="source.data.supported_formats=undefined;">
                 ${ _('Clear selection') }
               </button>
@@ -162,21 +194,21 @@
             <div labeled='input_label_toggleable'
                  tooltip-content="sources_coverage"
                  text="${ _('Coverage') }">
-              <div class="btn-group switch pull-right"
+              <div class="btn-group pull-right"
                    ng-model="custom.bboxSelected"
                    data-toggle-name="is_private"
                    data-toggle="buttons-radio"
                    id="units">
                 <button type="button"
                         ng-click="custom.bboxSelected=true;"
-                        class="btn btn-small"
+                        class="btn btn-sm btn-default"
                         ng-class="{'active': custom.bboxSelected}"
                         data-toggle="button">
                   ${ _('BBox') }
                 </button>
                 <button type="button"
                         ng-click="custom.bboxSelected=false;"
-                        class="btn btn-small"
+                        class="btn btn-sm btn-default"
                         ng-class="{'active': !custom.bboxSelected}"
                         data-toggle="button">
                   ${ _('Polygon') }
@@ -187,69 +219,91 @@
                    name-for="bbox"
                    ng-show="custom.bboxSelected"
                    text="${ _('Coverage BBOX') }">
-                <div class="text-center" list="4" name="bbox" ng-model="source.data.coverage.bbox">
-                  <input type="number"
-                         placeholder="${ _('North') }"
-                         float
-                         ng-model="source.data.coverage.bbox[3]"
-                         class="input-large"
-                         id="bbox_3"
-                         ng-disabled="grid._locked||grid.default"
-                         name="bbox_3"/>
-                  <br>
-                  <input type="number"
-                         placeholder="${ _('West') }"
-                         float
-                         ng-model="source.data.coverage.bbox[0]"
-                         class="input-large"
-                         id="bbox_0"
-                         ng-disabled="grid._locked||grid.default"
-                         name="bbox_0"/>
-                  <input type="number"
-                         placeholder="${ _('East') }"
-                         float
-                         ng-model="source.data.coverage.bbox[2]"
-                         class="input-large"
-                         id="bbox_2"
-                         ng-disabled="grid._locked||grid.default"
-                         name="bbox_2"/>
-                  <br>
-                  <input type="number"
-                         placeholder="${ _('South') }"
-                         float
-                         ng-model="source.data.coverage.bbox[1]"
-                         class="input-large"
-                         id="bbox_1"
-                         ng-disabled="grid._locked||grid.default"
-                         name="bbox_1"/>
+                <div class="text-center"
+                     list="4"
+                     name="bbox"
+                     ng-model="source.data.coverage.bbox">
+                  <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                      <input type="number"
+                             placeholder="${ _('North') }"
+                             float
+                             ng-model="source.data.coverage.bbox[3]"
+                             class="form-control"
+                             id="bbox_3"
+                             ng-disabled="grid._locked||grid.default"
+                             name="bbox_3"/>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <input type="number"
+                             placeholder="${ _('West') }"
+                             float
+                             ng-model="source.data.coverage.bbox[0]"
+                             class="form-control"
+                             id="bbox_0"
+                             ng-disabled="grid._locked||grid.default"
+                             name="bbox_0"/>
+                    </div>
+                    <div class="col-sm-6">
+                      <input type="number"
+                             placeholder="${ _('East') }"
+                             float
+                             ng-model="source.data.coverage.bbox[2]"
+                             class="form-control"
+                             id="bbox_2"
+                             ng-disabled="grid._locked||grid.default"
+                             name="bbox_2"/>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                      <input type="number"
+                             placeholder="${ _('South') }"
+                             float
+                             ng-model="source.data.coverage.bbox[1]"
+                             class="form-control"
+                             id="bbox_1"
+                             ng-disabled="grid._locked||grid.default"
+                             name="bbox_1"/>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <button class="btn btn-small"
+              <button class="btn btn-sm btn-default"
                       ng-disabled="!source.data.req.url"
                       ng-click="addCoverage($event)"
                       id="form_load_coverage">
                 ${ _('Use coverage from WMS') }
               </button>
-              <div labeled="input_label" name-for="coverage_bbox_srs" text="${ _('Coverage SRS') }">
-                <select class="input-xlarge"
+              <div labeled="input_label"
+                   name-for="coverage_bbox_srs"
+                   text="${ _('Coverage SRS') }">
+                <select class="form-control"
                         ng-model="source.data.coverage.bbox_srs"
                         id="coverage_bbox_srs"
                         name="coverage_bbox_srs"
                         ng-options="srs as srs for srs in defaults.data.srs">
                 </select>
               </div>
-              <div ng-show="!custom.bboxSelected" labeled="input_label" name-for="coverage_polygon" text="${ _('Coverage polygon') }">
-                <pre ng-bind="source.data.coverage.polygon|json" class="scrollable"></pre>
-                <div labeled="input_label" name-for="coverage_polygon_srs" text="${ _('Coverage SRS') }">
-                  <select class="input-xlarge"
-                          ng-model="source.data.coverage.polygon_srs"
+              <div ng-show="!custom.bboxSelected"
+                   labeled="input_label"
+                   name-for="coverage_polygon"
+                   text="${ _('Coverage polygon') }">
+                <pre ng-bind="source.data.coverage.polygon|json"
+                     class="scrollable"></pre>
+                <div labeled="input_label"
+                     name-for="coverage_polygon_srs"
+                     text="${ _('Coverage SRS') }">
+                  <select ng-model="source.data.coverage.polygon_srs"
                           id="coverage_polygon_srs"
                           name="coverage_polygon_srs"
                           ng-options="srs as srs for srs in defaults.data.srs">
                   </select>
                 </div>
               </div>
-              <button class="btn btn-small"
+              <button class="btn btn-sm btn-default"
                       ng-click="showMap()"
                       ng-disabled="allowMap()">
                 <span ng-show="hasCoverage()">${ _('Show coverage in map') }</span>
@@ -260,20 +314,27 @@
               </span>
             </div>
             <hr class="formLine">
-            <div labeled="input_label_toggleable" name-for="supported_srs"
-              text="${ _('Supported SRS') }"
-              tooltip-content="sources_supported_srs">
-              <button class="btn btn-small pull-right"
+            <div labeled="input_label_toggleable"
+                 name-for="supported_srs"
+                 text="${ _('Supported SRS') }"
+                 tooltip-content="sources_supported_srs">
+              <div name="supported_srs"
+                   id="supported_srs"
+                   class="well well-small">
+                <span class="badge"
+                      ng-repeat="srs in source.data.supported_srs">
+                  {{srs}}
+                  <i class="glyphicon glyphicon-remove"
+                     ng-click="removeSRS($event, srs)"
+                     title="${_('delete')}"></i>
+                </span>
+              </div>
+              <button class="btn btn-sm btn-default pull-right"
                       ng-click="loadSRS($event)"
                       ng-disabled="!source.data.req.url">
                 ${ _('Add SRS from WMS') }
               </button>
-              <div name="supported_srs" id="supported_srs" class="well well-small input-large">
-                <span class="badge" ng-repeat="srs in source.data.supported_srs">
-                  {{srs}}
-                  <i class="icon-remove" ng-click="removeSRS($event, srs)" title="${_('delete')}"></i>
-                </span>
-              </div>
+              <!-- TODO: format input with appended button -->
               <div class="input-append"
                    labeled="input_label"
                    name-for="add_srs_manual"
@@ -285,7 +346,7 @@
                        name="add_srs_manual"
                        ng-model="custom.srs_manual"
                        class="input-medium"/>
-                <button class="btn btn-small"
+                <button class="btn btn-sm btn-default"
                         ng-click="addSRSManual($event)"
                         ng-disabled="!custom.srs_manual">
                   ${ _('Add') }
@@ -293,19 +354,24 @@
               </div>
             </div>
             <hr class="formLine">
-            <div res-scales="source.data" mode="min_max" parent-form="form" dpi="defaults.data.dpi"></div>
+            <div res-scales="source.data"
+                 mode="min_max"
+                 parent-form="form"
+                 dpi="defaults.data.dpi"></div>
         <hr class="formLine">
         <div class="pull-left">
-          <button class="btn btn-small"
+          <button class="btn btn-sm btn-default"
                   ng-click="addSource($event)"
                   ng-disabled="!form.$valid||form.$pristine"
                   id="form_save"
                   ng-class="{'btn-success': form.$valid&&!form.$pristine}">
             ${ _('Save') }
           </button>
-          <button class="btn btn-small" ng-click="resetForm($event)">${ _('Reset') }</button>
+          <button class="btn btn-sm btn-default"
+                  ng-click="resetForm($event)">${ _('Reset') }</button>
         </div>
-        <div id="_editarea_toggle_button_container" class="pull-right">
+        <div id="_editarea_toggle_button_container"
+             class="pull-right">
         </div>
       </fieldset>
       <div ol-map="olmapBinds"
@@ -317,28 +383,33 @@
     <div editarea="editareaBinds"
          yaml-URL="${get_url('json_to_yaml')}"
          json-URL="${get_url('yaml_to_json')}"
-         keep-empty-fields="name"></div>
-    <div message-handler="success"
+         keep-empty-fields="name">
+    </div>
+    <div class="text-center"
+         message-handler="success"
          message-types="sources.add_success,sources.update_success">
     </div>
-    <div message-handler="error"
-         message-types="sources.add_error,sources.update_error,sources.form_error">
+    <div class="text-center"
+         message-handler="error"
+         message-types="sources.add_error,sources.update_error,sources.form_error,editarea.error">
     </div>
   </div>
 %end
 
 %def rightblock():
   <div ng-controller="TreeCtrl">
-    <h3>${ _('Available WMS') }
-        <i class="icon-question-sign help" tooltip="source_available_wms"></i>
-    </h3>
+    <div>
+      <h3 class="inline">${ _('Available WMS') }</h3>
+      <i class="glyphicon glyphicon-question-sign help"
+         tooltip="source_available_wms"></i>
+    </div>
     <script type="text/ng-template"  id="wms_layer_renderer">
       <div ng-click="show_infos(layer)" class="label droppable_name">
-        <i class="icon-plus pull-left"
+        <i class="glyphicon glyphicon-plus pull-left"
            ng-show="layer.layers && layer.layers.length > 0 && !layer.expanded"
            ng-click="layer.expanded=true;">
         </i>
-        <i class="icon-minus pull-left"
+        <i class="glyphicon glyphicon-minus pull-left"
            ng-show="layer.layers && layer.layers.length > 0 && layer.expanded"
            ng-click="layer.expanded=false;">
         </i>
@@ -356,13 +427,20 @@
         <!-- wms_layer is required for dropping into droppable -->
       </span>
     </script>
-    <div toggle-group mode='hideOther' class="accordion">
-      <div ng-repeat="wms in wms_list" class="wms accordion-group">
-        <div class="accordion-heading" toggle-element="next">
+    <div toggle-group mode='hideOther'
+         class="accordion">
+      <div ng-repeat="wms in wms_list"
+           class="wms accordion-group">
+        <div class="accordion-heading"
+             toggle-element="next">
           <div class="accordion-toggle">{{wms.data.title}}</div>
-          <i class="icon-globe" ng-click="showMap($event, wms)" title="${_('show in map')}"></i>
-          <i class="icon-refresh"  ng-click="refreshCapabilities($event, wms)" title="${_('refresh')}"></i>
-          <i class="icon-remove"
+          <i class="glyphicon glyphicon-globe"
+             ng-click="showMap($event, wms)"
+             title="${_('show in map')}"></i>
+          <i class="glyphicon glyphicon-refresh"
+             ng-click="refreshCapabilities($event, wms)"
+             title="${_('refresh')}"></i>
+          <i class="glyphicon glyphicon-remove"
              dialog="ask"
              dialog-title="${ _('Confirm!') }"
              dialog-text="${ _('Really remove WMS:') } {{wms.data.title}}?"
@@ -370,10 +448,12 @@
              title="${_('delete')}">
           </i>
         </div>
-        <div class="accordion-body" ng-show="isOpen()">
+        <div class="accordion-body"
+             ng-show="isOpen()">
           <div class="accordion-inner">
             <h6>${ _('Infos') }</h6>
-            <div class="accordion_wms_source wms_source" draggable item-data="{{wms}}">
+            <div class="accordion_wms_source wms_source"
+                 draggable item-data="{{wms}}">
               <div class="droppable_name label">
                 ${ _('URL') }: {{wms.data.url}}
               </div>
@@ -401,15 +481,31 @@
         <img src="${ get_url('static', filepath='img/loader.gif') }"> ${ _('Loading in progress') }
     </div>
     <hr>
-    <form name="form" novalidate>
-      <div class="input-append" labeled="input_label" name-for="url" tooltip-content="sources_add_wms"  text="${ _('Load WMS') } ">
-        <input type="url" required name="url" ng-model="capabilities.url" id="url" unique="{{wms_urls}}">
-        <button class="btn btn-small" ng-click="addCapabilities()" ng-disabled="!form.$valid">${ _('Add') }</button>
+    <form name="form"
+          novalidate>
+      <!-- TODO: format input with appended button -->
+      <div class="input-append"
+           labeled="input_label"
+           name-for="url"
+           tooltip-content="sources_add_wms"
+           text="${ _('Load WMS') } ">
+        <input type="url"
+               required name="url"
+               ng-model="capabilities.url"
+               id="url"
+               unique="{{wms_urls}}">
+        <button class="btn btn-small"
+                ng-click="addCapabilities()"
+                ng-disabled="!form.$valid">${ _('Add') }</button>
       </div>
-      <div message-handler="success" message-types="wms_capabilities.add_success"></div>
-      <div message-handler="error" message-types="wms_capabilities.add_error"></div>
+      <div message-handler="success"
+           message-types="wms_capabilities.add_success"></div>
+      <div message-handler="error"
+           message-types="wms_capabilities.add_error"></div>
     </form>
-    <div ol-map="olmapBinds" map-hidden="true" map-layer-switcher="true"></div>
+    <div ol-map="olmapBinds"
+         map-hidden="true"
+         map-layer-switcher="true"></div>
   </div>
 %end
 %rebase base_config leftblock=leftblock, rightblock=rightblock, middleblock=middleblock, preload_block=preload_block, project=get('project'),  active='sources'
