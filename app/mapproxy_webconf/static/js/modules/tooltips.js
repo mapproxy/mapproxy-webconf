@@ -61,21 +61,17 @@ directive('tooltip', function(tooltipMapper) {
         scope: 'element',
         link: function(scope, element, attrs) {
             var initPopover = function(content, title) {
-                $(element).popover({
-                    title: title,
-                    content: content,
-                    trigger: 'hover',
-                    html: true,
-                    placement: scope.tooltipPlacement
+                $(element).attr('title', content);
+                $(element).tooltip({
+                    content: function() {
+                        return '<h5>' + title + '</h5><div class="text-center">' +content+'</div>';
+                    }
                 });
             };
             var initTooltip = function(content) {
-                $(element).attr('data-original-title', content);
+                $(element).attr('title', content);
                 $(element).tooltip({
-                    html: true,
-                    container: 'body',
-                    placement: scope.tooltipPlacement,
-                    delay: { show: 200, hide: 300 }
+                    content: content
                 });
             };
             var initFromService = function() {
