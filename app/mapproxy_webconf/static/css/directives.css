@@ -40,3 +40,23 @@ div.droppable-active {
 .toggleable-label {
   display: block  ;
 }
+
+/* ToggleGroup / ToggleElement */
+.toggle-group {
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.toggle-header {
+  border-bottom: 0 none;
+  cursor: pointer;
+}
+
+.toggle-body {
+  max-height: 300px;
+  overflow: auto;
+  border-top: 1px solid #e5e5e5;
+  padding: 9px 15px;
+}
+
+/* /ToggleGroup / ToggleElement */

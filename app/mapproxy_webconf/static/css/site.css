@@ -2,7 +2,6 @@ html,
 body {
   height: 100%;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-size: 13px;
 }
 
 body {
@@ -363,44 +362,6 @@ input[type="color"]:focus,
 }
 
 /* /input fields */
-
-/* accordion */
-.accordion {
-  white-space: normal;
-}
-
-.accordion .label {
-  cursor: pointer;
-  min-width: 100%;
-  background-color: #999999;
-}
-
-.accordion-group {
-  border: 1px solid #CCCCCC;
-}
-
-.accordion-heading i.icon-globe,
-.accordion-heading i.icon-refresh,
-.accordion-heading i.icon-remove {
-  float: right;
-  cursor: pointer;
-  margin-top: -1.8em;
-  margin-right: 0.5em;
-}
-
-.accordion-heading i.icon-refresh {
-  margin-right: 2em;
-}
-.accordion-heading i.icon-globe {
-  margin-right: 4em;
-}
-
-.accordion-inner {
-  overflow: auto;
-  max-height: 300px;
-}
-/* /accordion */
-
 
 /* other */
 .alert-block > p {

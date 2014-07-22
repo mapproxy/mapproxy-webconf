@@ -413,7 +413,7 @@
          tooltip="source_available_wms"></i>
     </div>
     <script type="text/ng-template"  id="wms_layer_renderer">
-      <div ng-click="show_infos(layer)" class="label droppable_name">
+      <div ng-click="show_infos(layer)" class="label label-default droppable_name">
         <i class="glyphicon glyphicon-plus pull-left"
            ng-show="layer.layers && layer.layers.length > 0 && !layer.expanded"
            ng-click="layer.expanded=true;">
@@ -436,13 +436,11 @@
         <!-- wms_layer is required for dropping into droppable -->
       </span>
     </script>
-    <div toggle-group mode='hideOther'
-         class="accordion">
+    <div toggle-group mode='hideOther'>
       <div ng-repeat="wms in wms_list"
-           class="wms accordion-group">
-        <div class="accordion-heading"
-             toggle-element="next">
-          <div class="accordion-toggle">{{wms.data.title}}</div>
+           class="wms toggle-group">
+        <div toggle-element="next" class="toggle-header">
+          <div>{{wms.data.title}}</div>
           <i class="glyphicon glyphicon-globe"
              ng-click="showMap($event, wms)"
              title="${_('show in map')}"></i>
@@ -457,13 +455,12 @@
              title="${_('delete')}">
           </i>
         </div>
-        <div class="accordion-body"
-             ng-show="isOpen()">
-          <div class="accordion-inner">
+        <div ng-show="isOpen()" class="toggle-body">
+          <div>
             <h6>${ _('Infos') }</h6>
-            <div class="accordion_wms_source wms_source"
+            <div class="wms_source"
                  draggable item-data="{{wms}}">
-              <div class="droppable_name label">
+              <div class="droppable_name label label-default">
                 ${ _('URL') }: {{wms.data.url}}
               </div>
             </div>
@@ -492,20 +489,25 @@
     <hr>
     <form name="form"
           novalidate>
-      <!-- TODO: format input with appended button -->
-      <div class="input-append"
-           labeled="input_label"
+      <div labeled="input_label"
            name-for="url"
            tooltip-content="sources_add_wms"
            text="${ _('Load WMS') } ">
-        <input type="url"
-               required name="url"
-               ng-model="capabilities.url"
-               id="url"
-               unique="{{wms_urls}}">
-        <button class="btn btn-small"
-                ng-click="addCapabilities()"
-                ng-disabled="!form.$valid">${ _('Add') }</button>
+        <div class="row">
+          <div class="col-sm-8">
+            <input type="url"
+                   required name="url"
+                   ng-model="capabilities.url"
+                   id="url"
+                   unique="{{wms_urls}}"
+                   class="form-control" />
+          </div>
+          <div class="col-sm-4">
+            <button class="btn btn-sm btn-default pull-left"
+                    ng-click="addCapabilities()"
+                    ng-disabled="!form.$valid">${ _('Add') }</button>
+          </div>
+        </div>
       </div>
       <div message-handler="success"
            message-types="wms_capabilities.add_success"></div>
