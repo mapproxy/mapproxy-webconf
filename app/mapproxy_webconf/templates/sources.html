@@ -30,13 +30,13 @@
                  ng-model="search"
                  placeholder="${ _('Filter') }..." />
         </div>
-        <div class="col-sm-2">
-          <i class="glyphicon glyphicon-question-sign help"
+        <div class="col-sm-2 filter-help-col">
+          <i class="glyphicon glyphicon-question-sign help pull-left"
              tooltip="filter"></i>
         </div>
       </div>
       <span ng-show="list.length - filtered.length"
-            ng-click="search=''">
+            ng-click="search=''" class="filtered-items-text">
         ${ _('Not shown sources') }: {{list.length - filtered.length}}
       </span>
     </div>
@@ -46,17 +46,17 @@
            ng-click="editItem($event, item)">
         <li>
           <i ng-show="item._manual"
-             class="glyphicon glyphicon-pencil"
+             class="glyphicon glyphicon-pencil list-icon"
              title="${_('edit manual')}"></i>
-          {{item.data.name}}
-          <i class="glyphicon glyphicon-remove pull-right"
+          <span>{{item.data.name}}</span>
+          <i class="glyphicon glyphicon-remove pull-right list-icon"
              dialog="ask"
              dialog-title="${ _('Confirm!') }"
              dialog-text="${ _('Really remove source') }: {{item.data.name}}?"
              callback="removeItem($event, item)"
              title="${_('delete')}">
           </i>
-          <i class="glyphicon glyphicon-share pull-right"
+          <i class="glyphicon glyphicon-share pull-right list-icon"
              ng-click="copyItem($event, item)"
              title="${_('copy')}">
           </i>
