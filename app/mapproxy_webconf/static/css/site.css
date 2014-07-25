@@ -460,6 +460,10 @@ hr.formLine {
   min-height: 25px;
 }
 
+.form-line-spacing {
+  margin-bottom: 15px;
+}
+
 /* fix for footer overlap */
 #push {
   height: 40px;

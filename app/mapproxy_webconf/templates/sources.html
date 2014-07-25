@@ -348,17 +348,21 @@
                      title="${_('delete')}"></i>
                 </span>
               </div>
-              <button class="btn btn-sm btn-default pull-right"
-                      ng-click="loadSRS($event)"
-                      ng-disabled="!source.data.req.url">
-                ${ _('Add SRS from WMS') }
-              </button>
+              <div class="row form-line-spacing">
+                <div class="col-sm-12">
+                  <button class="btn btn-sm btn-default pull-right "
+                          ng-click="loadSRS($event)"
+                          ng-disabled="!source.data.req.url">
+                    ${ _('Add SRS from WMS') }
+                  </button>
+                </div>
+              </div>
               <div labeled="input_label"
                    name-for="add_srs_manual"
                    text="${ _('Manual add SRS') }"
                    tooltip-content="sources_add_srs_manual">
                   <div class="row">
-                    <div class="col-sm-8">
+                    <div class="col-sm-9">
                       <input type="text"
                              noop
                              id="add_srs_manual"
@@ -366,7 +370,7 @@
                              ng-model="custom.srs_manual"
                              class="form-control input-sm"/>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                       <button class="btn btn-sm btn-default pull-right"
                               ng-click="addSRSManual($event)"
                               ng-disabled="!custom.srs_manual">
