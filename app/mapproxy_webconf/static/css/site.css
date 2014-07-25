@@ -467,6 +467,11 @@ hr.formLine {
   margin-bottom: 5px;
 }
 
+h4 .glyphicon {
+  font-size: 13px;
+  vertical-align: text-top;
+}
+
 /* fix for footer overlap */
 #push {
   height: 40px;

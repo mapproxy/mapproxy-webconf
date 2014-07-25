@@ -7,15 +7,15 @@
 
 %def leftblock():
   <div ng-controller="SourceListCtrl">
-    <div class="pull-right">
+    <h4>${ _('Sources') }</h4>
+    <div class="pull-right form-line-spacing">
       <!-- konflikt mit bootstrap -->
-      <button class="btn btn-sm btn-add pull-right"
+      <button class="btn btn-xs btn-add pull-right"
               ng-click="newItem()">
         <span class="glyphicon glyphicon-plus-sign" ></span>
         ${ _('Create new source') }
       </button>
     </div>
-    <h3>${ _('Sources') }</h3>
     <span message-handler="success"
           message-types="sources.delete_success,sources.copy_success">
     </span>
@@ -72,8 +72,8 @@
   <div ng-controller="MapproxySourceFormCtrl">
     <form name="form"
           novalidate ng-show="!editareaBinds.visible">
-      <h3 ng-show="formTitle=='new'">${ _('New source') }</h3>
-      <h3 ng-show="formTitle=='edit'">${ _('Edit source') }</h3>
+      <h4 ng-show="formTitle=='new'">${ _('New source') }</h4>
+      <h4 ng-show="formTitle=='edit'">${ _('Edit source') }</h4>
       <fieldset>
         <div toggle-group mode="multiShow">
           <!-- title? -->
@@ -427,11 +427,12 @@
 
 %def rightblock():
   <div ng-controller="TreeCtrl">
-    <div>
-      <h3 class="inline">${ _('Available WMS') }</h3>
+    <h4>
+      ${ _('Available WMS') }
       <i class="glyphicon glyphicon-question-sign help"
-         tooltip="source_available_wms"></i>
-    </div>
+       tooltip="source_available_wms"></i>
+     </h4>
+
     <script type="text/ng-template"  id="wms_layer_renderer">
       <div ng-click="show_infos(layer)" class="label label-default droppable_name">
         <i class="glyphicon glyphicon-plus pull-left"
