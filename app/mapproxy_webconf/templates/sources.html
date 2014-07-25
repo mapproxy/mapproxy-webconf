@@ -163,229 +163,230 @@
                 </div>
               </div>
             </div>
-            <hr class="formLine">
-            <div labeled="input_label"
-                 name-for="supported_formats"
-                 tooltip-content="sources_supported_formats"
-                 text="${ _('Supported formats') }"
-                 warning="{{warningLogic.checkImageSettings()}}"
-                 warning-msg="${ _('Selectet image format(s) not support transparency.') }">
-              <div class="row">
-                <div class="col-sm-6">
-                  <select class="form-control input-sm"
-                          name="supported_formats"
-                          id="supported_formats"
-                          multiple="multiple"
-                          ng-model="source.data.supported_formats">
-                    <option value="PNG">PNG</option>
-                    <option value="JPEG">JPEG</option>
-                    <option value="GIF">GIF</option>
-                  </select>
-                </div>
-                <div class="col-sm-5 col-sm-offset-1">
-                  <button class="btn btn-sm btn-default pull-right"
-                          ng-click="source.data.supported_formats=undefined;">
-                    ${ _('Clear selection') }
+          </div>
+          <hr class="formLine">
+          <div labeled="input_label"
+               name-for="supported_formats"
+               tooltip-content="sources_supported_formats"
+               text="${ _('Supported formats') }"
+               warning="{{warningLogic.checkImageSettings()}}"
+               warning-msg="${ _('Selectet image format(s) not support transparency.') }">
+            <div class="row">
+              <div class="col-sm-6">
+                <select class="form-control input-sm"
+                        name="supported_formats"
+                        id="supported_formats"
+                        multiple="multiple"
+                        ng-model="source.data.supported_formats">
+                  <option value="PNG">PNG</option>
+                  <option value="JPEG">JPEG</option>
+                  <option value="GIF">GIF</option>
+                </select>
+              </div>
+              <div class="col-sm-5 col-sm-offset-1">
+                <button class="btn btn-sm btn-default pull-right"
+                        ng-click="source.data.supported_formats=undefined;">
+                  ${ _('Clear selection') }
+                </button>
+              </div>
+            </div>
+          </div>
+          <div labeled='checkbox_label'
+               name-for="req_transparent"
+               text="${ _('Transparency') }"
+               warning="{{warningLogic.checkImageSettings()}}"
+               warning-msg="${ _('Selectet image format(s) not support transparency.') }">
+            <input type="checkbox"
+                   ng-model="source.data.req.transparent"
+                   id="req_transparent"
+                   name="req_transparent"/>
+          </div>
+          <hr class="formLine">
+          <div labeled='input_label_toggleable'
+               tooltip-content="sources_coverage"
+               text="${ _('Coverage') }">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="btn-group pull-right"
+                     ng-model="custom.bboxSelected"
+                     data-toggle-name="is_private"
+                     data-toggle="buttons-radio"
+                     id="units">
+                  <button type="button"
+                          ng-click="custom.bboxSelected=true;"
+                          class="btn btn-sm btn-default"
+                          ng-class="{'active': custom.bboxSelected}"
+                          data-toggle="button">
+                    ${ _('BBox') }
+                  </button>
+                  <button type="button"
+                          ng-click="custom.bboxSelected=false;"
+                          class="btn btn-sm btn-default"
+                          ng-class="{'active': !custom.bboxSelected}"
+                          data-toggle="button">
+                    ${ _('Polygon') }
                   </button>
                 </div>
               </div>
             </div>
-            <div labeled='checkbox_label'
-                 name-for="req_transparent"
-                 text="${ _('Transparency') }"
-                 warning="{{warningLogic.checkImageSettings()}}"
-                 warning-msg="${ _('Selectet image format(s) not support transparency.') }">
-              <input type="checkbox"
-                     ng-model="source.data.req.transparent"
-                     id="req_transparent"
-                     name="req_transparent"/>
-            </div>
-            <hr class="formLine">
-            <div labeled='input_label_toggleable'
-                 tooltip-content="sources_coverage"
-                 text="${ _('Coverage') }">
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="btn-group pull-right"
-                       ng-model="custom.bboxSelected"
-                       data-toggle-name="is_private"
-                       data-toggle="buttons-radio"
-                       id="units">
-                    <button type="button"
-                            ng-click="custom.bboxSelected=true;"
-                            class="btn btn-sm btn-default"
-                            ng-class="{'active': custom.bboxSelected}"
-                            data-toggle="button">
-                      ${ _('BBox') }
-                    </button>
-                    <button type="button"
-                            ng-click="custom.bboxSelected=false;"
-                            class="btn btn-sm btn-default"
-                            ng-class="{'active': !custom.bboxSelected}"
-                            data-toggle="button">
-                      ${ _('Polygon') }
-                    </button>
+            <div labeled='input_label'
+                 name-for="bbox"
+                 ng-show="custom.bboxSelected"
+                 text="${ _('Coverage BBOX') }">
+              <div class="text-center"
+                   list="4"
+                   name="bbox"
+                   ng-model="source.data.coverage.bbox">
+                <div class="row">
+                  <div class="col-sm-4 col-sm-offset-4">
+                    <input type="number"
+                           placeholder="${ _('North') }"
+                           float
+                           ng-model="source.data.coverage.bbox[3]"
+                           class="form-control input-sm"
+                           id="bbox_3"
+                           ng-disabled="grid._locked||grid.default"
+                           name="bbox_3"/>
                   </div>
                 </div>
-              </div>
-              <div labeled='input_label'
-                   name-for="bbox"
-                   ng-show="custom.bboxSelected"
-                   text="${ _('Coverage BBOX') }">
-                <div class="text-center"
-                     list="4"
-                     name="bbox"
-                     ng-model="source.data.coverage.bbox">
-                  <div class="row">
-                    <div class="col-sm-4 col-sm-offset-4">
-                      <input type="number"
-                             placeholder="${ _('North') }"
-                             float
-                             ng-model="source.data.coverage.bbox[3]"
-                             class="form-control input-sm"
-                             id="bbox_3"
-                             ng-disabled="grid._locked||grid.default"
-                             name="bbox_3"/>
-                    </div>
+                <div class="row">
+                  <div class="col-sm-4 col-sm-offset-1">
+                    <input type="number"
+                           placeholder="${ _('West') }"
+                           float
+                           ng-model="source.data.coverage.bbox[0]"
+                           class="form-control input-sm"
+                           id="bbox_0"
+                           ng-disabled="grid._locked||grid.default"
+                           name="bbox_0"/>
                   </div>
-                  <div class="row">
-                    <div class="col-sm-4 col-sm-offset-1">
-                      <input type="number"
-                             placeholder="${ _('West') }"
-                             float
-                             ng-model="source.data.coverage.bbox[0]"
-                             class="form-control input-sm"
-                             id="bbox_0"
-                             ng-disabled="grid._locked||grid.default"
-                             name="bbox_0"/>
-                    </div>
-                    <div class="col-sm-4 col-sm-offset-2">
-                      <input type="number"
-                             placeholder="${ _('East') }"
-                             float
-                             ng-model="source.data.coverage.bbox[2]"
-                             class="form-control input-sm"
-                             id="bbox_2"
-                             ng-disabled="grid._locked||grid.default"
-                             name="bbox_2"/>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-4 col-sm-offset-4">
-                      <input type="number"
-                             placeholder="${ _('South') }"
-                             float
-                             ng-model="source.data.coverage.bbox[1]"
-                             class="form-control input-sm"
-                             id="bbox_1"
-                             ng-disabled="grid._locked||grid.default"
-                             name="bbox_1"/>
-                    </div>
+                  <div class="col-sm-4 col-sm-offset-2">
+                    <input type="number"
+                           placeholder="${ _('East') }"
+                           float
+                           ng-model="source.data.coverage.bbox[2]"
+                           class="form-control input-sm"
+                           id="bbox_2"
+                           ng-disabled="grid._locked||grid.default"
+                           name="bbox_2"/>
                   </div>
                 </div>
-                <div labeled="input_label"
-                     name-for="coverage_bbox_srs"
-                     text="${ _('Coverage SRS') }">
-                  <select class="form-control input-sm"
-                          ng-model="source.data.coverage.bbox_srs"
-                          id="coverage_bbox_srs"
-                          name="coverage_bbox_srs"
-                          ng-options="srs as srs for srs in defaults.data.srs">
-                  </select>
-                </div>
-              </div>
-              <div ng-show="!custom.bboxSelected"
-                   labeled="input_label"
-                   name-for="coverage_polygon"
-                   text="${ _('Coverage polygon') }">
-                <pre ng-bind="source.data.coverage.polygon|json"
-                     class="scrollable"></pre>
-                <div labeled="input_label"
-                     name-for="coverage_polygon_srs"
-                     text="${ _('Coverage SRS') }">
-                  <select class="form-control input-sm" ng-model="source.data.coverage.polygon_srs"
-                          id="coverage_polygon_srs"
-                          name="coverage_polygon_srs"
-                          ng-options="srs as srs for srs in defaults.data.srs">
-                  </select>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <button class="btn btn-xs btn-default"
-                          ng-disabled="!source.data.req.url"
-                          ng-click="addCoverage($event)"
-                          id="form_load_coverage">
-                    ${ _('Use coverage from WMS') }
-                  </button>
-                </div>
-                <div class="col-sm-6">
-                  <button class="btn btn-xs btn-default"
-                          ng-click="showMap()"
-                          ng-disabled="allowMap()">
-                    <span ng-show="hasCoverage()">${ _('Show coverage in map') }</span>
-                    <span ng-show="!hasCoverage()">${ _('Create coverage in map') }</span>
-                  </button>
-                </div>
-              </div>
-              <span message-handler="error"
-                    message-types="olMap.showMap_error">
-              </span>
-            </div>
-            <hr class="formLine">
-            <div labeled="input_label_toggleable"
-                 name-for="supported_srs"
-                 text="${ _('Supported SRS') }"
-                 tooltip-content="sources_supported_srs">
-              <div name="supported_srs"
-                   id="supported_srs"
-                   class="well well-small">
-                <span class="badge"
-                      ng-repeat="srs in source.data.supported_srs">
-                  {{srs}}
-                  <i class="glyphicon glyphicon-remove"
-                     ng-click="removeSRS($event, srs)"
-                     title="${_('delete')}"></i>
-                </span>
-              </div>
-              <div class="row form-line-spacing">
-                <div class="col-sm-12">
-                  <button class="btn btn-sm btn-default pull-right "
-                          ng-click="loadSRS($event)"
-                          ng-disabled="!source.data.req.url">
-                    ${ _('Add SRS from WMS') }
-                  </button>
+                <div class="row">
+                  <div class="col-sm-4 col-sm-offset-4">
+                    <input type="number"
+                           placeholder="${ _('South') }"
+                           float
+                           ng-model="source.data.coverage.bbox[1]"
+                           class="form-control input-sm"
+                           id="bbox_1"
+                           ng-disabled="grid._locked||grid.default"
+                           name="bbox_1"/>
+                  </div>
                 </div>
               </div>
               <div labeled="input_label"
-                   name-for="add_srs_manual"
-                   text="${ _('Manual add SRS') }"
-                   tooltip-content="sources_add_srs_manual">
-                  <div class="row">
-                    <div class="col-sm-9">
-                      <input type="text"
-                             noop
-                             id="add_srs_manual"
-                             name="add_srs_manual"
-                             ng-model="custom.srs_manual"
-                             class="form-control input-sm"/>
-                    </div>
-                    <div class="col-sm-3">
-                      <button class="btn btn-sm btn-default pull-right"
-                              ng-click="addSRSManual($event)"
-                              ng-disabled="!custom.srs_manual">
-                        ${ _('Add') }
-                      </button>
-                    </div>
-                  </div>
+                   name-for="coverage_bbox_srs"
+                   text="${ _('Coverage SRS') }">
+                <select class="form-control input-sm"
+                        ng-model="source.data.coverage.bbox_srs"
+                        id="coverage_bbox_srs"
+                        name="coverage_bbox_srs"
+                        ng-options="srs as srs for srs in defaults.data.srs">
+                </select>
+              </div>
+            </div>
+            <div ng-show="!custom.bboxSelected"
+                 labeled="input_label"
+                 name-for="coverage_polygon"
+                 text="${ _('Coverage polygon') }">
+              <pre ng-bind="source.data.coverage.polygon|json"
+                   class="scrollable"></pre>
+              <div labeled="input_label"
+                   name-for="coverage_polygon_srs"
+                   text="${ _('Coverage SRS') }">
+                <select class="form-control input-sm" ng-model="source.data.coverage.polygon_srs"
+                        id="coverage_polygon_srs"
+                        name="coverage_polygon_srs"
+                        ng-options="srs as srs for srs in defaults.data.srs">
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <button class="btn btn-xs btn-default"
+                        ng-disabled="!source.data.req.url"
+                        ng-click="addCoverage($event)"
+                        id="form_load_coverage">
+                  ${ _('Use coverage from WMS') }
+                </button>
+              </div>
+              <div class="col-sm-6">
+                <button class="btn btn-xs btn-default"
+                        ng-click="showMap()"
+                        ng-disabled="allowMap()">
+                  <span ng-show="hasCoverage()">${ _('Show coverage in map') }</span>
+                  <span ng-show="!hasCoverage()">${ _('Create coverage in map') }</span>
+                </button>
+              </div>
+            </div>
+            <span message-handler="error"
+                  message-types="olMap.showMap_error">
+            </span>
+          </div>
+          <hr class="formLine">
+          <div labeled="input_label_toggleable"
+               name-for="supported_srs"
+               text="${ _('Supported SRS') }"
+               tooltip-content="sources_supported_srs">
+            <div name="supported_srs"
+                 id="supported_srs"
+                 class="well well-small">
+              <span class="badge"
+                    ng-repeat="srs in source.data.supported_srs">
+                {{srs}}
+                <i class="glyphicon glyphicon-remove"
+                   ng-click="removeSRS($event, srs)"
+                   title="${_('delete')}"></i>
+              </span>
+            </div>
+            <div class="row form-line-spacing">
+              <div class="col-sm-12">
+                <button class="btn btn-sm btn-default pull-right "
+                        ng-click="loadSRS($event)"
+                        ng-disabled="!source.data.req.url">
+                  ${ _('Add SRS from WMS') }
+                </button>
+              </div>
+            </div>
+            <div labeled="input_label"
+                 name-for="add_srs_manual"
+                 text="${ _('Manual add SRS') }"
+                 tooltip-content="sources_add_srs_manual">
+              <div class="row">
+                <div class="col-sm-9">
+                  <input type="text"
+                         noop
+                         id="add_srs_manual"
+                         name="add_srs_manual"
+                         ng-model="custom.srs_manual"
+                         class="form-control input-sm"/>
+                </div>
+                <div class="col-sm-3">
+                  <button class="btn btn-sm btn-default pull-right"
+                          ng-click="addSRSManual($event)"
+                          ng-disabled="!custom.srs_manual">
+                    ${ _('Add') }
+                  </button>
                 </div>
               </div>
             </div>
-            <hr class="formLine">
-            <div res-scales="source.data"
-                 mode="min_max"
-                 parent-form="form"
-                 dpi="defaults.data.dpi"></div>
+          </div>
+        </div>
+        <hr class="formLine">
+        <div res-scales="source.data"
+             mode="min_max"
+             parent-form="form"
+             dpi="defaults.data.dpi"></div>
         <hr class="formLine">
         <div class="pull-left">
           <button class="btn btn-sm btn-default"
