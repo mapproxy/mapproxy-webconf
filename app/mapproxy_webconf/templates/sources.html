@@ -25,7 +25,7 @@
     <div>
       <div class="row">
         <div class="col-sm-10">
-          <input class="form-control"
+          <input class="form-control input-sm"
                  type="text"
                  ng-model="search"
                  placeholder="${ _('Filter') }..." />
@@ -92,7 +92,7 @@
                  name-for="name"
                  text="${ _('Name') }"
                  tooltip-content="sources_name">
-              <input class="form-control"
+              <input class="form-control input-sm"
                      type="text"
                      required
                      ng-model="source.data.name"
@@ -106,7 +106,7 @@
                  tooltip-content="sources_url">
               <input id="req_url"
                      name="req_url"
-                     class="form-control"
+                     class="form-control input-sm"
                      type="url"
                      value="{{source.data.wms_source}}"
                      ng-model="source.data.req.url"
@@ -151,7 +151,7 @@
                          id="add_layer_manual"
                          name="add_layer_manual"
                          ng-model="custom.layer_manual"
-                         class="form-control"
+                         class="form-control input-sm"
                          unique="{{source.data.req.layers}}"/>
                 </div>
                 <div class="col-sm-4">
@@ -233,7 +233,7 @@
                              placeholder="${ _('North') }"
                              float
                              ng-model="source.data.coverage.bbox[3]"
-                             class="form-control"
+                             class="form-control input-sm"
                              id="bbox_3"
                              ng-disabled="grid._locked||grid.default"
                              name="bbox_3"/>
@@ -245,7 +245,7 @@
                              placeholder="${ _('West') }"
                              float
                              ng-model="source.data.coverage.bbox[0]"
-                             class="form-control"
+                             class="form-control input-sm"
                              id="bbox_0"
                              ng-disabled="grid._locked||grid.default"
                              name="bbox_0"/>
@@ -255,7 +255,7 @@
                              placeholder="${ _('East') }"
                              float
                              ng-model="source.data.coverage.bbox[2]"
-                             class="form-control"
+                             class="form-control input-sm"
                              id="bbox_2"
                              ng-disabled="grid._locked||grid.default"
                              name="bbox_2"/>
@@ -267,7 +267,7 @@
                              placeholder="${ _('South') }"
                              float
                              ng-model="source.data.coverage.bbox[1]"
-                             class="form-control"
+                             class="form-control input-sm"
                              id="bbox_1"
                              ng-disabled="grid._locked||grid.default"
                              name="bbox_1"/>
@@ -349,7 +349,7 @@
                              id="add_srs_manual"
                              name="add_srs_manual"
                              ng-model="custom.srs_manual"
-                             class="form-control"/>
+                             class="form-control input-sm"/>
                     </div>
                     <div class="col-sm-4">
                       <button class="btn btn-sm btn-default pull-right"
@@ -500,7 +500,7 @@
                    ng-model="capabilities.url"
                    id="url"
                    unique="{{wms_urls}}"
-                   class="form-control" />
+                   class="form-control input-sm" />
           </div>
           <div class="col-sm-4">
             <button class="btn btn-sm btn-default pull-left"
