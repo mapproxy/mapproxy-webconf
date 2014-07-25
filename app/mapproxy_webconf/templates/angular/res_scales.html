@@ -62,39 +62,45 @@
        name-for="units"
        text="${ _('Resolutions / Scales') }"
        tooltip-conent="min_max_res">
-    <div class="btn-group pull-right"
-         ng-model="data.units"
-         data-toggle-name="is_private"
-         data-toggle="buttons-radio"
-         id="units">
-      <button type="button"
-              ng-click="data.units='m';form.$pristine=false;"
-              class="btn btn-sm btn-default"
-              ng-class="{'active': data.units=='m'}"
-              data-toggle="button">
-        ${ _('Meters') }
-      </button>
-      <button type="button"
-              ng-click="data.units='d';form.$pristine=false;"
-              class="btn btn-sm btn-default"
-              ng-class="{'active': data.units=='d'}"
-              data-toggle="button">
-        ${ _('Degrees') }
-      </button>
-    </div>
-    <div class="btn-group" data-toggle="buttons-radio">
-      <button type="button"
-              class="btn btn-sm btn-default"
-              ng-class="{'active': !resSelected}"
-              ng-click="convert('to_scale')">
-        ${ _('Scale') }
-      </button>
-      <button type="button"
-              class="btn btn-sm btn-default"
-              ng-class="{'active': resSelected}"
-              ng-click="convert('to_res')">
-        ${ _('Resolution') }
-      </button>
+    <div class="row form-line-spacing">
+      <div class="col-sm-6">
+        <div class="btn-group pull-left" data-toggle="buttons-radio">
+          <button type="button"
+                  class="btn btn-sm btn-default"
+                  ng-class="{'active': !resSelected}"
+                  ng-click="convert('to_scale')">
+            ${ _('Scale') }
+          </button>
+          <button type="button"
+                  class="btn btn-sm btn-default"
+                  ng-class="{'active': resSelected}"
+                  ng-click="convert('to_res')">
+            ${ _('Resolution') }
+          </button>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="btn-group pull-right"
+             ng-model="data.units"
+             data-toggle-name="is_private"
+             data-toggle="buttons-radio"
+             id="units">
+          <button type="button"
+                  ng-click="data.units='m';form.$pristine=false;"
+                  class="btn btn-sm btn-default"
+                  ng-class="{'active': data.units=='m'}"
+                  data-toggle="button">
+            ${ _('Meters') }
+          </button>
+          <button type="button"
+                  ng-click="data.units='d';form.$pristine=false;"
+                  class="btn btn-sm btn-default"
+                  ng-class="{'active': data.units=='d'}"
+                  data-toggle="button">
+            ${ _('Degrees') }
+          </button>
+        </div>
+      </div>
     </div>
     <div ng-include src="mode"></div>
   </div>
