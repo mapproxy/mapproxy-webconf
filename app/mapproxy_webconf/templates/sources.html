@@ -170,19 +170,25 @@
                  text="${ _('Supported formats') }"
                  warning="{{warningLogic.checkImageSettings()}}"
                  warning-msg="${ _('Selectet image format(s) not support transparency.') }">
-              <select class="form-control"
-                      name="supported_formats"
-                      id="supported_formats"
-                      multiple="multiple"
-                      ng-model="source.data.supported_formats">
-                <option value="PNG">PNG</option>
-                <option value="JPEG">JPEG</option>
-                <option value="GIF">GIF</option>
-              </select>
-              <button class="btn btn-sm btn-default"
-                      ng-click="source.data.supported_formats=undefined;">
-                ${ _('Clear selection') }
-              </button>
+              <div class="row">
+                <div class="col-sm-6">
+                  <select class="form-control"
+                          name="supported_formats"
+                          id="supported_formats"
+                          multiple="multiple"
+                          ng-model="source.data.supported_formats">
+                    <option value="PNG">PNG</option>
+                    <option value="JPEG">JPEG</option>
+                    <option value="GIF">GIF</option>
+                  </select>
+                </div>
+                <div class="col-sm-5 col-sm-offset-1">
+                  <button class="btn btn-sm btn-default pull-right"
+                          ng-click="source.data.supported_formats=undefined;">
+                    ${ _('Clear selection') }
+                  </button>
+                </div>
+              </div>
             </div>
             <div labeled='checkbox_label'
                  name-for="req_transparent"
