@@ -108,3 +108,7 @@ img {
 .well .badge {
   margin: 1px;
 }
+
+img.olTileImage, .olPopup img {
+    max-width: none;
+}
