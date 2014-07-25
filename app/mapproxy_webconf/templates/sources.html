@@ -145,7 +145,7 @@
                  text="${ _('Manual add layer') }"
                  tooltip-content="sources_manual_add_layers">
               <div class="row">
-                <div class="col-sm-8">
+                <div class="col-sm-9">
                   <input type="text"
                          noop
                          id="add_layer_manual"
@@ -154,7 +154,7 @@
                          class="form-control input-sm"
                          unique="{{source.data.req.layers}}"/>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                   <button class="btn btn-sm btn-default pull-right"
                           ng-click="addLayerManual($event)"
                           ng-disabled="!custom.layer_manual">
@@ -172,7 +172,7 @@
                  warning-msg="${ _('Selectet image format(s) not support transparency.') }">
               <div class="row">
                 <div class="col-sm-6">
-                  <select class="form-control"
+                  <select class="form-control input-sm"
                           name="supported_formats"
                           id="supported_formats"
                           multiple="multiple"
@@ -204,27 +204,30 @@
             <div labeled='input_label_toggleable'
                  tooltip-content="sources_coverage"
                  text="${ _('Coverage') }">
-              <div class="btn-group pull-right"
-                   ng-model="custom.bboxSelected"
-                   data-toggle-name="is_private"
-                   data-toggle="buttons-radio"
-                   id="units">
-                <button type="button"
-                        ng-click="custom.bboxSelected=true;"
-                        class="btn btn-sm btn-default"
-                        ng-class="{'active': custom.bboxSelected}"
-                        data-toggle="button">
-                  ${ _('BBox') }
-                </button>
-                <button type="button"
-                        ng-click="custom.bboxSelected=false;"
-                        class="btn btn-sm btn-default"
-                        ng-class="{'active': !custom.bboxSelected}"
-                        data-toggle="button">
-                  ${ _('Polygon') }
-                </button>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="btn-group pull-right"
+                       ng-model="custom.bboxSelected"
+                       data-toggle-name="is_private"
+                       data-toggle="buttons-radio"
+                       id="units">
+                    <button type="button"
+                            ng-click="custom.bboxSelected=true;"
+                            class="btn btn-sm btn-default"
+                            ng-class="{'active': custom.bboxSelected}"
+                            data-toggle="button">
+                      ${ _('BBox') }
+                    </button>
+                    <button type="button"
+                            ng-click="custom.bboxSelected=false;"
+                            class="btn btn-sm btn-default"
+                            ng-class="{'active': !custom.bboxSelected}"
+                            data-toggle="button">
+                      ${ _('Polygon') }
+                    </button>
+                  </div>
+                </div>
               </div>
-              <br>
               <div labeled='input_label'
                    name-for="bbox"
                    ng-show="custom.bboxSelected"
@@ -280,22 +283,16 @@
                     </div>
                   </div>
                 </div>
-              </div>
-              <button class="btn btn-sm btn-default"
-                      ng-disabled="!source.data.req.url"
-                      ng-click="addCoverage($event)"
-                      id="form_load_coverage">
-                ${ _('Use coverage from WMS') }
-              </button>
-              <div labeled="input_label"
-                   name-for="coverage_bbox_srs"
-                   text="${ _('Coverage SRS') }">
-                <select class="form-control"
-                        ng-model="source.data.coverage.bbox_srs"
-                        id="coverage_bbox_srs"
-                        name="coverage_bbox_srs"
-                        ng-options="srs as srs for srs in defaults.data.srs">
-                </select>
+                <div labeled="input_label"
+                     name-for="coverage_bbox_srs"
+                     text="${ _('Coverage SRS') }">
+                  <select class="form-control input-sm"
+                          ng-model="source.data.coverage.bbox_srs"
+                          id="coverage_bbox_srs"
+                          name="coverage_bbox_srs"
+                          ng-options="srs as srs for srs in defaults.data.srs">
+                  </select>
+                </div>
               </div>
               <div ng-show="!custom.bboxSelected"
                    labeled="input_label"
@@ -306,19 +303,31 @@
                 <div labeled="input_label"
                      name-for="coverage_polygon_srs"
                      text="${ _('Coverage SRS') }">
-                  <select ng-model="source.data.coverage.polygon_srs"
+                  <select class="form-control input-sm" ng-model="source.data.coverage.polygon_srs"
                           id="coverage_polygon_srs"
                           name="coverage_polygon_srs"
                           ng-options="srs as srs for srs in defaults.data.srs">
                   </select>
                 </div>
               </div>
-              <button class="btn btn-sm btn-default"
-                      ng-click="showMap()"
-                      ng-disabled="allowMap()">
-                <span ng-show="hasCoverage()">${ _('Show coverage in map') }</span>
-                <span ng-show="!hasCoverage()">${ _('Create coverage in map') }</span>
-              </button>
+              <div class="row">
+                <div class="col-sm-6">
+                  <button class="btn btn-xs btn-default"
+                          ng-disabled="!source.data.req.url"
+                          ng-click="addCoverage($event)"
+                          id="form_load_coverage">
+                    ${ _('Use coverage from WMS') }
+                  </button>
+                </div>
+                <div class="col-sm-6">
+                  <button class="btn btn-xs btn-default"
+                          ng-click="showMap()"
+                          ng-disabled="allowMap()">
+                    <span ng-show="hasCoverage()">${ _('Show coverage in map') }</span>
+                    <span ng-show="!hasCoverage()">${ _('Create coverage in map') }</span>
+                  </button>
+                </div>
+              </div>
               <span message-handler="error"
                     message-types="olMap.showMap_error">
               </span>
