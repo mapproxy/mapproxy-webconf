@@ -100,3 +100,7 @@ img {
   max-width: 100%;
   vertical-align: middle;
 }
+
+.label {
+  font-size: 90%;
+}

@@ -456,6 +456,10 @@ hr.formLine {
   margin-top: 1em;
 }
 
+#req_layers .label {
+  min-height: 25px;
+}
+
 /* fix for footer overlap */
 #push {
   height: 40px;
