@@ -105,7 +105,7 @@ footer {
   border-bottom: 3px solid #2AA4B5;
   background-color: #3A3740;
   color: #65676B;
-  padding: 10px 0;
+  padding-top: 10px;
   margin: 0 auto;
 
   text-align: center;
@@ -122,10 +122,15 @@ footer a {
   color: #CCCBC9;
 }
 
+footer .row {
+  padding-top: 2px;
+  padding-bottom: 1px;
+}
 
 footer ul.footer-nav  {
   float: left;
   font-size: 12px;
+  margin: 0 0 10px 25px;
 }
 
 footer ul.footer-nav li {
