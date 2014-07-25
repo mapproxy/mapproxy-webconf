@@ -463,6 +463,9 @@ hr.formLine {
 .form-line-spacing {
   margin-bottom: 15px;
 }
+.wms_layer {
+  margin-bottom: 5px;
+}
 
 /* fix for footer overlap */
 #push {

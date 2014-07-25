@@ -459,21 +459,27 @@
     <div toggle-group mode='hideOther'>
       <div ng-repeat="wms in wms_list"
            class="wms toggle-group">
-        <div toggle-element="next" class="toggle-header">
-          <div>{{wms.data.title}}</div>
-          <i class="glyphicon glyphicon-globe"
-             ng-click="showMap($event, wms)"
-             title="${_('show in map')}"></i>
-          <i class="glyphicon glyphicon-refresh"
-             ng-click="refreshCapabilities($event, wms)"
-             title="${_('refresh')}"></i>
-          <i class="glyphicon glyphicon-remove"
-             dialog="ask"
-             dialog-title="${ _('Confirm!') }"
-             dialog-text="${ _('Really remove WMS:') } {{wms.data.title}}?"
-             callback="removeCapabilities(wms)"
-             title="${_('delete')}">
-          </i>
+        <div toggle-element="next" class="toggle-header container-fluid">
+          <div class="row">
+            <div class="col-sm-8">{{wms.data.title}}</div>
+            <div class="col-sm-4">
+              <div class="pull-right">
+                <i class="glyphicon glyphicon-globe"
+                   ng-click="showMap($event, wms)"
+                   title="${_('show in map')}"></i>
+                <i class="glyphicon glyphicon-refresh"
+                   ng-click="refreshCapabilities($event, wms)"
+                   title="${_('refresh')}"></i>
+                <i class="glyphicon glyphicon-remove"
+                   dialog="ask"
+                   dialog-title="${ _('Confirm!') }"
+                   dialog-text="${ _('Really remove WMS:') } {{wms.data.title}}?"
+                   callback="removeCapabilities(wms)"
+                   title="${_('delete')}">
+                </i>
+              </div>
+            </div>
+          </div>
         </div>
         <div ng-show="isOpen()" class="toggle-body">
           <div>
@@ -506,7 +512,7 @@
     <div spinner='wms_capabilities'>
         <img src="${ get_url('static', filepath='img/loader.gif') }"> ${ _('Loading in progress') }
     </div>
-    <hr>
+    <hr class="formLine">
     <form name="form"
           novalidate>
       <div labeled="input_label"
@@ -523,7 +529,7 @@
                    class="form-control input-sm" />
           </div>
           <div class="col-sm-4">
-            <button class="btn btn-sm btn-default pull-left"
+            <button class="btn btn-sm btn-default pull-right"
                     ng-click="addCapabilities()"
                     ng-disabled="!form.$valid">${ _('Add') }</button>
           </div>
