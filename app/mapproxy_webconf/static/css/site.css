@@ -457,7 +457,8 @@ hr.formLine {
   margin-top: 1em;
 }
 
-#req_layers .label {
+#req_layers .label,
+#sources .label {
   min-height: 25px;
 }
 
