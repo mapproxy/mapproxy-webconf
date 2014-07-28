@@ -176,7 +176,7 @@
                warning="{{ warningLogic.checkImageSettings() }}"
                warning-msg="${ _('Selectet image format(s) not support transparency.') }">
             <div class="row">
-              <div class="col-sm-6">
+              <div class="col-sm-5">
                 <select class="form-control input-sm"
                         name="supported_formats"
                         id="supported_formats"
@@ -187,7 +187,7 @@
                   <option value="GIF">GIF</option>
                 </select>
               </div>
-              <div class="col-sm-5 col-sm-offset-1">
+              <div class="col-sm-5 col-sm-offset-2">
                 <button class="btn btn-sm btn-default pull-right"
                         ng-click="source.data.supported_formats=undefined;">
                   ${ _('Clear selection') }
@@ -292,7 +292,7 @@
                    name-for="coverage_bbox_srs"
                    text="${ _('Coverage SRS') }">
                 <div class="row">
-                  <div class="col-sm-4">
+                  <div class="col-sm-5">
                     <select class="form-control input-sm"
                             ng-model="source.data.coverage.bbox_srs"
                             id="coverage_bbox_srs"
@@ -312,11 +312,15 @@
               <div labeled="input_label"
                    name-for="coverage_polygon_srs"
                    text="${ _('Coverage SRS') }">
-                <select class="form-control input-sm" ng-model="source.data.coverage.polygon_srs"
-                        id="coverage_polygon_srs"
-                        name="coverage_polygon_srs"
-                        ng-options="srs as srs for srs in defaults.data.srs">
-                </select>
+                <div class="row">
+                  <div class="col-sm-5">
+                    <select class="form-control input-sm" ng-model="source.data.coverage.polygon_srs"
+                            id="coverage_polygon_srs"
+                            name="coverage_polygon_srs"
+                            ng-options="srs as srs for srs in defaults.data.srs">
+                    </select>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row">
