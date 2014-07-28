@@ -7,7 +7,11 @@
 
 %def leftblock():
   <div ng-controller="SourceListCtrl">
-    <h4>${ _('Sources') }</h4>
+    <div>
+      <h4 class="inline">${ _('Sources') }</h4>
+      <i class="glyphicon glyphicon-question-sign help"
+         tooltip="sources_list"></i>
+    </div>
     <div class="pull-right form-line-spacing">
       <!-- konflikt mit bootstrap -->
       <button class="btn btn-xs btn-add pull-right"

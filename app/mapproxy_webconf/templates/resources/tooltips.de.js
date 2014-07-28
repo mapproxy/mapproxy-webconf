@@ -5,6 +5,9 @@
     "filter": {
         "content": "Über den Filter können Sie die Auswahl Ihrer Elemente einschränken."
     },
+    "sources_list": {
+        "content": "Hier finden Sie eine Übersicht über die von Ihnen definierten Sourcen."
+    },
     "source_available_wms": {
         "content": "<p>Fügen Sie hier vorhandene WMS-Dienste hinzu um diese als Quelle für den MapProxy zu verwenden. Nach dem Hinzufügen können Sie die Layer und die URL per Drag & Drop hinzufügen.</p>Über die <strong>Weltkugel</strong> haben Sie die Möglichkeit sich den Dienst anzuschauen."
     },
