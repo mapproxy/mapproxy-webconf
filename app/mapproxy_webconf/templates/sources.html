@@ -291,12 +291,16 @@
               <div labeled="input_label"
                    name-for="coverage_bbox_srs"
                    text="${ _('Coverage SRS') }">
-                <select class="form-control input-sm"
-                        ng-model="source.data.coverage.bbox_srs"
-                        id="coverage_bbox_srs"
-                        name="coverage_bbox_srs"
-                        ng-options="srs as srs for srs in defaults.data.srs">
-                </select>
+                <div class="row">
+                  <div class="col-sm-4">
+                    <select class="form-control input-sm"
+                            ng-model="source.data.coverage.bbox_srs"
+                            id="coverage_bbox_srs"
+                            name="coverage_bbox_srs"
+                            ng-options="srs as srs for srs in defaults.data.srs">
+                    </select>
+                  </div>
+                </div>
               </div>
             </div>
             <div ng-show="!custom.bboxSelected"
