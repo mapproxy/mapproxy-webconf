@@ -77,6 +77,9 @@
     "grid_scale": {
         "content": "Geben Sie hier die Auflösung/Maßstäbe an, an denen MapProxy cachen soll."
     },
+    "caches_list": {
+        "content": "Hier finden Sie eine Übersicht über die von Ihnen definierten Caches."
+    },
     "cache_name": {
         "content": "Geben Sie den Namen des Caches ein. Dieser dient später zur eindeutigen Identifikation. Bitte beachten Sie das ein Cache nicht den selben Namen tragen kann wie eine Source."
     },
