@@ -21,25 +21,23 @@
           message-types="grids.delete_success,grids.copy_success"></span>
     <span message-handler="error"
           message-types="grids.load_error,grids.delete_error"></span>
-    <div>
-      <div class="row">
-        <div class="col-sm-10">
-          <input type="text"
-                 ng-model="search"
-                 placeholder="${ _('Filter') }..."
-                 class="form-control input-sm" />
-        </div>
-        <div class="col-sm-2 filter-help-col">
-          <i class="glyphicon glyphicon-question-sign help pull-left"
-             tooltip="filter"></i>
-        </div>
+    <div class="row">
+      <div class="col-sm-10">
+        <input type="text"
+               ng-model="search"
+               placeholder="${ _('Filter') }..."
+               class="form-control input-sm" />
       </div>
-      <span ng-show="list.length - filtered.length"
-            ng-click="search=''"
-            class="filtered-items-text">
-        ${ _('Not shown grids') }: {{list.length - filtered.length}}
-      </span>
+      <div class="col-sm-2 filter-help-col">
+        <i class="glyphicon glyphicon-question-sign help pull-left"
+           tooltip="filter"></i>
+      </div>
     </div>
+    <span ng-show="list.length - filtered.length"
+          ng-click="search=''"
+          class="filtered-items-text">
+      ${ _('Not shown grids') }: {{list.length - filtered.length}}
+    </span>
     <div class="form-line-spacing">
       <ul class="vertical-list">
         <div class="{{isSelected(item)}}"
