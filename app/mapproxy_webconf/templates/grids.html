@@ -27,7 +27,7 @@
           <input type="text"
                  ng-model="search"
                  placeholder="${ _('Filter') }..."
-                 class="form-control" />
+                 class="form-control input-sm" />
         </div>
         <div class="col-sm-2 filter-help-col">
           <i class="glyphicon glyphicon-question-sign help pull-left"
@@ -106,14 +106,14 @@
                  id="name"
                  ng-disabled="grid._locked||grid.default"
                  name="name"
-                 class="form-control"/>
+                 class="form-control input-sm"/>
         </div>
         <!-- SRS -->
         <div labeled="input_label"
              name-for="srs"
              text="${ _('SRS') }"
              tooltip-content="grid_srs">
-          <select class="form-control"
+          <select class="form-control input-sm"
                   ng-model="grid.data.srs"
                   id="srs"
                   ng-options="srs for srs in defaults.data.srs"
@@ -134,7 +134,7 @@
                        placeholder="${ _('North') }"
                        float
                        ng-model="grid.data.bbox[3]"
-                       class="form-control"
+                       class="form-control input-sm"
                        id="bbox_3"
                        ng-disabled="grid._locked||grid.default"
                        name="bbox_3"/>
@@ -146,7 +146,7 @@
                        placeholder="${ _('West') }"
                        float
                        ng-model="grid.data.bbox[0]"
-                       class="form-control"
+                       class="form-control input-sm"
                        id="bbox_0"
                        ng-disabled="grid._locked||grid.default"
                        name="bbox_0"/>
@@ -156,7 +156,7 @@
                        placeholder="${ _('East') }"
                        float
                        ng-model="grid.data.bbox[2]"
-                       class="form-control"
+                       class="form-control input-sm"
                        id="bbox_2"
                        ng-disabled="grid._locked||grid.default"
                        name="bbox_2"/>
@@ -168,7 +168,7 @@
                        placeholder="${ _('South') }"
                        float
                        ng-model="grid.data.bbox[1]"
-                       class="form-control"
+                       class="form-control input-sm"
                        id="bbox_1"
                        ng-disabled="grid._locked||grid.default"
                        name="bbox_1"/>
@@ -181,7 +181,7 @@
              name-for="bbox_srs"
              text="${ _('BBox SRS') }"
              tooltip-content="grid_bbox_srs">
-          <select class="form-control"
+          <select class="form-control input-sm"
                   ng-model="grid.data.bbox_srs"
                   id="bbox_srs"
                   ng-options="srs for srs in defaults.data.srs"
@@ -204,7 +204,7 @@
              name-for="origin"
              text="${ _('Origin') }"
              tooltip-content="grid_origin">
-          <select class="form-control"
+          <select class="form-control input-sm"
                   ng-model="grid.data.origin"
                   id="origin"
                   ng-disabled="grid._locked||grid.default"
@@ -219,7 +219,7 @@
         <div labeled="input_label"
              name-for="map_srs"
              text="${ _('Map SRS') }">
-          <select class="form-control"
+          <select class="form-control input-sm"
                   ng-options="srs for srs in defaults.data.srs"
                   noop
                   id="map_srs"
