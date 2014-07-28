@@ -5,51 +5,68 @@
 
 %def leftblock():
   <div ng-controller="GridListCtrl">
-    <button class="btn btn-sm btn-add pull-right"
-            ng-click="newItem()">
-      <span class="glyphicon glyphicon-plus-sign" ></span>
-      ${ _('Create new grid') }
-    </button>
-    <h3 class="inline">${ _('User defined grids') }</h3>
-    <i class="glyphicon glyphicon-question-sign help"
-       tooltip="grids_list"></i>
+    <div>
+      <h4 class="inline">${ _('User defined grids') }</h4>
+      <i class="glyphicon glyphicon-question-sign help"
+         tooltip="grids_list"></i>
+    </div>
+    <div class="pull-right form-line-spacing">
+      <button class="btn btn-xs btn-add pull-right"
+              ng-click="newItem()">
+        <span class="glyphicon glyphicon-plus-sign" ></span>
+        ${ _('Create new grid') }
+      </button>
+    </div>
     <span message-handler="success"
           message-types="grids.delete_success,grids.copy_success"></span>
     <span message-handler="error"
           message-types="grids.load_error,grids.delete_error"></span>
     <div>
-      <input type="text"
-             ng-model="search"
-             placeholder="${ _('Filter') }..."
-             class="form-control"/ >
-      <span ng-show="list.length - filtered.length"
-            ng-click="search=''">${ _('Not shown grids') }: {{list.length - filtered.length}}</span>
-    </div>
-    <ul class="vertical-list">
-      <div class="{{isSelected(item)}}"
-            ng-repeat="item in filtered = (list | filter: {data.name:search}) | orderBy:'name'"
-            ng-click="editItem($event, item)">
-        <li>
-          <i ng-show="item._manual"
-             class="glyphicon glyphicon-pencil"
-             title="${_('edit manual')}"></i>
-          <i ng-show="item._locked || item.default"
-             class="glyphicon glyphicon-ok"></i>
-          {{item.data.name}}
-          <i class="glyphicon glyphicon-remove pull-right"
-            dialog="ask"
-            dialog-title="${ _('Confirm!') }"
-            dialog-text="${ _('Really remove grid:') } {{item.data.name}}?"
-            callback="removeItem($event, item)"
-            title="${_('delete')}">
-          </i>
-          <i class="glyphicon glyphicon-share pull-right"
-             ng-click="copyItem($event, item)"
-             title="${_('copy')}"></i>
-        </li>
+      <div class="row">
+        <div class="col-sm-10">
+          <input type="text"
+                 ng-model="search"
+                 placeholder="${ _('Filter') }..."
+                 class="form-control" />
+        </div>
+        <div class="col-sm-2 filter-help-col">
+          <i class="glyphicon glyphicon-question-sign help pull-left"
+             tooltip="filter"></i>
+        </div>
       </div>
-    </ul>
-    <h3 class="inline">${ _('Default grids') }</h3>
+      <span ng-show="list.length - filtered.length"
+            ng-click="search=''"
+            class="filtered-items-text">
+        ${ _('Not shown grids') }: {{list.length - filtered.length}}
+      </span>
+    </div>
+    <div class="form-line-spacing">
+      <ul class="vertical-list">
+        <div class="{{isSelected(item)}}"
+              ng-repeat="item in filtered = (list | filter: {data.name:search}) | orderBy:'name'"
+              ng-click="editItem($event, item)">
+          <li>
+            <i ng-show="item._manual"
+               class="glyphicon glyphicon-pencil list-icon"
+               title="${_('edit manual')}"></i>
+            <i ng-show="item._locked || item.default"
+               class="glyphicon glyphicon-ok list-icon"></i>
+            {{item.data.name}}
+            <i class="glyphicon glyphicon-remove pull-right list-icon"
+              dialog="ask"
+              dialog-title="${ _('Confirm!') }"
+              dialog-text="${ _('Really remove grid:') } {{item.data.name}}?"
+              callback="removeItem($event, item)"
+              title="${_('delete')}">
+            </i>
+            <i class="glyphicon glyphicon-share pull-right list-icon"
+               ng-click="copyItem($event, item)"
+               title="${_('copy')}"></i>
+          </li>
+        </div>
+      </ul>
+    </div>
+    <h4 class="inline">${ _('Default grids') }</h4>
     <i class="glyphicon glyphicon-question-sign help"
        tooltip="grids_default_list"></i>
     <ul class="vertical-list">
@@ -58,7 +75,7 @@
            ng-click="editItem($event, item)">
         <li>
           {{item.data.name}}
-          <i class="glyphicon glyphicon-share pull-right"
+          <i class="glyphicon glyphicon-share pull-right list-icon"
              ng-click="copyItem($event, item)"
              title="${_('copy')}"></i>
         </li>
