@@ -89,9 +89,9 @@
   <div ng-controller="MapproxyGridFormCtrl"
        ng-init="calculateTilesURL='${ get_url('calculate_tiles') }';transformBBoxURL='${ get_url('transform_bbox') }';checkGridParameterURL='${ get_url('validate_grid_params') }';">
     <div ng-show="!editareaBinds.visible">
-      <h3 ng-show="formTitle=='new'">${ _('New grid') }</h3>
-      <h3 ng-show="formTitle=='edit'">${ _('Edit grid') }</h3>
-      <h3 ng-show="formTitle=='default'">${ _('Default grid') }</h3>
+      <h4 ng-show="formTitle=='new'">${ _('New grid') }</h4>
+      <h4 ng-show="formTitle=='edit'">${ _('Edit grid') }</h4>
+      <h4 ng-show="formTitle=='default'">${ _('Default grid') }</h4>
       <form name="form"
             id="form"
             novalidate>
@@ -113,13 +113,17 @@
              name-for="srs"
              text="${ _('SRS') }"
              tooltip-content="grid_srs">
-          <select class="form-control input-sm"
-                  ng-model="grid.data.srs"
-                  id="srs"
-                  ng-options="srs for srs in defaults.data.srs"
-                  ng-disabled="grid._locked||grid.default"
-                  name="srs">
-          </select>
+          <div class="row">
+            <div class="col-sm-5">
+              <select class="form-control input-sm"
+                      ng-model="grid.data.srs"
+                      id="srs"
+                      ng-options="srs for srs in defaults.data.srs"
+                      ng-disabled="grid._locked||grid.default"
+                      name="srs">
+              </select>
+            </div>
+          </div>
         </div>
         <hr class="formLine">
         <!-- BBox -->
@@ -181,79 +185,123 @@
              name-for="bbox_srs"
              text="${ _('BBox SRS') }"
              tooltip-content="grid_bbox_srs">
-          <select class="form-control input-sm"
-                  ng-model="grid.data.bbox_srs"
-                  id="bbox_srs"
-                  ng-options="srs for srs in defaults.data.srs"
-                  ng-disabled="grid._locked||grid.default"
-                  ng-change="fillBBox()"
-                  name="bbox_srs">
-          </select>
+          <div class="row">
+            <div class="col-sm-5">
+              <select class="form-control input-sm"
+                      ng-model="grid.data.bbox_srs"
+                      id="bbox_srs"
+                      ng-options="srs for srs in defaults.data.srs"
+                      ng-disabled="grid._locked||grid.default"
+                      ng-change="fillBBox()"
+                      name="bbox_srs">
+              </select>
+            </div>
+          </div>
         </div>
-        <hr>
-        <button class="btn btn-sm btn-default"
-                ng-click="calculateTiles(!custom.resSelected)"
-                ng-disabled="!grid.data.srs">
-          ${ _('Calculate tiles') }
-          <i class="glyphicon glyphicon-question-sign help"
-             tooltip="grid_calculate_tiles"></i>
-        </button>
-        <hr>
+        <div class="row">
+          <div class="col-sm-12">
+            <button class="btn btn-sm btn-default pull-right"
+                    ng-click="calculateTiles(!custom.resSelected)"
+                    ng-disabled="!grid.data.srs">
+              ${ _('Calculate tiles') }
+              <i class="glyphicon glyphicon-question-sign help"
+                 tooltip="grid_calculate_tiles"></i>
+            </button>
+          </div>
+        </div>
+        <hr class="form-line">
         <!-- origin -->
         <div labeled='input_label_toggleable'
              name-for="origin"
              text="${ _('Origin') }"
              tooltip-content="grid_origin">
-          <select class="form-control input-sm"
-                  ng-model="grid.data.origin"
-                  id="origin"
-                  ng-disabled="grid._locked||grid.default"
-                  name="origin">
-            <option value="sw">SW / LL</option>
-            <option value="nw">NW / UL</option>
-          </select>
+          <div class="row">
+            <div class="col-sm-5">
+              <select class="form-control input-sm"
+                      ng-model="grid.data.origin"
+                      id="origin"
+                      ng-disabled="grid._locked||grid.default"
+                      name="origin">
+                <option value="sw">SW / LL</option>
+                <option value="nw">NW / UL</option>
+              </select>
+            </div>
+          </div>
         </div>
-        <hr>
+        <hr class="form-line">
         <div res-scales="grid.data" mode="list" parent-form="form" dpi="defaults.data.dpi"></div>
         <hr class="formLine">
         <div labeled="input_label"
              name-for="map_srs"
              text="${ _('Map SRS') }">
-          <select class="form-control input-sm"
-                  ng-options="srs for srs in defaults.data.srs"
-                  noop
-                  id="map_srs"
-                  name="map_srs"
-                  ng-model="custom.mapSRS">
-          </select>
-          <button class="btn btn-sm btn-default"
-                  ng-click="showMap($event)"
-                  ng-disabled="!allowMap()">
-            ${ _('Show map') }
-          </button>
+          <div class="row">
+            <div class="col-sm-5">
+              <select class="form-control input-sm"
+                      ng-options="srs for srs in defaults.data.srs"
+                      noop
+                      id="map_srs"
+                      name="map_srs"
+                      ng-model="custom.mapSRS">
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <button class="btn btn-sm btn-default pull-right"
+                      ng-click="showMap($event)"
+                      ng-disabled="!allowMap()">
+                ${ _('Show map') }
+              </button>
+            </div>
+          </div>
           <span message-handler="error"
                 message-types="olMap.showMap_error">
           </span>
         </div>
         <hr class="formLine">
         <!-- buttons -->
-        <div class="pull-left">
-          <button class="btn btn-sm btn-default"
-                  ng-click="addGrid($event)"
-                  ng-disabled="grid._locked||grid.default||!form.$valid||form.$pristine"
-                  id="form_save"
-                  ng-class="{'btn-success': form.$valid&&!grid._locked&&!form.$pristine}">
-            ${ _('Save') }
-          </button>
-          <button class="btn btn-sm btn-default"
-                  ng-click="resetForm($event)"
-                  ng-disabled="grid._locked||grid.default">
-            ${ _('Reset') }
-          </button>
+        <div class="row">
+          <div class="col-sm-12">
+            <button class="btn btn-sm btn-default"
+                    ng-click="addGrid($event)"
+                    ng-disabled="grid._locked||grid.default||!form.$valid||form.$pristine"
+                    id="form_save"
+                    ng-class="{'btn-success': form.$valid&&!grid._locked&&!form.$pristine}">
+              ${ _('Save') }
+            </button>
+            <button class="btn btn-sm btn-default"
+                    ng-click="resetForm($event)"
+                    ng-disabled="grid._locked||grid.default">
+              ${ _('Reset') }
+            </button>
+            <div id="_editarea_toggle_button_container"
+                 class="pull-right"
+                 ng-show="!grid._locked&&!grid.default">
+            </div>
+          </div>
         </div>
-        <div id="_editarea_toggle_button_container"
-             class="pull-right"
-             ng-show="!grid._locked&&!grid.default">
+        <hr class="formLine">
+        <div class="row">
+          <div class="col-sm-12">
+            <button class="btn btn-sm btn-warning pull-right"
+                    dialog="ask"
+                    dialog-title="${ _('Really lock the grid') }: {{grid.data.name}}?"
+                    dialog-text="${ _('If you lock the grid, you won\'t be able to edit it again') }"
+                    callback="lockGrid()"
+                    ng-disabled="form.$dirty||editareaBinds.dirty"
+                    ng-show="!(grid._locked||grid.default)"
+                    id="form_lock">
+              ${ _('Lock') }
+            </button>
+            <button class="btn btn-sm btn-default pull-right"
+                    ng-show="grid._locked"
+                    dialog="ask"
+                    dialog-title="${ _('Unlock') }?"
+                    dialog-text="${ _('If you unlock this grid it you need to check settings of all caches you use this grid and delete all affacted caches from disk') }"
+                    callback="unlockGrid()">
+              ${ _('Unlock') }
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -271,25 +319,6 @@
             message-types="grids.add_error,grids.update_error,grids.form_error">
       </span>
     </div>
-    <hr class="formLine">
-    <button class="pull-right btn btn-sm btn-warning"
-            dialog="ask"
-            dialog-title="${ _('Really lock the grid') }: {{grid.data.name}}?"
-            dialog-text="${ _('If you lock the grid, you won\'t be able to edit it again') }"
-            callback="lockGrid()"
-            ng-disabled="form.$dirty||editareaBinds.dirty"
-            ng-show="!(grid._locked||grid.default)"
-            id="form_lock">
-      ${ _('Lock') }
-    </button>
-    <button class="btn btn-sm btn-default"
-            ng-show="grid._locked"
-            dialog="ask"
-            dialog-title="${ _('Unlock') }?"
-            dialog-text="${ _('If you unlock this grid it you need to check settings of all caches you use this grid and delete all affacted caches from disk') }"
-            callback="unlockGrid()">
-      ${ _('Unlock') }
-    </button>
     <div ol-map="olmapBinds" map-hidden="true">
       <div ol-grid-extension="provideGridData" ol-grid-scales="custom.grid_scales"></div>
     </div>
