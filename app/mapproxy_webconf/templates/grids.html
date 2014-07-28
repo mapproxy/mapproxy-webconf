@@ -5,11 +5,11 @@
 
 %def leftblock():
   <div ng-controller="GridListCtrl">
-    <div>
-      <h4 class="inline">${ _('User defined grids') }</h4>
+    <h4>
+      ${ _('User defined grids') }
       <i class="glyphicon glyphicon-question-sign help"
          tooltip="grids_list"></i>
-    </div>
+    </h4>
     <div class="pull-right form-line-spacing">
       <button class="btn btn-xs btn-add pull-right"
               ng-click="newItem()">
