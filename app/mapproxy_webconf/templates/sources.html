@@ -46,7 +46,7 @@
     </div>
     <ul class="vertical-list">
       <div class="{{isSelected(item)}}"
-           ng-repeat="item in filtered = (list | filter: {data.name:search})"
+           ng-repeat="item in filtered = (list | filter: {data.name:search}) | orderBy: 'name'"
            ng-click="editItem($event, item)">
         <li>
           <i ng-show="item._manual"
