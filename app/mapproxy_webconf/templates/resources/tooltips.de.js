@@ -71,9 +71,6 @@
     "grid_bbox_srs": {
         "content": "Die BoundingBox können Sie in dem gewünschten SRS angeben."
     },
-    "grid_calculate_tiles": {
-        "content": "Berechnen Sie sich die Anzahl der Kacheln die das Gitter verwendet. Die Level & Daten werden Ihnen in der rechten Spalte angezeigt."
-    },
     "grid_origin": {
         "content": "<p>Standardmässig ist der Kachelnullpunkt des Gitters unten links ausgerichtet. Für den WMTS Standard transformiert MapProxy diese nach oben links. Für benutzerdefinierte Grids können die Einstellungen zudem noch angepasst werden.</p> SW / LL definiert den Kachelnullpunkt unten links. NW / UL oben links vom Gitter."
     },
