@@ -327,57 +327,60 @@
 
 %def rightblock():
   <div ng-controller="DisplayCalculatedTilesCtrl">
-    <button class="btn btn-sm btn-default pull-right"
-            ng-click="refresh()"
-            ng-show="calculatedTiles">${ _('Refresh') }</button>
-    <br ng-show="calculatedTiles">
-    <hr ng-show="calculatedTiles">
-    <table class="table"
-           ng-show="calculatedTiles">
-      <thead>
-        <tr>
-          <th class="text-left">${ _('Level') }</th>
-          <th class="text_center">
-            <div class="btn-group" data-toggle="buttons-radio" style="display: inline-block;">
-              <button type="button"
-                      class="btn btn-sm btn-default"
-                      ng-class="{'active': resSelected}"
-                      ng-click="resSelected=true;">
-                ${ _('Resolution') }
-              </button>
-              <button type="button"
-                      class="btn btn-sm btn-default"
-                      ng-class="{'active': !resSelected}"
-                      ng-click="resSelected=false;">
-                ${ _('Scale') }
-              </button>
-            </div>
-          </th>
-          <th class="text-right">${ _('Total tiles') }</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="row in calculatedTiles | orderBy:'level'">
-          <td class="text-left">{{row.level}}</td>
-          <td ng-show="resSelected"
-              class="text-left">
-            {{row.resolution | number:9}}
-          </td>
-          <td ng-show="!resSelected"
-              class="text-right">
-            1 : {{row.scale | number}}
-          </td>
-          <td tooltip="popover"
-              tooltip-placement="bottom"
-              tooltip-title="${ _('Tiles X * Tiles Y') }"
-              tooltip-content="{{row.tiles_in_x|number}} * {{row.tiles_in_y|number}}">
-            <span class="pull-right">
-              {{row.total_tiles | number}}
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <span ng-show="calculatedTiles">
+      <div class="row">
+        <div class="col-sm-12">
+          <button class="btn btn-sm btn-default pull-right"
+                  ng-click="refresh()">${ _('Refresh') }</button>
+        </div>
+      </div>
+      <hr class="formLine">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="text-left">${ _('Level') }</th>
+            <th class="text_center">
+              <div class="btn-group btn-group-xs" data-toggle="buttons-radio">
+                <button type="button"
+                        class="btn btn-xs btn-default"
+                        ng-class="{'active': !resSelected}"
+                        ng-click="resSelected=false;">
+                  ${ _('Scale') }
+                </button>
+                <button type="button"
+                        class="btn btn-xs btn-default"
+                        ng-class="{'active': resSelected}"
+                        ng-click="resSelected=true;">
+                  ${ _('Resolution') }
+                </button>
+              </div>
+            </th>
+            <th class="text-right">${ _('Total tiles') }</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="row in calculatedTiles | orderBy:'level'">
+            <td class="text-left">{{row.level}}</td>
+            <td ng-class="{'text-right': resSelected, 'text-left': !resSelected}">
+              <span ng-show="resSelected">
+                {{row.resolution | number:9}}
+              </span>
+              <span ng-show="!resSelected">
+                1 : {{row.scale | number}}
+              </span>
+            </td>
+            <td tooltip="popover"
+                tooltip-placement="bottom"
+                tooltip-title="${ _('Tiles X * Tiles Y') }"
+                tooltip-content="{{row.tiles_in_x|number}} * {{row.tiles_in_y|number}}">
+              <span class="pull-right">
+                {{row.total_tiles | number}}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </span>
   </div>
 %end
 
