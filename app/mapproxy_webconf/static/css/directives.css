@@ -20,7 +20,7 @@
   float: right;
 }
 
-.insertable-list .label:hover {
+.ui-sortable .label:hover {
   background-color: #eeeeee;
   cursor: pointer;
 }
