@@ -328,6 +328,9 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
 
     $scope.warningLogic = {
         checkImageSettings: function() {
+            if(angular.isUndefined($scope.source.data.req)) {
+                return false;
+            }
             var non_transparent_formats = NON_TRANSPARENT_FORMATS;
             return $scope.source.data.req.transparent == true &&
             $(non_transparent_formats).not($scope.source.data.supported_formats).length != non_transparent_formats.length
