@@ -65,13 +65,15 @@ directive('tooltip', function(tooltipMapper) {
                 $(element).tooltip({
                     content: function() {
                         return '<h5>' + title + '</h5><div class="text-center">' +content+'</div>';
-                    }
+                    },
+                    position: preparePosition()
                 });
             };
             var initTooltip = function(content) {
                 $(element).attr('title', content);
                 $(element).tooltip({
-                    content: content
+                    content: content,
+                    position: preparePosition()
                 });
             };
             var initFromService = function() {
@@ -91,6 +93,30 @@ directive('tooltip', function(tooltipMapper) {
                     initPopover(content, title);
                 } else {
                     initTooltip(content);
+                }
+            };
+            var preparePosition  = function() {
+                var at = scope.tooltipPlacement;
+                var my;
+                // my: position on tooltip to align with
+                // at: position on element to align with
+                switch(at) {
+                    case 'left':
+                        my = 'right';
+                        break;
+                    case 'right':
+                        my = 'left';
+                        break;
+                    case 'top':
+                        my = 'bottom';
+                        break;
+                    case 'bottom':
+                        my = 'top';
+                        break;
+                }
+                return {
+                    my: my,
+                    at: at+'+10'
                 }
             };
 
