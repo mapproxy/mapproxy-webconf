@@ -107,6 +107,9 @@
     "cache_grids_list": {
         "content": "Wählen Sie das passende Grid für Ihren Cache aus. Falls Grids im nachhinein verändert werden, muss der Cache unter Umständen gelöscht werden. Nutzen Sie daher, wenn möglich, nur fertige Grids."
     },
+    "layers_list": {
+        "content": "Hier finden Sie eine Übersicht über die von Ihnen definierten Layer. Die Reihenfolge der Layer kann per Drag&Drop verändert werden."
+    },
     "layer_name": {
         "content": "Geben Sie hier den Namen des Layers ein. Dieser dient später zur eindeutigen Identifikation."
     },
