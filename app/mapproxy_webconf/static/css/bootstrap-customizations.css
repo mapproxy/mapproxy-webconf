@@ -119,7 +119,8 @@ img.olTileImage, .olPopup img {
     max-width: none;
 }
 
-.label-info {
+.label-info,
+.btn-info {
   background-color: #35A4B4;
 }
 

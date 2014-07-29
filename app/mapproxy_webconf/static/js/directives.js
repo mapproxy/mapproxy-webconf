@@ -347,7 +347,7 @@ directive('dialog', function($parse, TranslationService) {
                         buttons = [
                             {
                                 'text': TranslationService.translate('Yes'),
-                                'class': 'btn btn-sm btn-default',
+                                'class': 'btn btn-sm btn-info',
                                 'click': function() {
                                     $(this).dialog("close");
                                     scope.confirmCallback(scope);
@@ -356,7 +356,7 @@ directive('dialog', function($parse, TranslationService) {
                             },
                             {
                                 'text': TranslationService.translate('No'),
-                                'class': 'btn btn-sm btn-default',
+                                'class': 'btn btn-sm btn-warning',
                                 'click': function() {
                                     $(this).dialog("close");
                                     if(angular.isFunction(scope.refuseCallback)) {

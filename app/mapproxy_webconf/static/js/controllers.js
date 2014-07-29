@@ -81,7 +81,7 @@ function BaseListCtrl($scope, MessageService, TranslationService, service, _sect
                 modal: true,
                 buttons: [{
                     'text': TranslationService.translate('OK'),
-                    'class': 'btn btn-small',
+                    'class': 'btn btn-sm btn-default',
                     'click': function() {
                         $(this).dialog("close");
                     }
@@ -201,7 +201,7 @@ function MapProxyConfigCtrl($scope, $http, MessageService, TranslationService, C
             modal: true,
             buttons: [{
                 'text': TranslationService.translate('OK'),
-                'class': 'btn btn-small',
+                'class': 'btn btn-sm btn-default',
                 'click': function() {
                     $(this).dialog("close");
                 }
@@ -366,7 +366,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
             var buttons = [
                 {
                     'text': TranslationService.translate('Change URL'),
-                    'class': 'btn btn-sm btn-default',
+                    'class': 'btn btn-sm btn-info',
                     'click': function() {
                         $(this).dialog("close");
                         $scope.source.data.req.layers = undefined;
@@ -376,7 +376,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
                 },
                 {
                     'text': TranslationService.translate('Keep URL'),
-                    'class': 'btn btn-sm btn-default',
+                    'class': 'btn btn-sm btn-warning',
                     'click': function() {
                         $(this).dialog("close");
                         callback(false);
@@ -410,22 +410,22 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
         if(urlReplaceAsk) {
             var buttons = [
                 {
-                    'text': TranslationService.translate('Keep url and reject layer'),
-                    'class': 'btn btn-sm btn-default',
-                    'click': function() {
-                        $(this).dialog("close");
-                        callback(false);
-                    }
-                },
-                {
                     'text': TranslationService.translate('Change url and insert layer'),
-                    'class': 'btn btn-sm btn-default',
+                    'class': 'btn btn-sm btn-info',
                     'click': function() {
                         $(this).dialog("close");
                         $scope.source.data.req.url = new_data.sourceURL;
                         $scope.source.data.req.layers = undefined;
                         helper.safeApply($scope)
                         callback(true);
+                    }
+                },
+                {
+                    'text': TranslationService.translate('Keep url and reject layer'),
+                    'class': 'btn btn-sm btn-warning',
+                    'click': function() {
+                        $(this).dialog("close");
+                        callback(false);
                     }
                 }
             ]
