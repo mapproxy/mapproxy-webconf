@@ -3,8 +3,7 @@
     <div labeled="input_label"
          name-for="min_res"
          text="${ _('min_res') }"
-         ng-show="resSelected"
-         tooltip-content="min_res">
+         ng-show="resSelected">
       <input type="text"
              float
              id="min_res"
@@ -15,8 +14,7 @@
     <div labeled="input_label"
          name-for="max_res"
          text="${ _('max_res') }"
-         ng-show="resSelected"
-         tooltip-content="max_res">
+         ng-show="resSelected">
       <input type="text"
              float
              id="max_res"
@@ -27,8 +25,7 @@
     <div labeled="input_label"
          name-for="min_scale"
          text="${ _('min_scale') }"
-         ng-show="!resSelected"
-         tooltip-content="min_scale">
+         ng-show="!resSelected">
       <input type="text"
              float
              id="min_scale"
@@ -39,8 +36,7 @@
     <div labeled="input_label"
          name-for="max_scale"
          text="${ _('max_scale') }"
-         ng-show="!resSelected"
-         tooltip-content="max_scale">
+         ng-show="!resSelected">
       <input type="text"
              float
              id="max_scale"
@@ -60,8 +56,7 @@
 
   <div labeled="input_label_toggleable"
        name-for="units"
-       text="${ _('Resolutions / Scales') }"
-       tooltip-conent="min_max_res">
+       text="${ _('Resolutions / Scales') }">
     <div class="row form-line-spacing">
       <div class="col-sm-6">
         <div class="btn-group pull-left" data-toggle="buttons-radio">
