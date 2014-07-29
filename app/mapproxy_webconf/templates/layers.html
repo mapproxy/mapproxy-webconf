@@ -13,21 +13,29 @@
       <i class="glyphicon glyphicon-question-sign help"
          tooltip="layers_list"></i>
     </h4>
-    <div class="pull-right form-line-spacing">
-      <button class="btn btn-xs btn-add pull-right"
-              ng-click="newItem()">
-        <span class="glyphicon glyphicon-plus-sign" ></span>
-        ${ _('Create new layer') }
-      </button>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="pull-right form-line-spacing">
+          <button class="btn btn-xs btn-add pull-right"
+                  ng-click="newItem()">
+            <span class="glyphicon glyphicon-plus-sign" ></span>
+            ${ _('Create new layer') }
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="pull-right form-line-spacing">
-      <button class="btn btn-sm btn-default pull-right"
-            id="layer_list_save"
-            ng-click="updateLayerTree()"
-            ng-disabled="!listChanged()"
-            ng-class="{'btn-success': _listChanged}">
-        ${ _('Save order') }
-      </button>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="pull-right form-line-spacing">
+          <button class="btn btn-sm btn-default pull-right"
+                id="layer_list_save"
+                ng-click="updateLayerTree()"
+                ng-disabled="!listChanged()"
+                ng-class="{'btn-success': _listChanged}">
+            ${ _('Save order') }
+          </button>
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="col-sm-12 text-center">
