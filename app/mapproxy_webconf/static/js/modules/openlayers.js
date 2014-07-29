@@ -86,7 +86,7 @@ constant('GEOMETRY_TYPES', {
     'MULTIPOLYGON': 'MultiPolygon'
 }).
 
-directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeout, DEFAULT_VECTOR_STYLING, OPENLAYERSMAP_TEMPLATE_URL, LAYERSWITCHER_TEMPLATE_URL, DPI, NUM_ZOOM_LEVELS, GEOMETRY_TYPES) {
+directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeout, TranslationService, DEFAULT_VECTOR_STYLING, OPENLAYERSMAP_TEMPLATE_URL, LAYERSWITCHER_TEMPLATE_URL, DPI, NUM_ZOOM_LEVELS, GEOMETRY_TYPES) {
     return {
         restrict: 'A',
         scope: {
@@ -424,7 +424,14 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                         modal: true,
                         draggable: false,
                         title: $scope.olmapBinds.title,
-                        close: $scope.destroyMap
+                        close: $scope.destroyMap,
+                        buttons: [{
+                            'text': TranslationService.translate('Close'),
+                            'class': 'btn btn-sm btn-default',
+                            'click': function() {
+                                $(this).dialog("close");
+                            }
+                        }]
                     });
                 }
             });
