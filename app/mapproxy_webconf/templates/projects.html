@@ -13,7 +13,13 @@
           </div>
           <button class="btn btn-default btn-sm" ng-disabled="!form.$valid" ng-click="createProject()">${ _('Create project') }</button>
         </form>
-        <span message-handler="error" message-types="project.create_error,project.delete_error"></span>
+        <div class="row">
+          <div class="col-sm-12 text-center">
+            <span class="top-buffer-1"
+                  message-handler="error"
+                  message-types="project.create_error,project.delete_error"></span>
+          </div>
+        </div>
       </div>
       <div class="col-sm-5">
         %for name, data in projects.items():

@@ -21,12 +21,12 @@
       </button>
     </div>
     <div class="row">
-      <div class="col-sm-12">
-        <span class=" form-line-spacing"
+      <div class="col-sm-12 text-center">
+        <span class="top-buffer-1"
               message-handler="success"
               message-types="sources.delete_success,sources.copy_success">
         </span>
-        <span class=" form-line-spacing"
+        <span class="top-buffer-1"
               message-handler="error"
               message-types="sources.load_error,sources.delete_error">
         </span>
@@ -345,9 +345,14 @@
                 </button>
               </div>
             </div>
-            <span message-handler="error"
-                  message-types="olMap.showMap_error">
-            </span>
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <span class="top-buffer-1"
+                      message-handler="error"
+                      message-types="olMap.showMap_error">
+                </span>
+              </div>
+            </div>
           </div>
           <hr class="formLine">
           <div labeled="input_label_toggleable"
@@ -523,11 +528,17 @@
         </div>
       </div>
     </div>
-    <div message-handler="success"
-         message-types="wms_capabilities.delete_success,wms_capabilities.update_success">
-    </div>
-    <div message-handler="error"
-         message-types="wms_capabilities.load_error,wms_capabilities.delete_error,wms_capabilities.update_error">
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        <span class="top-buffer-1"
+              message-handler="success"
+              message-types="wms_capabilities.delete_success,wms_capabilities.update_success">
+        </span>
+        <span class="top-buffer-1"
+              message-handler="error"
+              message-types="wms_capabilities.load_error,wms_capabilities.delete_error,wms_capabilities.update_error">
+        </span>
+      </div>
     </div>
     <div spinner='wms_capabilities'>
         <img src="${ get_url('static', filepath='img/loader.gif') }"> ${ _('Loading in progress') }
@@ -555,10 +566,16 @@
           </div>
         </div>
       </div>
-      <div message-handler="success"
-           message-types="wms_capabilities.add_success"></div>
-      <div message-handler="error"
-           message-types="wms_capabilities.add_error"></div>
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <span class="top-buffer-1"
+                message-handler="success"
+                message-types="wms_capabilities.add_success"></span>
+          <span class="top-buffer-1"
+                message-handler="error"
+                message-types="wms_capabilities.add_error"></span>
+        </div>
+      </div>
     </form>
     <div ol-map="olmapBinds"
          map-hidden="true"
