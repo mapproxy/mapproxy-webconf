@@ -37,8 +37,16 @@
         </div>
       </div>
     </div>
+    <input type="text"
+           ng-model="search"
+           placeholder="${ _('Filter') }..."
+           class="form-control input-sm"/>
+    <span ng-show="list.length - filtered.length"
+          ng-click="search=''">
+      ${ _('Not shown layers') }: {{list.length - filtered.length}}
+    </span>
     <div class="row">
-      <div class="col-sm-12 text-center">
+      <div class="col-sm-12 text-right">
         <span class="form-line-spacing"
               message-handler="success"
               message-types="layers.delete_success,layers.updateStructure_success,layers.copy_success">
@@ -49,14 +57,6 @@
         </span>
       </div>
     </div>
-    <input type="text"
-           ng-model="search"
-           placeholder="${ _('Filter') }..."
-           class="form-control input-sm"/>
-    <span ng-show="list.length - filtered.length"
-          ng-click="search=''">
-      ${ _('Not shown layers') }: {{list.length - filtered.length}}
-    </span>
     <ul sortable
         ng-model="list"
         class="vertical-list">
@@ -167,7 +167,7 @@
          keep-empty-fields="name">
     </div>
     <div class="row">
-      <div class="col-sm-12 text-center">
+      <div class="col-sm-12 text-left">
         <span class="top-buffer-1"
               message-handler="success"
               message-types="layers.add_success,layers.update_success">
@@ -189,7 +189,7 @@
          tooltip="layer_caches_list"></i>
     </h4>
     <div class="row">
-      <div class="col-sm-12 text-center">
+      <div class="col-sm-12 text-left">
         <span class="top-buffer-1"
               message-handler="error"
               message-types="caches.load_error"></span>
@@ -228,7 +228,7 @@
          tooltip="layer_sources_list"></i>
     </h4>
     <div class="row">
-      <div class="col-sm-12 text-center">
+      <div class="col-sm-12 text-left">
         <span class="top-buffer-1"
               message-handler="error"
               message-types="sources.load_error"></span>

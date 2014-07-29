@@ -17,16 +17,6 @@
         ${ _('Create new grid') }
       </button>
     </div>
-    <div class="row">
-      <div class="col-sm-12 text-center">
-        <span class="top-buffer-1"
-              message-handler="success"
-              message-types="grids.delete_success,grids.copy_success"></span>
-        <span class="top-buffer-1"
-              message-handler="error"
-              message-types="grids.load_error,grids.delete_error"></span>
-      </div>
-    </div>
     <input type="text"
            ng-model="search"
            placeholder="${ _('Filter') }..."
@@ -36,6 +26,16 @@
           class="filtered-items-text">
       ${ _('Not shown grids') }: {{list.length - filtered.length}}
     </span>
+    <div class="row">
+      <div class="col-sm-12 text-right">
+        <span class="top-buffer-1"
+              message-handler="success"
+              message-types="grids.delete_success,grids.copy_success"></span>
+        <span class="top-buffer-1"
+              message-handler="error"
+              message-types="grids.load_error,grids.delete_error"></span>
+      </div>
+    </div>
     <div class="form-line-spacing">
       <ul class="vertical-list">
         <div class="{{isSelected(item)}}"
@@ -249,7 +249,7 @@
             </div>
           </div>
           <div calss="row">
-            <div class="col-sm-12 text-center">
+            <div class="col-sm-12 text-right">
               <span class="top-buffer-1"
                     message-handler="error"
                     message-types="olMap.showMap_error">
@@ -311,7 +311,7 @@
          keep-empty-fields="name">
     </div>
     <div class="row">
-      <div class="col-sm-12 text-center">
+      <div class="col-sm-12 text-left">
         <span class="top-buffer-1"
               message-handler="success"
               message-types="grids.add_success,grids.update_success">

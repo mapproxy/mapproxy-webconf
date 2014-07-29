@@ -20,6 +20,14 @@
         ${ _('Create new source') }
       </button>
     </div>
+    <input class="form-control input-sm"
+           type="text"
+           ng-model="search"
+           placeholder="${ _('Filter') }..." />
+    <span ng-show="list.length - filtered.length"
+          ng-click="search=''" class="filtered-items-text">
+      ${ _('Not shown sources') }: {{list.length - filtered.length}}
+    </span>
     <div class="row">
       <div class="col-sm-12 text-center">
         <span class="top-buffer-1"
@@ -32,14 +40,6 @@
         </span>
       </div>
     </div>
-    <input class="form-control input-sm"
-           type="text"
-           ng-model="search"
-           placeholder="${ _('Filter') }..." />
-    <span ng-show="list.length - filtered.length"
-          ng-click="search=''" class="filtered-items-text">
-      ${ _('Not shown sources') }: {{list.length - filtered.length}}
-    </span>
     <ul class="vertical-list">
       <div class="{{isSelected(item)}}"
            ng-repeat="item in filtered = (list | filter: {data.name:search}) | orderBy: 'name'"
@@ -434,7 +434,7 @@
          keep-empty-fields="name">
     </div>
     <div class="row">
-      <div class="col-sm-12 text-center">
+      <div class="col-sm-12 text-left">
         <span class="top-buffer-1"
              message-handler="success"
              message-types="sources.add_success,sources.update_success">
@@ -528,21 +528,20 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-12 text-center">
+      <div class="col-sm-12 text-right">
         <span class="top-buffer-1"
               message-handler="success"
-              message-types="wms_capabilities.delete_success,wms_capabilities.update_success">
+              message-types="wms_capabilities.delete_success,wms_capabilities.update_success,wms_capabilities.add_success">
         </span>
         <span class="top-buffer-1"
               message-handler="error"
-              message-types="wms_capabilities.load_error,wms_capabilities.delete_error,wms_capabilities.update_error">
+              message-types="wms_capabilities.load_error,wms_capabilities.delete_error,wms_capabilities.update_error,wms_capabilities.add_error">
         </span>
       </div>
     </div>
-    <div spinner='wms_capabilities'>
+    <div spinner='wms_capabilities' class="text-right">
         <img src="${ get_url('static', filepath='img/loader.gif') }"> ${ _('Loading in progress') }
     </div>
-    <hr class="formLine">
     <form name="form"
           novalidate>
       <div labeled="input_label"
@@ -563,16 +562,6 @@
                     ng-click="addCapabilities()"
                     ng-disabled="!form.$valid">${ _('Add') }</button>
           </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12 text-center">
-          <span class="top-buffer-1"
-                message-handler="success"
-                message-types="wms_capabilities.add_success"></span>
-          <span class="top-buffer-1"
-                message-handler="error"
-                message-types="wms_capabilities.add_error"></span>
         </div>
       </div>
     </form>

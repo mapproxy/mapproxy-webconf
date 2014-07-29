@@ -18,8 +18,15 @@
         ${ _('Create new cache') }
       </button>
     </div>
+    <input type="text"
+       ng-model="search"
+       placeholder="${ _('Filter') }..."
+       class="form-control input-sm"/>
+    <span ng-show="list.length - filtered.length" ng-click="search=''">
+      ${ _('Not shown caches') }: {{list.length - filtered.length}}
+    </span>
     <div class="row">
-      <div class="col-sm-12">
+      <div class="col-sm-12 text-right">
         <span class=" form-line-spacing"
               message-handler="success"
               message-types="caches.delete_success,caches.copy_success"></span>
@@ -28,13 +35,6 @@
               message-types="caches.load_error,caches.delete_error"></span>
       </div>
     </div>
-    <input type="text"
-       ng-model="search"
-       placeholder="${ _('Filter') }..."
-       class="form-control input-sm"/>
-    <span ng-show="list.length - filtered.length" ng-click="search=''">
-      ${ _('Not shown caches') }: {{list.length - filtered.length}}
-    </span>
     <ul class="vertical-list">
       <div class="{{isSelected(item)}}"
            ng-repeat="item in filtered = (list | filter:{data.name:search}) | orderBy:'name'"
@@ -183,7 +183,7 @@
          keep-empty-fields="name">
     </div>
     <div class="row">
-      <div class="col-sm-12 text-center">
+      <div class="col-sm-12 text-left">
         <span class="top-buffer-1"
               message-handler="success"
               message-types="caches.add_success,caches.update_success"></span>
@@ -203,7 +203,7 @@
          tooltip="cache_sources_list"></i>
     </h4>
     <div class="row">
-      <div class="col-sm-12 text-center">
+      <div class="col-sm-12 text-left">
         <span class="top-buffer-1"
               message-handler="error"
               message-types="sources.load_error"></span>
@@ -242,7 +242,7 @@
          tooltip="cache_caches_list"></i>
     </h4>
     <div class="row">
-      <div class="col-sm-12 text-center">
+      <div class="col-sm-12 text-left">
         <span class="top-buffer-1"
               message-handler="error"
               message-types="caches.load_error"></span>
@@ -281,7 +281,7 @@
          tooltip="cache_grids_list"></i>
     </h4>
     <div class="row">
-      <div class="col-sm-12 text-center">
+      <div class="col-sm-12 text-left">
         <span class="top-buffer-1"
               message-handler="error"
               message-types="grids.load_error"></span>
