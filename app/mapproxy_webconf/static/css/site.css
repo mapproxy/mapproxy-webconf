@@ -19,7 +19,7 @@ h1, h2, h3 {
 }
 
 #wrapper {
-  margin: 0px auto -43px;
+  margin: 0px auto -40px;
   background-color: #FFFFFF;
   min-height: 100%;
   height: auto !important;
@@ -102,7 +102,6 @@ ul.loginbar > li.divider {
 
 /* footer */
 footer {
-  border-bottom: 3px solid #35A4B4;
   background-color: #3A3740;
   color: #65676B;
   padding-top: 10px;
