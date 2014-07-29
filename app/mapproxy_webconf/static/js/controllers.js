@@ -512,6 +512,18 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
             MessageService.message('source', 'load_coverage_error', TranslationService.translate('Load coverage not supported for custom URL'))
         }
     };
+    $scope.haveCoverage = function() {
+        if(angular.isUndefined($scope.source.data)) {
+            return false;
+        }
+        if(angular.isUndefined($scope.source.data.coverage)) {
+            return false;
+        }
+        if(helper.isEmpty($scope.source.data.coverage.bbox) && helper.isEmpty($scope.source.data.coverage.polygon)) {
+            return false;
+        }
+        return true;
+    };
     $scope.showMap = function(event) {
         helper.safePreventDefaults(event);
         var srs = $scope.custom.bboxSelected ? $scope.source.data.coverage.bbox_srs : $scope.source.data.coverage.polygon_srs;
@@ -520,6 +532,7 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
         $scope.olmapBinds = {
             visible: true,
             proj: srs,
+            title: $scope.haveCoverage() ? TranslationService.translate('Edit coverage') : TranslationService.translate('Create coverage'),
             layers: {
                 'background': [{
                     title: BACKGROUND_SERVICE_TITLE,

@@ -36,5 +36,7 @@ var translationsDict = {
     "Create MapProxy Config": "${ _('Create MapProxy Config') }",
     "successfuly copied": "${ _('successfuly copied') }",
     "Load coverage not supported for custom URL": "${ _('Load coverage not supported for custom URL') }",
-    "Close": "${ _('Close') }"
+    "Close": "${ _('Close') }",
+    "Edit coverage": "${ _('Edit coverage') }",
+    "Create coverage": "${ _('Create coverage') }"
 }
