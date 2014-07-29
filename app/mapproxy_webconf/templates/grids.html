@@ -313,13 +313,17 @@
          json-URL="${get_url('yaml_to_json')}"
          keep-empty-fields="name">
     </div>
-    <div class="clear">
-      <span message-handler="success"
-            message-types="grids.add_success,grids.update_success">
-      </span>
-      <span message-handler="error"
-            message-types="grids.add_error,grids.update_error,grids.form_error">
-      </span>
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        <span class="top-buffer-1"
+              message-handler="success"
+              message-types="grids.add_success,grids.update_success">
+        </span>
+        <span class="top-buffer-1"
+              message-handler="error"
+              message-types="grids.add_error,grids.update_error,grids.form_error">
+        </span>
+      </div>
     </div>
     <div ol-map="olmapBinds" map-hidden="true">
       <div ol-grid-extension="provideGridData" ol-grid-scales="custom.grid_scales"></div>

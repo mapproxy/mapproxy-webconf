@@ -126,13 +126,17 @@
          yaml-URL="${get_url('json_to_yaml')}"
          json-URL="${get_url('yaml_to_json')}">
     </div>
-    <div>
-      <span message-handler="success"
-            message-types="globals.add_success,globals.update_success">
-      </span>
-      <span message-handler="error"
-            message-types="globals.load_error,globals.add_error,globals.update_error,globals.form_error">
-      </span>
+    <div class="row">
+      <div class="col-sm-12">
+        <span class="top-buffer-1"
+              message-handler="success"
+              message-types="globals.add_success,globals.update_success">
+        </span>
+        <span class="top-buffer-1"
+              message-handler="error"
+              message-types="globals.load_error,globals.add_error,globals.update_error,globals.form_error">
+        </span>
+      </div>
     </div>
   </div>
 %end

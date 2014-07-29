@@ -167,13 +167,17 @@
          json-URL="${get_url('yaml_to_json')}"
          keep-empty-fields="name">
     </div>
-    <div class="clear">
-      <span message-handler="success"
-            message-types="layers.add_success,layers.update_success">
-      </span>
-      <span message-handler="error"
-            message-types="layers.add_error,layers.update_error,layers.form_error">
-      </span>
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        <span class="top-buffer-1"
+              message-handler="success"
+              message-types="layers.add_success,layers.update_success">
+        </span>
+        <span class="top-buffer-1"
+              message-handler="error"
+              message-types="layers.add_error,layers.update_error,layers.form_error">
+        </span>
+      </div>
     </div>
   </div>
 %end

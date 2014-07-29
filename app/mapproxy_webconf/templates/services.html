@@ -294,12 +294,18 @@
          yaml-URL="${get_url('json_to_yaml')}"
          json-URL="${get_url('yaml_to_json')}">
     </div>
-    <span message-handler="success"
-          message-types="services.add_success,services.update_success">
-    </span>
-    <span message-handler="error"
-          message-types="services.form_error,services.load_error,services.update_error,services.add_error">
-    </span>
+    <div class="row">
+      <div class="col-sm-12">
+        <span class="top-buffer-1"
+              message-handler="success"
+              message-types="services.add_success,services.update_success">
+        </span>
+        <span class="top-buffer-1"
+              message-handler="error"
+              message-types="services.form_error,services.load_error,services.update_error,services.add_error">
+        </span>
+      </div>
+    </div>
   </div>
 %end
 
