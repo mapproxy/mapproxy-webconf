@@ -278,7 +278,6 @@
       <button class="btn btn-sm btn-default"
               ng-click="save($event)"
               id="form_save"
-              ng-disabled="!form.$valid || !form.$dirty"
               ng-class="{'btn-success': form.$valid && form.$dirty}">
         ${ _('Save') }
       </button>
