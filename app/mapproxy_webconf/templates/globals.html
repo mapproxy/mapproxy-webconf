@@ -5,9 +5,11 @@
 %def leftblock():
   <div ng-controller="MapproxyGlobalsChooserCtrl"
        ng-show="!_editarea_visible">
-    <h3 class="inline">${ _('Globals') }</h3>
-    <i class="glyphicon glyphicon-question-sign help"
-       tooltip="globals_list"></i>
+    <h4>
+      ${ _('Globals') }
+      <i class="glyphicon glyphicon-question-sign help"
+         tooltip="globals_list"></i>
+    </h4>
     <ul class="vertical-list">
       <div class="{{getClasses(global)}}"
            ng-repeat="(global, data) in globals.data"
@@ -20,9 +22,11 @@
 
 %def middleblock():
   <script type="text/ng-template" id="cache.html">
-    <h3 class="inline">${ _('cache') }</h3>
-    <i class="glyphicon glyphicon-question-sign help"
-       tooltip="globals_cache"></i>
+    <h4>
+      ${ _('cache') }
+      <i class="glyphicon glyphicon-question-sign help"
+         tooltip="globals_cache"></i>
+    </h4>
     <div labeled="input_label"
          name-for="cache_meta_size"
          text="${ _('Meta size') }"
@@ -36,7 +40,7 @@
             <input type="number"
                    min=0
                    ng-model="globals.data.cache.meta_size[0]"
-                   class="form-control"
+                   class="form-control input-sm"
                    id="cache_meta_size_0"
                    name="cache_meta_size_0"/>
           </div>
@@ -44,7 +48,7 @@
             <input type="number"
                    min=0
                    ng-model="globals.data.cache.meta_size[1]"
-                   class="form-control"
+                   class="form-control input-sm"
                    id="cache_meta_size_1"
                    name="cache_meta_size_1"/>
           </div>
@@ -60,25 +64,31 @@
              ng-model="globals.data.cache.meta_buffer"
              id="cache_meta_buffer"
              name="cache_meta_buffer"
-             class="form-control"/>
+             class="form-control input-sm"/>
     </div>
   </script>
   <script type="text/ng-template" id="image.html">
-    <h3 class="inline">${ _('image') }</h3>
-    <i class="glyphicon glyphicon-question-sign help"
-       tooltip="globals_image"></i>
+    <h4>
+      ${ _('image') }
+      <i class="glyphicon glyphicon-question-sign help"
+         tooltip="globals_image"></i>
+    </h4>
     <div labeled="input_label"
          name-for="image_resampling_method"
          text="${ _('Resampling method') }"
          tooltip-content="globals_image_resampling_method">
-      <select ng-model="globals.data.image.resampling_method"
-              id="image_resampling_method"
-              name="image_resampling_method"
-              class="form-control">
-        <option value="nearest">Nearest</option>
-        <option value="bilinear">Bilinear</option>
-        <option value="bicubic">Bicubic</option>
-      </select>
+      <div class="row">
+        <div class="col-sm-5">
+          <select ng-model="globals.data.image.resampling_method"
+                  id="image_resampling_method"
+                  name="image_resampling_method"
+                  class="form-control">
+            <option value="nearest">Nearest</option>
+            <option value="bilinear">Bilinear</option>
+            <option value="bicubic">Bicubic</option>
+          </select>
+        </div>
+      </div>
     </div>
     <div labeled="checkbox_label"
          name-for="image_paletted"
@@ -91,7 +101,6 @@
     </div>
   </script>
   <div ng-controller="MapproxyGlobalsFormCtrl">
-    <h3 ng-show="globals._manual || editareaBinds.visible">${ _('Globals') }</h3>
     <form name="form"
           novalidate
           ng-show="!editareaBinds.visible">
