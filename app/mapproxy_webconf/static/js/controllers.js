@@ -746,7 +746,7 @@ function MapproxyCacheFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Messa
         $scope.cache = helper.clearData($scope.cache);
 
         var errorMsg = false;
-        if(angular.isUndefined($scope.cache.data.name)) {
+        if(angular.isUndefined($scope.cache.data) || angular.isUndefined($scope.cache.data.name)) {
             errorMsg = TranslationService.translate("Name required.");
         } else {
             //found is the section of element with $scope.cache.data.name if found
