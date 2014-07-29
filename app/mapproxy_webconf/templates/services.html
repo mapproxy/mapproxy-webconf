@@ -6,15 +6,17 @@
 %def leftblock():
   <div ng-controller="MapproxyServicesChooserCtrl"
        ng-show="!_editarea_visible">
-    <h3 class="inline">${ _('Services') }</h3>
-    <i class="glyphicon glyphicon-question-sign help"
-       tooltip="services_list"></i>
+    <h4>
+      ${ _('Services') }
+      <i class="glyphicon glyphicon-question-sign help"
+         tooltip="services_list"></i>
+    </h4>
     <ul class="vertical-list">
       <div class="{{setSelected(service)}}"
            ng-repeat="(service, data) in services.data"
            ng-click="show(service)">
         <li>
-          <i ng-show="data.active" class="glyphicon glyphicon-ok" title="${ _('service is activated') }"></i>
+          <i ng-show="data.active" class="glyphicon glyphicon-ok list-icon" title="${ _('service is activated') }"></i>
               {{translate(service)}}</li>
       </div>
     </ul>
@@ -23,9 +25,11 @@
 
 %def middleblock():
   <script type="text/ng-template"  id="wms.html">
-    <h3 class="inline">${ _('wms') }</h3>
+    <h4>
+      ${ _('wms') }
       <i class="glyphicon glyphicon-question-sign help"
          tooltip="services_wms"></i>
+    </h4>
     <div labeled="checkbox_label"
          name-for="wms_active"
          text="${ _('Active') }">
@@ -41,19 +45,23 @@
              ng-model="services.data.wms.md.title"
              id="wms_title"
              name="wms_title"
-             class="form-control"/>
+             class="form-control input-sm"/>
     </div>
     <div labeled="input_label"
          name-for="wms_srs"
          text="${ _('SRS') }"
          tooltip-content="service_wms_srs">
-      <select id="wms_srs"
-              multiple="multiple"
-              ng-model="services.data.wms.srs"
-              ng-options="srs for srs in defaults.data.srs"
-              name="wms_srs"
-              class="form-control">
-      </select>
+      <div class="row">
+        <div class="col-sm-5">
+          <select id="wms_srs"
+                  multiple="multiple"
+                  ng-model="services.data.wms.srs"
+                  ng-options="srs for srs in defaults.data.srs"
+                  name="wms_srs"
+                  class="form-control">
+          </select>
+        </div>
+      </div>
     </div>
     <hr class="formLine">
     <!-- Add md section -->
@@ -80,7 +88,7 @@
                  ng-model="services.data.wms.md.online_resource"
                  id="wms_md_online_resource"
                  name="wms_md_online_resource"
-                 class="form-control"/>
+                 class="form-control input-sm"/>
         </div>
         <hr class="formLine">
         <div labeled="input_label_toggleable"
@@ -95,7 +103,7 @@
                      ng-model="services.data.wms.md.contact.person"
                      id="wms_md_contact_person"
                      name="wms_md_contact_person"
-                     class="form-control"/>
+                     class="form-control input-sm"/>
             </div>
             <div labeled="input_label"
                  name-for="wms_md_contact_position"
@@ -104,7 +112,7 @@
                      ng-model="services.data.wms.md.contact.position"
                      id="wms_md_contact_position"
                      name="wms_md_contact_position"
-                     class="form-control"/>
+                     class="form-control input-sm"/>
             </div>
             <div labeled="input_label"
                  name-for="wms_md_contact_organization"
@@ -113,7 +121,7 @@
                      ng-model="services.data.wms.md.contact.organization"
                      id="wms_md_contact_organization"
                      name="wms_md_contact_organization"
-                     class="form-control"/>
+                     class="form-control input-sm"/>
             </div>
             <div labeled="input_label"
                  name-for="wms_md_contact_address"
@@ -122,7 +130,7 @@
                      ng-model="services.data.wms.md.contact.address"
                      id="wms_md_contact_address"
                      name="wms_md_contact_address"
-                     class="form-control"/>
+                     class="form-control input-sm"/>
             </div>
             <div labeled="input_label"
                  name-for="wms_md_contact_city"
@@ -131,7 +139,7 @@
                      ng-model="services.data.wms.md.contact.city"
                      id="wms_md_contact_city"
                      name="wms_md_contact_city"
-                     class="form-control"/>
+                     class="form-control input-sm"/>
             </div>
             <div labeled="input_label"
                  name-for="wms_md_contact_postcode"
@@ -140,7 +148,7 @@
                      ng-model="services.data.wms.md.contact.postcode"
                      id="wms_md_contact_postcode"
                      name="wms_md_contact_postcode"
-                     class="form-control"/>
+                     class="form-control input-sm"/>
             </div>
             <div labeled="input_label"
                  name-for="wms_md_contact_country"
@@ -149,7 +157,7 @@
                      ng-model="services.data.wms.md.contact.country"
                      id="wms_md_contact_country"
                      name="wms_md_contact_country"
-                     class="form-control"/>
+                     class="form-control input-sm"/>
             </div>
             <div labeled="input_label"
                  name-for="wms_md_contact_phone"
@@ -158,7 +166,7 @@
                      ng-model="services.data.wms.md.contact.phone"
                      id="wms_md_contact_phone"
                      name="wms_md_contact_phone"
-                     class="form-control"/>
+                     class="form-control input-sm"/>
             </div>
             <div labeled="input_label"
                  name-for="wms_md_contact_fax"
@@ -167,7 +175,7 @@
                      ng-model="services.data.wms.md.contact.fax"
                      id="wms_md_contact_fax"
                      name="wms_md_contact_fax"
-                     class="form-control"/>
+                     class="form-control input-sm"/>
             </div>
             <div labeled="input_label"
                  name-for="wms_md_contact_email"
@@ -176,7 +184,7 @@
                      ng-model="services.data.wms.md.contact.email"
                      id="wms_md_contact_email"
                      name="wms_md_contact_email"
-                     class="form-control"/>
+                     class="form-control input-sm"/>
             </div>
             <div labeled="input_label"
                  name-for="wms_md_fees"
@@ -185,7 +193,7 @@
                      ng-model="services.data.wms.md.fees"
                      id="wms_md_fees"
                      name="wms_md_fees"
-                     class="form-control"/>
+                     class="form-control input-sm"/>
             </div>
             <div labeled="input_label"
                  name-for="wms_md_access_constraints"
@@ -203,9 +211,11 @@
     </div>
   </script>
   <script type="text/ng-template"  id="tms.html">
-    <h3 class="inline">${ _('tms') }</h3>
-    <i class="glyphicon glyphicon-question-sign help"
-       tooltip="services_tms"></i>
+    <h4>
+      ${ _('tms') }
+      <i class="glyphicon glyphicon-question-sign help"
+         tooltip="services_tms"></i>
+    </h4>
     <div labeled="checkbox_label"
          name-for="tms_active"
          text="${ _('Active') }">
@@ -216,9 +226,11 @@
     </div>
   </script>
   <script type="text/ng-template"  id="wmts.html">
-    <h3 class="inline">${ _('wmts') }</h3>
-    <i class="glyphicon glyphicon-question-sign help"
-       tooltip="services_wmts"></i>
+    <h4>
+      ${ _('wmts') }
+      <i class="glyphicon glyphicon-question-sign help"
+         tooltip="services_wmts"></i>
+    </h4>
     <div labeled="checkbox_label"
          name-for="wmts_active"
          text="${ _('Active') }">
@@ -229,9 +241,11 @@
     </div>
   </script>
   <script type="text/ng-template"  id="kml.html">
-    <h3 class="inline">${ _('kml') }</h3>
-    <i class="glyphicon glyphicon-question-sign help"
-       tooltip="services_kml"></i>
+    <h4>
+      ${ _('kml') }
+      <i class="glyphicon glyphicon-question-sign help"
+         tooltip="services_kml"></i>
+    </h4>
     <div labeled="checkbox_label"
          name-for="kml_active"
          text="${ _('Active') }">
@@ -242,9 +256,11 @@
     </div>
   </script>
   <script type="text/ng-template"  id="demo.html">
-    <h3 class="inline">${ _('demo') }</h3>
-    <i class="glyphicon glyphicon-question-sign help"
-       tooltip="services_demo"></i>
+    <h4>
+      ${ _('demo') }
+      <i class="glyphicon glyphicon-question-sign help"
+         tooltip="services_demo"></i>
+    </h4>
     <div labeled="checkbox_label"
          name-for="demo_active"
          text="${ _('Active') }">
