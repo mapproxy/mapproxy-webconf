@@ -112,3 +112,7 @@ img {
 img.olTileImage, .olPopup img {
     max-width: none;
 }
+
+.btn-warning {
+  background-color: #F5AF30;
+}
