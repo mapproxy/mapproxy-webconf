@@ -129,7 +129,7 @@ footer .row {
 footer ul.footer-nav  {
   float: left;
   font-size: 12px;
-  margin: 0 0 10px 25px;
+  padding-left: 1px;
 }
 
 footer ul.footer-nav li {
