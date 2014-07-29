@@ -373,8 +373,14 @@
               </span>
             </div>
             <div class="row form-line-spacing">
-              <div class="col-sm-12">
-                <button class="btn btn-sm btn-default pull-right "
+              <div class="col-sm-6">
+                <button class="btn btn-sm btn-default pull-left"
+                        ng-click="clearSRS($event)">
+                  ${ _('Clear SRS') }
+                </button>
+              </div>
+              <div class="col-sm-6">
+                <button class="btn btn-sm btn-default pull-right"
                         ng-click="loadSRS($event)"
                         ng-disabled="!source.data.req.url">
                   ${ _('Add SRS from WMS') }

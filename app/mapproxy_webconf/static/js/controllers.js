@@ -580,6 +580,10 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
             $scope.source.data.supported_srs.splice(supportedSRSID, 1);
         }
     };
+    $scope.clearSRS = function(event) {
+        helper.safePreventDefaults(event);
+        $scope.source.data.supported_srs = [];
+    };
     $scope.layerTitle = function(layer) {
         return WMSSources.layerTitle($scope.source.data.req.url, layer);
     };
