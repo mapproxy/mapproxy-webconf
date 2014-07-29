@@ -393,6 +393,7 @@ var sourceModel = {
         'polygon': [],
         'polygon_srs': undefined
     },
+    'supported_srs': [],
     'supported_formats': [],
     'min_res_scale': undefined,
     'max_res_scale': undefined,
