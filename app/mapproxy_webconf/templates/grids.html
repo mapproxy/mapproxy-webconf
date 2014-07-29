@@ -17,10 +17,16 @@
         ${ _('Create new grid') }
       </button>
     </div>
-    <span message-handler="success"
-          message-types="grids.delete_success,grids.copy_success"></span>
-    <span message-handler="error"
-          message-types="grids.load_error,grids.delete_error"></span>
+    <div class="row">
+      <div class="col-sm-12">
+        <span class=" form-line-spacing"
+              message-handler="success"
+              message-types="grids.delete_success,grids.copy_success"></span>
+        <span class=" form-line-spacing"
+              message-handler="error"
+              message-types="grids.load_error,grids.delete_error"></span>
+      </div>
+    </div>
     <div class="row">
       <div class="col-sm-10">
         <input type="text"

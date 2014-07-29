@@ -18,10 +18,16 @@
         ${ _('Create new cache') }
       </button>
     </div>
-    <span message-handler="success"
-          message-types="caches.delete_success,caches.copy_success"></span>
-    <span message-handler="error"
-          message-types="caches.load_error,caches.delete_error"></span>
+    <div class="row">
+      <div class="col-sm-12">
+        <span class=" form-line-spacing"
+              message-handler="success"
+              message-types="caches.delete_success,caches.copy_success"></span>
+        <span class=" form-line-spacing"
+              message-handler="error"
+              message-types="caches.load_error,caches.delete_error"></span>
+      </div>
+    </div>
     <div class="row">
       <div class="col-sm-10">
         <input type="text"

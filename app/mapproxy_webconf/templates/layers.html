@@ -29,13 +29,18 @@
         ${ _('Save order') }
       </button>
     </div>
-    <span message-handler="success"
-          message-types="layers.delete_success,layers.updateStructur_success,layers.copy_success">
-    </span>
-    <span message-handler="error"
-          message-types="layers.load_error,layers.delete_error,layers.updateStructur_error">
-    </span>
-
+    <div class="row">
+      <div class="col-sm-12">
+        <span class=" form-line-spacing"
+              message-handler="success"
+              message-types="layers.delete_success,layers.updateStructur_success,layers.copy_success">
+        </span>
+        <span class=" form-line-spacing"
+              message-handler="error"
+              message-types="layers.load_error,layers.delete_error,layers.updateStructur_error">
+        </span>
+      </div>
+    </div>
     <div class="row">
       <div class="col-sm-10">
         <input type="text"

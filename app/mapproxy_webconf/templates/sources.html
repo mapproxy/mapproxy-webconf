@@ -20,12 +20,18 @@
         ${ _('Create new source') }
       </button>
     </div>
-    <span message-handler="success"
-          message-types="sources.delete_success,sources.copy_success">
-    </span>
-    <span message-handler="error"
-          message-types="sources.load_error,sources.delete_error">
-    </span>
+    <div class="row">
+      <div class="col-sm-12">
+        <span class=" form-line-spacing"
+              message-handler="success"
+              message-types="sources.delete_success,sources.copy_success">
+        </span>
+        <span class=" form-line-spacing"
+              message-handler="error"
+              message-types="sources.load_error,sources.delete_error">
+        </span>
+      </div>
+    </div>
     <div class="row">
       <div class="col-sm-10">
         <input class="form-control input-sm"
