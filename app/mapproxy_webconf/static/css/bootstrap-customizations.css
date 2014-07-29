@@ -4,6 +4,8 @@
   border-radius: 0px;
   padding-top: 10px;
   margin-bottom: 0px;
+  background-color: #f3f3f3;
+  height: 70px;
 }
 
 .navbar .container {
@@ -11,11 +13,16 @@
 }
 
 .navbar-brand {
-  padding: 5px 40px 5px 20px;
+  padding: 0px 40px 0px 20px;
+}
+
+.navbar > .container .navbar-brand,
+.navbar > .container-fluid .navbar-brand {
+  margin-left: -20px;
 }
 
 .navbar-brand h1,
-.navbar-brand a{
+.navbar-brand a {
     display: inline;
 }
 .navbar-brand h1 {
@@ -26,7 +33,7 @@
 }
 
 .navbar .nav {
-  margin-top: 38px;
+  margin-top: 29px;
   margin-bottom: 10px;
 }
 
