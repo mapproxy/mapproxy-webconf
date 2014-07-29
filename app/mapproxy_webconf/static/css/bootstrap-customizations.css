@@ -1,6 +1,6 @@
 /* navbar */
 .navbar {
-  border-top: 3px solid #2AA4B5;
+  border-top: 3px solid #35A4B4;
   background-image: 0;
   border-radius: 0px;
   padding-top: 10px;
@@ -45,7 +45,7 @@
   padding: 0;
   margin-left: 15px;
   margin-right: 10px;
-  border-bottom: 2px solid #FF9738;
+  border-bottom: 2px solid #F5AF30;
   -webkit-box-shadow: inherit;
      -moz-box-shadow: inherit;
           box-shadow: inherit;
