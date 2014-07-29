@@ -116,3 +116,7 @@ img.olTileImage, .olPopup img {
 .btn-warning {
   background-color: #F5AF30;
 }
+
+.text-warning {
+  color: #F5AF30;
+}
