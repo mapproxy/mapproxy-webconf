@@ -34,5 +34,6 @@ var translationsDict = {
     "Structure successful updated": "${ _('Structure successful updated') }",
     "Can not delete because of dependencies": "${ _('Can not delete because of dependencies') }",
     "Create MapProxy Config": "${ _('Create MapProxy Config') }",
-    "successfuly copied": "${ _('successfuly copied') }"
+    "successfuly copied": "${ _('successfuly copied') }",
+    "Load coverage not supported for custom URL": "${ _('Load coverage not supported for custom URL') }"
 }

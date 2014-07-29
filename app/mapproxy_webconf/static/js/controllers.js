@@ -508,6 +508,8 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
                 $scope.source.data.coverage.bbox_srs = SRS;
             }
             $scope.form.$setDirty();
+        } else {
+            MessageService.message('source', 'load_coverage_error', TranslationService.translate('Load coverage not supported for custom URL'))
         }
     };
     $scope.showMap = function(event) {
