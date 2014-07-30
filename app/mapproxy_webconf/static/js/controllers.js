@@ -447,8 +447,8 @@ function MapproxySourceFormCtrl($scope, $http, PAGE_LEAVE_MSG, SRS, NON_TRANSPAR
         $scope.source = helper.clearData($scope.source)
 
         var errorMsg = false;
-        if(angular.isUndefined($scope.source.data.name)) {
-            errorMsg = TranslationService.translate("Name required.");
+        if((!$scope.form.$valid)) {
+            errorMsg = TranslationService.translate("Unable to save. Pleace fill all colored fields.");
         } else {
             //found is the section of element with $scope.source.data.name if found
             var found = helper.nameExistInService(
@@ -765,8 +765,8 @@ function MapproxyCacheFormCtrl($scope, PAGE_LEAVE_MSG, TranslationService, Messa
         $scope.cache = helper.clearData($scope.cache);
 
         var errorMsg = false;
-        if(angular.isUndefined($scope.cache.data) || angular.isUndefined($scope.cache.data.name)) {
-            errorMsg = TranslationService.translate("Name required.");
+        if((!$scope.form.$valid)) {
+            errorMsg = TranslationService.translate("Unable to save. Pleace fill all colored fields.");
         } else {
             //found is the section of element with $scope.cache.data.name if found
             var found = helper.nameExistInService(
@@ -882,8 +882,8 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, BACKGROUND_SERVICE_TI
         $scope.grid = helper.clearData($scope.grid);
 
         var errorMsg = false;
-        if(angular.isUndefined($scope.grid.data.name)) {
-            errorMsg = TranslationService.translate("Name required.");
+        if((!$scope.form.$valid)) {
+            errorMsg = TranslationService.translate("Unable to save. Pleace fill all colored fields.");
         } else if(helper.nameExistInService(
             $scope.grid.data.name,
             $scope.grid._id,
@@ -1148,8 +1148,8 @@ function MapproxyLayerFormCtrl($scope, $http, PAGE_LEAVE_MSG, TranslationService
 
         $scope.layer = helper.clearData($scope.layer)
         var errorMsg = false;
-        if(angular.isUndefined($scope.layer.data.name)) {
-            errorMsg = TranslationService.translate("Name required.");
+        if((!$scope.form.$valid)) {
+            errorMsg = TranslationService.translate("Unable to save. Pleace fill all colored fields.");
         } else if(helper.nameExistInService(
             $scope.layer.data.name,
             $scope.layer._id,

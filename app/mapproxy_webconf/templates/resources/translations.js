@@ -3,7 +3,7 @@ var translationsDict = {
     "Keep URL": "${ _('Keep URL') }",
     "Change url and insert layer": "${ _('Change url and insert layer') }",
     "Keep url and reject layer": "${ _('Keep url and reject layer') }",
-    "Name required.": "${ _('Name required.') }",
+    "Unable to save. Pleace fill all colored fields.": "${ _('Unable to save. Pleace fill all colored fields.') }",
     "Name already exists in sources": "${ _('Name already exists in sources') }",
     "Name already exists in caches": "${ _('Name already exists in caches') }",
     "Name already exists.": "${ _('Name already exists.') }",
