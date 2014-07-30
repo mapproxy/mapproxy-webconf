@@ -72,7 +72,7 @@
         "content": "Die BoundingBox können Sie in dem gewünschten SRS angeben."
     },
     "grid_origin": {
-        "content": "<p>Standardmässig ist der Kachelnullpunkt des Gitters unten links ausgerichtet. Für den WMTS Standard transformiert MapProxy diese nach oben links. Für benutzerdefinierte Grids können die Einstellungen zudem noch angepasst werden.</p> SW / LL definiert den Kachelnullpunkt unten links. NW / UL oben links vom Gitter."
+        "content": "<p>Standardmässig ist der Kachelnullpunkt des Gitters unten links ausgerichtet. Für den WMTS Standard transformiert MapProxy diese nach oben links. Für benutzerdefinierte Grids kann die Einstellungen zudem noch angepasst werden.</p> SW / LL definiert den Kachelnullpunkt unten links. NW / UL oben links vom Gitter."
     },
     "grid_scale": {
         "content": "Geben Sie hier die Auflösung/Maßstäbe an, an denen MapProxy cachen soll."
