@@ -24,19 +24,6 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="pull-right form-line-spacing">
-          <button class="btn btn-sm btn-default pull-right"
-                id="layer_list_save"
-                ng-click="updateLayerTree()"
-                ng-disabled="!listChanged()"
-                ng-class="{'btn-success': _listChanged}">
-            ${ _('Save order') }
-          </button>
-        </div>
-      </div>
-    </div>
     <input type="text"
            ng-model="search"
            placeholder="${ _('Filter') }..."
@@ -82,6 +69,19 @@
       </div>
     </ul>
     <span ng-show="false">{{filtered.length}}</span>
+    <div class="row top-buffer-1">
+      <div class="col-sm-12">
+        <div class="pull-right form-line-spacing">
+          <button class="btn btn-sm btn-default pull-right"
+                id="layer_list_save"
+                ng-click="updateLayerTree()"
+                ng-disabled="!listChanged()"
+                ng-class="{'btn-success': _listChanged}">
+            ${ _('Save order') }
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 %end
 
