@@ -32,12 +32,12 @@
         <button ng-click='leaveEditarea()'
                 ng-disabled="ngDisabled"
                 ng-show='!editareaBinds.editareaValue._manual'
-                class='btn btn-sm btn-default'>
+                class='btn btn-sm btn-default pull-right'>
           ${ _('Back to form edit') }
         </button>
         <button ng-show='editareaBinds.editareaValue._manual'
                 ng-disabled="ngDisabled"
-                class='btn btn-sm btn-default'
+                class='btn btn-sm btn-default pull-right'
                 dialog="ask"
                 dialog-title="${ _('Back to form editing title') }?"
                 dialog-text="${ _('Back to form editing info text - lose some inputs') }"
