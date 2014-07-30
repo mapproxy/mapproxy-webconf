@@ -89,9 +89,6 @@
     "cache_grids": {
         "content": "Definieren Sie die Grids die verwendet werden sollen. Sie können diese per Drag & Drop von rechts in das Feld ziehen."
     },
-    "cache_format": {
-        "content": "Wählen Sie das Bildformat des Caches sowie das vom MapProxy abgerufene Bildformat aus."
-    },
     "cache_image_format": {
         "content": "Über den Parameter 'Format' können sie das Bildformat für die Daten im Cache einstellen. Standardmässig verwendet MapProxy das PNG-Format."
     },
