@@ -131,7 +131,9 @@ OpenLayers.Control.DeleteFeature = OpenLayers.Class(OpenLayers.Control, {
      */
     setMap: function(map) {
         OpenLayers.Control.prototype.setMap.apply(this, arguments);
-        OpenLayers.Element.addClass(this.panel_div, 'itemDisabled');
+        if(this.panel_div) {
+            OpenLayers.Element.addClass(this.panel_div, 'itemDisabled');
+        }
     },
     /**
      * Sets select control

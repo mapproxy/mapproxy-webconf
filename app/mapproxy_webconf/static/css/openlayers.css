@@ -180,81 +180,89 @@ div.olControlMousePosition {
     cursor: pointer;
 }
 
-
-
 /* Toolbar */
 .customEditingToolbar {
     float: right;
-    left: 60px;
-    height: 30px;
-    min-width: 68px;
+    left: 20px;
+    bottom: 10px;
+    height: 150px;
+    width: 150px;
+    z-index: 1500;
+    background-color: #3a3740;
+    color: white;
+    position: absolute;
 }
-.customEditingToolbar div {
-    float: right;
+.customEditingToolbar div.olControl {
+    float: left;
     margin: 5px;
     width: 24px;
     height: 24px;
 }
 
+.customEditingToolbar div.olLabel {
+    line-height: 28px;
+    display: inline-block;
+}
+
 /* Select */
-div.olControlSelectFeatureItemActive {
+div.olControlSelectFeature.ItemActive {
     background-image: url(../img/multi_toolbar.png);
     background-repeat: no-repeat;
     background-position: -253px -23px;
 }
-div.olControlSelectFeatureItemInactive {
+div.olControlSelectFeature.ItemInactive {
     background-image: url(../img/multi_toolbar.png);
     background-repeat: no-repeat;
     background-position: -253px 0px;
 }
 
 /* Draw Rectangle */
-.olControlDrawFeatureRectItemInactive {
+.olControlDrawFeatureRect.ItemInactive {
     background-image: url(../img/draw_rectangle_off.png);
     background-repeat: no-repeat;
 }
-.olControlDrawFeatureRectItemActive {
+.olControlDrawFeatureRect.ItemActive {
     background-image: url(../img/draw_rectangle_on.png);
     background-repeat: no-repeat;
 }
-.olControlDrawFeatureRectItemInactive.itemDisabled {
+.olControlDrawFeatureRect.ItemInactive.ItemDisabled {
     background-image: url(../img/draw_rectangle_disabled.png);
     background-repeat: no-repeat;
 }
 
 /* Draw Polygon */
-.olControlDrawFeaturePolygonItemInactive {
+.olControlDrawFeaturePolygon.ItemInactive {
     background-image: url(../img/draw_polygon_off.png);
     background-repeat: no-repeat;
 }
-.olControlDrawFeaturePolygonItemActive {
+.olControlDrawFeaturePolygon.ItemActive {
     background-image: url(../img/draw_polygon_on.png);
     background-repeat: no-repeat;
 }
 
 /* Modify */
-.olControlModifyFeatureItemActive {
+.olControlModifyFeature.ItemActive {
     background-image: url(../img/multi_toolbar.png);
     background-repeat: no-repeat;
     background-position: -128px -23px;
 }
-.olControlModifyFeatureItemInactive {
+.olControlModifyFeature.ItemInactive {
     background-image: url(../img/multi_toolbar.png);
     background-repeat: no-repeat;
     background-position: -128px 0px;
 }
 
 /* Delete */
-.olControlDeleteFeatureItemActive {
+.olControlDeleteFeature.ItemActive {
     background-image: url(../img/delete_on.png);
     background-repeat: no-repeat;
 }
 
-.olControlDeleteFeatureItemInactive.itemDisabled {
+.olControlDeleteFeature.ItemInactive.ItemDisabled {
     background-image: url(../img/delete_disabled.png);
     background-repeat: no-repeat;
 }
-.olControlDeleteFeatureItemInactive {
+.olControlDeleteFeature.ItemInactive {
     background-image: url(../img/delete_off.png);
     background-repeat: no-repeat;
 }

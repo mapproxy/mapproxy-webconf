@@ -57,6 +57,7 @@ function setDefaults(app, language, project, write_config_url) {
     angular.module('mapproxy_gui.openlayers').value('GRID_START_LEVEL', 0);
     angular.module('mapproxy_gui.openlayers').value('GRID_MAX_LEVEL', 20);
     angular.module('mapproxy_gui.openlayers').value('GRID_EXTENSION_TEMPLATE_URL', "${ get_url('angular_template', filename='openlayers_gridextension.html') }");
+    angular.module('mapproxy_gui.openlayers').value('TOOLBAR_EXTENSION_TEMPLATE_URL', "${ get_url('angular_template', filename='openlayers_toolbar_extension.html') }");
 
   /* Message directive defaults */
     angular.module('mapproxy_gui.messages').value('FADEOUT_DELAY', 2000);

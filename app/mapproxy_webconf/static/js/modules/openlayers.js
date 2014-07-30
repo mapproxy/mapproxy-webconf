@@ -162,6 +162,15 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 $scope.map.addControl($scope.toolbar)
             };
 
+            //Controls
+            var initControls = function() {
+                var controls = []
+                angular.forEach($scope.extensions.controls, function(func) {
+                    controls = controls.concat(func($scope.map));
+                });
+                $scope.map.addControls(controls);
+            };
+
             //Layers
             var createBackgroundLayer = function(layer, srs) {
                 var newLayer = new OpenLayers.Layer.WMS(layer.title, layer.url, {
@@ -345,6 +354,9 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 if(angular.isDefined($scope.extensions.toolbar)) {
                     initToolbar();
                 }
+                if(angular.isDefined($scope.extensions.controls)) {
+                    initControls();
+                }
                 if($attrs.mapLayerSwitcher) {
                     loadLayerSwitcherTemplate();
                 }
@@ -465,12 +477,13 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
     }
 }).
 
-directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY_TYPES) {
+directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY_TYPES, TOOLBAR_EXTENSION_TEMPLATE_URL) {
     return {
         restrict: 'A',
         require: '^olMap',
         transclude: false,
         replace: true,
+        templateUrl: TOOLBAR_EXTENSION_TEMPLATE_URL,
         scope: {
             olEditorData: '&olEditorExtension'
         },
@@ -495,7 +508,9 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
                     }
                 }
             };
-            $scope.deleteTool = function(layer, selectControl, modifyControl) {
+            $scope.deleteTool = function(element, layer, selectControl, modifyControl) {
+                element = element.find('.olControlDeleteFeature');
+                element.addClass('ItemInactive ItemDisabled')
                 var options = {
                     displayClass: "olControlDeleteFeature",
                     selectControl: selectControl,
@@ -504,7 +519,9 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
                 var control = new OpenLayers.Control.DeleteFeature(layer, options);
                 return control;
             };
-            $scope.modifyTool = function(layer) {
+            $scope.modifyTool = function(element, layer) {
+                element = element.find('.olControlModifyFeature');
+                element.addClass('ItemInactive');
                 var options = {
                     displayClass: "olControlModifyFeature",
                     mode: OpenLayers.Control.ModifyFeature.RESIZE |
@@ -515,7 +532,9 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
                 layer.events.register('beforefeaturemodified', {control: control}, $scope.eventHandlers.switchModifyType);
                 return control;
             };
-            $scope.drawRectTool = function(layer) {
+            $scope.drawRectTool = function(element, layer) {
+                element = element.find('.olControlDrawFeatureRect');
+                element.addClass('ItemInactive');
                 var handler = OpenLayers.Handler.RegularPolygon;
                 var handlerOptions = {
                     sides: 4,
@@ -529,7 +548,9 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
                 control.events.register('featureadded', {'type': GEOMETRY_TYPES.RECT}, $scope.eventHandlers.addType)
                 return control;
             };
-            $scope.drawPolygonTool = function(layer) {
+            $scope.drawPolygonTool = function(element, layer) {
+                element = element.find('.olControlDrawFeaturePolygon')
+                element.addClass('ItemInactive')
                 var handler = OpenLayers.Handler.Polygon;
                 var handlerOptions = {
                     // XXXholeModifier
@@ -572,37 +593,59 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
                     }
                 }
                 return false;
-            }
+            };
+            $scope.toggleControl = function(control) {
+                var element = $scope.element.find('.' + control.displayClass);
+                if(control.active) {
+                    control.deactivate();
+                    $scope.activeControl = false
+                    element.removeClass('ItemActive').addClass('ItemInactive');
+                } else {
+                    if($scope.activeControl) {
+                        $scope.toggleControl($scope.activeControl);
+                    }
+                    control.activate();
+                    $scope.activeControl = control;
+                    element.addClass('ItemActive').removeClass('ItemInactive');
+                }
+            };
         },
         link: function(scope, element, attrs, olMapCtrl) {
+            scope.element = element;
+            scope.activeControl = false;
             olMapCtrl.registerExtension('layers', function() {
                 var olEditorData = scope.olEditorData(scope, {})();
                 olEditorData.layer['zoomToDataExtent'] = !helper.isEmpty(olEditorData.layer.geometries());
                 scope.drawLayer = olMapCtrl.createVectorLayer(olEditorData.layer, olEditorData.layerOptions);
             });
 
-            olMapCtrl.registerExtension('toolbar', function(toolbar) {
-                scope.modifyControl = scope.modifyTool(scope.drawLayer);
-                scope.deleteControl = scope.deleteTool(scope.drawLayer, null, scope.modifyControl);
-                scope.drawRectControl = scope.drawRectTool(scope.drawLayer);
-                scope.drawPolygonControl = scope.drawPolygonTool(scope.drawLayer)
-                toolbar.addControls([
-                    scope.deleteControl,
-                    scope.modifyControl,
-                    scope.drawRectControl,
-                    scope.drawPolygonControl
-                ]);
+            olMapCtrl.registerExtension('controls', function(map) {
+                scope.controls = {};
+                scope.controls.modifyControl = scope.modifyTool(element, scope.drawLayer);
+                scope.controls.deleteControl = scope.deleteTool(element, scope.drawLayer, null, scope.modifyControl);
+                scope.controls.drawRectControl = scope.drawRectTool(element, scope.drawLayer);
+                scope.controls.drawPolygonControl = scope.drawPolygonTool(element, scope.drawLayer)
+
+                return [
+                    scope.controls.deleteControl,
+                    scope.controls.modifyControl,
+                    scope.controls.drawRectControl,
+                    scope.controls.drawPolygonControl
+                ];
             });
 
             olMapCtrl.registerExtension('destroy', function() {
                 var olEditorData = scope.olEditorData(scope, {})();
 
                 olEditorData.setResultGeometry(scope.extractGeometry(scope.drawLayer));
-
-                scope.modifyControl.deactivate();
-                scope.deleteControl.deactivate();
-                scope.drawRectControl.deactivate();
-                scope.drawPolygonControl.deactivate();
+                angular.forEach(scope.controls, function(control) {
+                    control.deactivate();
+                    scope.element.find('.' + control.displayClass)
+                        .removeClass('ItemInactive ItemActive ItemDisabled')
+                    control.destroy();
+                });
+                scope.activeControl = false;
+                delete scope.controls;
                 scope.drawLayer.destroy();
                 delete scope.drawLayer;
             });
