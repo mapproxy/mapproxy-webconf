@@ -203,7 +203,7 @@
           ng-click="search=''">
       ${ _('Not shown caches') }: {{list.length - filtered.length}}
     </span>
-    <ul class="vertical-list small">
+    <ul class="vertical-list">
       <div draggable
            class="mapproxy_cache"
            ng-repeat="item in filtered = (list | filter:{data.name:search}) | orderBy:'name'"
@@ -242,7 +242,7 @@
           ng-click="search=''">
       ${ _('Not shown sources') }: {{list.length - filtered.length}}
     </span>
-    <ul class="vertical-list small">
+    <ul class="vertical-list">
       <div draggable
            class="mapproxy_source"
            ng-repeat="item in filtered = (list |filter:{data.name:search}) | orderBy:'name'"

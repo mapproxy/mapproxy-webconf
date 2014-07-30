@@ -217,7 +217,7 @@
           ng-click="search=''">
       ${ _('Not shown sources') }: {{list.length - filtered.length}}
     </span>
-    <ul class="vertical-list small">
+    <ul class="vertical-list">
       <div class="mapproxy_source"
            draggable
            ng-repeat="item in filtered = (list | filter:{data.name:search}) | orderBy:'name'"
@@ -256,7 +256,7 @@
           ng-click="search=''">
       ${ _('Not shown caches') }: {{list.length - filtered.length}}
     </span>
-    <ul class="vertical-list small">
+    <ul class="vertical-list">
       <div class="mapproxy_cache"
            draggable
            ng-repeat="item in filtered = (list | filter:{data.name:search}) | orderBy:'name'"
@@ -295,7 +295,7 @@
           ng-click="search=''">
       ${ _('Not shown grids') }: {{(list.concat(defaultGrids)).length - filtered.length}}
     </span>
-    <ul class="vertical-list small">
+    <ul class="vertical-list">
       <div class="mapproxy_grid"
            draggable
            ng-repeat="item in filtered = (list.concat(defaultGrids) | filter: {data.name:search}) | orderBy:'name'"
