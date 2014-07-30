@@ -36,11 +36,11 @@
       <div class="col-sm-12 text-right">
         <span class="form-line-spacing"
               message-handler="success"
-              message-types="layers.delete_success,layers.updateStructure_success,layers.copy_success">
+              message-types="layers.delete_success,layers.copy_success">
         </span>
         <span class="form-line-spacing"
               message-handler="error"
-              message-types="layers.load_error,layers.delete_error,layers.updateStructure_error">
+              message-types="layers.load_error,layers.delete_error">
         </span>
       </div>
     </div>
@@ -78,6 +78,18 @@
             ${ _('Save order') }
           </button>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 text-right">
+        <span class="top-buffer-1"
+              message-handler="success"
+              message-types="layers.updateStructure_success">
+        </span>
+        <span class="form-line-spacing"
+              message-handler="error"
+              message-types="layers.updateStructure_error">
+        </span>
       </div>
     </div>
   </div>
