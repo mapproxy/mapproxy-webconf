@@ -11,6 +11,7 @@ from xml.etree.ElementTree import ParseError
 
 from mapproxy.client import http
 from mapproxy.script.scales import scale_to_res, res_to_scale
+from mapproxy.script.conf.utils import MapProxyYAMLDumper
 from mapproxy.srs import SRS
 
 from . import bottle
@@ -342,7 +343,7 @@ def resources(filename):
 def create_yaml():
     data = request.json
     try:
-        return yaml.safe_dump(data, default_flow_style=False)
+        return yaml.dump(data, default_flow_style=False, Dumper=MapProxyYAMLDumper)
     except yaml.YAMLError:
         response.status = 400
         return {'error': _('creating yaml failed')}
