@@ -1,11 +1,9 @@
 %def content():
     % if language == 'de':
-       % include content/de/config.html
+       % include content/de/config.html project=get('project')
     % else:
        % include content/en/config.html
     % end
-      <a class="btn btn-default btn-sm" href="${ get_url('project_defaults', project=project) }">${ _('To default settings') }</a>
-  </div>
 %end
 
 %rebase base_config base_content=content, project=get('project')

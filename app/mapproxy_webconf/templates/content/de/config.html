@@ -1,27 +1,35 @@
+
 <div class="col-sm-7">
   <h3>MapProxy Konfiguration</h3>
-  <p>Die MapProxy Konfigurationsdatei unterteilt sich in unterschiedliche Abschnitte. Diese wurden in die Oberfläche übernommen und sind als einzelne Bereiche abgebildet. In den einzelnen Bereichen haben Sie die Möglichkeit auf Elemente anderer Beriech zuzugreifen. Es stehen folgende Abschnitte zur Auswahl:</p>
+  <p>Die MapProxy Konfigurationsdatei unterteilt sich in verschiedene Abschnitte. Diese wurden in die Oberfläche übernommen und sind als einzelne Bereiche abgebildet. In den Bereichen haben Sie die Möglichkeit auf Elemente anderer Beriech zuzugreifen. Zum Beispiel wenn Sie eine Source für einen Layer benötigen.</p>
+  <p>Eine ausführliche englische Dokumentation zum MapProxy finden Sie unter: <a href="http://mapproxy.org/docs/nightly/" target="_blank">http://mapproxy.org/docs/nightly/</a></p>
+
+  <h4>Bereiche</h4>
   <dl id="config-index-list" class="dl-horizontal">
     <dt>Sources</dt>
-    <dd>Definieren Sie die Datenquellen mit der MapProxy gefüllt werden soll. Standardmässig steht ihnen hier die Auswahl eines WMS zur Verfügung.</dd>
+    <dd>Definieren Sie die Datenquellen mit der MapProxy gefüllt werden soll. Standardmässig steht Ihnen hier die Auswahl eines WMS zur Verfügung.</dd>
 
     <dt>Grids</dt>
-    <dd>Grids - oder auch Gitter genannt - sind ein wichtiger Part in der MapProxy Konfiguration. Entscheiden Sie hier wie die gecachten Kacheln ausgerichtet werden sollen.</dd>
+    <dd>Grids - oder auch Gitter genannt - defineiren wie die Kacheln ausgerichtet werden sollen. MapProxy stellt Ihnen übliche Grids beriets zur Verfügung.</dd>
 
     <dt>Caches</dt>
-    <dd>Der Cache des MapProxy unterschiedliche Grids und Sources beinhalten. Zudem können Sie hier das Format des Caches festlegen.</dd>
+    <dd>Definieren Sie welche Dienste, mit welchen Einstellungen, zwischgepseichert werden sollen.</dd>
 
     <dt>Layers</dt>
-    <dd>Konfiguriert die durch MapProxy bereitgestellten Layer. Jeder Layer kann aus mehreren Sourcen oder Caches bestehen.</dd>
+    <dd>Konfiguriert die Layer die MapProxy bereitstellen soll. Jeder Layer kann aus mehreren Sourcen oder Caches bestehen.</dd>
 
     <dt>Services</dt>
-    <dd>MapProxy stellt die Karten in unterschiedlichen Diensten bereit. Standardmässig ist ein WMS und der MapProxy-Demodienst aktiviert.</dd>
+    <dd>MapProxy stellt die Karten über unterschiedliche Diensten bereit. Standardmässig ist ein WMS und der MapProxy-Demodienst aktiviert. Sie können die Karten aber auch als Kacheln anbieten</dd>
 
     <dt>Globals</dt>
-    <dd>MapProxy spezifische Standardwerte die für übergeordnete Bereiche gelten. Zum Beispiel Metabuffer oder die Kachelgröße.</dd>
+    <dd>MapProxy beinhaltet einige Standardwerte die für alle Bereiche gelten. Zum Beispiel Metabuffer oder die Kachelgröße.</dd>
   </dl>
+
+  <a href="${ get_url('sources', project=project)}" class="btn btn-info">Starten und Source anlegen &rarr;</a>
 </div>
+
 <div class="col-sm-5">
     <h3>Grundeinstellungen des Projektes</h3>
-      <p>Jedes Projekt beinhaltet einige Grundeinstellungen die in der Oberfläche verwendet werden. Hierzu zählen zum Beispiel die zur Auswahl stehenden Koordinatensysteme oder die für die Berechnung verwendete DPI.</p>
-
+    <p>Jedes Projekt beinhaltet Einstellungen die in der Oberfläche verwendet werden. Hierzu zählen zum Beispiel die zur Auswahl stehenden Koordinatensysteme oder die DPI-Zahl für die Berechnung.</p>
+    <a class="btn btn-default" href="${ get_url('project_defaults', project=project) }">${ _('To default settings') }</a>
+</div>
