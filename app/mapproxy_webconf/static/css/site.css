@@ -297,14 +297,22 @@ ul.vertical-list div.selected li i.icon-share {
 input:focus:invalid,
 textarea:focus:invalid,
 select:focus:invalid {
-  color: #A61D12;
-  border-color: #BF574F;
+  color: #0171B0;
+  border-color: #0171B0;
+}
+
+.ng-invalid-required, .has-error .form-control {
+  border-color: #0171B0;
+}
+
+label.ng-invalid-required, .text-danger  {
+    color: #0171B0;
 }
 
 input:focus:invalid:focus,
 textarea:focus:invalid:focus,
 select:focus:invalid:focus {
-  border-color: #A61D12;
+  border-color: #0171B0;
   -webkit-box-shadow: 0 0 6px #f8b9b7;
      -moz-box-shadow: 0 0 6px #f8b9b7;
           box-shadow: 0 0 6px #f8b9b7;
@@ -442,13 +450,6 @@ hr.formLine {
 h4 .glyphicon {
   font-size: 13px;
   vertical-align: text-top;
-}
-
-.ng-invalid-required {
-  border-color: #35A4B4;
-}
-label.ng-invalid-required {
-    color: #35A4B4;
 }
 
 /* fix for footer overlap */
