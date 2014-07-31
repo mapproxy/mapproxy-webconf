@@ -10,7 +10,7 @@
 
 <script type="text/ng-template" id="checkbox_label">
   <div class="checkbox" ng-class="{'has-error': invalid, 'has-warning': warning}">
-    <label>
+    <label ng-class="{'ng-invalid-required': invalidRequired}">
       <span ng-transclude></span> {{getText()}}
       <i ng-show=tooltipContent class="glyphicon glyphicon-question-sign help" tooltip="{{tooltipContent}}"></i>
       <span ng-include="'error_messages'" class="text-danger"></span>
@@ -25,7 +25,7 @@
 
 <script type="text/ng-template" id="input_label">
   <div class="form-group form-group-sm" ng-class="{'has-error': invalid, 'has-warning': warning}">
-    <label for="{{name}}">{{getText()}}:
+    <label for="{{name}}" ng-class="{'ng-invalid-required': invalidRequired}">{{getText()}}:
       <i ng-show=tooltipContent class="glyphicon glyphicon-question-sign help" tooltip="{{tooltipContent}}"></i>
     </label>
     <div ng-transclude></div>
@@ -42,7 +42,8 @@
   <div ng-class="{'has-error': invalid, 'has-warning': warning}" toggle-group mode="multiShow">
     <label class="toggleable-label" for="{{name}}"
            toggle-element="next"
-           set-focus>
+           set-focus
+            ng-class="{'ng-invalid-required': invalidRequired}">
       <span class="control-icons">
         <i class="glyphicon glyphicon-chevron-right" title="${ _('show content') }"></i>
         <i class="glyphicon glyphicon-chevron-down" ng-show=false title="${ _('hide content') }"></i>

@@ -447,6 +447,9 @@ h4 .glyphicon {
 .ng-invalid-required {
   border-color: #35A4B4;
 }
+label.ng-invalid-required {
+    color: #35A4B4;
+}
 
 /* fix for footer overlap */
 #push {

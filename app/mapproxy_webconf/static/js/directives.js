@@ -423,6 +423,7 @@ directive('labeled', function($parse, $templateCache) {
                     scope.$watch(scope.formName + '.' + scope.name + '.$invalid+' + scope.formName + '.' + scope.name + '.$pristine', function(val) {
                         var invalid = Boolean(val);
                         var pristine = scope[scope.formName][scope.name].$pristine;
+                        scope.invalidRequired = scope[scope.formName][scope.name].$error.required;
                         scope.invalid = invalid && !pristine;
                     });
                     invalidWatchActive = true;
