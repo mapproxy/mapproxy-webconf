@@ -1,26 +1,28 @@
 <div class="customEditingToolbar">
-    <label>
+   <ul>
+    <li>
         <div ng-click="toggleControl(this.controls.drawPolygonControl)"
              class="olControl olControlDrawFeaturePolygon">
         </div>
         <div class="olLabel">${ _('Draw Polygon') }</div>
-    </label>
-    <label>
+    </li>
+    <li>
         <div ng-click="toggleControl(this.controls.drawRectControl)"
              class="olControl olControlDrawFeatureRect">
         </div>
         <div class="olLabel">${ _('Draw Rect') }</div>
-    </label>
-    <label>
+    </li>
+    <li>
         <div ng-click="toggleControl(this.controls.modifyControl)"
              class="olControl olControlModifyFeature">
         </div>
         <div class="olLabel">${ _('Edit Geometry') }</div>
-    </label>
-    <label>
+    </li>
+    <li>
         <div ng-click="toggleControl(this.controls.deleteControl)"
              class="olControl olControlDeleteFeature">
         </div>
         <div class="olLabel">${ _('Delete Geometry') }</div>
-    </label>
+    </li>
+</ul>
 </div>
