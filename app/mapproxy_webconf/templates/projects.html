@@ -1,12 +1,11 @@
 %def content():
-  %if demo:
-    <div class="col-md-5">
-      <p class="text-error">${_('demo - you dont see all projects')}</p>
-      <a href="${ get_url('create_project', demo=True) }" class="btn btn-default btn-sm">${ _('Create Project') }</a>
-    </div>
-  %else:
+
     <div ng-controller="ProjectCtrl" ng-init="createURL='${ get_url('create_project') }'; deleteURL='${ get_url('delete_project') }';">
-      <div class="col-sm-3">
+      <div class="col-sm-4">
+        % if demo:
+          <p class="text-error">${_('demo - you dont see all projects')}</p>
+          <a href="${ get_url('create_project', demo=True) }" class="btn btn-default btn-sm">${ _('Create Project') } &rarr;</a>
+        % else:
         <form novalidate name="form">
           <div labeled="input_label" name-for="project_name" text="${ _('Project name') }">
             <input required type="text" ng-model="project.name" id="project_name" name="project_name" ng-pattern="/^[a-zA-Z0-9\-_]*$/" class="form-control input-sm"/>
@@ -14,23 +13,26 @@
           <button class="btn btn-default btn-sm" ng-disabled="!form.$valid" ng-click="createProject()">${ _('Create project') }</button>
         </form>
         <div class="row">
-          <div class="col-sm-12 text-center">
+          <div class="col-sm-8 text-center">
             <span class="top-buffer-1"
                   message-handler="error"
                   message-types="project.create_error,project.delete_error"></span>
           </div>
         </div>
+        % end
       </div>
       <div class="col-sm-5">
         %for name, data in projects.items():
           <div>
             <h3>${ _('project') }: ${name}</h3>
+            % if not demo:
             <i class="glyphicon glyphicon-remove pull-right"
                dialog="ask"
                dialog-title="${ _('Confirm!') }"
                dialog-text="${ _('Really remove project:') } ${name}?"
                callback="deleteProject($event, '${name}')">
             </i>
+            % end
             <h5>${ _('status mapproxy configuration') }:
             %if data['valid']:
               <span class="label label-success">${ _('valid') }</span>
@@ -50,15 +52,23 @@
             </div>
             %end
           </div>
+          % if demo:
+          <a href="#" class="btn btn-default btn-sm"
+             dialog="confirm"
+             dialog-title="${_('Edit not possible') }"
+             dialog-text="${_('You are working on the demo modus. You cannot edit projects or save mapproxy configurations') }">
+               ${ _('To configuration') } &rarr;
+          </a>
+          % else:
           <a href="${ get_url('configuration', project=name) }" class="btn btn-default btn-sm">
             ${ _('To configuration') } &rarr;
           </a>
+          % end
         <hr>
         %end
       </div>
     </div>
   %end
-% end
 
 %def site_navbar():
   <h2 class="pull-left tab-menu-header">

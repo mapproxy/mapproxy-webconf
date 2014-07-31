@@ -37,3 +37,12 @@ dl#config-index-list dd{
   overflow-x:hidden;
   overflow-y:auto;
 }
+
+.ui-dialog .ui-dialog-title {
+  padding: 0;
+}
+
+.ui-dialog .ui-dialog-content,
+.ui-dialog .ui-dialog-titlebar {
+  padding: 5px 15px;
+}

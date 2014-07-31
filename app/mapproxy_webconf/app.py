@@ -2,6 +2,8 @@ import os
 import yaml
 import inspect
 import json
+import re
+
 from copy import deepcopy
 from uuid import uuid4
 
@@ -30,10 +32,19 @@ bottle.TEMPLATE_PATH = [os.path.join(os.path.dirname(__file__), 'templates')]
 SimpleTemplate.defaults["get_url"] = app.get_url
 SimpleTemplate.defaults["demo"] = configuration.get_bool('app', 'demo')
 
+#coverage in oragne
+DEMO_PROJECT_REGEXP = "[a-f0-9]{32}"
+
 #decorators
 def require_project(func):
     def decorator(storage, **kwargs):
         if 'project' in kwargs and storage.exist_project(kwargs['project']):
+            check_project = re.compile(DEMO_PROJECT_REGEXP)
+
+            # on demo modus only show project with hash
+            demo = configuration.get_bool('app', 'demo')
+            if demo and not check_project.match(kwargs['project']):
+                abort(404)
             if 'storage' in inspect.getargspec(func).args:
                 kwargs['storage'] = storage
             return func(**kwargs)
@@ -212,7 +223,14 @@ def index():
 @app.route('/projects', name='projects')
 def projects(storage):
     projects = {}
+    demo = configuration.get_bool('app', 'demo')
+
+    check_project = re.compile(DEMO_PROJECT_REGEXP)
     for project in storage.get_projects():
+        # on demo modus only show project without hash
+        if demo and check_project.match(project):
+            continue
+
         try:
             mapproxy_conf = config.mapproxy_conf_from_storage(storage, project)
         except config.ConfigError as e:
