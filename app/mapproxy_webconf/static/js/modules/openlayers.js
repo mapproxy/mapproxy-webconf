@@ -4,7 +4,7 @@ angular.module('mapproxy_gui.openlayers', []).
 //OpenLayers.Feature.Vector.style
 constant('DEFAULT_VECTOR_STYLING', {
     'default': {
-        fillColor: "#bbb",
+        fillColor: "#F89406",
         fillOpacity: 0.25,
         hoverFillColor: "white",
         hoverFillOpacity: 0.8,
@@ -27,7 +27,7 @@ constant('DEFAULT_VECTOR_STYLING', {
         labelOutlineWidth: 0
     },
     'select': {
-        fillColor: "blue",
+        fillColor: "#0171B0",
         fillOpacity: 0.4,
         hoverFillColor: "white",
         hoverFillOpacity: 0.8,
