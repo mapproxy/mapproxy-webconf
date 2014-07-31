@@ -207,7 +207,7 @@ rest_grids.setup_routing(app)
 
 @app.route('/', name='index')
 def index():
-    return template('index')
+    return redirect(app.get_url('projects'))
 
 @app.route('/projects', name='projects')
 def projects(storage):
