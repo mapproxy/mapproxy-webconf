@@ -9,7 +9,7 @@
       <div class="col-sm-3">
         <form novalidate name="form">
           <div labeled="input_label" name-for="project_name" text="${ _('Project name') }">
-            <input required type="text" ng-model="project.name" id="project_name" name="project_name" ng-pattern="/^[a-zA-Z0-9\-_]*$/"/>
+            <input required type="text" ng-model="project.name" id="project_name" name="project_name" ng-pattern="/^[a-zA-Z0-9\-_]*$/" class="form-control input-sm"/>
           </div>
           <button class="btn btn-default btn-sm" ng-disabled="!form.$valid" ng-click="createProject()">${ _('Create project') }</button>
         </form>
