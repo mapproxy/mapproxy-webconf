@@ -107,12 +107,11 @@
               %end
             </ul>
             <ul class="loginbar pull-right">
-              %if defined('project') and project != None:
                 % if demo:
                   <li>
                     <span class="label label-info">${ _('demo modus') }</span>
                   </li>
-                % else:
+                %if defined('project') and project != None and not demo:
                   <li>
                     <span class="text-info">${ _('working on project') }: <strong>${project}</strong></span>
                   </li>
