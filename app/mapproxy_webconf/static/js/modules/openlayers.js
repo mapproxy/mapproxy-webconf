@@ -177,7 +177,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                         srs: srs,
                         layers: [layer.name]
                     }, {
-                        singleTile: true,
+                        // singleTile: true,
                         ratio: 1.0,
                         isBaseLayer: layer.baseLayer || false
                 });
