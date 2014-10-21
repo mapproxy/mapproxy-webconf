@@ -38,7 +38,7 @@ function setDefaults(app, language, project, write_config_url) {
     app.value('SRS', "EPSG:4326");
     app.value('NON_TRANSPARENT_FORMATS', ["JPEG", "GIF"]);
     app.value('BACKGROUND_SERVICE_TITLE', '${ _("Background Layer") }');
-    app.value('BACKGROUND_SERVICE_URL', "http://osm.omniscale.net/proxy/service?");
+    app.value('BACKGROUND_SERVICE_URL', 'http://a.maps.omniscale.net/v1/osmoscde-8a05ef58/tile');
     app.value('BACKGROUND_SERVICE_LAYER', "osm");
     app.value('BBOXES', {
         'EPSG:4326': [-180, -90, 180, 90],
