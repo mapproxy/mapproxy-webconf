@@ -1,10 +1,9 @@
 %def content():
 
     <div ng-controller="ProjectCtrl" ng-init="createURL='${ get_url('create_project') }'; deleteURL='${ get_url('delete_project') }';">
-      <div class="col-sm-4">
+      <div class="col-sm-3">
         % if demo:
           <p class="text-error">${_('demo - you dont see all projects')}</p>
-          <a href="${ get_url('create_project', demo=True) }" class="btn btn-default btn-sm">${ _('Create Project') } &rarr;</a>
         % else:
         <form novalidate name="form">
           <div labeled="input_label" name-for="project_name" text="${ _('Project name') }">
@@ -53,11 +52,9 @@
             %end
           </div>
           % if demo:
-          <a href="#" class="btn btn-default btn-sm"
-             dialog="confirm"
-             dialog-title="${_('Edit not possible') }"
-             dialog-text="${_('You are working on the demo modus. You cannot edit projects or save mapproxy configurations') }">
-               ${ _('To configuration') } &rarr;
+          <a href="${ get_url('create_project', base=name, demo=True) }" class="btn btn-default btn-sm">
+               ${ _('START WITH A PROJECT COPY') } &rarr;
+
           </a>
           % else:
           <a href="${ get_url('configuration', project=name) }" class="btn btn-default btn-sm">

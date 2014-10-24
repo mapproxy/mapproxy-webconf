@@ -476,7 +476,11 @@ def validate_grid_params():
 def create_project(storage):
     if request.query.get('demo', False):
         name = str(uuid4()).replace('-', '')
-        storage._init_project(name)
+        base_project = request.query.get('base', False)
+        if base_project:
+            storage.copy_project(base_project, name)
+        else:
+            storage._init_project(name)
         redirect(app.get_url('configuration', project=name))
     else:
         if not request.json:

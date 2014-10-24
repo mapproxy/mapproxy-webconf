@@ -285,6 +285,14 @@ class SQLiteStore(object):
         self.db.commit()
         return cur.rowcount == 1
 
+    def copy_project(self, project, name):
+        sections = ['wms_capabilities', 'defaults', 'services', 'layers', 'globals', 'caches', 'grids', 'sources']
+        for section in sections:
+            data = self.get_all(section, project, with_id=True, default=[])
+            for result in data:
+                self.add(section=section, project=name, data=result, with_id=True)
+        return name
+
     def exists_in_data(self, section, project, search):
         cur = self.db.cursor()
         cur.execute("SELECT id FROM store WHERE section = ? AND project = ? AND data LIKE ?", (section, project, search))
