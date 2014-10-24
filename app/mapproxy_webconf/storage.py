@@ -123,7 +123,8 @@ class SQLiteStore(object):
         """)
         self.db.execute("""
             CREATE TABLE IF NOT EXISTS store (
-                id INTEGER PRIMARY KEY,
+                _id INTEGER PRIMARY KEY,
+                id INTEGER NOT NULL,
                 section TEXT NOT NULL,
                 project TEXT,
                 data TEXT NOT NULL,
@@ -131,28 +132,42 @@ class SQLiteStore(object):
                 parent INTEGER,
                 manual BOOLEAN,
                 locked BOOLEAN,
-                FOREIGN KEY(parent) REFERENCES store(id) ON DELETE CASCADE
+                FOREIGN KEY(parent) REFERENCES store(_id) ON DELETE CASCADE
             )
         """)
 
     def _init_project(self, project):
         defaults_data = json.dumps(defaults.PROJECT_DEFAULTS)
         services_data = json.dumps(defaults.PROJECT_SERVICES)
+        section_id = self.create_section_id(project)
 
         cur = self.db.cursor()
-
         inserts = []
 
         cur.execute("SELECT * FROM store WHERE section ='defaults' AND project=?", (project,))
         if not len(cur.fetchall()):
-            inserts.append({'section': 'defaults', 'project': project, 'data': defaults_data})
+            inserts.append({'id': section_id, 'section': 'defaults', 'project': project, 'data': defaults_data})
+        cur.executemany("INSERT INTO store (id, section, project, data) VALUES (:id, :section, :project, :data)", inserts)
+        self.db.commit()
 
+        inserts = []
+        section_id = self.create_section_id(project)
         cur.execute("SELECT * FROM store WHERE section ='services' AND project=?", (project,))
         if not len(cur.fetchall()):
-            inserts.append({'section': 'services', 'project': project, 'data': services_data})
+            inserts.append({'id': section_id, 'section': 'services', 'project': project, 'data': services_data})
 
-        cur.executemany("INSERT INTO store (section, project, data) VALUES (:section, :project, :data)", inserts)
+        cur.executemany("INSERT INTO store (id, section, project, data) VALUES (:id, :section, :project, :data)", inserts)
         self.db.commit()
+
+    def create_section_id(self, project):
+        section_id = 1
+
+        cur = self.db.cursor()
+        cur.execute("SELECT MAX(id) FROM store WHERE project=?", (project,))
+        row = cur.fetchone()[0]
+        if row:
+            section_id = row + 1
+        return section_id
 
     def delete_project(self, project):
         cur = self.db.cursor()
@@ -208,7 +223,7 @@ class SQLiteStore(object):
     def get(self, id, section, project, with_rank=False, with_manual=False, with_locked=False):
         cur = self.db.cursor()
         cur.execute("SELECT data, parent, rank, manual, locked FROM store WHERE id = ? AND section = ? AND project = ?",
-            (id, section, project))
+            (id, section))
         row = cur.fetchone()
         if row:
             data = {}
@@ -223,19 +238,22 @@ class SQLiteStore(object):
                 data['_locked'] = row[4]
             return data
 
-    def add(self, section, project, data):
+    def add(self, section, project, data, with_id=False):
+        if not with_id:
+            section_id = self.create_section_id(project)
+        else:
+            section_id = data.pop('_id')
+
         rank = data.pop('_rank', None)
         parent = data.pop('_parent', None)
         manual = data.pop('_manual', False)
         locked = data.pop('_locked', False)
-        data.pop('_id', None)
-
 
         data = json.dumps(data['data'])
 
         cur = self.db.cursor()
-        cur.execute("INSERT INTO store (section, project, data, parent, rank, manual, locked) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (section, project, data, parent, rank, manual, locked))
+        cur.execute("INSERT INTO store (id, section, project, data, parent, rank, manual, locked) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (section_id, section, project, data, parent, rank, manual, locked))
         self.db.commit()
         return cur.lastrowid
 
