@@ -54,3 +54,23 @@ class TestSQLiteStorage(TempDirTest):
 
         result = self.storage.check_dependencies(id=source_id, project='base', look_for={'layers': 'sources'})
         assert result == {'layers': [{'name': 'foo_layer'}]}
+
+    def test_copy(self):
+        globals_id = self.storage.add(section='globals', project='base', data={'data': {'name': 'testproject'}})
+        source_id = self.storage.add(section='sources', project='base', data={'data': {'name': 'foo_source'}})
+        grids_id = self.storage.add(section='grids', project='base', data={'data': {'name': 'foo_grid'}})
+        layer_id = self.storage.add(section='layers', project='base', data={'data': {'name': 'foo_layer', 'sources': [source_id], 'grids': [grids_id]}})
+        second_layer_id = self.storage.add(section='layers', project='base', data={'data': {'name': 'foo_layer', 'sources': [source_id]}})
+
+        self.storage.copy_project(project='base', name='base_copy')
+
+        assert self.storage.get_all(section='globals', project='base_copy', with_id=True) == {globals_id: {'_id': globals_id, 'data': {'name': 'testproject'}}}
+
+        assert self.storage.get_all(section='sources', project='base', with_id=True) == {source_id: {'_id': source_id, 'data': {'name': 'foo_source'}}}
+        assert self.storage.get_all(section='sources', project='base_copy', with_id=True) == {source_id: {'_id': source_id, 'data': {'name': 'foo_source'}}}
+
+        assert self.storage.get_all(section='grids', project='base', with_id=True) == {grids_id: {'_id': grids_id, 'data': {'name': 'foo_grid'}}}
+        assert self.storage.get_all(section='grids', project='base_copy', with_id=True) == {grids_id: {'_id': grids_id, 'data': {'name': 'foo_grid'}}}
+
+        assert self.storage.get_all(section='layers', project='base', with_id=True) == {layer_id: {'_id': layer_id, 'data': {u'sources': [source_id], u'name': u'foo_layer', u'grids': [grids_id]}}, second_layer_id: {'_id': second_layer_id, 'data': {u'sources': [source_id], u'name': u'foo_layer'}}}
+        assert self.storage.get_all(section='layers', project='base_copy', with_id=True) == {layer_id: {'_id': layer_id, 'data': {u'sources': [source_id], u'name': u'foo_layer', u'grids': [grids_id]}}, second_layer_id: {'_id': second_layer_id, 'data': {u'sources': [source_id], u'name': u'foo_layer'}}}
