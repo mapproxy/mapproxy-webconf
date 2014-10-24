@@ -223,7 +223,7 @@ class SQLiteStore(object):
     def get(self, id, section, project, with_rank=False, with_manual=False, with_locked=False):
         cur = self.db.cursor()
         cur.execute("SELECT data, parent, rank, manual, locked FROM store WHERE id = ? AND section = ? AND project = ?",
-            (id, section))
+            (id, section, project))
         row = cur.fetchone()
         if row:
             data = {}
