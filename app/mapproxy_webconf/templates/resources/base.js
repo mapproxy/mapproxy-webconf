@@ -29,7 +29,7 @@ function include_requireds(path) {
     require("modules/res_scales.js")
 };
 
-function setDefaults(app, language, project, write_config_url) {
+function setDefaults(app, language, project, writeConfigURL) {
     /* Set OpenLayers ImgPath */
     OpenLayers.ImgPath = "${ get_url('static', filepath='img/openlayers/') }";
 
@@ -46,7 +46,7 @@ function setDefaults(app, language, project, write_config_url) {
         'EPSG:900913': [-20037508.342789236,-20037508.342789236,20037508.342789236,20037508.342789236]
     });
 
-    app.value('CREATE_CONFIG_URL', write_config_url);
+    app.value('CREATE_CONFIG_URL', writeConfigURL);
 
   /* OpenLayers directive defaults */
     angular.module('mapproxy_gui.openlayers').value('GRID_AS_GEOJSON_URL', "${ get_url('grid_as_geojson') }");

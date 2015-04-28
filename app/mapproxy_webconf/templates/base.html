@@ -48,7 +48,7 @@
     <!-- site libs -->
     <script type="text/javascript" src="${ get_url('resource', filename='base.js') }"></script>
     <script type="text/javascript">
-      include_requireds("${ get_url('static', filepath='js/') }")
+        include_requireds("${ get_url('static', filepath='js/') }");
     </script>
     % if defined('jsblock') and hasattr(jsblock, '__call__'):
       %jsblock()
@@ -57,14 +57,15 @@
       /* add directives and services*/
         var app = angular.module('mapproxy_gui', ['angular.extensions', 'mapproxy_gui.directives', 'mapproxy_gui.services', 'mapproxy_gui.validators', 'mapproxy_gui.messages', 'mapproxy_gui.tooltips', 'mapproxy_gui.openlayers', 'mapproxy_gui.resScales']);
 
-        var project, write_config_url;
+        var project;
+        var writeConfigURL;
         %if defined('project'):
           project = '${ project }';
-          write_config_url = '${ get_url('write_config', project=project) }';
+          writeConfigURL = '${ get_url("write_config", project=project) }';
         % end
         var language = '${ language }';
 
-        setDefaults(app, language, project, write_config_url);
+        setDefaults(app, language, project, writeConfigURL);
 
      </script>
     %include angular/base_templates
