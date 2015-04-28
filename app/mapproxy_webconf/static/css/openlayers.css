@@ -37,7 +37,7 @@ div.olControlMousePosition {
 }
 
 .olImageLoadError {
-    background-image: url(../img/blank.gif);
+    background-image: url(../img/openlayers/blank.gif);
 }
 
 .olControlPanZoomBar div {
@@ -51,7 +51,7 @@ div.olControlMousePosition {
 }
 
 .olControlPanPanel div {
-    background-image: url(../img/pan-panel.png);
+    background-image: url(../img/openlayers/pan-panel.png);
     height: 18px;
     width: 18px;
     cursor: pointer;
@@ -86,7 +86,7 @@ div.olControlMousePosition {
 }
 
 .olControlZoomPanel div {
-    background-image: url(../img/zoom-panel.png);
+    background-image: url(../img/openlayers/zoom-panel.png);
     position: absolute;
     height: 18px;
     width: 18px;
@@ -218,63 +218,63 @@ div.olControlMousePosition {
 
 /* Select */
 div.olControlSelectFeature.ItemActive {
-    background-image: url(../img/multi_toolbar.png);
+    background-image: url(../img/openlayers/multi_toolbar.png);
     background-repeat: no-repeat;
     background-position: -253px -23px;
 }
 div.olControlSelectFeature.ItemInactive {
-    background-image: url(../img/multi_toolbar.png);
+    background-image: url(../img/openlayers/multi_toolbar.png);
     background-repeat: no-repeat;
     background-position: -253px 0px;
 }
 
 /* Draw Rectangle */
 .olControlDrawFeatureRect.ItemInactive {
-    background-image: url(../img/draw_rectangle_off.png);
+    background-image: url(../img/openlayers/draw_rectangle_off.png);
     background-repeat: no-repeat;
 }
 .olControlDrawFeatureRect.ItemActive {
-    background-image: url(../img/draw_rectangle_on.png);
+    background-image: url(../img/openlayers/draw_rectangle_on.png);
     background-repeat: no-repeat;
 }
 .olControlDrawFeatureRect.ItemInactive.ItemDisabled {
-    background-image: url(../img/draw_rectangle_disabled.png);
+    background-image: url(../img/openlayers/draw_rectangle_disabled.png);
     background-repeat: no-repeat;
 }
 
 /* Draw Polygon */
 .olControlDrawFeaturePolygon.ItemInactive {
-    background-image: url(../img/draw_polygon_off.png);
+    background-image: url(../img/openlayers/draw_polygon_off.png);
     background-repeat: no-repeat;
 }
 .olControlDrawFeaturePolygon.ItemActive {
-    background-image: url(../img/draw_polygon_on.png);
+    background-image: url(../img/openlayers/draw_polygon_on.png);
     background-repeat: no-repeat;
 }
 
 /* Modify */
 .olControlModifyFeature.ItemActive {
-    background-image: url(../img/multi_toolbar.png);
+    background-image: url(../img/openlayers/multi_toolbar.png);
     background-repeat: no-repeat;
     background-position: -128px -23px;
 }
 .olControlModifyFeature.ItemInactive {
-    background-image: url(../img/multi_toolbar.png);
+    background-image: url(../img/openlayers/multi_toolbar.png);
     background-repeat: no-repeat;
     background-position: -128px 0px;
 }
 
 /* Delete */
 .olControlDeleteFeature.ItemActive {
-    background-image: url(../img/delete_on.png);
+    background-image: url(../img/openlayers/delete_on.png);
     background-repeat: no-repeat;
 }
 
 .olControlDeleteFeature.ItemInactive.ItemDisabled {
-    background-image: url(../img/delete_disabled.png);
+    background-image: url(../img/openlayers/delete_disabled.png);
     background-repeat: no-repeat;
 }
 .olControlDeleteFeature.ItemInactive {
-    background-image: url(../img/delete_off.png);
+    background-image: url(../img/openlayers/delete_off.png);
     background-repeat: no-repeat;
 }

@@ -31,7 +31,7 @@ function include_requireds(path) {
 
 function setDefaults(app, language, project, write_config_url) {
     /* Set OpenLayers ImgPath */
-    OpenLayers.ImgPath = "${ get_url('static', filepath='img/') }";
+    OpenLayers.ImgPath = "${ get_url('static', filepath='img/openlayers/') }";
 
     /* app defaults */
     app.value('PAGE_LEAVE_MSG', "${ _('You have unsaved changes in this form. Realy leave the page and disgard unsaved changes?') }");
