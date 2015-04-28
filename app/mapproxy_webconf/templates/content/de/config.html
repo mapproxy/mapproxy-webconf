@@ -1,5 +1,5 @@
 
-<div class="col-sm-7">
+<div class="col-sm-6">
   <h3>MapProxy Konfiguration</h3>
   <p>Die MapProxy Konfigurationsdatei unterteilt sich in verschiedene Abschnitte. Diese wurden in die Oberfläche übernommen und sind als einzelne Bereiche abgebildet. In den Bereichen haben Sie die Möglichkeit auf Elemente anderer Beriech zuzugreifen. Zum Beispiel wenn Sie eine Source für einen Layer benötigen.</p>
   <p>Eine ausführliche englische Dokumentation zum MapProxy finden Sie unter: <a href="http://mapproxy.org/docs/nightly/" target="_blank">http://mapproxy.org/docs/nightly/</a></p>
@@ -28,7 +28,7 @@
   <a href="${ get_url('sources', project=project)}" class="btn btn-info">Starten und Source anlegen &rarr;</a>
 </div>
 
-<div class="col-sm-5">
+<div class="col-md-offset-1 col-sm-5">
     <h3>Grundeinstellungen des Projektes</h3>
     <p>Jedes Projekt beinhaltet Einstellungen die in der Oberfläche verwendet werden. Hierzu zählen zum Beispiel die zur Auswahl stehenden Koordinatensysteme oder die DPI-Zahl für die Berechnung.</p>
     <a class="btn btn-default" href="${ get_url('project_defaults', project=project) }">${ _('To default settings') }</a>

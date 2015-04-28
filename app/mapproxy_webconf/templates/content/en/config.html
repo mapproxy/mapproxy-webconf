@@ -1,5 +1,34 @@
-<div class="col-sm-7">
-	<h3>Mapproxy configuration</h3>
+
+<div class="col-sm-6">
+  <h3>MapProxy Konfiguration</h3>
+  <p>The MapProxy configuration is a dictionary, each key configures a different aspect of MapProxy. The documentation for the current development branch can be found at: <a href="http://mapproxy.org/docs/nightly/" target="_blank">http://mapproxy.org/docs/nightly/</a></p>
+
+  <h4>Configuration Layout</h4>
+  <dl id="config-index-list" class="dl-horizontal">
+    <dt>Sources</dt>
+    <dd>Define where MapProxy can retrieve new data.</dd>
+
+    <dt>Grids</dt>
+    <dd>MapProxy aligns all cached images (tiles) to a grid. Here you can define that grid.</dd>
+
+    <dt>Caches</dt>
+    <dd>Here you can configure the internal caches.</dd>
+
+    <dt>Layers</dt>
+    <dd>Configure the layers that MapProxy offers. Each layer can consist of multiple sources and caches.</dd>
+
+    <dt>Services</dt>
+    <dd>This is the place to activate and configure MapProxy’s services like WMS and TMS.</dd>
+
+    <dt>Globals</dt>
+    <dd>Here you can define some internals of MapProxy and default values that are used in the other configuration directives.</dd>
+  </dl>
+
+  <a href="${ get_url('sources', project=project)}" class="btn btn-info">Start now and create a source &rarr;</a>
 </div>
-<div class="col-sm-5">
-  <h3>Default project settings</h3>
+
+<div class="col-md-offset-1 col-sm-5">
+    <h3>Default settings</h3>
+    <p>On some parts the app use default settings, e.g. to show the selectable coordinate systems. In this part you can edit these global project settings.</p>
+    <a class="btn btn-default" href="${ get_url('project_defaults', project=project) }">${ _('To default settings') }</a>
+</div>
