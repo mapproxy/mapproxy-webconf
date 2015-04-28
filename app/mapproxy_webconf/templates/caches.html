@@ -44,8 +44,8 @@
           {{item.data.name}}
           <i class="glyphicon glyphicon-remove pull-right list-icon"
              dialog="ask"
-             dialog-title="${ _('Confirm!') }"
-             dialog-text="${ _('Really remove cache:') } {{item.data.name}}?"
+             dialog-title="${ _('Confirm') }"
+             dialog-text="${ _('Confirm that you want to remove cache') }: {{item.data.name}}?"
              callback="removeItem($event, item)"
              title="${_('delete')}">
           </i>

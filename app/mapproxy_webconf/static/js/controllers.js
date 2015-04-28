@@ -890,7 +890,7 @@ function MapproxyGridFormCtrl($scope, PAGE_LEAVE_MSG, SRS, BACKGROUND_SERVICE_TI
             MapproxyGrids,
             [MapproxyGrids]
         )) {
-            errorMsg = TranslationService.translate("Name already exists.");
+            errorMsg = TranslationService.translate("Name already exists");
         }
         if(errorMsg) {
             MessageService.message('grids', 'form_error', errorMsg);
@@ -1156,7 +1156,7 @@ function MapproxyLayerFormCtrl($scope, $http, PAGE_LEAVE_MSG, TranslationService
             MapproxyLayers,
             [MapproxyLayers]
         )) {
-            errorMsg = TranslationService.translate("Name already exists.");
+            errorMsg = TranslationService.translate("Name already exists");
         }
         if(errorMsg) {
             MessageService.message('layers', 'form_error', errorMsg);

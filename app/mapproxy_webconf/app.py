@@ -55,10 +55,10 @@ def require_project(func):
 
 ## error_pages
 def error404(error):
-    return template('error', error_code=404, error_message=_('Page not found'))
+    return template('error', error_code=404, error_message=_('Not Found'))
 
 def error500(error):
-    return template('error', error_code=500, error_message=_('Internal server error'))
+    return template('error', error_code=500, error_message=_('Internal Server Error'))
 
 app.error_handler = {
     404: error404,

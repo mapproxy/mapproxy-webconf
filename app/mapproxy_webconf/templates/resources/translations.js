@@ -6,7 +6,7 @@ var translationsDict = {
     "Unable to save. Pleace fill all colored fields.": "${ _('Unable to save. Pleace fill all colored fields.') }",
     "Name already exists in sources": "${ _('Name already exists in sources') }",
     "Name already exists in caches": "${ _('Name already exists in caches') }",
-    "Name already exists.": "${ _('Name already exists.') }",
+    "Name already exists.": "${ _('Name already exists') }",
     "Yes": "${ _('Yes') }",
     "No": "${ _('No') }",
     "OK": "${ _('OK') }",

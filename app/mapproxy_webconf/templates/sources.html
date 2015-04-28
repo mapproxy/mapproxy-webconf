@@ -51,7 +51,7 @@
           <span>{{item.data.name}}</span>
           <i class="glyphicon glyphicon-remove pull-right list-icon"
              dialog="ask"
-             dialog-title="${ _('Confirm!') }"
+             dialog-title="${ _('Confirm') }"
              dialog-text="${ _('Really remove source') }: {{item.data.name}}?"
              callback="removeItem($event, item)"
              title="${_('delete')}">
@@ -79,13 +79,13 @@
           <!-- title? -->
           <div style="display:none;"
                id="confirm_layer_change_dialog"
-               title="${ _('Confirm!') }">
+               title="${ _('Confirm') }">
             <p>${ _('Replace layer - replaces also the service url') }</p>
           </div>
           <div style="display:none;"
                id="confirm_url_change_dialog"
-               title="${ _('Confirm!') }">
-            <p>${ _('Replace service URL deletes all layers depends to it!') }</p>
+               title="${ _('Confirm') }">
+            <p>${ _('Replace service URL – delete all layers depends to it') }</p>
           </div>
           <div ng-show="true">
             <div labeled="input_label"
@@ -170,7 +170,7 @@
                tooltip-content="sources_supported_formats"
                text="${ _('Supported formats') }"
                warning="{{ warningLogic.checkImageSettings() }}"
-               warning-msg="${ _('Selectet image format(s) not support transparency.') }">
+               warning-msg="${ _('Image format do not support transparency') }">
             <div class="row">
               <div class="col-sm-5">
                 <select class="form-control input-sm"
@@ -195,7 +195,7 @@
                name-for="req_transparent"
                text="${ _('Transparency') }"
                warning="{{warningLogic.checkImageSettings()}}"
-               warning-msg="${ _('Selectet image format(s) not support transparency.') }">
+               warning-msg="${ _('Image format do not support transparency') }">
             <input type="checkbox"
                    ng-model="source.data.req.transparent"
                    id="req_transparent"
@@ -334,8 +334,8 @@
                 <button class="btn btn-sm btn-default pull-right"
                         ng-click="showMap()"
                         ng-disabled="allowMap()">
-                  <span ng-show="hasCoverage()">${ _('Show coverage in map') }</span>
-                  <span ng-show="!hasCoverage()">${ _('Create coverage in map') }</span>
+                  <span ng-show="hasCoverage()">${ _('Show coverage in the map') }</span>
+                  <span ng-show="!hasCoverage()">${ _('Create coverage in the map') }</span>
                 </button>
               </div>
             </div>
@@ -496,8 +496,8 @@
                    title="${_('refresh')}"></i>
                 <i class="glyphicon glyphicon-remove"
                    dialog="ask"
-                   dialog-title="${ _('Confirm!') }"
-                   dialog-text="${ _('Really remove WMS:') } {{wms.data.title}}?"
+                   dialog-title="${ _('Confirm') }"
+                   dialog-text="${ _('Remove WMS') }: {{wms.data.title}}?"
                    callback="removeCapabilities(wms)"
                    title="${_('delete')}">
                 </i>
@@ -540,7 +540,7 @@
       </div>
     </div>
     <div spinner='wms_capabilities' class="text-right">
-        <img src="${ get_url('static', filepath='img/loader.gif') }"> ${ _('Loading in progress') }
+        <img src="${ get_url('static', filepath='img/loader.gif') }"> ${ _('Loading...') }
     </div>
     <form name="form"
           novalidate>

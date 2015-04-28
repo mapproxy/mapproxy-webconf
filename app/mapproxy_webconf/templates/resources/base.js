@@ -34,7 +34,7 @@ function setDefaults(app, language, project, writeConfigURL) {
     OpenLayers.ImgPath = "${ get_url('static', filepath='img/openlayers/') }";
 
     /* app defaults */
-    app.value('PAGE_LEAVE_MSG', "${ _('You have unsaved changes in this form. Realy leave the page and disgard unsaved changes?') }");
+    app.value('PAGE_LEAVE_MSG', "${ _('You have unsaved changes in this form. Really leave the page and discard unsaved changes?') }");
     app.value('SRS', "EPSG:4326");
     app.value('NON_TRANSPARENT_FORMATS', ["JPEG", "GIF"]);
     app.value('BACKGROUND_SERVICE_TITLE', '${ _("Background Layer") }');

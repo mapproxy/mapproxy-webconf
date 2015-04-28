@@ -50,8 +50,8 @@
             {{item.data.name}}
             <i class="glyphicon glyphicon-remove pull-right list-icon"
               dialog="ask"
-              dialog-title="${ _('Confirm!') }"
-              dialog-text="${ _('Really remove grid:') } {{item.data.name}}?"
+              dialog-title="${ _('Confirm') }"
+              dialog-text="${ _('Confirm remove this grid')}: {{item.data.name}}?"
               callback="removeItem($event, item)"
               title="${_('delete')}">
             </i>

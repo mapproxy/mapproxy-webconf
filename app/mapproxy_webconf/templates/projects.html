@@ -27,8 +27,8 @@
             % if not demo:
             <i class="glyphicon glyphicon-remove pull-right"
                dialog="ask"
-               dialog-title="${ _('Confirm!') }"
-               dialog-text="${ _('Really remove project:') } ${name}?"
+               dialog-title="${ _('Confirm') }"
+               dialog-text="${ _('Confirm remove this project')}: ${name}?"
                callback="deleteProject($event, '${name}')">
             </i>
             % end
@@ -53,7 +53,7 @@
           </div>
           % if demo:
           <a href="${ get_url('create_project', base=name, demo=True) }" class="btn btn-default btn-sm">
-               ${ _('START WITH A PROJECT COPY') } &rarr;
+               ${ _('Start with a project copy') } &rarr;
 
           </a>
           % else:
