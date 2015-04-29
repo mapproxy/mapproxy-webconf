@@ -4,77 +4,77 @@ angular.module('mapproxy_gui.openlayers', []).
 //OpenLayers.Feature.Vector.style
 constant('DEFAULT_VECTOR_STYLING', {
     'default': {
-        fillColor: "#F89406",
+        fillColor: '#F89406',
         fillOpacity: 0.25,
-        hoverFillColor: "white",
+        hoverFillColor: 'white',
         hoverFillOpacity: 0.8,
-        strokeColor: "#777",
+        strokeColor: '#777',
         strokeOpacity: 1,
         strokeWidth: 1,
-        strokeLinecap: "round",
-        strokeDashstyle: "solid",
-        hoverStrokeColor: "red",
+        strokeLinecap: 'round',
+        strokeDashstyle: 'solid',
+        hoverStrokeColor: 'red',
         hoverStrokeOpacity: 1,
         hoverStrokeWidth: 0.2,
         pointRadius: 6,
         hoverPointRadius: 1,
-        hoverPointUnit: "%",
-        pointerEvents: "visiblePainted",
-        cursor: "inherit",
-        fontColor: "#555",
-        labelAlign: "cm",
-        labelOutlineColor: "white",
+        hoverPointUnit: '%',
+        pointerEvents: 'visiblePainted',
+        cursor: 'inherit',
+        fontColor: '#555',
+        labelAlign: 'cm',
+        labelOutlineColor: 'white',
         labelOutlineWidth: 0
     },
     'select': {
-        fillColor: "#0171B0",
+        fillColor: '#0171B0',
         fillOpacity: 0.4,
-        hoverFillColor: "white",
+        hoverFillColor: 'white',
         hoverFillOpacity: 0.8,
-        strokeColor: "blue",
+        strokeColor: 'blue',
         strokeOpacity: 1,
         strokeWidth: 2,
-        strokeLinecap: "round",
-        strokeDashstyle: "solid",
-        hoverStrokeColor: "red",
+        strokeLinecap: 'round',
+        strokeDashstyle: 'solid',
+        hoverStrokeColor: 'red',
         hoverStrokeOpacity: 1,
         hoverStrokeWidth: 0.2,
         pointRadius: 6,
         hoverPointRadius: 1,
-        hoverPointUnit: "%",
-        pointerEvents: "visiblePainted",
-        cursor: "pointer",
-        fontColor: "#000000",
-        labelAlign: "cm",
-        labelOutlineColor: "white",
+        hoverPointUnit: '%',
+        pointerEvents: 'visiblePainted',
+        cursor: 'pointer',
+        fontColor: '#000000',
+        labelAlign: 'cm',
+        labelOutlineColor: 'white',
         labelOutlineWidth: 3
     },
     'temporary': {
-        fillColor: "#66cccc",
+        fillColor: '#66cccc',
         fillOpacity: 0.2,
-        hoverFillColor: "white",
+        hoverFillColor: 'white',
         hoverFillOpacity: 0.8,
-        strokeColor: "#66cccc",
+        strokeColor: '#66cccc',
         strokeOpacity: 1,
-        strokeLinecap: "round",
+        strokeLinecap: 'round',
         strokeWidth: 2,
-        strokeDashstyle: "solid",
-        hoverStrokeColor: "red",
+        strokeDashstyle: 'solid',
+        hoverStrokeColor: 'red',
         hoverStrokeOpacity: 1,
         hoverStrokeWidth: 0.2,
         pointRadius: 6,
         hoverPointRadius: 1,
-        hoverPointUnit: "%",
-        pointerEvents: "visiblePainted",
-        cursor: "inherit",
-        fontColor: "#000000",
-        labelAlign: "cm",
-        labelOutlineColor: "white",
+        hoverPointUnit: '%',
+        pointerEvents: 'visiblePainted',
+        cursor: 'inherit',
+        fontColor: '#000000',
+        labelAlign: 'cm',
+        labelOutlineColor: 'white',
         labelOutlineWidth: 3
 
     },
     'delete': {
-        display: "none"
+        display: 'none'
     }
 }).
 
@@ -412,8 +412,8 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
 
             $scope.$watch('olmapBinds.visible', function(visible) {
                 if(visible) {
-                    marginWidth = 200;
-                    marginHeight = marginWidth;
+                    var marginWidth = 200;
+                    var marginHeight = marginWidth;
                     // set size of map
                     if(!$scope.hasSize) {
                         $('#'+$scope.mapId)
@@ -486,7 +486,7 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
         scope: {
             olEditorData: '&olEditorExtension'
         },
-        controller: function($scope, $element, $attrs) {
+        controller: function($scope) {
             $scope.eventHandlers = {
                 addType: function(f) {
                     f.feature._drawType = this.type;
@@ -750,7 +750,7 @@ directive('olGridExtension', function($parse, GRID_AS_GEOJSON_URL, DEFAULT_VECTO
                             ratio: 1
                     })],
                     styleMap: new OpenLayers.StyleMap({
-                        "default": new OpenLayers.Style($.extend(true, {}, DEFAULT_VECTOR_STYLING['default'], {pointRadius: 0}), {
+                        'default': new OpenLayers.Style($.extend(true, {}, DEFAULT_VECTOR_STYLING['default'], {pointRadius: 0}), {
                         rules: [
                             new OpenLayers.Rule({
                                 filter: new OpenLayers.Filter.Function({
@@ -792,5 +792,5 @@ directive('olGridExtension', function($parse, GRID_AS_GEOJSON_URL, DEFAULT_VECTO
                 delete scope.pointLayer;
             });
         }
-    }
+    };
 });
