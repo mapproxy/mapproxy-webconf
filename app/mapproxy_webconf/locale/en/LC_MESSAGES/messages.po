@@ -39,11 +39,11 @@ msgstr "Invalid URL"
 
 #: mapproxy_webconf/app.py:316
 msgid "creating mapproxy config successful"
-msgstr "MapProxy configuration was created"
+msgstr "The MapProxy configuration file has been generated and saved to the specified location"
 
 #: mapproxy_webconf/app.py:319
 msgid "creating mapproxy config failed"
-msgstr "MapProxy configuration creation failed"
+msgstr "MapProxy configuration file could not be processed"
 
 #: mapproxy_webconf/app.py:349
 msgid "creating yaml failed"
@@ -207,7 +207,7 @@ msgstr "Imprint"
 
 #: mapproxy_webconf/templates/base_config.html:11
 msgid "create configuration"
-msgstr "Create configuration"
+msgstr "Create MapProxy Configuration"
 
 #: mapproxy_webconf/templates/caches.html:10
 #: mapproxy_webconf/templates/resources/translations.js:28
@@ -571,7 +571,7 @@ msgstr "Project defaults"
 
 #: mapproxy_webconf/templates/project_defaults.html:12
 msgid "infotext_default_settings"
-msgstr "infotext_default_settings"
+msgstr "Define your global project settings."
 
 #: mapproxy_webconf/templates/project_defaults.html:18
 msgid "DPI"
@@ -591,7 +591,7 @@ msgstr "Add"
 #: mapproxy_webconf/templates/project_defaults.html:81
 #: mapproxy_webconf/templates/projects.html:61
 msgid "To configuration"
-msgstr "To configuration"
+msgstr "Create configuration"
 
 #: mapproxy_webconf/templates/projects.html:6
 msgid "demo - you dont see all projects"
@@ -603,7 +603,7 @@ msgstr "Project name"
 
 #: mapproxy_webconf/templates/projects.html:12
 msgid "Create project"
-msgstr "Create project"
+msgstr "Create a new project"
 
 #: mapproxy_webconf/templates/projects.html:26
 msgid "project"
@@ -615,7 +615,7 @@ msgstr "Please confirm that you want to remove this project"
 
 #: mapproxy_webconf/templates/projects.html:35
 msgid "status mapproxy configuration"
-msgstr "status mapproxy configuration"
+msgstr "State"
 
 #: mapproxy_webconf/templates/projects.html:37
 msgid "valid"
@@ -627,7 +627,7 @@ msgstr "invalid"
 
 #: mapproxy_webconf/templates/projects.html:45
 msgid "following errors are recorded"
-msgstr "Following errors are occured"
+msgstr "The following errors occurred"
 
 #: mapproxy_webconf/templates/projects.html:56
 msgid "Start with a project copy"
@@ -635,7 +635,7 @@ msgstr "Copy project and start configuration"
 
 #: mapproxy_webconf/templates/projects.html:72
 msgid "project overview"
-msgstr "Project overview"
+msgstr "Projects"
 
 #: mapproxy_webconf/templates/services.html:10
 msgid "Services"
@@ -659,7 +659,7 @@ msgstr "Active"
 
 #: mapproxy_webconf/templates/services.html:66
 msgid "to project default settings"
-msgstr "edit project settings"
+msgstr "Edit project settings"
 
 #: mapproxy_webconf/templates/services.html:73
 msgid "Meta data"
@@ -1109,7 +1109,7 @@ msgstr "Can not delete because of there are some dependencies"
 
 #: mapproxy_webconf/templates/resources/translations.js:36
 msgid "Create MapProxy Config"
-msgstr "Create MapProxy Config"
+msgstr "MapProxy Configuration"
 
 #: mapproxy_webconf/templates/resources/translations.js:37
 msgid "successfuly copied"

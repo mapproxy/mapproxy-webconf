@@ -1,10 +1,4 @@
 {
-    "filter": {
-        "content": "Über den Filter können Sie die Auswahl Ihrer Elemente einschränken."
-    },
-    "sources_list": {
-        "content": "Hier finden Sie eine Übersicht über Ihre Sourcen."
-    },
     "source_available_wms": {
         "content": "<p>Fügen Sie hier vorhandene WMS-Dienste hinzu um diese als Quelle für den MapProxy zu verwenden. Nach dem Hinzufügen können Sie die Layer und die URL per Drag & Drop hinzufügen.</p>Über die <strong>Weltkugel</strong> haben Sie die Möglichkeit sich den Dienst anzuschauen."
     },
@@ -50,9 +44,6 @@
     "sources_add_srs_manual": {
         "content": "Fügen Sie hier Koordinatensysteme hinzu. Bitte geben Sie den EPSG-Code an. Zum Beispiel: EPSG:31467"
     },
-    "grids_list": {
-        "content": "Hier finden Sie eine Übersicht über die von Ihnen definierten und standardmässig bereitgestellten Grids."
-    },
     "grids_default_list": {
         "content": "<p>MapProxy stellt Ihnen einige Standard-Grids zur Verfügung. Diese können Sie direkt in den Caches verwenden.</p> Die Standard-Grids können nicht bearbeitet werden. Wenn Sie Einstellungen ändern möchten können Sie die Grids kopieren und entsprechend anpassen."
     },
@@ -70,12 +61,6 @@
     },
     "grid_origin": {
         "content": "<p>Standardmässig ist der Kachelnullpunkt des Gitters unten links ausgerichtet. Für den WMTS Standard transformiert MapProxy diese nach oben links. Für benutzerdefinierte Grids kann die Einstellungen zudem noch angepasst werden.</p> SW / LL definiert den Kachelnullpunkt unten links. NW / UL oben links vom Gitter."
-    },
-    "grid_scale": {
-        "content": "Geben Sie hier die Auflösung/Maßstäbe an, an denen MapProxy die Karten zwischenpeichern soll."
-    },
-    "caches_list": {
-        "content": "Hier finden Sie eine Übersicht über Ihre Caches."
     },
     "cache_name": {
         "content": "Geben Sie den Namen des Caches ein. Dieser dient später zur eindeutigen Identifikation. Bitte beachten Sie das ein Cache nicht den selben Namen tragen kann wie eine Source."
@@ -139,18 +124,6 @@
     },
     "service_wms_metadata": {
         "content": "<p>Die Metadaten des WMS Dienstes werden im Capabilities-Dokument angegeben. Diese Informationen dienen dem Nutzer als zusätzliche Information.</p> Die Daten sind optional und können auch freigelassen werden."
-    },
-    "service_wms_md_abstract": {
-        "content": "Beschreiben Sie kurz den Inhalt des Dienstes."
-    },
-    "service_wms_md_online_resource": {
-        "content": "Geben Sie die Online-Resource an unter dem der Dienst erreichbar ist."
-    },
-    "service_wms_md_contact": {
-        "content": "<p>Bei Fragen zum Dienst soll über die Kontaktdaten die Möglichkeit geschaffen werden einen Ansprechpartner zu finden. Tragen Sie daher hier passende Kontaktdaten ein.</p> Die Daten müssen nicht vollständig angegeben werden. Leere Felder werden von MapProxy ignoriert."
-    },
-    "service_wms_md_access_constraints": {
-        "content": "Über die Zugriffsbeschränkungen können Sie die Lizenz der Karten angeben."
     },
     "globals_list": {
         "content": "In diesem Bereich können interne Einstellungen konfiguriert werden, die in allen Bereichen von MapProxy verwendet werden."
