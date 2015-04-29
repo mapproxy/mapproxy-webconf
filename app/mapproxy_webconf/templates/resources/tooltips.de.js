@@ -1,24 +1,21 @@
 {
-    "uncommonInputs": {
-        "content": "Diese Option wird in den meisten Fällen nicht benötigt"
-    },
     "filter": {
         "content": "Über den Filter können Sie die Auswahl Ihrer Elemente einschränken."
     },
     "sources_list": {
-        "content": "Hier finden Sie eine Übersicht über die von Ihnen definierten Sourcen."
+        "content": "Hier finden Sie eine Übersicht über Ihre Sourcen."
     },
     "source_available_wms": {
         "content": "<p>Fügen Sie hier vorhandene WMS-Dienste hinzu um diese als Quelle für den MapProxy zu verwenden. Nach dem Hinzufügen können Sie die Layer und die URL per Drag & Drop hinzufügen.</p>Über die <strong>Weltkugel</strong> haben Sie die Möglichkeit sich den Dienst anzuschauen."
     },
     "sources_name": {
-        "content": "Geben Sie hier den Namen der Quelle ein. Dieser dient später zur eindeutigen Identifikation."
+        "content": "Geben Sie hier den Namen der Quelle ein. Der Name dient später zur Identifikation."
     },
     "sources_url":{
-        "content": "Über die URL der Quelle wird der Dienst abgefragt. Diese können Sie per Hand eingeben oder per Drag & Drop aus dem rechts angezeigten WMS hinzufügen."
+        "content": "Über die URL wird der Dienst abgefragt. Diese können Sie per Hand eingeben oder per Drag & Drop aus der Seitenleiste hinzufügen."
     },
     "sources_layers": {
-        "content": "Definieren Sie hier die Layer die von MapProxy abgerufen werden sollen. Die Layer werden in der unten angegebenen Reihenfolge – von unten nach oben – abgefragt."
+        "content": "Definieren Sie hier die Layer die abgerufen werden sollen. Die Layer werden in der unten angegebenen Reihenfolge – von unten nach oben – abgefragt."
     },
     "sources_manual_add_layers": {
         "content": "Fügen Sie Layer manuell hinzu. \n Dies ist zum Beispiel notwendig wenn der Original-WMS kein Capabilities-Dokument ausliefert."
@@ -45,13 +42,13 @@
         "content": "Größter Maßstab z.B. 1:100"
     },
     "max_res": {
-        "content": "Größte Auflösung für die Daten"
+        "content": "Größte Auflösung der Daten"
     },
     "min_res": {
-        "content": "Kleinste Auflösung für die Daten"
+        "content": "Kleinste Auflösung der Daten"
     },
     "sources_add_srs_manual": {
-        "content": "Fügen Sie hier die SRS der Koordinatensysteme hinzu. Bitte geben Sie den EPSG-Code an. Zum Beispiel: EPSG:31467"
+        "content": "Fügen Sie hier Koordinatensysteme hinzu. Bitte geben Sie den EPSG-Code an. Zum Beispiel: EPSG:31467"
     },
     "grids_list": {
         "content": "Hier finden Sie eine Übersicht über die von Ihnen definierten und standardmässig bereitgestellten Grids."
@@ -60,10 +57,10 @@
         "content": "<p>MapProxy stellt Ihnen einige Standard-Grids zur Verfügung. Diese können Sie direkt in den Caches verwenden.</p> Die Standard-Grids können nicht bearbeitet werden. Wenn Sie Einstellungen ändern möchten können Sie die Grids kopieren und entsprechend anpassen."
     },
     "grid_name": {
-        "content": "Definieren Sie hier einen eindeutigen Namen des Grids."
+        "content": "Geben Sie einen eindeutigen Namen für das Grids ein."
     },
     "grid_srs": {
-        "content": "Wählen Sie hier das Koordinatensystem des Grids aus. Ist das benötigte Koordinatensystem nicht in der Liste vorhanden können Sie dieses in den Projekteinstellungen hinzufügen."
+        "content": "Wählen Sie das Koordinatensystem des Grids aus. Ist das benötigte Koordinatensystem nicht in der Liste vorhanden, können Sie dieses in den Projekteinstellungen hinzufügen."
     },
     "grid_bbox": {
         "content": "Geben Sie die BoundingBox an in welchem Bereich das Grid gültig sein soll"
@@ -75,16 +72,16 @@
         "content": "<p>Standardmässig ist der Kachelnullpunkt des Gitters unten links ausgerichtet. Für den WMTS Standard transformiert MapProxy diese nach oben links. Für benutzerdefinierte Grids kann die Einstellungen zudem noch angepasst werden.</p> SW / LL definiert den Kachelnullpunkt unten links. NW / UL oben links vom Gitter."
     },
     "grid_scale": {
-        "content": "Geben Sie hier die Auflösung/Maßstäbe an, an denen MapProxy cachen soll."
+        "content": "Geben Sie hier die Auflösung/Maßstäbe an, an denen MapProxy die Karten zwischenpeichern soll."
     },
     "caches_list": {
-        "content": "Hier finden Sie eine Übersicht über die von Ihnen definierten Caches."
+        "content": "Hier finden Sie eine Übersicht über Ihre Caches."
     },
     "cache_name": {
         "content": "Geben Sie den Namen des Caches ein. Dieser dient später zur eindeutigen Identifikation. Bitte beachten Sie das ein Cache nicht den selben Namen tragen kann wie eine Source."
     },
     "cache_sources": {
-        "content": "Fügen Sie per Drag&Drop die Sources oder Caches hinzu."
+        "content": "Fügen Sie per Drag&Drop Sources oder Caches hinzu."
     },
     "cache_grids": {
         "content": "Definieren Sie die Grids die verwendet werden sollen. Sie können diese per Drag & Drop von rechts in das Feld ziehen."
@@ -102,13 +99,13 @@
         "content": "Auch Caches können als Quelle für Caches verwendet werden. Ziehen Sie den gewünschten Cache in den Bereich Sources"
     },
     "cache_grids_list": {
-        "content": "Wählen Sie das passende Grid für Ihren Cache aus. Falls Grids im nachhinein verändert werden, muss der Cache unter Umständen gelöscht werden. Nutzen Sie daher, wenn möglich, nur fertige Grids."
+        "content": "Wählen Sie das passende Grid für Ihren Cache aus. Falls Grids im Nachhinein verändert werden, muss der Cache unter Umständen gelöscht werden. Nutzen Sie daher, wenn möglich, nur fertige Grids."
     },
     "layers_list": {
-        "content": "Hier finden Sie eine Übersicht über die von Ihnen definierten Layer. Die Reihenfolge der Layer kann per Drag&Drop verändert werden."
+        "content": "Hier finden Sie eine Übersicht über Ihre Layer. Die Reihenfolge der Layer kann per Drag&Drop verändert werden."
     },
     "layer_name": {
-        "content": "Geben Sie hier den Namen des Layers ein. Dieser dient später zur eindeutigen Identifikation."
+        "content": "Geben Sie einen eindeutigen Namen für den Layer ein."
     },
     "layer_title": {
         "content": "Der Titel des Layers wird im Capabilities-Dokument angezeigt und dient im GIS zur Identifikation. Wählen Sie hier daher eine möglichst sprechende Beschreibung."
@@ -129,16 +126,16 @@
         "content": "Nach dem Aktivieren der KML Option können Sie den Dienst über die KML-Schnittstelle abrufen. Der Dienst kann dann zum Beispiel in Google Earth eingebunden werden."
     },
     "services_tms": {
-        "content": "Der Tile Map Serivce (TMS) ist ein OSGeo-Standard der die Karten in Kachelform bereitstellt. Der Dienst eignet sich besonders gut für Webanwendungen."
+        "content": "Der Tile Map Serivce (TMS) ist ein OSGeo-Standard, der die Karten in Kachelform bereitstellt. Der Dienst eignet sich besonders gut für Webanwendungen."
     },
     "services_wms": {
-        "content": "Über den Web Map Service (WMS) können Sie die Dienste zum Beispiel in Desktop-GI-Systeme einbinden."
+        "content": "Über den Web Map Service (WMS) können Sie die Dienste zum Beispiel in Desktop-GIS einbinden."
     },
     "services_wmts": {
         "content": "Der WMTS-Standard ist der OGC Kachelstandard. Er wird von einigen Desktop- und Web-Systemen unterstützt."
     },
     "service_wms_srs": {
-        "content": "Wählen Sie die Koordinatensystem aus die der WMS anbieten soll. Ist das benötigte Koordinatensystem nicht in der Liste vorhanden können Sie dieses in den Projekteinstellungen hinzufügen."
+        "content": "Wählen Sie die Koordinatensysteme aus die der MapProxy WMS anbieten soll. Ist das benötigte Koordinatensystem nicht in der Liste vorhanden können Sie dieses in den Projekteinstellungen hinzufügen."
     },
     "service_wms_metadata": {
         "content": "<p>Die Metadaten des WMS Dienstes werden im Capabilities-Dokument angegeben. Diese Informationen dienen dem Nutzer als zusätzliche Information.</p> Die Daten sind optional und können auch freigelassen werden."
@@ -153,13 +150,13 @@
         "content": "<p>Bei Fragen zum Dienst soll über die Kontaktdaten die Möglichkeit geschaffen werden einen Ansprechpartner zu finden. Tragen Sie daher hier passende Kontaktdaten ein.</p> Die Daten müssen nicht vollständig angegeben werden. Leere Felder werden von MapProxy ignoriert."
     },
     "service_wms_md_access_constraints": {
-        "content": "Über die Zugriffsbeschränkungen können Sie die Lizenz der Karten angeben,"
+        "content": "Über die Zugriffsbeschränkungen können Sie die Lizenz der Karten angeben."
     },
     "globals_list": {
         "content": "In diesem Bereich können interne Einstellungen konfiguriert werden, die in allen Bereichen von MapProxy verwendet werden."
     },
     "globals_cache": {
-        "content": "Definieren Sie hier die globalen Cache-Optionen von MapProxy."
+        "content": "Definieren Sie die globalen Cache-Optionen von MapProxy."
     },
     "globals_cache_meta_size": {
         "content": "<p>MapProxy fragt mehrere Kacheln in einer Anfrage ab. Über die Metasize können Sie angeben wie viele Kacheln in einer Anfrage abgerufen werden. Standardmässig wird eine Metasize von 4x4 verwendet.</p> Bei einer Metasize mit den Werten 4 x 4 fragt MapProxy 16 Kacheln in einer Anfrage ab. Bei einer Kachelgröße von 256x256 Pixeln wird also eine Anfrage von 1024x1024 Pixeln an den WMS gesendet."
@@ -183,6 +180,6 @@
         "content": "Die hier angegebenen Koordinatensysteme stehen in den Auswahllisten in der Anwendung zur Verfügung."
     },
      "default_config_add_srs": {
-        "content": "Fügen Sie hier Koordinatensysteme für die Auswahl hinzu. Das Format muss wie folgt angegeben sein: EPSG:xxxx"
+        "content": "Fügen Sie hier Koordinatensysteme für die Auswahl hinzu. Das Format muss wie folgt angegeben sein, z.B. EPSG:25833"
     }
 }

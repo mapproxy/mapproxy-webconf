@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-04-29 09:18+0200\n"
+"POT-Creation-Date: 2015-04-29 16:42+0200\n"
 "PO-Revision-Date: 2014-10-21 11:15+0100\n"
 "Last-Translator: \n"
 "Language-Team: de <LL@li.org>\n"
@@ -655,7 +655,7 @@ msgstr "Projektübersicht"
 
 #: mapproxy_webconf/templates/services.html:10
 msgid "Services"
-msgstr "Dienste"
+msgstr "Services"
 
 #: mapproxy_webconf/templates/services.html:19
 msgid "service is activated"
