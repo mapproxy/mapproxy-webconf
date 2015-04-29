@@ -48,7 +48,6 @@ constant('DEFAULT_VECTOR_STYLING', {
         labelAlign: "cm",
         labelOutlineColor: "white",
         labelOutlineWidth: 3
-
     },
     'temporary': {
         fillColor: "#66cccc",
@@ -107,7 +106,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
 
             //LayerSwitcher
             var loadLayerSwitcherTemplate = function() {
-                var layerSwitcherTemplate = $templateCache.get("layerswitcher_template");
+                var layerSwitcherTemplate = $templateCache.get('layerswitcher_template');
                 if(angular.isUndefined(layerSwitcherTemplate)) {
                     $http.get(LAYERSWITCHER_TEMPLATE_URL).success(function(layerSwitcherTemplate) {
                         $templateCache.put('layerswitcher_template', layerSwitcherTemplate);
@@ -137,7 +136,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     }
                     $scope.redrawInProgress = $timeout(function() {
                         $scope.combinedLayer.params.LAYERS = $.map($scope.combinedWMSLayerNames, function(name) {
-                            if(name != null) {
+                            if(name !== null) {
                                 return name;
                             }
                         });
@@ -159,12 +158,12 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     func($scope.toolbar);
                 });
 
-                $scope.map.addControl($scope.toolbar)
+                $scope.map.addControl($scope.toolbar);
             };
 
             //Controls
             var initControls = function() {
-                var controls = []
+                var controls = [];
                 angular.forEach($scope.extensions.controls, function(func) {
                     controls = controls.concat(func($scope.map));
                 });
@@ -200,7 +199,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     });
                     angular.forEach(layer.layers, function(layer) {
                         createWMSLayer(layer, srs, url);
-                    })
+                    });
                     layer.olLayer = newLayer;
                     layer.visibility = true;
                     $scope.mapLayers.push(newLayer);
@@ -211,12 +210,12 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 $scope.combinedWMSLayerNames = [];
                 var extractLayerNames = function(names, layer) {
                     if(layer.name) {
-                        names.push(layer.name)
-                        layer.layerSwitcherIdx = $.inArray(layer.name, names)
+                        names.push(layer.name);
+                        layer.layerSwitcherIdx = $.inArray(layer.name, names);
                     }
                     if(layer.layers) {
                         angular.forEach(layer.layers, function(layer) {
-                            extractLayerNames(names, layer)
+                            extractLayerNames(names, layer);
                         });
                     }
                     if(layer.name || layer.layers) {
@@ -224,7 +223,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     }
                 };
                 angular.forEach(layers, function(layer) {
-                    extractLayerNames($scope.combinedWMSLayerNames, layer)
+                    extractLayerNames($scope.combinedWMSLayerNames, layer);
                 });
                 $scope.combinedLayer = createWMSLayer({'name': angular.copy($scope.combinedWMSLayerNames), 'title': 'Combined Layer'}, srs, url);
             };
@@ -290,7 +289,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
 
                 if(angular.isDefined($scope.olmapBinds.layers.background)) {
                     angular.forEach($scope.olmapBinds.layers.background, function(layer) {
-                        createBackgroundLayer(layer, $scope.olmapBinds.proj)
+                        createBackgroundLayer(layer, $scope.olmapBinds.proj);
                     });
                 }
                 if(angular.isDefined($scope.olmapBinds.layers.wms)) {
@@ -342,7 +341,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                         }),
                         new OpenLayers.Control.PanZoomBar({autoActivate: true})
                     ]
-                }
+                };
                 $scope.map = new OpenLayers.Map($scope.mapId, options);
                 $scope.map.addLayers($scope.mapLayers);
 
@@ -366,7 +365,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     });
                 }
                 if(angular.isDefined($scope.dataExtent)) {
-                    $scope.map.zoomToExtent($scope.dataExtent)
+                    $scope.map.zoomToExtent($scope.dataExtent);
                 } else {
                     $scope.map.zoomToMaxExtent();
                 }
@@ -397,7 +396,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 } else {
                     $scope.extensions[type] = [func];
                 }
-            }
+            };
 
             //Directive initialization
             $scope.extensions = {};
@@ -417,13 +416,13 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     marginHeight = marginWidth;
                     // set size of map
                     if(!$scope.hasSize) {
-                        $("#"+$scope.mapId)
+                        $('#'+$scope.mapId)
                             .css('width', $(window).width() - marginWidth)
                             .css('height', $(window).height() - marginHeight);
 
                         // set new size after resizing window
                         $(window).resize(function() {
-                            $("#"+$scope.mapId)
+                            $('#'+$scope.mapId)
                                 .css('width', $(window).width() - marginWidth)
                                 .css('height', $(window).height() - marginHeight);
                         });
@@ -441,7 +440,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                             'text': TranslationService.translate('Close'),
                             'class': 'btn btn-sm btn-default',
                             'click': function() {
-                                $(this).dialog("close");
+                                $(this).dialog('close');
                             }
                         }]
                     });
@@ -466,7 +465,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                     .css('height', attrs.mapHeight);
             } else {
                 element.find('#_olmapTemp')
-                    .attr('id', scope.mapId)
+                    .attr('id', scope.mapId);
             }
 
 
@@ -474,7 +473,7 @@ directive('olMap', function($compile, $http, $templateCache, $rootScope, $timeou
                 $(element).hide();
             }
         }
-    }
+    };
 }).
 
 directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY_TYPES, TOOLBAR_EXTENSION_TEMPLATE_URL) {
@@ -510,9 +509,9 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
             };
             $scope.deleteTool = function(element, layer, selectControl, modifyControl) {
                 element = element.find('.olControlDeleteFeature');
-                element.addClass('ItemInactive ItemDisabled')
+                element.addClass('ItemInactive ItemDisabled');
                 var options = {
-                    displayClass: "olControlDeleteFeature",
+                    displayClass: 'olControlDeleteFeature',
                     selectControl: selectControl,
                     modifyControl: modifyControl
                 };
@@ -523,7 +522,7 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
                 element = element.find('.olControlModifyFeature');
                 element.addClass('ItemInactive');
                 var options = {
-                    displayClass: "olControlModifyFeature",
+                    displayClass: 'olControlModifyFeature',
                     mode: OpenLayers.Control.ModifyFeature.RESIZE |
                           OpenLayers.Control.ModifyFeature.DRAG |
                           OpenLayers.Control.ModifyFeature.RESHAPE
@@ -541,16 +540,16 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
                     irregular: true
                 };
                 var options = {
-                    displayClass: "olControlDrawFeatureRect",
+                    displayClass: 'olControlDrawFeatureRect',
                     handlerOptions: handlerOptions
                 };
                 var control = new OpenLayers.Control.DrawFeature(layer, handler, options);
-                control.events.register('featureadded', {'type': GEOMETRY_TYPES.RECT}, $scope.eventHandlers.addType)
+                control.events.register('featureadded', {'type': GEOMETRY_TYPES.RECT}, $scope.eventHandlers.addType);
                 return control;
             };
             $scope.drawPolygonTool = function(element, layer) {
-                element = element.find('.olControlDrawFeaturePolygon')
-                element.addClass('ItemInactive')
+                element = element.find('.olControlDrawFeaturePolygon');
+                element.addClass('ItemInactive');
                 var handler = OpenLayers.Handler.Polygon;
                 var handlerOptions = {
                     // XXXholeModifier
@@ -559,11 +558,11 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
                     // freehandToggle: null
                 };
                 var options = {
-                    displayClass: "olControlDrawFeaturePolygon",
+                    displayClass: 'olControlDrawFeaturePolygon',
                     handlerOptions: handlerOptions
                 };
                 var control = new OpenLayers.Control.DrawFeature(layer, handler, options);
-                control.events.register('featureadded', {'type': GEOMETRY_TYPES.POLYGON}, $scope.eventHandlers.addType)
+                control.events.register('featureadded', {'type': GEOMETRY_TYPES.POLYGON}, $scope.eventHandlers.addType);
                 return control;
             };
             $scope.extractGeometry = function(layer) {
@@ -572,13 +571,13 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
                 var _drawType = false;
                 var _bbox = false;
                 if(layer.features.length == 1) {
-                    geometry = layer.features[0].geometry.clone()
+                    geometry = layer.features[0].geometry.clone();
                     if(layer.features[0]._drawType == GEOMETRY_TYPES.RECT) {
                         _bbox = geometry.getBounds().toArray();
                     }
                     _drawType = layer.features[0]._drawType;
                 } else if(layer.features.length > 1) {
-                    var polygons = []
+                    var polygons = [];
                     angular.forEach(layer.features, function(feature) {
                         polygons.push(feature.geometry.clone());
                     });
@@ -590,7 +589,7 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
                         'type': _drawType,
                         'bbox': _bbox,
                         'geojson': format.write(geometry)
-                    }
+                    };
                 }
                 return false;
             };
@@ -598,7 +597,7 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
                 var element = $scope.element.find('.' + control.displayClass);
                 if(control.active) {
                     control.deactivate();
-                    $scope.activeControl = false
+                    $scope.activeControl = false;
                     element.removeClass('ItemActive').addClass('ItemInactive');
                 } else {
                     if($scope.activeControl) {
@@ -615,7 +614,7 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
             scope.activeControl = false;
             olMapCtrl.registerExtension('layers', function() {
                 var olEditorData = scope.olEditorData(scope, {})();
-                olEditorData.layer['zoomToDataExtent'] = !helper.isEmpty(olEditorData.layer.geometries());
+                olEditorData.layer.zoomToDataExtent = !helper.isEmpty(olEditorData.layer.geometries());
                 scope.drawLayer = olMapCtrl.createVectorLayer(olEditorData.layer, olEditorData.layerOptions);
             });
 
@@ -624,7 +623,7 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
                 scope.controls.modifyControl = scope.modifyTool(element, scope.drawLayer);
                 scope.controls.deleteControl = scope.deleteTool(element, scope.drawLayer, null, scope.modifyControl);
                 scope.controls.drawRectControl = scope.drawRectTool(element, scope.drawLayer);
-                scope.controls.drawPolygonControl = scope.drawPolygonTool(element, scope.drawLayer)
+                scope.controls.drawPolygonControl = scope.drawPolygonTool(element, scope.drawLayer);
 
                 return [
                     scope.controls.deleteControl,
@@ -641,7 +640,7 @@ directive('olEditorExtension', function($parse, DEFAULT_VECTOR_STYLING, GEOMETRY
                 angular.forEach(scope.controls, function(control) {
                     control.deactivate();
                     scope.element.find('.' + control.displayClass)
-                        .removeClass('ItemInactive ItemActive ItemDisabled')
+                        .removeClass('ItemInactive ItemActive ItemDisabled');
                     control.destroy();
                 });
                 scope.activeControl = false;
@@ -674,7 +673,7 @@ directive('olGridExtension', function($parse, GRID_AS_GEOJSON_URL, DEFAULT_VECTO
             $scope.levels = function() {
                 var levels = [];
                 for(var i = 0; i < $scope.maxLevel; i++) {
-                    var level = {'level': i}
+                    var level = {'level': i};
                     level['name'] = i;
                     if($scope.olGridScales) {
                         level['name'] += ' (1:' + $scope.olGridScales[i] + ')';
@@ -690,13 +689,13 @@ directive('olGridExtension', function($parse, GRID_AS_GEOJSON_URL, DEFAULT_VECTO
             $scope.toggleLabels = function() {
                 var rules = $scope.layer.olLayer.styleMap.styles.default.rules;
                 if($scope.showLabels) {
-                    rules.splice(rules.indexOf($scope.pointLabelRule), 1)
+                    rules.splice(rules.indexOf($scope.pointLabelRule), 1);
                 } else {
-                    rules.push($scope.pointLabelRule)
+                    rules.push($scope.pointLabelRule);
                 }
                 $scope.showLabels = !$scope.showLabels;
                 $scope.layer.olLayer.styleMap.styles.default.rules = rules;
-                $scope.layer.olLayer.redraw()
+                $scope.layer.olLayer.redraw();
             };
             $scope._layer = {
                 'name': 'Coverage'
@@ -710,7 +709,7 @@ directive('olGridExtension', function($parse, GRID_AS_GEOJSON_URL, DEFAULT_VECTO
                         return angular.isDefined(attrs.x) && angular.isDefined(attrs.y) && angular.isDefined(attrs.z);
                 }}),
                 symbolizer: {
-                    'label': "${z}/${x}/${y}"
+                    'label': '${z}/${x}/${y}'
                 }
             });
             $scope.eventHandlers = {
@@ -759,13 +758,13 @@ directive('olGridExtension', function($parse, GRID_AS_GEOJSON_URL, DEFAULT_VECTO
                                         return angular.isDefined(attrs.message);
                                 }}),
                                 symbolizer: {
-                                    'label': "${message}"
+                                    'label': '${message}'
                                 }
                             }),
                             new OpenLayers.Rule({
                                 filter: new OpenLayers.Filter.Function({
                                     evaluate: function(attrs) {
-                                        return (!(angular.isDefined(attrs.x) && angular.isDefined(attrs.y) && angular.isDefined(attrs.z)) && !angular.isDefined(attrs.message))
+                                        return (!(angular.isDefined(attrs.x) && angular.isDefined(attrs.y) && angular.isDefined(attrs.z)) && !angular.isDefined(attrs.message));
                                     }
                                 })
                             }),
