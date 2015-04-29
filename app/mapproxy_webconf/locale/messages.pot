@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-04-28 17:14+0200\n"
+"POT-Creation-Date: 2015-04-29 09:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -750,7 +750,7 @@ msgid "Replace layer - replaces also the service url"
 msgstr ""
 
 #: mapproxy_webconf/templates/sources.html:88
-msgid "Replace service URL – delete all layers depends to it"
+msgid "Replace service URL - delete all layers"
 msgstr ""
 
 #: mapproxy_webconf/templates/sources.html:105

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-04-28 17:14+0200\n"
+"POT-Creation-Date: 2015-04-29 09:18+0200\n"
 "PO-Revision-Date: 2014-10-21 11:15+0100\n"
 "Last-Translator: \n"
 "Language-Team: de <LL@li.org>\n"
@@ -777,10 +777,8 @@ msgstr ""
 "ersetzt."
 
 #: mapproxy_webconf/templates/sources.html:88
-msgid "Replace service URL – delete all layers depends to it"
-msgstr ""
-"Service-URL und eingetragene Layer passen nicht zusammen. Beim Ersetzen "
-"wird die Layerliste automatisch geleert"
+msgid "Replace service URL - delete all layers"
+msgstr "URL und Layer stimmen nicht überein. Alle Layer werden gelöscht."
 
 #: mapproxy_webconf/templates/sources.html:105
 #: mapproxy_webconf/templates/sources.html:514
@@ -1158,3 +1156,7 @@ msgstr "Coverage bearbeiten"
 #: mapproxy_webconf/templates/resources/translations.js:41
 msgid "Create coverage"
 msgstr "Coverage erstellen"
+
+#~ msgid "Replace service URL – delete all layers depends to it"
+#~ msgstr ""
+
