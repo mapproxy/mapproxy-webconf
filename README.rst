@@ -28,6 +28,10 @@ To install from source just do::
     cd mapproxy-webconf/app
     pip install -r requirements.txt
 
+Create your own configuration file from the template::
+
+    cp config.tmpl.ini config.ini
+
 Then to start MapProxy WebConf do:
 
     python manage.py runserver
@@ -38,9 +42,7 @@ Open http://localhost:8080/ in your browser.
 Configuration
 -------------
 
-MapProxy WebConf has a config.ini file for the configuration.
-
-::
+MapProxy WebConf has a config.ini file for the configuration::
 
     [app]
     # path where the yaml-files are stored
