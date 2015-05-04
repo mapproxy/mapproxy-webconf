@@ -299,7 +299,16 @@ class ConfigParser(object):
     """
 
     """Default values, set by subclass"""
-    defaults = {}
+    defaults = {
+        'app': {
+            'demo': False,
+            'output_path': '/tmp/',
+            'storage_path': './',
+            'sqlite_db' : 'mapproxy.sqlite',
+            'language' : 'en',
+            'supported_languages': 'en,de',
+        }
+    }
 
     def __init__(self, parser, fname):
         self.parser = parser
@@ -311,9 +320,9 @@ class ConfigParser(object):
         try:
             with open(fname) as fp:
                 parser.readfp(fp)
-        except Exception, ex:
-            #XXXkai: logging?
-            print 'Unable to read configuration: %s', ex
+        except IOError, ex:
+            print 'Configuration file not found. Use default configuration.'
+            print '%s'% ex
         return cls(parser, fname)
 
     def has_option(self, section, name):
