@@ -1,6 +1,3 @@
-import os
-import gettext
-
 from mapproxy.grid import tile_grid, GridError
 from mapproxy.srs import SRS, generate_envelope_points
 from mapproxy.script.scales import scale_to_res, res_to_scale
@@ -15,11 +12,6 @@ class InvalidGridBBoxTransformationException(Exception):
 class InvalidTileBBoxTransformationException(Exception):
     pass
 
-try:
-    translation = gettext.translation('messages', os.path.join(os.path.dirname(os.path.realpath(__file__)), 'locale'), ['de'])
-    _ = translation.ugettext
-except IOError as e:
-    print e
 
 class ConfigGeoJSONGrid(object):
     def __init__(self, request_bbox=[], grid_bbox=[], level=None, grid_srs=None, grid_bbox_srs=None, map_srs=None, res=[], scales=[], origin='ll', units='m', dpi=None):
