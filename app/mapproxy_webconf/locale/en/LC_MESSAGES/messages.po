@@ -61,15 +61,15 @@ msgstr "Missing data"
 
 #: mapproxy_webconf/app.py:470
 msgid "Given grid bbox is invalid for used grid srs"
-msgstr "You cannot use this BoudingBox with the selected coordinate system"
+msgstr "You cannot use this BBOX with the selected coordinate system"
 
 #: mapproxy_webconf/app.py:473
 msgid "Given grid could not be displayed in map srs"
-msgstr "The Grid cannot be displayed in the map"
+msgstr "The grid cannot be displayed in the map"
 
 #: mapproxy_webconf/app.py:488
 msgid "Invalid request"
-msgstr "Invalid Request"
+msgstr "Invalid request"
 
 #: mapproxy_webconf/app.py:492
 msgid "No project name given"
@@ -167,7 +167,7 @@ msgstr "Missing JSON data"
 
 #: mapproxy_webconf/lib/geojson.py:151
 msgid "Given bbox can not be used with given SRS"
-msgstr "Entered BoundingBox can not be used with the selected SRS"
+msgstr "Entered BBOX can not be used with the selected SRS"
 
 #: mapproxy_webconf/lib/geojson.py:157
 msgid "Too many tiles. Please zoom in."
@@ -242,7 +242,7 @@ msgstr "Not shown caches"
 #: mapproxy_webconf/templates/layers.html:56
 #: mapproxy_webconf/templates/sources.html:48
 msgid "edit manual"
-msgstr "edit manual"
+msgstr "edit manually"
 
 #: mapproxy_webconf/templates/caches.html:45
 #: mapproxy_webconf/templates/grids.html:51
@@ -437,7 +437,7 @@ msgstr "SRS"
 #: mapproxy_webconf/templates/grids.html:126
 #: mapproxy_webconf/templates/sources.html:218
 msgid "BBox"
-msgstr "BoundingBox"
+msgstr "BBOX"
 
 #: mapproxy_webconf/templates/grids.html:132
 #: mapproxy_webconf/templates/sources.html:241
@@ -461,7 +461,7 @@ msgstr "South"
 
 #: mapproxy_webconf/templates/grids.html:180
 msgid "BBox SRS"
-msgstr "BoundingBox SRS"
+msgstr "BBOX SRS"
 
 #: mapproxy_webconf/templates/grids.html:200
 msgid "Calculate tiles"
@@ -502,8 +502,7 @@ msgid ""
 "If you unlock this grid it you need to check settings of all caches you "
 "use this grid and delete all affacted caches from disk"
 msgstr ""
-"If you unlock this grid it you need to check settings of all caches you "
-"use this grid and delete all affacted caches from disk"
+"You will need to delete all affacted caches from disk, if you unlock and make any changes to this grid."
 
 #: mapproxy_webconf/templates/grids.html:335
 msgid "Refresh"
@@ -597,8 +596,8 @@ msgstr "Edit configuration"
 #: mapproxy_webconf/templates/projects.html:6
 msgid "demo - you dont see all projects"
 msgstr ""
-"The MapProxy webconf runs on demo modus. You are not able to see all "
-"projects. Copy the Demo Project to test the configuration tool."
+"MapProxy WebConf runs in demo mode. You are not able to see all "
+"projects. Copy the demo project to test the WebConf tool."
 
 #: mapproxy_webconf/templates/projects.html:9
 msgid "Project name"
@@ -934,20 +933,20 @@ msgstr "Back to the form"
 
 #: mapproxy_webconf/templates/angular/editarea.html:43
 msgid "Back to form editing info text - lose some inputs"
-msgstr "Back to form editing info text - lose some inputs"
+msgstr "Back to the form. You will lose any changes made."
 
 #: mapproxy_webconf/templates/angular/layerswitcher.html:31
 #: mapproxy_webconf/templates/resources/base.js:40
 msgid "Background Layer"
-msgstr "Backgroundlayer"
+msgstr "Background layer"
 
 #: mapproxy_webconf/templates/angular/layerswitcher.html:38
 msgid "WMS Layer"
-msgstr "WMS Layer"
+msgstr "WMS layer"
 
 #: mapproxy_webconf/templates/angular/layerswitcher.html:45
 msgid "Vector Layer"
-msgstr "Vector Layer"
+msgstr "Vector layer"
 
 #: mapproxy_webconf/templates/angular/openlayers_gridextension.html:5
 msgid "Select grid level"
@@ -963,19 +962,19 @@ msgstr "Show labels"
 
 #: mapproxy_webconf/templates/angular/openlayers_toolbar_extension.html:7
 msgid "Draw Polygon"
-msgstr "Draw Polygon"
+msgstr "Draw polygon"
 
 #: mapproxy_webconf/templates/angular/openlayers_toolbar_extension.html:13
 msgid "Draw Rect"
-msgstr "Draw Rectangle"
+msgstr "Draw rectangle"
 
 #: mapproxy_webconf/templates/angular/openlayers_toolbar_extension.html:19
 msgid "Edit Geometry"
-msgstr "Edit Geometry"
+msgstr "Edit geometry"
 
 #: mapproxy_webconf/templates/angular/openlayers_toolbar_extension.html:25
 msgid "Delete Geometry"
-msgstr "Delete Geometry"
+msgstr "Delete geometry"
 
 #: mapproxy_webconf/templates/angular/openlayersmap.html:6
 msgid "Keep changes?"
@@ -1111,7 +1110,7 @@ msgstr "Deleted successfully"
 
 #: mapproxy_webconf/templates/resources/translations.js:34
 msgid "Structure successful updated"
-msgstr "Strucutre updated successfully"
+msgstr "Structure updated successfully"
 
 #: mapproxy_webconf/templates/resources/translations.js:35
 msgid "Can not delete because of dependencies"

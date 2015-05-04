@@ -1,6 +1,6 @@
 {
     "source_available_wms": {
-        "content": "<p>Add a WMS Service as a Source to MapProxy. After adding the Layer you can drag and drop the url and the layers to your source."
+        "content": "<p>Add a WMS service as a source to MapProxy. After adding the layer you can drag and drop the URL and the layers to your source."
     },
     "sources_name": {
         "content": "Add a name for the source."
@@ -12,16 +12,16 @@
         "content": "Define your layers. MapProxy will merge multiple layers from bottom to top."
     },
     "sources_manual_add_layers": {
-        "content": "Add a layer manually if your WMS do not deliver a Capabilities-Document."
+        "content": "Add a layer manually if your WMS do not proviude a Capabilities document."
     },
     "sources_supported_formats": {
-        "content": "Use this option to specify which image formats you source WMS supports. MapProxy only requests images in one of these formats, and will convert any image if it needs another format."
+        "content": "Use this option to specify which image formats your source WMS supports. MapProxy only requests images in one of these formats, and will convert any image if it needs another format."
     },
     "sources_add_wms": {
-        "content": "Add the URL from your WMS Source. The app will request the Capabilities-Document and will show the informations."
+        "content": "Add the URL from your WMS source. The app will request the Capabilities-Document and will show the informations."
     },
     "sources_coverage": {
-        "content": "Define the covered area of the source. The source will only be requested if there is an intersection between the requested data and the coverage. Add a boundingbox or draw a polygon."
+        "content": "Define the covered area of the source. The source will only be requested if there is an intersection between the requested data and the coverage. Add a bounding box or draw a polygon."
     },
     "sources_supported_srs": {
         "content": "A list with SRSs that the WMS source supports. MapProxy will only query the source in these SRSs. It will reproject data if it needs to get data from this layer in any other SRS."
@@ -66,10 +66,10 @@
         "content": "MapProxy will try to use this format to request new tiles, if it is not set format is used. This option has no effect if the source does not support that format or the format of the source is set explicitly."
     },
     "cache_sources_list": {
-        "content": "Drag your Sources into <em>Sources</em> to create a Cache."
+        "content": "Drag your sources into <em>sources</em> to create a cache."
     },
     "cache_caches_list": {
-        "content": "You can also use Caches as a Source. Drag your cache into <em>Sources</em> to create a new Cache."
+        "content": "You can also use caches as a source. Drag your cache into <em>sources</em> to create a new cache."
     },
     "cache_grids_list": {
         "content": "You can configure one or more grids for each cache. MapProxy will create one cache for each grid.."
@@ -87,10 +87,10 @@
         "content": "A list of data sources for this layer. MapProxy will merge multiple sources from bottom to top."
     },
     "layer_caches_list": {
-        "content": "Drag your Cache into <em>Sources</em>."
+        "content": "Drag your cache into <em>sources</em>."
     },
     "layer_sources_list": {
-        "content": "You can also use uncached services. Drag your sources into <em>Sources</em>."
+        "content": "You can also use uncached services. Drag your sources into <em>sources</em>."
     },
     "services_demo": {
         "content": "MapProxy comes with a demo service that lists all configured WMS and TMS layers. You can test each layer with a simple OpenLayers client."
@@ -138,6 +138,6 @@
         "content": "This coordinate systems are available in the app."
     },
      "default_config_add_srs": {
-        "content": "Add a coordinate system for your select fields in the app,written as EPSG:xxxx."
+        "content": "Make a new coordinate system available in WebConf. Write as EPSG:xxxx"
     }
 }
