@@ -8,6 +8,7 @@ import json
 from bottle import PluginError
 
 from mapproxy_webconf import utils, defaults
+from mapproxy_webconf.demo import DEMO_CONFIG
 
 class YAMLStorePlugin(object):
     name = 'yamlstore'
@@ -115,7 +116,8 @@ class SQLiteStore(object):
         self.db = sqlite3.connect(filename)
         self.db.row_factory = sqlite3.Row
         self._init_db()
-        self._init_project('base')
+        self._init_project('mapproxy-demo')
+        self._demo_project('mapproxy-demo')
 
     def _init_db(self):
         self.db.execute("""
@@ -158,6 +160,18 @@ class SQLiteStore(object):
 
         cur.executemany("INSERT INTO store (id, section, project, data) VALUES (:id, :section, :project, :data)", inserts)
         self.db.commit()
+
+    def _demo_project(self, project):
+        cur = self.db.cursor()
+        cur.execute("SELECT * FROM store WHERE section ='wms_capabilities' AND project=?", (project,))
+        if not len(cur.fetchall()):
+            for id in DEMO_CONFIG:
+                inserts = []
+                section_id = self.create_section_id(project)
+                data = json.dumps(DEMO_CONFIG[id]['data'])
+                inserts.append({'id': section_id, 'section': DEMO_CONFIG[id]['section'], 'project': project, 'data': data})
+                cur.executemany("INSERT INTO store (id, section, project, data) VALUES (:id, :section, :project, :data)", inserts)
+                self.db.commit()
 
     def create_section_id(self, project):
         section_id = 1

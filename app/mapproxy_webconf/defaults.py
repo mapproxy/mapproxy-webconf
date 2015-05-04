@@ -103,7 +103,7 @@ PROJECT_SERVICES = {
         "md": {
             "title": "Default WMS"
         },
-        "srs": ["EPSG:4326"]
+        "srs": ["EPSG:4326", "EPSG:3857", "EPSG:900913"]
     },
     "kml": {},
     "tms": {},
