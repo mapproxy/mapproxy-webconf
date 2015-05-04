@@ -1,17 +1,15 @@
 Motivation & Current implementation
 ------------------------------------
 
-MapProxy WebConf is a small webbased configuration tool for MapProxy.
+MapProxy WebConf is a small web-based configuration tool for MapProxy.
 
-There are two configuration files in the YAML Format used by MapProxy. The main file configures all aspects of the server: Which servers should be started, where comes the data from, what should be cached, etc. The second file is the configuration for the mapproxy-seed tool.
+The current implementation of MapProxy WebConf is able to create new configurations and to save them as .yaml files. The configuration files are stored in the configured output path. The name of the configuration file is the project name.
 
-The current implementation of MapProxy WebConf is able to create the main configuration and save them in the YAML format into a file. The configuration files are stored in the configured output path. The name of the configuration file is the project name.
-
-Not all MapProxy options are mapped. But with the edit manually mode, you are able to add each configuration parameter to your mapproxy config.
+Not all MapProxy options are available from WebConf. But with the `edit manually` mode, you are able to add the missing configuration parameters to your config.
 
 The MapProxy documentation is available at: http://mapproxy.org/docs/latest/
 
-Note: In the current implementation the MapProxy WebConf don't have a demo client and you are not able to load existing MapProxy configurations.
+Note: In the current implementation the MapProxy WebConf doesn't have a demo client and you are not able to load existing MapProxy configurations.
 
 Installation
 ------------
@@ -20,7 +18,7 @@ We recommend to install MapProxy WebConf into a virtual Python environment.
 
 A virtualenv is a self-contained Python installation where you can install arbitrary Python packages without affecting the system installation.
 
-How to create a virutalenv we show you on the MapProxy documentation: http://mapproxy.org/docs/nightly/install.html#create-a-new-virtual-environment
+How to create a virutalenv is explained in the MapProxy documentation: http://mapproxy.org/docs/nightly/install.html#create-a-new-virtual-environment
 
 To install from source just do::
 
@@ -32,7 +30,7 @@ Create your own configuration file from the template::
 
     cp config.tmpl.ini config.ini
 
-Then to start MapProxy WebConf do:
+Then start MapProxy WebConf:
 
     python manage.py runserver
 
