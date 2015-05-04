@@ -113,9 +113,6 @@
     "service_wms_metadata": {
         "content": "Metadata are used for the WMS GetCapabilities responses."
     },
-    "globals_list": {
-        "content": "Here you can define some internals of MapProxy and default values."
-    },
     "globals_cache": {
         "content": "Here you can define some options that affect the way MapProxy create the cache."
     },

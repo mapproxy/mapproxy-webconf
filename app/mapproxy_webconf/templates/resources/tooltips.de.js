@@ -125,9 +125,6 @@
     "service_wms_metadata": {
         "content": "<p>Die Metadaten des WMS Dienstes werden im Capabilities-Dokument angegeben. Diese Informationen dienen dem Nutzer als zusätzliche Information.</p> Die Daten sind optional und können auch freigelassen werden."
     },
-    "globals_list": {
-        "content": "In diesem Bereich können interne Einstellungen konfiguriert werden, die in allen Bereichen von MapProxy verwendet werden."
-    },
     "globals_cache": {
         "content": "Definieren Sie die globalen Cache-Optionen von MapProxy."
     },
