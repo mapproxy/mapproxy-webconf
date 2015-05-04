@@ -43,7 +43,7 @@ def save_atomic(filename, content, makedirs=True):
 #source http://stackoverflow.com/questions/13101653/python-convert-complex-dictionary-of-strings-from-unicode-to-ascii
 def convert(input):
     if isinstance(input, dict):
-        return {convert(key): convert(value) for key, value in input.iteritems()}
+        return dict((convert(key), convert(value)) for key, value in input.iteritems())
     elif isinstance(input, list):
         return [convert(element) for element in input]
     elif isinstance(input, unicode):
