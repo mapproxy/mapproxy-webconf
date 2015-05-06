@@ -1,5 +1,6 @@
 Babel==1.3
 Jinja2==2.7.3
+#MapPorxy==1.8.0 # wait till it's released
 git+git://github.com/mapproxy/mapproxy.git
 MarkupSafe==0.23
 Pillow==2.8.1
