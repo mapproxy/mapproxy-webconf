@@ -104,7 +104,7 @@ def polygons(config, tiles, labeled=True):
         if not tile:
             continue
 
-        tile_bbox = config.tilegrid.tile_bbox(tile)
+        tile_bbox = config.tilegrid.tile_bbox(tile, limit=True)
         linestring = generate_envelope_points(tile_bbox, defaults.TILE_POLYGON_POINTS)
         linestring = list(config.grid_srs.transform_to(config.map_srs, linestring)) if config.map_srs and config.grid_srs else list(linestring)
         polygon = [linestring + [linestring[0]]]
