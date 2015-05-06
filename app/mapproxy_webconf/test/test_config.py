@@ -99,7 +99,7 @@ def test_layer_tree():
 
 class TestMapProxyWrite(helper.TempDirTest):
     def test_write_mapproxy_conf(self):
-        storage = SQLiteStore(p.join(self.tmp_dir, 'storage1.sqlite'))
+        storage = SQLiteStore(p.join(self.tmp_dir, 'storage1.sqlite'), test=True)
         grid_id = storage.add('grids', 'base', {'data': {'name': 'webmercator', 'srs': 'EPSG:3857'}})
         source_id = storage.add('sources', 'base', {'data': {'name': 'source', 'type': 'wms'}})
         cache_id = storage.add('caches', 'base', {'data': {'name': 'cache', 'grids': [grid_id], 'sources': [source_id]}})
@@ -126,7 +126,7 @@ class TestRoundTrip(helper.TempDirTest):
         config.fill_storage_with_mapproxy_conf(storage, 'base', mapproxy_conf)
 
         # write out config from storage1
-        tmp_mapproxy_conf = config.mapproxy_conf_from_storage(storage, 'base')
+        tmp_mapproxy_conf = config.mapproxy_conf_from_storage(storage, 'mapproxy-demo')
         tmp_out_file = p.join(self.tmp_dir, 'out.yaml')
         config.write_mapproxy_yaml(tmp_mapproxy_conf, tmp_out_file)
 
@@ -134,7 +134,7 @@ class TestRoundTrip(helper.TempDirTest):
         storage = SQLiteStore(p.join(self.tmp_dir, 'storage2.sqlite'))
         mapproxy_conf = config.load_mapproxy_yaml(tmp_out_file)
         config.fill_storage_with_mapproxy_conf(storage, 'base', mapproxy_conf)
-        new_mapproxy_conf = config.mapproxy_conf_from_storage(storage, 'base')
+        new_mapproxy_conf = config.mapproxy_conf_from_storage(storage, 'mapproxy-demo')
 
         # compare output of storage1 with storage2
         assert tmp_mapproxy_conf == new_mapproxy_conf
