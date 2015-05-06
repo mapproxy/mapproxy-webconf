@@ -108,7 +108,7 @@ class TestMapProxyWrite(helper.TempDirTest):
         tmp_mapproxy_conf = config.mapproxy_conf_from_storage(storage, 'base')
 
         expected = {
-            'services': {'wms': {'srs': ['EPSG:4326'], 'md': {'title': 'Default WMS'}}, 'demo': {}},
+            'services': {'wms': {'srs': ['EPSG:4326', 'EPSG:3857', 'EPSG:900913'], 'md': {'title': 'Default WMS'}}, 'demo': {}},
             'layers': [{'name': 'layer', 'sources': ['cache']}],
             'grids': {'webmercator': {'srs': 'EPSG:3857'}},
             'sources': {'source': {'type': 'wms'}},

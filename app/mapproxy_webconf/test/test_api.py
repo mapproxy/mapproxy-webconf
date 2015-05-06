@@ -332,11 +332,11 @@ class TestGeoOpperations(ServerAPITest):
     def test_scales_to_res_to_scales(self):
         scales = [10000000, 1000000, 100000, 10000, 1000, 100, 10, 1]
 
-        resp = self.app.post_json('/res', {'data': scales})
+        resp = self.app.post_json('/convert_res_scales', {'data': scales})
         assert resp.status_code == 200
         assert resp.json.has_key('result')
 
-        resp = self.app.post_json('/scales', {'data': resp.json['result'], 'mode': 'to_scales'})
+        resp = self.app.post_json('/convert_res_scales', {'data': resp.json['result'], 'mode': 'to_scales'})
         assert resp.status_code == 200
         assert resp.json.has_key('result')
 
@@ -346,16 +346,16 @@ class TestGeoOpperations(ServerAPITest):
     def test_res_to_scales_to_res(self):
         res = [1.40625, 0.703125, 0.3515625, 0.17578125]
 
-        resp = self.app.post_json('/scales', {'data': res, 'mode': 'to_scales', 'dpi': 72})
+        resp = self.app.post_json('/convert_res_scales', {'data': res, 'mode': 'to_scales', 'dpi': 72})
         assert resp.status_code == 200
         assert resp.json.has_key('result')
 
-        resp = self.app.post_json('/res', {'data': resp.json['result'], 'dpi': 72})
+        resp = self.app.post_json('/convert_res_scales', {'data': resp.json['result'], 'dpi': 72})
         assert resp.status_code == 200
         assert resp.json.has_key('result')
 
         for idx, result in enumerate(resp.json['result']):
-            assert_almost_equal(result, res[idx], places=5+idx)
+            assert_almost_equal(result, res[idx], places=5)
 
     def test_transform_bbox(self):
         bbox = [8,52,9,53]
