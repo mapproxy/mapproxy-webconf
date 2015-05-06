@@ -508,8 +508,14 @@ def delete_project(storage):
         if storage.delete_project(project):
             response.status = 204
 
-def init_app(storage_dir):
-    app.install(storage.SQLiteStorePlugin(os.path.join(configuration.get('app', 'storage_path'), configuration.get('app', 'sqlite_db'))))
+def init_app(storage_dir, test=False):
+    app.install(
+        storage.SQLiteStorePlugin(
+            os.path.join(configuration.get('app', 'storage_path'),
+            configuration.get('app', 'sqlite_db')),
+            test=test
+        )
+    )
     app.install(translation.TranslationPlugin(configuration.get('app', 'language')))
     return app
 

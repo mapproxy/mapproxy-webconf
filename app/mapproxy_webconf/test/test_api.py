@@ -15,7 +15,7 @@ bottle.debug(True)
 class ServerAPITest(helper.TempDirTest):
     def setup(self):
         helper.TempDirTest.setup(self)
-        self._app = init_app(self.tmp_dir)
+        self._app = init_app(self.tmp_dir, test=True)
         self.app = TestApp(self._app)
 
     def teardown(self):
@@ -287,7 +287,7 @@ class TestServerAPIExistingConf(helper.TempDirTest):
 
     def setup(self):
         helper.TempDirTest.setup(self)
-        self.storage_plugin = storage.SQLiteStorePlugin(os.path.join(self.tmp_dir, 'mapproxy.yaml'))
+        self.storage_plugin = storage.SQLiteStorePlugin(os.path.join(self.tmp_dir, 'mapproxy.yaml'), test=True)
         mapproxy_conf = config.load_mapproxy_yaml(os.path.join(os.path.dirname(__file__), 'test.yaml'))
         config.fill_storage_with_mapproxy_conf(self.storage_plugin.storage, 'base', mapproxy_conf)
         self._app = app

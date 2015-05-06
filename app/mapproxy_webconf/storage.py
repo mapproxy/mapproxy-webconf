@@ -77,8 +77,8 @@ class YAMLStore(object):
 class SQLiteStorePlugin(object):
     name = 'sqlitestore'
 
-    def __init__(self, dbfile, keyword='storage'):
-        self.storage = SQLiteStore(dbfile)
+    def __init__(self, dbfile, keyword='storage', test=False):
+        self.storage = SQLiteStore(dbfile, test)
         self.keyword = keyword
 
     def setup(self, app):
@@ -111,13 +111,16 @@ class SQLiteStorePlugin(object):
         return wrapper
 
 class SQLiteStore(object):
-    def __init__(self, filename):
+    def __init__(self, filename, test=False):
         self.filename = filename
         self.db = sqlite3.connect(filename)
         self.db.row_factory = sqlite3.Row
         self._init_db()
-        self._init_project('mapproxy-demo')
-        self._demo_project('mapproxy-demo')
+        if not test:
+            self._init_project('mapproxy-demo')
+            self._demo_project('mapproxy-demo')
+        else:
+            self._init_project('base')
 
     def _init_db(self):
         self.db.execute("""

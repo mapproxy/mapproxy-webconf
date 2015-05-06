@@ -7,7 +7,7 @@ import pytest
 class TestSQLiteStorage(TempDirTest):
     def setup(self):
         TempDirTest.setup(self)
-        self.storage = SQLiteStore(os.path.join(self.tmp_dir, 'test.sqlite'))
+        self.storage = SQLiteStore(os.path.join(self.tmp_dir, 'test.sqlite'), test=True)
 
     def test_get_non_existent_section(self):
         assert self.storage.get_all('sources', 'base') == {}
