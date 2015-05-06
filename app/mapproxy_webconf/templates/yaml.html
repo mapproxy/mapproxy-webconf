@@ -1,0 +1,8 @@
+%def content():
+<div class="col-md-12">
+    <h4>${ _('Your Mapproxy configuration') }</h4>
+    <pre>${ get('data') }</pre>
+</div>
+%end
+
+%rebase base_config base_content=content, project=get('project'), active='yaml'

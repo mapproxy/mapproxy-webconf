@@ -307,6 +307,13 @@ def services(project, storage):
     services = json.dumps(rest_services.list(project, storage))
     return template('services', project=project, defaults=defaults, services=services)
 
+@app.route('/project/<project>/conf/yaml', name='yaml')
+@require_project
+def yaml_view(project, storage):
+    mapproxy_conf = config.mapproxy_conf_from_storage(storage, project)
+    data = yaml.dump(mapproxy_conf, default_flow_style=False, Dumper=MapProxyYAMLDumper)
+    return template('yaml', project=project, data=data)
+
 @app.route('/conf/<project>/write_config', 'POST', name='write_config')
 @require_project
 def write_config(project, storage):
