@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-05-04 10:07+0200\n"
+"POT-Creation-Date: 2015-05-06 09:49+0200\n"
 "PO-Revision-Date: 2014-07-31 15:59+0100\n"
 "Last-Translator: \n"
 "Language-Team: en <LL@li.org>\n"
@@ -17,65 +17,65 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
 
-#: mapproxy_webconf/app.py:58
+#: mapproxy_webconf/app.py:61
 msgid "Not Found"
 msgstr "Page not found"
 
-#: mapproxy_webconf/app.py:61
+#: mapproxy_webconf/app.py:64
 msgid "Internal Server Error"
 msgstr "Internal Server Error"
 
-#: mapproxy_webconf/app.py:141 mapproxy_webconf/app.py:167
+#: mapproxy_webconf/app.py:144 mapproxy_webconf/app.py:170
 msgid "missing URL"
 msgstr "missing URL"
 
-#: mapproxy_webconf/app.py:146
+#: mapproxy_webconf/app.py:149
 msgid "no capabilities document found"
 msgstr "The URL provides no capabilities document"
 
-#: mapproxy_webconf/app.py:150
+#: mapproxy_webconf/app.py:153
 msgid "invalid URL"
 msgstr "Invalid URL"
 
-#: mapproxy_webconf/app.py:316
+#: mapproxy_webconf/app.py:327
 msgid "creating mapproxy config successful"
 msgstr ""
 "The MapProxy configuration file has been generated and saved to the "
 "specified location"
 
-#: mapproxy_webconf/app.py:319
+#: mapproxy_webconf/app.py:330
 msgid "creating mapproxy config failed"
 msgstr "MapProxy configuration file could not be processed"
 
-#: mapproxy_webconf/app.py:349
+#: mapproxy_webconf/app.py:360
 msgid "creating yaml failed"
 msgstr "Creating the YAML failed"
 
-#: mapproxy_webconf/app.py:358
+#: mapproxy_webconf/app.py:369
 msgid "parsing yaml failed"
 msgstr "Parsing the YAML failed"
 
-#: mapproxy_webconf/app.py:382
+#: mapproxy_webconf/app.py:393
 msgid "Missing data"
 msgstr "Missing data"
 
-#: mapproxy_webconf/app.py:470
+#: mapproxy_webconf/app.py:481
 msgid "Given grid bbox is invalid for used grid srs"
 msgstr "You cannot use this BBOX with the selected coordinate system"
 
-#: mapproxy_webconf/app.py:473
+#: mapproxy_webconf/app.py:484
 msgid "Given grid could not be displayed in map srs"
 msgstr "The grid cannot be displayed in the map"
 
-#: mapproxy_webconf/app.py:488
+#: mapproxy_webconf/app.py:499
 msgid "Invalid request"
 msgstr "Invalid request"
 
-#: mapproxy_webconf/app.py:492
+#: mapproxy_webconf/app.py:503
 msgid "No project name given"
 msgstr "Please enter a name for the project"
 
-#: mapproxy_webconf/app.py:495
+#: mapproxy_webconf/app.py:506
 #, python-format
 msgid "Project \"%(name)s\" already exists"
 msgstr "Project \"%(name)s\" already exists"
@@ -165,11 +165,11 @@ msgstr "Invalid JSON data"
 msgid "missing JSON data"
 msgstr "Missing JSON data"
 
-#: mapproxy_webconf/lib/geojson.py:151
+#: mapproxy_webconf/lib/geojson.py:143
 msgid "Given bbox can not be used with given SRS"
 msgstr "Entered BBOX can not be used with the selected SRS"
 
-#: mapproxy_webconf/lib/geojson.py:157
+#: mapproxy_webconf/lib/geojson.py:149
 msgid "Too many tiles. Please zoom in."
 msgstr "Too many tiles. Please zoom in."
 
@@ -502,7 +502,8 @@ msgid ""
 "If you unlock this grid it you need to check settings of all caches you "
 "use this grid and delete all affacted caches from disk"
 msgstr ""
-"You will need to delete all affacted caches from disk, if you unlock and make any changes to this grid."
+"You will need to delete all affacted caches from disk, if you unlock and "
+"make any changes to this grid."
 
 #: mapproxy_webconf/templates/grids.html:335
 msgid "Refresh"
@@ -596,8 +597,8 @@ msgstr "Edit configuration"
 #: mapproxy_webconf/templates/projects.html:6
 msgid "demo - you dont see all projects"
 msgstr ""
-"MapProxy WebConf runs in demo mode. You are not able to see all "
-"projects. Copy the demo project to test the WebConf tool."
+"MapProxy WebConf runs in demo mode. You are not able to see all projects."
+" Copy the demo project to test the WebConf tool."
 
 #: mapproxy_webconf/templates/projects.html:9
 msgid "Project name"
@@ -617,7 +618,7 @@ msgstr "Please confirm that you want to remove this project"
 
 #: mapproxy_webconf/templates/projects.html:35
 msgid "status mapproxy configuration"
-msgstr "Status of the mapproxy configuration"
+msgstr "Status of the MapProxy configuration"
 
 #: mapproxy_webconf/templates/projects.html:37
 msgid "valid"
@@ -876,6 +877,10 @@ msgstr "Loading..."
 #: mapproxy_webconf/templates/sources.html:548
 msgid "Load WMS"
 msgstr "Load WMS"
+
+#: mapproxy_webconf/templates/yaml.html:3
+msgid "Your Mapproxy configuration"
+msgstr "Your MapProxy configuration"
 
 #: mapproxy_webconf/templates/angular/base_templates.html:2
 msgid "This field is required"

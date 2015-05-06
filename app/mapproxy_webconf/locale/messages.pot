@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-05-04 10:07+0200\n"
+"POT-Creation-Date: 2015-05-06 09:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,63 +17,63 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
 
-#: mapproxy_webconf/app.py:58
+#: mapproxy_webconf/app.py:61
 msgid "Not Found"
 msgstr ""
 
-#: mapproxy_webconf/app.py:61
+#: mapproxy_webconf/app.py:64
 msgid "Internal Server Error"
 msgstr ""
 
-#: mapproxy_webconf/app.py:141 mapproxy_webconf/app.py:167
+#: mapproxy_webconf/app.py:144 mapproxy_webconf/app.py:170
 msgid "missing URL"
 msgstr ""
 
-#: mapproxy_webconf/app.py:146
+#: mapproxy_webconf/app.py:149
 msgid "no capabilities document found"
 msgstr ""
 
-#: mapproxy_webconf/app.py:150
+#: mapproxy_webconf/app.py:153
 msgid "invalid URL"
 msgstr ""
 
-#: mapproxy_webconf/app.py:316
+#: mapproxy_webconf/app.py:327
 msgid "creating mapproxy config successful"
 msgstr ""
 
-#: mapproxy_webconf/app.py:319
+#: mapproxy_webconf/app.py:330
 msgid "creating mapproxy config failed"
 msgstr ""
 
-#: mapproxy_webconf/app.py:349
+#: mapproxy_webconf/app.py:360
 msgid "creating yaml failed"
 msgstr ""
 
-#: mapproxy_webconf/app.py:358
+#: mapproxy_webconf/app.py:369
 msgid "parsing yaml failed"
 msgstr ""
 
-#: mapproxy_webconf/app.py:382
+#: mapproxy_webconf/app.py:393
 msgid "Missing data"
 msgstr ""
 
-#: mapproxy_webconf/app.py:470
+#: mapproxy_webconf/app.py:481
 msgid "Given grid bbox is invalid for used grid srs"
 msgstr ""
 
-#: mapproxy_webconf/app.py:473
+#: mapproxy_webconf/app.py:484
 msgid "Given grid could not be displayed in map srs"
 msgstr ""
 
-#: mapproxy_webconf/app.py:488
+#: mapproxy_webconf/app.py:499
 msgid "Invalid request"
 msgstr ""
 
-#: mapproxy_webconf/app.py:492
+#: mapproxy_webconf/app.py:503
 msgid "No project name given"
 msgstr ""
 
-#: mapproxy_webconf/app.py:495
+#: mapproxy_webconf/app.py:506
 #, python-format
 msgid "Project \"%(name)s\" already exists"
 msgstr ""
@@ -157,11 +157,11 @@ msgstr ""
 msgid "missing JSON data"
 msgstr ""
 
-#: mapproxy_webconf/lib/geojson.py:151
+#: mapproxy_webconf/lib/geojson.py:143
 msgid "Given bbox can not be used with given SRS"
 msgstr ""
 
-#: mapproxy_webconf/lib/geojson.py:157
+#: mapproxy_webconf/lib/geojson.py:149
 msgid "Too many tiles. Please zoom in."
 msgstr ""
 
@@ -864,6 +864,10 @@ msgstr ""
 
 #: mapproxy_webconf/templates/sources.html:548
 msgid "Load WMS"
+msgstr ""
+
+#: mapproxy_webconf/templates/yaml.html:3
+msgid "Your Mapproxy configuration"
 msgstr ""
 
 #: mapproxy_webconf/templates/angular/base_templates.html:2
