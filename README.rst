@@ -24,7 +24,7 @@ To install from source just do::
 
     git clone https://github.com/mapproxy/mapproxy-webconf.git
     cd mapproxy-webconf/app
-    pip install -r requirements.txt
+    pip install -e .
 
 Create your own configuration file from the template::
 
@@ -32,7 +32,7 @@ Create your own configuration file from the template::
 
 Then start MapProxy WebConf:
 
-    python manage.py runserver
+    mapproxy-webconf serve-develop config.ini
 
 Open http://localhost:8080/ in your browser.
 
