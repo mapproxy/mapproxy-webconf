@@ -1,0 +1,8 @@
+include setup.py
+include setup.cfg
+
+include requirements-tests.txt
+
+recursive-include mapproxy_webconf/locale *.po *.mo
+recursive-include mapproxy_webconf/templates *.html *.js
+recursive-include mapproxy_webconf/static *.*
