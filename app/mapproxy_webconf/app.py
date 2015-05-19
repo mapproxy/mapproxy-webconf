@@ -29,14 +29,10 @@ from .constants import OGC_DPI, UNIT_FACTOR
 
 from .lib.geojson import ConfigGeoJSONGrid, features, InvalidGridBBoxTransformationException, InvalidTileBBoxTransformationException
 from .lib import grid
-configuration = config.ConfigParser.from_file('./config.ini')
 
 app = bottle.Bottle()
 bottle.TEMPLATE_PATH = [os.path.join(os.path.dirname(__file__), 'templates')]
-SimpleTemplate.defaults["get_url"] = app.get_url
-SimpleTemplate.defaults["demo"] = configuration.get_bool('app', 'demo')
 
-#coverage in oragne
 DEMO_PROJECT_REGEXP = "[a-f0-9]{32}"
 
 #decorators
@@ -46,7 +42,7 @@ def require_project(func):
             check_project = re.compile(DEMO_PROJECT_REGEXP)
 
             # on demo modus only show project with hash
-            demo = configuration.get_bool('app', 'demo')
+            demo = app.configuration.get_bool('app', 'demo')
             if demo and not check_project.match(kwargs['project']):
                 abort(404)
             if 'storage' in inspect.getargspec(func).args:
@@ -227,7 +223,7 @@ def index():
 @app.route('/projects', name='projects')
 def projects(storage):
     projects = {}
-    demo = configuration.get_bool('app', 'demo')
+    demo = app.configuration.get_bool('app', 'demo')
 
     check_project = re.compile(DEMO_PROJECT_REGEXP)
     for project in storage.get_projects():
@@ -317,12 +313,12 @@ def yaml_view(project, storage):
 @app.route('/conf/<project>/write_config', 'POST', name='write_config')
 @require_project
 def write_config(project, storage):
-    if configuration.get_bool('app', 'demo'):
+    if app.configuration.get_bool('app', 'demo'):
         abort(500)
 
     mapproxy_conf = config.mapproxy_conf_from_storage(storage, project)
     try:
-        config.write_mapproxy_yaml(mapproxy_conf, os.path.join(configuration.get('app', 'output_path'), project + '.yaml'))
+        config.write_mapproxy_yaml(mapproxy_conf, os.path.join(app.configuration.get('app', 'output_path'), project + '.yaml'))
         return {'success': _('creating mapproxy config successful')}
     except:
         response.status = 400
@@ -515,7 +511,8 @@ def delete_project(storage):
         if storage.delete_project(project):
             response.status = 204
 
-def init_app(storage_dir, test=False):
+def init_app(config_file, test=False):
+    configuration = config.ConfigParser.from_file(config_file)
     app.install(
         storage.SQLiteStorePlugin(
             os.path.join(configuration.get('app', 'storage_path'),
@@ -523,7 +520,12 @@ def init_app(storage_dir, test=False):
             test=test
         )
     )
-    app.install(translation.TranslationPlugin(configuration.get('app', 'language')))
+    app.install(translation.TranslationPlugin(configuration))
+    app.configuration = configuration
+
+    SimpleTemplate.defaults["demo"] = configuration.get_bool('app', 'demo')
+    SimpleTemplate.defaults["get_url"] = app.get_url
+
     return app
 
 if __name__ == '__main__':

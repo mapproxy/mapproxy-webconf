@@ -3,13 +3,10 @@ import gettext
 
 from bottle import request, response, SimpleTemplate
 
-from . import config
-configuration = config.ConfigParser.from_file('./config.ini')
-
 class TranslationPlugin(object):
     name = 'translation'
 
-    def __init__(self, default_language):
+    def __init__(self, configuration):
         try:
             self.translations = {
                 'de': gettext.translation('messages', os.path.join(os.path.dirname(os.path.realpath(__file__)), 'locale'), ['de']),
@@ -21,6 +18,8 @@ class TranslationPlugin(object):
         # read langauge from config file to get supported_langauges
         self.supported_languages = configuration.get('app', 'supported_languages')
         self.supported_languages = self.supported_languages.split(',')
+
+        default_language = configuration.get('app', 'language')
 
         SimpleTemplate.defaults["supported_languages"] = self.supported_languages
         self.install_language(default_language if default_language in self.supported_languages else self.supported_languages[0])
