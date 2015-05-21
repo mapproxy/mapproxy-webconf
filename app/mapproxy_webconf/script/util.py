@@ -4,6 +4,7 @@ import optparse
 import sys
 
 from mapproxy.script.util import NonStrictOptionParser, parse_bind_address, print_items
+from mapproxy_webconf.version import version
 
 def serve_develop_command(args):
     parser = optparse.OptionParser("usage: %prog serve-develop [options] mapproxy.yaml")
@@ -46,6 +47,10 @@ def main():
         parser.print_help()
         print()
         print_items(commands)
+        sys.exit(1)
+
+    if len(args) == 1 and args[0] == '--version':
+        print('MapProxy Webconf ' + version)
         sys.exit(1)
 
     command = args[0]
