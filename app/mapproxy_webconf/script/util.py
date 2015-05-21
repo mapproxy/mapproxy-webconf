@@ -18,13 +18,13 @@ def serve_develop_command(args):
         print("\nERROR: Configuration file required.")
         sys.exit(1)
 
-    storage_dir = args[1]
+    config_file = args[1]
     host, port = parse_bind_address(options.address)
 
     from mapproxy_webconf.app import init_app
 
     try:
-        app = init_app(storage_dir)
+        app = init_app(config_file)
     except Exception, ex:
         print("\nERROR: %s." % (ex))
         sys.exit(2)
