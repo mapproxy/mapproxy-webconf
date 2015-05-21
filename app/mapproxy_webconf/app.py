@@ -511,7 +511,7 @@ def delete_project(storage):
         if storage.delete_project(project):
             response.status = 204
 
-def init_app(config_file, test=False):
+def make_wsgi_app(config_file, test=False):
     configuration = config.ConfigParser.from_file(config_file)
     app.install(
         storage.SQLiteStorePlugin(

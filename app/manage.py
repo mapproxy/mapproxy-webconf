@@ -1,13 +1,12 @@
 import sys
 import scriptine
 from scriptine.shell import sh
-from mapproxy_webconf.app import init_app
+from mapproxy_webconf.app import make_wsgi_app
 
-def runserver_command(host='localhost', port=8080):
+def runserver_command(config_file, host='localhost', port=8080):
     sys.argv.insert(1, 'runserver') # required by reloader
-    app = init_app('./')
+    app = make_wsgi_app(config_file)
     app.run(host=host, port=port, debug=True, reloader=True)
-
 
 def babel_refresh_command():
     "Extract messages"
