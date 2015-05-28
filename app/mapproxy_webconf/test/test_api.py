@@ -2,7 +2,7 @@ import os
 
 from webtest import TestApp
 from nose.tools import assert_almost_equal
-from mapproxy_webconf.app import init_app, app
+from mapproxy_webconf.app import make_wsgi_app, app
 from mapproxy_webconf import bottle
 from mapproxy_webconf import storage, config
 from mapproxy_webconf.test import helper
@@ -15,7 +15,7 @@ bottle.debug(True)
 class ServerAPITest(helper.TempDirTest):
     def setup(self):
         helper.TempDirTest.setup(self)
-        self._app = init_app(self.tmp_dir, test=True)
+        self._app = make_wsgi_app(self.tmp_dir, test=True)
         self.app = TestApp(self._app)
 
     def teardown(self):
