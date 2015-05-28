@@ -2,3 +2,6 @@
 mapproxy.sqlite
 .DS_Store
 testing
+*.egg-info
+*.ropeproject
+config.ini
