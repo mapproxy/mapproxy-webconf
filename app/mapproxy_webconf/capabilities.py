@@ -1,10 +1,13 @@
 from xml.etree import ElementTree as etree
 try:
-    from urllib.parse import urlparse
+    import urllib.parse as urlparse
 except ImportError:
     import urlparse
 
-import urllib
+try:
+    from urllib.parse import urlencode
+except ImportError:
+    from urllib import urlencode
 
 from mapproxy.client import http
 
@@ -64,13 +67,13 @@ class WMS111Capabilities(object):
         llbbox_elem = layer_elem.find('LatLonBoundingBox')
         llbbox = None
         if llbbox_elem is not None:
-            llbbox = (
+            llbbox = [
                 llbbox_elem.attrib['minx'],
                 llbbox_elem.attrib['miny'],
                 llbbox_elem.attrib['maxx'],
                 llbbox_elem.attrib['maxy']
-            )
-            llbbox = map(float, llbbox)
+            ]
+            llbbox = list(map(float,llbbox))
         this_layer['llbbox'] = llbbox
 
         srs_elements = layer_elem.findall('SRS')
@@ -86,7 +89,7 @@ def wms_capabilities_url(url):
     query['SERVICE'] = 'WMS'
     query['VERSION'] = '1.1.1'
     query['REQUEST'] = 'GetCapabilities'
-    query_str = urllib.urlencode(query)
+    query_str = urlencode(query)
 
     return urlparse.urlunparse(
         urlparse.ParseResult(p.scheme, p.netloc, p.path, p.params, query_str, p.fragment)
@@ -106,7 +109,6 @@ def parse_capabilities_url(url):
     except http.HTTPClientError as ex:
         # TODO error handling
         raise ex
-
     if resp.code == 200:
         return parse_capabilities(resp)
 
