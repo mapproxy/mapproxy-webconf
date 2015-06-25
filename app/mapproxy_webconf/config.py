@@ -56,16 +56,16 @@ def create_id_name_map(*dicts):
     return id_map
 
 def validate(mapproxy_conf):
-    conf_dict = utils.convert(mapproxy_conf)
-    #check given mapproxy config against specs
+    # dont use for python 3 at this moment
+    # mapproxy_conf = utils.convert(mapproxy_conf)
 
-    errors, informal_only = validate_mapproxy_conf(conf_dict)
+    errors, informal_only = validate_mapproxy_conf(mapproxy_conf)
     if not informal_only:
         return (errors, informal_only)
 
     #check for needed sections to run mapproxy
     errors = []
-    sources_conf = conf_dict.get('sources', False)
+    sources_conf = mapproxy_conf.get('sources', False)
     if not sources_conf:
         errors.append(_('Missing sources section'))
     else:
@@ -79,9 +79,9 @@ def validate(mapproxy_conf):
                 else:
                     errors.append(_('Missing "req" for source %(source)s') % ({'source':name}))
 
-    grids_conf = conf_dict.get('grids', False)
+    grids_conf = mapproxy_conf.get('grids', False)
 
-    caches_conf = conf_dict.get('caches', False)
+    caches_conf = mapproxy_conf.get('caches', False)
     if caches_conf:
         for name, cache in caches_conf.items():
             sources = cache.get('sources', False)
@@ -100,7 +100,7 @@ def validate(mapproxy_conf):
                     if grid not in known_grids:
                         errors.append(_('Grid %(grid)s for cache %(cache)s not found in config') % ({'grid':grid, 'cache':name}))
 
-    layers_conf = conf_dict.get('layers', False)
+    layers_conf = mapproxy_conf.get('layers', False)
     if not layers_conf:
         errors.append(_('Missing layers section'))
     else:
@@ -118,7 +118,7 @@ def validate(mapproxy_conf):
                     if not found:
                         errors.append(_('Source %(source)s for layer %(layer)s neither found in caches- nor in sources-section') % ({'source':source, 'layer':layer['name']}))
 
-    services_conf = conf_dict.get('services', False)
+    services_conf = mapproxy_conf.get('services', False)
     if not services_conf:
         errors.append(_('Missing services section'))
 
@@ -158,7 +158,7 @@ def mapproxy_conf_from_storage(storage, project):
         clear_min_max_res_scales(layers, 'layer', defaults)
 
     if grids:
-        dpi = float(defaults.values()[0].get('dpi', OGC_DPI))
+        dpi = float(list(defaults.values())[0].get('dpi', OGC_DPI))
         for grid in grids.items():
             if 'scales' in grid[1].keys():
                 units = grid[1].get('units', 'm')
