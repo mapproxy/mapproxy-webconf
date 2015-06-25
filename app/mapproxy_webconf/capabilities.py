@@ -99,7 +99,7 @@ def parse_capabilities_url(url):
     client = http.HTTPClient()
     try:
         resp = client.open(url)
-    except http.HTTPClientError, ex:
+    except http.HTTPClientError as ex:
         # TODO error handling
         raise ex
 

@@ -320,9 +320,9 @@ class ConfigParser(object):
         try:
             with open(fname) as fp:
                 parser.readfp(fp)
-        except IOError, ex:
-            print 'Configuration file not found. Use default configuration.'
-            print '%s'% ex
+        except IOError as ex:
+            print('Configuration file not found. Use default configuration.')
+            print('%s' % ex)
         return cls(parser, fname)
 
     def has_option(self, section, name):

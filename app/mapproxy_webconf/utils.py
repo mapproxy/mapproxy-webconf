@@ -27,10 +27,9 @@ def save_atomic(filename, content, makedirs=True):
     if makedirs:
         try:
             os.makedirs(os.path.dirname(filename))
-        except OSError, ex:
+        except OSError as ex:
             if ex.errno != errno.EEXIST:
                 raise
-
 
     tmp_filename = filename + '~'
     with open(tmp_filename, 'wb') as f:

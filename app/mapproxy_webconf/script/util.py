@@ -25,7 +25,7 @@ def serve_develop_command(args):
 
     try:
         app = make_wsgi_app(config_file)
-    except Exception, ex:
+    except Exception as ex:
         print("\nERROR: %s." % (ex))
         sys.exit(2)
 

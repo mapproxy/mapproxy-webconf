@@ -63,7 +63,7 @@ class YAMLStore(object):
                     return {}
                 else:
                     return project_data
-        except IOError, ex:
+        except IOError as ex:
             if ex.errno == errno.ENOENT:
                 if default is DEFAULT_VALUE:
                     return {}
