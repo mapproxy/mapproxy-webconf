@@ -32,7 +32,7 @@ def fill_storage_with_mapproxy_conf(storage, project, mapproxy_conf):
 
                 storage.add(section_name, project, {'data': item})
         elif section_name in ['sources', 'caches', 'grids']:
-            for name, item in section.iteritems():
+            for name, item in section.items():
                 if item is None:
                     continue
                 item['name'] = name
@@ -42,7 +42,7 @@ def fill_storage_with_mapproxy_conf(storage, project, mapproxy_conf):
 
 def id_dict_to_named_dict(input):
     output = {}
-    for _, item in input.iteritems():
+    for _, item in input.items():
         name = item.pop('name')
         output[name] = item
     return output
@@ -50,7 +50,7 @@ def id_dict_to_named_dict(input):
 def create_id_name_map(*dicts):
     id_map = {}
     for d in dicts:
-        for key, value in d.iteritems():
+        for key, value in d.items():
             id_map[key] = value.get('name')
 
     return id_map
@@ -132,7 +132,7 @@ def mapproxy_conf_from_storage(storage, project):
     services = storage.get_all_data('services', project).values()
     if services:
         mapproxy_conf['services'] = {}
-        for service, config in services[0].items():
+        for service, config in list(services)[0].items():
             if 'active' in config and config['active']:
                 config.pop('active', None)
                 mapproxy_conf['services'][service] = config
@@ -182,7 +182,7 @@ def mapproxy_conf_from_storage(storage, project):
     if layers:
         mapproxy_conf['layers'] = [replace_ids_layer(l, id_map) for l in layers]
         for layer in mapproxy_conf['layers']:
-            if layer.has_key('sources'):
+            if 'sources' in layer:
                 layer['sources'] = list(reversed(layer['sources']))
 
     if used_caches:
@@ -199,7 +199,7 @@ def mapproxy_conf_from_storage(storage, project):
     return mapproxy_conf
 
 def clear_min_max_res_scales(data_elements, element_type, defaults):
-    dpi = float(defaults.values()[0].get('dpi', OGC_DPI))
+    dpi = float(list(defaults.values())[0].get('dpi', OGC_DPI))
     for data_element in data_elements:
         units = data_element.get('units', 'm')
         units = 1 if units == 'm' else UNIT_FACTOR
@@ -231,7 +231,7 @@ def replace_ids_layer(layer, id_map):
 def layer_tree(layers):
     root = []
     # add (sub)layers to parents
-    for layer in layers.itervalues():
+    for layer in layers.values():
         parent = layer.pop('_parent')
         if parent is None:
             root.append(layer)
@@ -239,12 +239,12 @@ def layer_tree(layers):
             layers[parent].setdefault('layers', []).append(layer)
 
     # order layers by rank
-    for layer in layers.itervalues():
+    for layer in layers.values():
         if 'layers' in layer:
             layer['layers'].sort(key=lambda x: x['_rank'])
 
     # remove _ranks
-    for layer in layers.itervalues():
+    for layer in layers.values():
         layer.pop('_rank')
 
     return root
@@ -257,8 +257,8 @@ def used_caches_and_sources(layers, caches, sources):
     used_cache_sources = find_cache_sources(caches)
     all_used_sources = used_layer_sources.union(used_cache_sources)
 
-    avail_caches = set(caches.iterkeys())
-    avail_sources = set(sources.iterkeys())
+    avail_caches = set(caches.keys())
+    avail_sources = set(sources.keys())
 
     used_caches = avail_caches.intersection(all_used_sources)
     used_sources = avail_sources.intersection(all_used_sources).difference(used_caches)
@@ -267,13 +267,13 @@ def used_caches_and_sources(layers, caches, sources):
 
 def find_cache_grids(cache_conf):
     grids = set()
-    for cache in cache_conf.itervalues():
+    for cache in cache_conf.values():
         grids.update(cache.get('grids', []))
     return grids
 
 def find_source_grids(source_conf):
     grids = set()
-    for source in source_conf.itervalues():
+    for source in source_conf.values():
         grid = source.get('grid')
         if grid:
             grids.add(grid)
@@ -292,7 +292,7 @@ def _find_layer_sources(layers, sources):
 
 def find_cache_sources(caches_conf):
     sources = set()
-    for cache in caches_conf.itervalues():
+    for cache in caches_conf.values():
         sources.update(cache.get('sources', []))
     return sources
 
