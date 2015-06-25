@@ -1,5 +1,9 @@
 from xml.etree import ElementTree as etree
-import urlparse
+try:
+    from urllib.parse import urlparse
+except ImportError:
+    import urlparse
+
 import urllib
 
 from mapproxy.client import http

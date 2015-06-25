@@ -1,5 +1,10 @@
 import yaml
-import ConfigParser as _ConfigParser
+
+try:
+    import ConfigParser as _ConfigParser
+except ImportError:
+    import configparser as _ConfigParser
+
 from mapproxy.config.spec import validate_mapproxy_conf
 from mapproxy.script.scales import scale_to_res
 from mapproxy_webconf import utils

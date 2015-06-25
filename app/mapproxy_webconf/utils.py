@@ -1,6 +1,5 @@
 import os
 import errno
-import gettext
 
 from .bottle import response, request
 from .decorator import decorator

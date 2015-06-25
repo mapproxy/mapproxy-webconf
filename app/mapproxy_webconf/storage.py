@@ -5,7 +5,7 @@ import sqlite3
 import yaml
 import json
 
-from bottle import PluginError
+from .bottle import PluginError
 
 from mapproxy_webconf import utils, defaults
 from mapproxy_webconf.demo import DEMO_CONFIG

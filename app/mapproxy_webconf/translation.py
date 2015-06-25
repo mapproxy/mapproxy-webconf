@@ -1,7 +1,7 @@
 import os
 import gettext
 
-from bottle import request, response, SimpleTemplate
+from .bottle import request, response, SimpleTemplate
 
 class TranslationPlugin(object):
     name = 'translation'
