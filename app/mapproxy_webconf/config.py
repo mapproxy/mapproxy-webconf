@@ -225,7 +225,7 @@ def replace_ids_cache(cache, id_map):
 
 def replace_ids_layer(layer, id_map):
     if 'sources' in layer:
-        layer['sources'] = [id_map[i] if type(i) == int and id_map.has_key(i) else i for i in layer['sources']]
+        layer['sources'] = [id_map[i] if type(i) == int and i in id_map else i for i in layer['sources']]
     return layer
 
 def layer_tree(layers):
@@ -354,7 +354,7 @@ class ConfigParser(object):
             return self.defaults[section][name]
 
     def set(self, section, name, value):
-        if not self.defaults.has_key(section):
+        if not section in self.defaults:
             raise _ConfigParser.NoSectionError(section)
         if not self.parser.has_section(section):
             self.parser.add_section(section)
