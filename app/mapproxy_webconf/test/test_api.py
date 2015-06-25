@@ -90,9 +90,9 @@ class TestLayersAPI(ServerAPITest):
 
         resp = self.app.get('/conf/base/layers')
         expected = {
-            unicode(first_id): {'_parent': None, '_rank': None, '_id': first_id, 'data': {'name': '1'}, '_locked': 0, '_manual': 0},
-            unicode(third_id): {'_parent': parent_id, '_rank': 5, '_id': third_id, 'data': {'name': '3'}, '_locked': 0, '_manual': 0},
-            unicode(secound_id): {'_parent': parent_id, '_rank': 10, '_id': secound_id, 'data': {'name': '2'}, '_locked': 0, '_manual': 0}
+            str(first_id): {'_parent': None, '_rank': None, '_id': first_id, 'data': {'name': '1'}, '_locked': 0, '_manual': 0},
+            str(third_id): {'_parent': parent_id, '_rank': 5, '_id': third_id, 'data': {'name': '3'}, '_locked': 0, '_manual': 0},
+            str(secound_id): {'_parent': parent_id, '_rank': 10, '_id': secound_id, 'data': {'name': '2'}, '_locked': 0, '_manual': 0}
         }
         assert resp.json == expected
 
@@ -313,7 +313,7 @@ class TestProjectAPI(ServerAPITest):
 
     def test_create_project_duplicated(self):
         resp = self.app.post_json('/project/create', {'name': 'test'}, status=400)
-        assert resp.json.has_key('error')
+        assert 'error' in resp.json
 
     def test_delete_project(self):
         resp = self.app.post_json('/project/delete', {'name': 'test'})
@@ -321,11 +321,11 @@ class TestProjectAPI(ServerAPITest):
 
     def test_create_project_with_empty_data(self):
         resp = self.app.post_json('/project/create', {}, status=400)
-        assert resp.json.has_key('error')
+        assert 'error' in resp.json
 
     def test_create_project_without_data(self):
         resp = self.app.post_json('/project/create', status=400)
-        assert resp.json.has_key('error')
+        assert 'error' in resp.json
 
 
 class TestGeoOpperations(ServerAPITest):
@@ -334,11 +334,11 @@ class TestGeoOpperations(ServerAPITest):
 
         resp = self.app.post_json('/convert_res_scales', {'data': scales})
         assert resp.status_code == 200
-        assert resp.json.has_key('result')
+        assert 'result' in resp.json
 
         resp = self.app.post_json('/convert_res_scales', {'data': resp.json['result'], 'mode': 'to_scales'})
         assert resp.status_code == 200
-        assert resp.json.has_key('result')
+        assert 'result' in resp.json
 
         for idx, result in enumerate(resp.json['result']):
             assert_almost_equal(result, scales[idx])
@@ -348,11 +348,11 @@ class TestGeoOpperations(ServerAPITest):
 
         resp = self.app.post_json('/convert_res_scales', {'data': res, 'mode': 'to_scales', 'dpi': 72})
         assert resp.status_code == 200
-        assert resp.json.has_key('result')
+        assert 'result' in resp.json
 
         resp = self.app.post_json('/convert_res_scales', {'data': resp.json['result'], 'dpi': 72})
         assert resp.status_code == 200
-        assert resp.json.has_key('result')
+        assert 'result' in resp.json
 
         for idx, result in enumerate(resp.json['result']):
             assert_almost_equal(result, res[idx], places=5)
@@ -362,49 +362,49 @@ class TestGeoOpperations(ServerAPITest):
 
         resp = self.app.post_json('/transform_bbox', {'source': 'EPSG:4326', 'dest': 'EPSG:3857', 'bbox': bbox})
         assert resp.status_code == 200
-        assert resp.json.has_key('bbox')
+        assert 'bbox' in resp.json
 
         resp = self.app.post_json('/transform_bbox', {'source': 'EPSG:3857', 'dest': 'EPSG:4326', 'bbox': resp.json['bbox']})
         assert resp.status_code == 200
-        assert resp.json.has_key('bbox')
+        assert 'bbox' in resp.json
 
         for idx, result in enumerate(resp.json['bbox']):
             assert_almost_equal(result, bbox[idx])
 
     def test_calculate_tiles(self):
         resp = self.app.post_json('/calculate_tiles', status=400)
-        assert resp.json.has_key('error')
+        assert 'error' in resp.json
 
         resp = self.app.post_json('/calculate_tiles', {'srs': 'EPSG:4326'})
-        assert resp.json.has_key('result')
+        assert 'result' in resp.json
         result = resp.json['result']
         assert len(result) == 20
         assert result[0]['level'] == 0
         assert result[19]['level'] == 19
 
         resp = self.app.post_json('/calculate_tiles', {'srs': 'EPSG:4326', 'bbox': [8, 52, 9, 53], 'bbox_srs': 'EPSG:4326'})
-        assert resp.json.has_key('result')
+        assert 'result' in resp.json
         result = resp.json['result']
         assert len(result) == 20
         assert result[0]['level'] == 0
         assert result[19]['level'] == 19
 
         resp = self.app.post_json('/calculate_tiles', {'srs': 'EPSG:4326', 'bbox': [890555.9263461898, 6800125.454397307, 1001875.4171394621, 6982997.920389788], 'bbox_srs': 'EPSG:3857'})
-        assert resp.json.has_key('result')
+        assert 'result' in resp.json
         result = resp.json['result']
         assert len(result) == 20
         assert result[0]['level'] == 0
         assert result[19]['level'] == 19
 
         resp = self.app.post_json('/calculate_tiles', {'srs': 'EPSG:4326', 'res': [1.40625, 0.703125, 0.3515625, 0.17578125]})
-        assert resp.json.has_key('result')
+        assert 'result' in resp.json
         result = resp.json['result']
         assert len(result) == 4
         assert result[0]['level'] == 0
         assert result[3]['level'] == 3
 
         resp = self.app.post_json('/calculate_tiles', {'srs': 'EPSG:4326', 'res': [1000, 100, 10, 1]})
-        assert resp.json.has_key('result')
+        assert 'result' in resp.json
         result = resp.json['result']
         assert len(result) == 4
         assert result[0]['level'] == 0
@@ -421,5 +421,5 @@ class TestGeoOpperations(ServerAPITest):
         }
         resp = self.app.post('/grid_as_geojson', data)
 
-        assert resp.json.has_key('features')
+        assert 'features' in resp.json
         assert len(resp.json['features']) == 2
