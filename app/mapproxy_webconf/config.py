@@ -9,6 +9,7 @@ from mapproxy.config.spec import validate_mapproxy_conf
 from mapproxy.script.scales import scale_to_res
 from mapproxy_webconf import utils
 from mapproxy_webconf.constants import OGC_DPI, UNIT_FACTOR
+from mapproxy.compat import PY2
 
 
 class ConfigError(Exception):
@@ -63,8 +64,9 @@ def create_id_name_map(*dicts):
 
 
 def validate(mapproxy_conf):
-    # dont use for python 3 at this moment
-    # mapproxy_conf = utils.convert(mapproxy_conf)
+    # on python 2.x we need to convert the mapproxy_conf
+    if PY2:
+        mapproxy_conf = utils.convert(mapproxy_conf)
 
     errors, informal_only = validate_mapproxy_conf(mapproxy_conf)
     if not informal_only:
