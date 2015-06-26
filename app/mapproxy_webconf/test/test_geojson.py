@@ -120,140 +120,137 @@ class TestConfigGeoJSONGrid(object):
                                        grid_bbox=GLOBAL_BBOX_4326)
         assert cm.exception.args[0] == 'Invalid transformation for grid_bbox'
 
+    def test_view_box(self):
+        grid_srs = 'EPSG:4326'
+        grid_bbox_srs = 'EPSG:4326'
+        map_srs = 'EPSG:4326'
+        level = 0
 
-def test_view_box():
-    grid_srs = 'EPSG:4326'
-    grid_bbox_srs = 'EPSG:4326'
-    map_srs = 'EPSG:4326'
-    level = 0
+        config = ConfigGeoJSONGrid(grid_bbox=[-30, -30, 30, 30],
+                                   request_bbox=LOCAL_BBOX_4326_1,
+                                   grid_srs=grid_srs, grid_bbox_srs=grid_bbox_srs,
+                                   map_srs=map_srs, level=level)
+        assert_list_almost_equal(config.view_bbox, LOCAL_BBOX_4326_1)
 
-    config = ConfigGeoJSONGrid(grid_bbox=[-30, -30, 30, 30],
-                               request_bbox=LOCAL_BBOX_4326_1,
-                               grid_srs=grid_srs, grid_bbox_srs=grid_bbox_srs,
-                               map_srs=map_srs, level=level)
-    assert_list_almost_equal(config.view_bbox, LOCAL_BBOX_4326_1)
+        config = ConfigGeoJSONGrid(grid_bbox=[-30, -30, 30, 30],
+                                   request_bbox=LOCAL_BBOX_4326_2,
+                                   grid_srs=grid_srs, grid_bbox_srs=grid_bbox_srs,
+                                   map_srs=map_srs, level=level)
+        assert_list_almost_equal(config.view_bbox, [-30.0, -30.0, 30.0, 30.0])
 
-    config = ConfigGeoJSONGrid(grid_bbox=[-30, -30, 30, 30],
-                               request_bbox=LOCAL_BBOX_4326_2,
-                               grid_srs=grid_srs, grid_bbox_srs=grid_bbox_srs,
-                               map_srs=map_srs, level=level)
-    assert_list_almost_equal(config.view_bbox, [-30.0, -30.0, 30.0, 30.0])
+        config = ConfigGeoJSONGrid(grid_bbox=[-10, -30, 10, 30],
+                                   request_bbox=LOCAL_BBOX_4326_1,
+                                   grid_srs=grid_srs, grid_bbox_srs=grid_bbox_srs,
+                                   map_srs=map_srs, level=level)
+        assert_list_almost_equal(config.view_bbox, [-10.0, -20.0, 10.0, 20.0])
 
-    config = ConfigGeoJSONGrid(grid_bbox=[-10, -30, 10, 30],
-                               request_bbox=LOCAL_BBOX_4326_1,
-                               grid_srs=grid_srs, grid_bbox_srs=grid_bbox_srs,
-                               map_srs=map_srs, level=level)
-    assert_list_almost_equal(config.view_bbox, [-10.0, -20.0, 10.0, 20.0])
+        map_srs = 'EPSG:3857'
 
-    map_srs = 'EPSG:3857'
+        config = ConfigGeoJSONGrid(grid_bbox=[-30, -30, 30, 30],
+                                   request_bbox=LOCAL_BBOX_3857_1,
+                                   grid_srs=grid_srs, grid_bbox_srs=grid_bbox_srs,
+                                   map_srs=map_srs, level=level)
+        assert_list_almost_equal(config.view_bbox, LOCAL_BBOX_4326_1)
 
-    config = ConfigGeoJSONGrid(grid_bbox=[-30, -30, 30, 30],
-                               request_bbox=LOCAL_BBOX_3857_1,
-                               grid_srs=grid_srs, grid_bbox_srs=grid_bbox_srs,
-                               map_srs=map_srs, level=level)
-    assert_list_almost_equal(config.view_bbox, LOCAL_BBOX_4326_1)
+        config = ConfigGeoJSONGrid(grid_bbox=[-30, -30, 30, 30],
+                                   request_bbox=LOCAL_BBOX_3857_2,
+                                   grid_srs=grid_srs, grid_bbox_srs=grid_bbox_srs,
+                                   map_srs=map_srs, level=level)
+        assert_list_almost_equal(config.view_bbox, [-30.0, -30.0, 30.0, 30.0])
 
-    config = ConfigGeoJSONGrid(grid_bbox=[-30, -30, 30, 30],
-                               request_bbox=LOCAL_BBOX_3857_2,
-                               grid_srs=grid_srs, grid_bbox_srs=grid_bbox_srs,
-                               map_srs=map_srs, level=level)
-    assert_list_almost_equal(config.view_bbox, [-30.0, -30.0, 30.0, 30.0])
+        config = ConfigGeoJSONGrid(grid_bbox=[-10, -30, 10, 30],
+                                   request_bbox=LOCAL_BBOX_3857_1,
+                                   grid_srs=grid_srs, grid_bbox_srs=grid_bbox_srs,
+                                   map_srs=map_srs, level=level)
+        assert_list_almost_equal(config.view_bbox, [-10.0, -20.0, 10.0, 20.0])
 
-    config = ConfigGeoJSONGrid(grid_bbox=[-10, -30, 10, 30],
-                               request_bbox=LOCAL_BBOX_3857_1,
-                               grid_srs=grid_srs, grid_bbox_srs=grid_bbox_srs,
-                               map_srs=map_srs, level=level)
-    assert_list_almost_equal(config.view_bbox, [-10.0, -20.0, 10.0, 20.0])
+        grid_srs = 'EPSG:3857'
+        map_srs = 'EPSG:4326'
 
-    grid_srs = 'EPSG:3857'
-    map_srs = 'EPSG:4326'
+        config = ConfigGeoJSONGrid(grid_bbox=[-30, -30, 30, 30],
+                                   request_bbox=LOCAL_BBOX_4326_1,
+                                   grid_srs=grid_srs, grid_bbox_srs=grid_bbox_srs,
+                                   map_srs=map_srs, level=level)
+        assert_list_almost_equal(config.view_bbox, LOCAL_BBOX_3857_1)
 
-    config = ConfigGeoJSONGrid(grid_bbox=[-30, -30, 30, 30],
-                               request_bbox=LOCAL_BBOX_4326_1,
-                               grid_srs=grid_srs, grid_bbox_srs=grid_bbox_srs,
-                               map_srs=map_srs, level=level)
-    assert_list_almost_equal(config.view_bbox, LOCAL_BBOX_3857_1)
+        config = ConfigGeoJSONGrid(grid_bbox=[-30, -30, 30, 30],
+                                   request_bbox=LOCAL_BBOX_4326_2,
+                                   grid_srs=grid_srs, grid_bbox_srs=grid_bbox_srs,
+                                   map_srs=map_srs, level=level)
+        assert_list_almost_equal(
+            config.view_bbox, [-3339584.723798206, -3503549.8435043744,
+                               3339584.723798206, 3503549.843504374])
 
-    config = ConfigGeoJSONGrid(grid_bbox=[-30, -30, 30, 30],
-                               request_bbox=LOCAL_BBOX_4326_2,
-                               grid_srs=grid_srs, grid_bbox_srs=grid_bbox_srs,
-                               map_srs=map_srs, level=level)
-    assert_list_almost_equal(
-        config.view_bbox, [-3339584.723798206, -3503549.8435043744,
-                           3339584.723798206, 3503549.843504374])
+        config = ConfigGeoJSONGrid(grid_bbox=[-10, -30, 10, 30],
+                                   request_bbox=LOCAL_BBOX_4326_1,
+                                   grid_srs=grid_srs,
+                                   grid_bbox_srs=grid_bbox_srs,
+                                   map_srs=map_srs,
+                                   level=level)
+        assert_list_almost_equal(
+            config.view_bbox, [-1113194.9079327343, -2273030.92698769,
+                               1113194.9079327343, 2273030.926987689])
 
-    config = ConfigGeoJSONGrid(grid_bbox=[-10, -30, 10, 30],
-                               request_bbox=LOCAL_BBOX_4326_1,
-                               grid_srs=grid_srs,
-                               grid_bbox_srs=grid_bbox_srs,
-                               map_srs=map_srs,
-                               level=level)
-    assert_list_almost_equal(
-        config.view_bbox, [-1113194.9079327343, -2273030.92698769,
-                           1113194.9079327343, 2273030.926987689])
+        with assert_raises(InvalidGridBBoxTransformationException) as cm:
+            config = ConfigGeoJSONGrid(grid_srs='EPSG:3857', map_srs='EPSG:4326',
+                                       grid_bbox_srs='EPSG:4326',
+                                       request_bbox=OVERGLOBAL_BBOX_4326,
+                                       grid_bbox=GLOBAL_BBOX_4326)
+        assert cm.exception.args[0] == 'Invalid transformation for grid_bbox'
 
-    with assert_raises(InvalidGridBBoxTransformationException) as cm:
-        config = ConfigGeoJSONGrid(grid_srs='EPSG:3857', map_srs='EPSG:4326',
-                                   grid_bbox_srs='EPSG:4326',
-                                   request_bbox=OVERGLOBAL_BBOX_4326,
-                                   grid_bbox=GLOBAL_BBOX_4326)
-    assert cm.exception.args[0] == 'Invalid transformation for grid_bbox'
+    def test_global_polygon(self):
+        defaults.TILE_POLYGON_POINTS = 4
+        map_srs = 'EPSG:4326'
+        grid_srs = 'EPSG:4326'
+        grid_bbox_srs = 'EPSG:4326'
+        grid_bbox = GLOBAL_BBOX_4326
+        request_bbox = GLOBAL_BBOX_4326
+        config = ConfigGeoJSONGrid(map_srs=map_srs, grid_srs=grid_srs,
+                                   grid_bbox_srs=grid_bbox_srs,
+                                   grid_bbox=grid_bbox, request_bbox=request_bbox)
 
+        result = list(polygons(config, [(0, 0, 0)], False))[0]
+        assert_point_list_almost_equal(result[0][0], GLOBAL_POLYGON_4326)
 
-def test_global_polygon():
-    defaults.TILE_POLYGON_POINTS = 4
-    map_srs = 'EPSG:4326'
-    grid_srs = 'EPSG:4326'
-    grid_bbox_srs = 'EPSG:4326'
-    grid_bbox = GLOBAL_BBOX_4326
-    request_bbox = GLOBAL_BBOX_4326
-    config = ConfigGeoJSONGrid(map_srs=map_srs, grid_srs=grid_srs,
-                               grid_bbox_srs=grid_bbox_srs,
-                               grid_bbox=grid_bbox, request_bbox=request_bbox)
+        result = list(polygons(config, [(0, 0, 0)], True))[0]
+        assert_point_list_almost_equal(result[0][0], GLOBAL_POLYGON_4326)
+        assert_list_almost_equal(result[1], [0.0, 0.0])
+        assert result[2] == (0, 0, 0)
 
-    result = list(polygons(config, [(0, 0, 0)], False))[0]
-    assert_point_list_almost_equal(result[0][0], GLOBAL_POLYGON_4326)
-
-    result = list(polygons(config, [(0, 0, 0)], True))[0]
-    assert_point_list_almost_equal(result[0][0], GLOBAL_POLYGON_4326)
-    assert_list_almost_equal(result[1], [0.0, 0.0])
-    assert result[2] == (0, 0, 0)
-
-    config = ConfigGeoJSONGrid(grid_srs='EPSG:4326', map_srs='EPSG:4326',
-                               grid_bbox_srs='EPSG:4326',
-                               request_bbox=OVERGLOBAL_BBOX_4326,
-                               grid_bbox=GLOBAL_BBOX_4326)
-
-    result = list(polygons(config, [(0, 0, 0)], False))[0]
-    assert_point_list_almost_equal(result[0][0], GLOBAL_POLYGON_4326)
-
-    with assert_raises(InvalidGridBBoxTransformationException) as cm:
-        config = ConfigGeoJSONGrid(grid_srs='EPSG:3857', map_srs='EPSG:4326',
+        config = ConfigGeoJSONGrid(grid_srs='EPSG:4326', map_srs='EPSG:4326',
                                    grid_bbox_srs='EPSG:4326',
                                    request_bbox=OVERGLOBAL_BBOX_4326,
                                    grid_bbox=GLOBAL_BBOX_4326)
 
-    assert cm.exception.args[0] == 'Invalid transformation for grid_bbox'
+        result = list(polygons(config, [(0, 0, 0)], False))[0]
+        assert_point_list_almost_equal(result[0][0], GLOBAL_POLYGON_4326)
 
+        with assert_raises(InvalidGridBBoxTransformationException) as cm:
+            config = ConfigGeoJSONGrid(grid_srs='EPSG:3857', map_srs='EPSG:4326',
+                                       grid_bbox_srs='EPSG:4326',
+                                       request_bbox=OVERGLOBAL_BBOX_4326,
+                                       grid_bbox=GLOBAL_BBOX_4326)
 
-def test_local_polygon():
-    defaults.TILE_POLYGON_POINTS = 4
-    map_srs = 'EPSG:3857'
-    grid_srs = 'EPSG:4326'
-    grid_bbox_srs = 'EPSG:4326'
-    grid_bbox = LOCAL_BBOX_4326_1
-    request_bbox = LOCAL_BBOX_3857_1
-    config = ConfigGeoJSONGrid(map_srs=map_srs, grid_srs=grid_srs,
-                               grid_bbox_srs=grid_bbox_srs, grid_bbox=grid_bbox,
-                               request_bbox=request_bbox)
+        assert cm.exception.args[0] == 'Invalid transformation for grid_bbox'
 
-    result = list(polygons(config, [(0, 0, 0)], False))[0]
-    assert_point_list_almost_equal(result[0][0], LOCAL_POLYGON_3857)
+    def test_local_polygon(self):
+        defaults.TILE_POLYGON_POINTS = 4
+        map_srs = 'EPSG:3857'
+        grid_srs = 'EPSG:4326'
+        grid_bbox_srs = 'EPSG:4326'
+        grid_bbox = LOCAL_BBOX_4326_1
+        request_bbox = LOCAL_BBOX_3857_1
+        config = ConfigGeoJSONGrid(map_srs=map_srs, grid_srs=grid_srs,
+                                   grid_bbox_srs=grid_bbox_srs, grid_bbox=grid_bbox,
+                                   request_bbox=request_bbox)
 
-    result = list(polygons(config, [(0, 0, 0)], True))[0]
-    assert_point_list_almost_equal(result[0][0], LOCAL_POLYGON_3857)
-    assert_list_almost_equal(result[1], [0.0, 0.0])
-    assert result[2] == (0, 0, 0)
+        result = list(polygons(config, [(0, 0, 0)], False))[0]
+        assert_point_list_almost_equal(result[0][0], LOCAL_POLYGON_3857)
+
+        result = list(polygons(config, [(0, 0, 0)], True))[0]
+        assert_point_list_almost_equal(result[0][0], LOCAL_POLYGON_3857)
+        assert_list_almost_equal(result[1], [0.0, 0.0])
+        assert result[2] == (0, 0, 0)
 
 
 class TestFeatureCreation(object):
@@ -288,7 +285,7 @@ class TestFeatureCreation(object):
         }
 
         assert polygon_feature([[[1, 1], [2, 1], [2, 2],
-                               [1, 2], [1, 1]]], {"foo": "bar"}) == {
+                                 [1, 2], [1, 1]]], {"foo": "bar"}) == {
             "type": "Feature",
             "geometry": {
                 "type": "Polygon",
