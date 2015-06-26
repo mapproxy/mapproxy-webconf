@@ -158,7 +158,7 @@ def mapproxy_conf_from_storage(storage, project):
 
     _globals = storage.get_all_data('globals', project).values()
     if _globals:
-        mapproxy_conf['globals'] = _globals[0]
+        mapproxy_conf['globals'] = list(_globals)[0]
 
     used_sources = set()
     used_caches = set()
