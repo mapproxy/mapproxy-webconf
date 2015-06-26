@@ -17,18 +17,21 @@ class InvalidTileBBoxTransformationException(Exception):
 
 class ConfigGeoJSONGrid(object):
 
-    def __init__(self, request_bbox=[], grid_bbox=[], level=None, grid_srs=None, grid_bbox_srs=None, map_srs=None, res=[], scales=[], origin='ll', units='m', dpi=None):
+    def __init__(self, request_bbox=[], grid_bbox=[], level=None,
+                 grid_srs=None, grid_bbox_srs=None, map_srs=None, res=[],
+                 scales=[], origin='ll', units='m', dpi=None):
+
         self.grid_srs = SRS(grid_srs) if grid_srs else None
         self.grid_bbox_srs = SRS(grid_bbox_srs) if grid_bbox_srs else None
         self.map_srs = SRS(map_srs) if map_srs else None
         self.request_bbox = map(float, request_bbox) if request_bbox else None
         self.origin = origin
-        self._res = map(float, res) if res else None
-        self._scales = map(float, scales) if scales else None
+        self._res = list(map(float, res)) if res else None
+        self._scales = list(map(float, scales)) if scales else None
         self._units = 1 if units == 'm' else constants.UNIT_FACTOR
         self._dpi = float(dpi) if dpi else constants.OGC_DPI
 
-        _grid_bbox = map(float, grid_bbox) if grid_bbox else None
+        _grid_bbox = list(map(float, grid_bbox)) if grid_bbox else None
         self.grid_bbox = self.transform_grid_bbox(_grid_bbox)
 
         if self._res:
@@ -43,8 +46,12 @@ class ConfigGeoJSONGrid(object):
         except TypeError:
             self.level = None
         if self.grid_srs:
-            self.tilegrid = tile_grid(srs=self.grid_srs, bbox=_grid_bbox, bbox_srs=self.grid_bbox_srs,
-                                      origin=self.origin, res=self.res, num_levels=self._num_levels)
+            self.tilegrid = tile_grid(srs=self.grid_srs,
+                                      bbox=_grid_bbox,
+                                      bbox_srs=self.grid_bbox_srs,
+                                      origin=self.origin,
+                                      res=self.res,
+                                      num_levels=self._num_levels)
             self.validate_tile_bbox_for_level_0()
         else:
             self.tilegrid = None
@@ -80,7 +87,13 @@ class ConfigGeoJSONGrid(object):
     def map_bbox(self):
         if not self.map_srs or not self.grid_srs:
             return None
-        self.request_bbox = self.map_srs.align_bbox(self.request_bbox)
+
+        if self.map_srs == 'EPSG:4326':
+            self.request_bbox = self.map_srs.align_bbox(self.request_bbox)
+        else:
+            (minx, miny, maxx, maxy) = self.request_bbox
+            self.request_bbox = minx, miny, maxx, maxy
+
         if not is_valid_transformation(self.request_bbox, self.map_srs, self.grid_srs):
             return None
 
