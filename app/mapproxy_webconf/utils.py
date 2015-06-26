@@ -4,6 +4,7 @@ import errno
 from .bottle import response, request
 from .decorator import decorator
 
+
 @decorator
 def requires_json(func, *args, **kw):
     try:
@@ -15,6 +16,7 @@ def requires_json(func, *args, **kw):
         response.status = 400
         return {'error': _('missing JSON data')}
     return func(*args, **kw)
+
 
 def save_atomic(filename, content, makedirs=True):
     """
@@ -38,7 +40,10 @@ def save_atomic(filename, content, makedirs=True):
 
     os.rename(tmp_filename, filename)
 
-#source http://stackoverflow.com/questions/13101653/python-convert-complex-dictionary-of-strings-from-unicode-to-ascii
+# source
+# http://stackoverflow.com/questions/13101653/python-convert-complex-dictionary-of-strings-from-unicode-to-ascii
+
+
 def convert(input):
     if isinstance(input, dict):
         return dict((convert(key), convert(value)) for key, value in input.items())

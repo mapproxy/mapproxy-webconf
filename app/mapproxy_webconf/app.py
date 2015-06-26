@@ -22,12 +22,14 @@ from . import config
 from . import storage
 from . import defaults
 from . import translation
-from .bottle import request, response, static_file, template, SimpleTemplate, redirect, abort
+from .bottle import request, response, static_file, template, \
+    SimpleTemplate, redirect, abort
 from .utils import requires_json
 from .capabilities import parse_capabilities_url
 from .constants import OGC_DPI, UNIT_FACTOR
 
-from .lib.geojson import ConfigGeoJSONGrid, features, InvalidGridBBoxTransformationException, InvalidTileBBoxTransformationException
+from .lib.geojson import ConfigGeoJSONGrid, features, \
+    InvalidGridBBoxTransformationException, InvalidTileBBoxTransformationException
 from .lib import grid
 
 app = bottle.Bottle()
@@ -35,7 +37,7 @@ bottle.TEMPLATE_PATH = [os.path.join(os.path.dirname(__file__), 'templates')]
 
 DEMO_PROJECT_REGEXP = "[a-f0-9]{32}"
 
-#decorators
+
 def require_project(func):
     def decorator(storage, **kwargs):
         if 'project' in kwargs and storage.exist_project(kwargs['project']):
@@ -52,9 +54,10 @@ def require_project(func):
             abort(404)
     return decorator
 
-## error_pages
+
 def error404(error):
     return template('error', error_code=404, error_message=_('Not Found'))
+
 
 def error500(error):
     return template('error', error_code=500, error_message=_('Internal Server Error'))
@@ -64,13 +67,17 @@ app.error_handler = {
     500: error500
 }
 
+
 class RESTBase(object):
+
     def __init__(self, section, dependencies=[]):
         self.section = section
         self.dependencies = dependencies
 
     def list(self, project, storage):
-        return storage.get_all(self.section, project, with_id=True, with_manual=True, with_locked=True, with_section=True)
+        return storage.get_all(self.section, project, with_id=True,
+                               with_manual=True, with_locked=True,
+                               with_section=True)
 
     @requires_json
     def add(self, project, storage):
@@ -85,7 +92,7 @@ class RESTBase(object):
         return data
 
     def get(self, project, id, storage):
-        data = storage.get(id, self.section,project)
+        data = storage.get(id, self.section, project)
         if not data:
             response.status = 404
         else:
@@ -127,7 +134,9 @@ class RESTBase(object):
         app.route('/conf/<project>/%s/<id:int>' % self.section, 'PUT', self.update)
         app.route('/conf/<project>/%s/<id:int>' % self.section, 'DELETE', self.delete)
 
+
 class RESTWMSCapabilities(RESTBase):
+
     def __init__(self):
         RESTBase.__init__(self, 'wms_capabilities')
 
@@ -171,12 +180,15 @@ class RESTWMSCapabilities(RESTBase):
         cap['_id'] = id
         return cap
 
+
 class RESTLayers(RESTBase):
+
     def __init__(self):
         RESTBase.__init__(self, 'layers')
 
     def list(self, project, storage):
-        return storage.get_all(self.section, project, with_rank=True, with_id=True, with_manual=True, with_locked=True)
+        return storage.get_all(self.section, project, with_rank=True,
+                               with_id=True, with_manual=True, with_locked=True)
 
     @requires_json
     def update_tree(self, project, storage):
@@ -188,13 +200,17 @@ class RESTLayers(RESTBase):
         super(RESTLayers, self).setup_routing(app)
         app.route('/conf/<project>/%s' % self.section, 'PUT', self.update_tree)
 
+
 class RESTGrids(RESTBase):
+
     def __init__(self):
         RESTBase.__init__(self, 'grids', ['caches.grids'])
 
     def list(self, project, storage):
         default_grids = deepcopy(defaults.GRIDS.copy())
-        default_grids.update(storage.get_all(self.section, project, with_id=True, with_manual=True, with_locked=True))
+        default_grids.update(
+            storage.get_all(self.section, project,
+                            with_id=True, with_manual=True, with_locked=True))
         return default_grids
 
 rest_sources = RESTBase('sources', ['caches.sources', 'layers.sources'])
@@ -214,11 +230,13 @@ rest_layers.setup_routing(app)
 rest_grids = RESTGrids()
 rest_grids.setup_routing(app)
 
-## other
+# other
+
 
 @app.route('/', name='index')
 def index():
     return redirect(app.get_url('projects'))
+
 
 @app.route('/projects', name='projects')
 def projects(storage):
@@ -245,16 +263,19 @@ def projects(storage):
         }
     return template('projects', projects=projects)
 
+
 @app.route('/project/<project>/conf', name='configuration')
 @require_project
 def conf_index(project):
     return template('config_index', project=project)
+
 
 @app.route('/project/<project>', name='project_defaults')
 @require_project
 def project_defaults(project, storage):
     defaults = json.dumps(rest_defaults.list(project, storage))
     return template('project_defaults', project=project, defaults=defaults)
+
 
 @app.route('/project/<project>/conf/sources', name='sources')
 @require_project
@@ -263,7 +284,9 @@ def sources(project, storage):
     sources = json.dumps(rest_sources.list(project, storage))
     caches = json.dumps(rest_caches.list(project, storage))
     defaults = json.dumps(rest_defaults.list(project, storage))
-    return template('sources', project=project, wms_capabilities=wms_capabilities, sources=sources, caches=caches, defaults=defaults)
+    return template('sources', project=project, wms_capabilities=wms_capabilities,
+                    sources=sources, caches=caches, defaults=defaults)
+
 
 @app.route('/project/<project>/conf/grids', name='grids')
 @require_project
@@ -272,13 +295,16 @@ def grids(project, storage):
     defaults = json.dumps(rest_defaults.list(project, storage))
     return template('grids', project=project, grids=grids, defaults=defaults)
 
+
 @app.route('/project/<project>/conf/caches', name='caches')
 @require_project
 def caches(project, storage):
     sources = json.dumps(rest_sources.list(project, storage))
     caches = json.dumps(rest_caches.list(project, storage))
     grids = json.dumps(rest_grids.list(project, storage))
-    return template('caches', project=project, sources=sources, caches=caches, grids=grids)
+    return template('caches', project=project, sources=sources,
+                    caches=caches, grids=grids)
+
 
 @app.route('/project/<project>/conf/layers', name='layers')
 @require_project
@@ -288,13 +314,16 @@ def layers(project, storage):
     layers = json.dumps(rest_layers.list(project, storage))
     grids = json.dumps(rest_grids.list(project, storage))
     defaults = json.dumps(rest_defaults.list(project, storage))
-    return template('layers', project=project, sources=sources, caches=caches, layers=layers, grids=grids, defaults=defaults)
+    return template('layers', project=project, sources=sources,
+                    caches=caches, layers=layers, grids=grids, defaults=defaults)
+
 
 @app.route('/project/<project>/conf/globals', name='globals')
 @require_project
 def globals(project, storage):
     _globals = json.dumps(rest_globals.list(project, storage))
     return template('globals', project=project, _globals=_globals)
+
 
 @app.route('/project/<project>/conf/services', name='services')
 @require_project
@@ -303,12 +332,14 @@ def services(project, storage):
     services = json.dumps(rest_services.list(project, storage))
     return template('services', project=project, defaults=defaults, services=services)
 
+
 @app.route('/project/<project>/conf/yaml', name='yaml')
 @require_project
 def yaml_view(project, storage):
     mapproxy_conf = config.mapproxy_conf_from_storage(storage, project)
     data = yaml.dump(mapproxy_conf, default_flow_style=False, Dumper=MapProxyYAMLDumper)
     return template('yaml', project=project, data=data)
+
 
 @app.route('/conf/<project>/write_config', 'POST', name='write_config')
 @require_project
@@ -318,23 +349,28 @@ def write_config(project, storage):
 
     mapproxy_conf = config.mapproxy_conf_from_storage(storage, project)
     try:
-        config.write_mapproxy_yaml(mapproxy_conf, os.path.join(app.configuration.get('app', 'output_path'), project + '.yaml'))
+        config.write_mapproxy_yaml(mapproxy_conf, os.path.join(
+            app.configuration.get('app', 'output_path'), project + '.yaml'))
         return {'success': _('creating mapproxy config successful')}
     except:
         response.status = 400
         return {'error': _('creating mapproxy config failed')}
 
+
 @app.route('/favicon.ico')
 def get_favicon():
     return static('favicon.ico')
+
 
 @app.route('/static/<filepath:path>', name='static')
 def static(filepath):
     return static_file(filepath, root=os.path.join(os.path.dirname(__file__), 'static'))
 
+
 @app.route('/template/<filename>', name='angular_template')
 def angular_template(filename):
-    return template(os.path.join(os.path.dirname(__file__), 'templates/angular', filename))
+    return template(os.path.join(os.path.dirname(__file__), 'templates/angular',
+                    filename))
 
 @app.route('/resources/<filename>', name='resource')
 def resources(filename):
@@ -345,6 +381,7 @@ def resources(filename):
         response.content_type = 'application/javascript'
     return template(tpl_file)
 
+
 @app.route('/yaml', 'POST', name='json_to_yaml')
 def create_yaml():
     data = request.json
@@ -354,6 +391,7 @@ def create_yaml():
         response.status = 400
         return {'error': _('creating yaml failed')}
 
+
 @app.route('/json', 'POST', name='yaml_to_json')
 def create_json():
     data = request.json
@@ -362,6 +400,7 @@ def create_json():
     except yaml.YAMLError:
         response.status = 400
         return {'error': _('parsing yaml failed')}
+
 
 @app.route('/convert_res_scales', 'POST', name='convert_res_scales')
 def convert_res_scales():
@@ -375,9 +414,11 @@ def convert_res_scales():
 
     result = []
     for i, d in enumerate(data):
-        result.append(round(convert(d, dpi, units), defaults.DECIMAL_PLACES) if d else None)
+        result.append(
+            round(convert(d, dpi, units), defaults.DECIMAL_PLACES) if d else None)
 
     return {'result': result}
+
 
 @app.route('/calculate_tiles', 'POST', name='calculate_tiles')
 def calculate_tiles():
@@ -406,22 +447,26 @@ def calculate_tiles():
     if scales:
         scales = [float(s) for s in scales]
 
-    result = grid.calculate_tiles(name=name, srs=srs, bbox=bbox, bbox_srs=bbox_srs, origin=origin, res=res, scales=scales, dpi=dpi, units=units)
-
+    result = grid.calculate_tiles(
+        name=name, srs=srs, bbox=bbox, bbox_srs=bbox_srs, origin=origin,
+        res=res, scales=scales, dpi=dpi, units=units
+    )
     return {'result': result}
+
 
 @app.route('/transform_bbox', 'POST', name="transform_bbox")
 def transform_bbox():
-    source = SRS(request.json.get('source'));
-    dest = SRS(request.json.get('dest'));
-    bbox = source.align_bbox(request.json.get('bbox'));
+    source = SRS(request.json.get('source'))
+    dest = SRS(request.json.get('dest'))
+    bbox = source.align_bbox(request.json.get('bbox'))
 
     if grid.is_valid_transformation(bbox, source, dest):
         transformed_bbox = source.transform_bbox_to(dest, bbox)
         return {'bbox': transformed_bbox}
     else:
-        response.status = 400;
+        response.status = 400
         return {'error': 'Could not transform bbox'}
+
 
 def prepare_grid_params(params):
     grid_params = {}
@@ -457,13 +502,15 @@ def prepare_grid_params(params):
 
     return grid_params
 
+
 @app.route('/grid_as_geojson', 'POST', name='grid_as_geojson')
 def grid_as_geojson():
     grid_params = prepare_grid_params(request.forms)
     config = ConfigGeoJSONGrid(**grid_params)
-    return {"type":"FeatureCollection",
-        "features": features(config)
-    }
+    return {"type": "FeatureCollection",
+            "features": features(config)
+            }
+
 
 @app.route('/validate_grid_params', 'POST', name='validate_grid_params')
 def validate_grid_params():
@@ -477,6 +524,7 @@ def validate_grid_params():
     except InvalidTileBBoxTransformationException:
         response.status = 400
         return {'error': _('Given grid could not be displayed in map srs')}
+
 
 @app.route('/project/create', ['GET', 'POST'], name='create_project')
 def create_project(storage):
@@ -503,6 +551,7 @@ def create_project(storage):
             storage._init_project(name)
             return {'url': app.get_url('configuration', project=name)}
 
+
 @app.route('/project/delete', 'POST', name='delete_project')
 def delete_project(storage):
     project = request.json.get('name', None)
@@ -511,12 +560,13 @@ def delete_project(storage):
         if storage.delete_project(project):
             response.status = 204
 
+
 def make_wsgi_app(config_file, test=False):
     configuration = config.ConfigParser.from_file(config_file)
     app.install(
         storage.SQLiteStorePlugin(
             os.path.join(configuration.get('app', 'storage_path'),
-            configuration.get('app', 'sqlite_db')),
+                         configuration.get('app', 'sqlite_db')),
             test=test
         )
     )

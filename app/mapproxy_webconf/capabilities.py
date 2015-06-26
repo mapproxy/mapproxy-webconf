@@ -14,7 +14,9 @@ from mapproxy.client import http
 import logging
 log = logging.getLogger(__name__)
 
+
 class WMS111Capabilities(object):
+
     def __init__(self, tree):
         self.tree = tree
 
@@ -73,7 +75,7 @@ class WMS111Capabilities(object):
                 llbbox_elem.attrib['maxx'],
                 llbbox_elem.attrib['maxy']
             ]
-            llbbox = list(map(float,llbbox))
+            llbbox = list(map(float, llbbox))
         this_layer['llbbox'] = llbbox
 
         srs_elements = layer_elem.findall('SRS')
@@ -82,6 +84,7 @@ class WMS111Capabilities(object):
         this_layer['srs'] = list(srs_codes | set(parent_layer.get('srs', [])))
 
         return this_layer
+
 
 def wms_capabilities_url(url):
     p = urlparse.urlparse(url)
@@ -95,9 +98,11 @@ def wms_capabilities_url(url):
         urlparse.ParseResult(p.scheme, p.netloc, p.path, p.params, query_str, p.fragment)
     )
 
+
 def parse_capabilities(fileobj):
     cap = WMS111Capabilities(etree.parse(fileobj))
     return cap.service()
+
 
 def parse_capabilities_url(url):
     url = wms_capabilities_url(url)
@@ -111,5 +116,3 @@ def parse_capabilities_url(url):
         raise ex
     if resp.code == 200:
         return parse_capabilities(resp)
-
-

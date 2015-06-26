@@ -4,6 +4,7 @@ from mapproxy.script.scales import scale_to_res, res_to_scale
 from mapproxy_webconf import constants
 from mapproxy_webconf import defaults
 
+
 def is_valid_transformation(bbox, source_srs, dest_srs):
     """
     >>> source_srs = SRS(4326)
@@ -62,11 +63,14 @@ def is_valid_transformation(bbox, source_srs, dest_srs):
             return True
     return False
 
+
 def calculate_tiles(name, srs, bbox, bbox_srs, origin, res=None, scales=None, dpi=constants.OGC_DPI, units=1):
     if res is None and scales is not None:
-        res = [round(scale_to_res(scale, dpi, units), defaults.DECIMAL_PLACES) for scale in scales]
+        res = [round(scale_to_res(scale, dpi, units), defaults.DECIMAL_PLACES)
+               for scale in scales]
 
-    tilegrid = tile_grid(srs=srs, bbox=bbox, bbox_srs=bbox_srs, res=res, origin=origin, name=name)
+    tilegrid = tile_grid(
+        srs=srs, bbox=bbox, bbox_srs=bbox_srs, res=res, origin=origin, name=name)
 
     result = []
 

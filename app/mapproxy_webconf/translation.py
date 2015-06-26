@@ -3,6 +3,7 @@ import gettext
 
 from .bottle import request, response, SimpleTemplate
 
+
 class TranslationPlugin(object):
     name = 'translation'
 
@@ -20,7 +21,8 @@ class TranslationPlugin(object):
         self.supported_languages = self.supported_languages.split(',')
         default_language = configuration.get('app', 'language')
         SimpleTemplate.defaults["supported_languages"] = self.supported_languages
-        self.install_language(default_language if default_language in self.supported_languages else self.supported_languages[0])
+        self.install_language(
+            default_language if default_language in self.supported_languages else self.supported_languages[0])
 
     def apply(self, callback, context):
         def wrapper(*args, **kwargs):

@@ -6,6 +6,7 @@ import sys
 from mapproxy.script.util import NonStrictOptionParser, parse_bind_address, print_items
 from mapproxy_webconf.version import version
 
+
 def serve_develop_command(args):
     parser = optparse.OptionParser("usage: %prog serve-develop [options] mapproxy.yaml")
     parser.add_option("-b", "--bind",
@@ -38,9 +39,10 @@ commands = {
     }
 }
 
+
 def main():
     parser = NonStrictOptionParser("usage: %prog COMMAND [options]",
-        add_help_option=False)
+                                   add_help_option=False)
     options, args = parser.parse_args()
 
     if len(args) < 1 or args[0] in ('--help', '-h'):
