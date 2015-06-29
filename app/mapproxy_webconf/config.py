@@ -346,7 +346,7 @@ class ConfigParser(object):
         'app': {
             'demo': False,
             'output_path': '/tmp/',
-            'storage_path': './',
+            'storage_path': '/tmp/',
             'sqlite_db': 'mapproxy.sqlite',
             'language': 'en',
             'supported_languages': 'en,de',
