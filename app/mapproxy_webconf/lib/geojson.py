@@ -6,26 +6,32 @@ from mapproxy_webconf import constants
 from mapproxy_webconf import defaults
 from mapproxy_webconf.lib.grid import is_valid_transformation
 
+
 class InvalidGridBBoxTransformationException(Exception):
     pass
+
 
 class InvalidTileBBoxTransformationException(Exception):
     pass
 
 
 class ConfigGeoJSONGrid(object):
-    def __init__(self, request_bbox=[], grid_bbox=[], level=None, grid_srs=None, grid_bbox_srs=None, map_srs=None, res=[], scales=[], origin='ll', units='m', dpi=None):
+
+    def __init__(self, request_bbox=[], grid_bbox=[], level=None,
+                 grid_srs=None, grid_bbox_srs=None, map_srs=None, res=[],
+                 scales=[], origin='ll', units='m', dpi=None):
+
         self.grid_srs = SRS(grid_srs) if grid_srs else None
         self.grid_bbox_srs = SRS(grid_bbox_srs) if grid_bbox_srs else None
         self.map_srs = SRS(map_srs) if map_srs else None
         self.request_bbox = map(float, request_bbox) if request_bbox else None
         self.origin = origin
-        self._res = map(float, res) if res else None
-        self._scales = map(float, scales) if scales else None
+        self._res = list(map(float, res)) if res else None
+        self._scales = list(map(float, scales)) if scales else None
         self._units = 1 if units == 'm' else constants.UNIT_FACTOR
         self._dpi = float(dpi) if dpi else constants.OGC_DPI
 
-        _grid_bbox = map(float, grid_bbox) if grid_bbox else None
+        _grid_bbox = list(map(float, grid_bbox)) if grid_bbox else None
         self.grid_bbox = self.transform_grid_bbox(_grid_bbox)
 
         if self._res:
@@ -40,7 +46,12 @@ class ConfigGeoJSONGrid(object):
         except TypeError:
             self.level = None
         if self.grid_srs:
-            self.tilegrid = tile_grid(srs=self.grid_srs, bbox=_grid_bbox, bbox_srs=self.grid_bbox_srs, origin=self.origin, res=self.res, num_levels=self._num_levels)
+            self.tilegrid = tile_grid(srs=self.grid_srs,
+                                      bbox=_grid_bbox,
+                                      bbox_srs=self.grid_bbox_srs,
+                                      origin=self.origin,
+                                      res=self.res,
+                                      num_levels=self._num_levels)
             self.validate_tile_bbox_for_level_0()
         else:
             self.tilegrid = None
@@ -54,13 +65,15 @@ class ConfigGeoJSONGrid(object):
                 if is_valid_transformation(_grid_bbox, self.grid_bbox_srs, self.grid_srs):
                     return self.grid_bbox_srs.transform_bbox_to(self.grid_srs, _grid_bbox)
                 else:
-                    raise InvalidGridBBoxTransformationException('Invalid transformation for grid_bbox')
+                    raise InvalidGridBBoxTransformationException(
+                        'Invalid transformation for grid_bbox')
         return _grid_bbox if _grid_bbox else self._grid_bbox
 
     def validate_tile_bbox_for_level_0(self):
-        tile_bbox = self.tilegrid.tile_bbox((0,0,0))
+        tile_bbox = self.tilegrid.tile_bbox((0, 0, 0))
         if not is_valid_transformation(tile_bbox, self.grid_srs, self.map_srs):
-            raise InvalidTileBBoxTransformationException('Invalid transformation for tile in level 0')
+            raise InvalidTileBBoxTransformationException(
+                'Invalid transformation for tile in level 0')
 
     @property
     def res(self):
@@ -74,7 +87,13 @@ class ConfigGeoJSONGrid(object):
     def map_bbox(self):
         if not self.map_srs or not self.grid_srs:
             return None
-        self.request_bbox = self.map_srs.align_bbox(self.request_bbox)
+
+        if self.map_srs == 'EPSG:4326':
+            self.request_bbox = self.map_srs.align_bbox(self.request_bbox)
+        else:
+            (minx, miny, maxx, maxy) = self.request_bbox
+            self.request_bbox = minx, miny, maxx, maxy
+
         if not is_valid_transformation(self.request_bbox, self.map_srs, self.grid_srs):
             return None
 
@@ -106,13 +125,15 @@ def polygons(config, tiles, labeled=True):
 
         tile_bbox = config.tilegrid.tile_bbox(tile, limit=True)
         linestring = generate_envelope_points(tile_bbox, defaults.TILE_POLYGON_POINTS)
-        linestring = list(config.grid_srs.transform_to(config.map_srs, linestring)) if config.map_srs and config.grid_srs else list(linestring)
+        linestring = list(config.grid_srs.transform_to(
+            config.map_srs, linestring)) if config.map_srs and config.grid_srs else list(linestring)
         polygon = [linestring + [linestring[0]]]
 
         if labeled:
             xc0, yc0, xc1, yc1 = tile_bbox
-            center = [xc0 + (xc1-xc0) /2, yc0 + (yc1-yc0)/2]
-            center = config.grid_srs.transform_to(config.map_srs, center) if config.map_srs and config.grid_srs else center
+            center = [xc0 + (xc1 - xc0) / 2, yc0 + (yc1 - yc0) / 2]
+            center = config.grid_srs.transform_to(
+                config.map_srs, center) if config.map_srs and config.grid_srs else center
             yield (polygon, center, tile)
         else:
             yield (polygon, None, None)
@@ -129,23 +150,29 @@ def _feature(type_, coordinates, properties=None):
     feature['properties'] = properties if properties else {}
     return feature
 
+
 def polygon_feature(coordinates, properties=None):
     return _feature('Polygon', coordinates, properties)
+
 
 def point_feature(coordinates, properties=None):
     return _feature('Point', coordinates, properties)
 
+
 def features(config):
     try:
-        tiles_bbox, size, tiles = config.tilegrid.get_affected_level_tiles(bbox=config.view_bbox, level=config.level)
+        tiles_bbox, size, tiles = config.tilegrid.get_affected_level_tiles(
+            bbox=config.view_bbox, level=config.level)
     except GridError:
         x0, y0, x1, y1 = config.request_bbox
         return [polygon_feature([[[x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0, y0]]], {'message': _('Given bbox can not be used with given SRS')})]
 
     feature_count = size[0] * size[1]
     if feature_count > defaults.MAX_GRID_FEATURES:
-        polygon = generate_envelope_points(config.grid_srs.align_bbox(tiles_bbox), defaults.MESSAGE_POLYGON_POINTS)
-        polygon = list(config.grid_srs.transform_to(config.map_srs, polygon)) if config.map_srs and config.grid_srs else list(polygon)
+        polygon = generate_envelope_points(
+            config.grid_srs.align_bbox(tiles_bbox), defaults.MESSAGE_POLYGON_POINTS)
+        polygon = list(config.grid_srs.transform_to(
+            config.map_srs, polygon)) if config.map_srs and config.grid_srs else list(polygon)
         return [polygon_feature([[list(point) for point in polygon] + [list(polygon[0])]], {'message': _("Too many tiles. Please zoom in.")})]
 
     if feature_count == 1:
@@ -156,13 +183,13 @@ def features(config):
         xv0, yv0, xv1, yv1 = config.view_bbox
         # if tile center not visible use view center
         if(not (xv0 <= xtc and xv1 >= xtc and yv0 <= ytc and yv1 >= ytc)):
-            center = [xv0 + (xv1-xv0) / 2, yv0 + (yv1-yv0) / 2]
-            center = config.grid_srs.transform_to(config.map_srs, center) if config.map_srs and config.grid_srs else center
+            center = [xv0 + (xv1 - xv0) / 2, yv0 + (yv1 - yv0) / 2]
+            center = config.grid_srs.transform_to(
+                config.map_srs, center) if config.map_srs and config.grid_srs else center
         return [
             polygon_feature(polygon),
-            point_feature(center, {'x':x, 'y': y, 'z': z})
+            point_feature(center, {'x': x, 'y': y, 'z': z})
         ]
-
 
     labeled = feature_count <= defaults.MAX_LABELED_GRID_FEATURES
     features = []

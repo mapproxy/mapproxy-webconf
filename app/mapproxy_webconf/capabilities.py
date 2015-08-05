@@ -1,13 +1,22 @@
 from xml.etree import ElementTree as etree
-import urlparse
-import urllib
+try:
+    import urllib.parse as urlparse
+except ImportError:
+    import urlparse
+
+try:
+    from urllib.parse import urlencode
+except ImportError:
+    from urllib import urlencode
 
 from mapproxy.client import http
 
 import logging
 log = logging.getLogger(__name__)
 
+
 class WMS111Capabilities(object):
+
     def __init__(self, tree):
         self.tree = tree
 
@@ -60,13 +69,13 @@ class WMS111Capabilities(object):
         llbbox_elem = layer_elem.find('LatLonBoundingBox')
         llbbox = None
         if llbbox_elem is not None:
-            llbbox = (
+            llbbox = [
                 llbbox_elem.attrib['minx'],
                 llbbox_elem.attrib['miny'],
                 llbbox_elem.attrib['maxx'],
                 llbbox_elem.attrib['maxy']
-            )
-            llbbox = map(float, llbbox)
+            ]
+            llbbox = list(map(float, llbbox))
         this_layer['llbbox'] = llbbox
 
         srs_elements = layer_elem.findall('SRS')
@@ -76,21 +85,24 @@ class WMS111Capabilities(object):
 
         return this_layer
 
+
 def wms_capabilities_url(url):
     p = urlparse.urlparse(url)
     query = dict((k.upper(), v) for k, v in urlparse.parse_qsl(p.query))
     query['SERVICE'] = 'WMS'
     query['VERSION'] = '1.1.1'
     query['REQUEST'] = 'GetCapabilities'
-    query_str = urllib.urlencode(query)
+    query_str = urlencode(query)
 
     return urlparse.urlunparse(
         urlparse.ParseResult(p.scheme, p.netloc, p.path, p.params, query_str, p.fragment)
     )
 
+
 def parse_capabilities(fileobj):
     cap = WMS111Capabilities(etree.parse(fileobj))
     return cap.service()
+
 
 def parse_capabilities_url(url):
     url = wms_capabilities_url(url)
@@ -99,11 +111,8 @@ def parse_capabilities_url(url):
     client = http.HTTPClient()
     try:
         resp = client.open(url)
-    except http.HTTPClientError, ex:
+    except http.HTTPClientError as ex:
         # TODO error handling
         raise ex
-
     if resp.code == 200:
         return parse_capabilities(resp)
-
-

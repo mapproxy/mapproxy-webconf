@@ -5,10 +5,11 @@ import sqlite3
 import yaml
 import json
 
-from bottle import PluginError
+from .bottle import PluginError
 
 from mapproxy_webconf import utils, defaults
 from mapproxy_webconf.demo import DEMO_CONFIG
+
 
 class YAMLStorePlugin(object):
     name = 'yamlstore'
@@ -25,7 +26,8 @@ class YAMLStorePlugin(object):
             if not isinstance(other, YAMLStorePlugin):
                 continue
             if other.keyword == self.keyword:
-                raise PluginError(_("Found another YAMLStore plugin with conflicting settings (non-unique keyword)."))
+                raise PluginError(
+                    _("Found another YAMLStore plugin with conflicting settings (non-unique keyword)."))
 
     def apply(self, callback, context):
         conf = context['config'].get('yamlstorage') or {}
@@ -47,7 +49,10 @@ class YAMLStorePlugin(object):
         return wrapper
 
 DEFAULT_VALUE = object()
+
+
 class YAMLStore(object):
+
     def __init__(self, storage_dir):
         self.storage_dir = storage_dir
 
@@ -63,7 +68,7 @@ class YAMLStore(object):
                     return {}
                 else:
                     return project_data
-        except IOError, ex:
+        except IOError as ex:
             if ex.errno == errno.ENOENT:
                 if default is DEFAULT_VALUE:
                     return {}
@@ -89,7 +94,8 @@ class SQLiteStorePlugin(object):
             if not isinstance(other, SQLiteStorePlugin):
                 continue
             if other.keyword == self.keyword:
-                raise PluginError(_("Found another SQLiteStore plugin with conflicting settings (non-unique keyword)."))
+                raise PluginError(
+                    _("Found another SQLiteStore plugin with conflicting settings (non-unique keyword)."))
 
     def apply(self, callback, context):
         conf = context['config'].get('sqlitestore') or {}
@@ -110,7 +116,9 @@ class SQLiteStorePlugin(object):
         # Replace the route callback with the wrapped one.
         return wrapper
 
+
 class SQLiteStore(object):
+
     def __init__(self, filename, test=False):
         self.filename = filename
         self.db = sqlite3.connect(filename)
@@ -149,31 +157,40 @@ class SQLiteStore(object):
         cur = self.db.cursor()
         inserts = []
 
-        cur.execute("SELECT * FROM store WHERE section ='defaults' AND project=?", (project,))
+        cur.execute(
+            "SELECT * FROM store WHERE section ='defaults' AND project=?", (project,))
         if not len(cur.fetchall()):
-            inserts.append({'id': section_id, 'section': 'defaults', 'project': project, 'data': defaults_data})
-        cur.executemany("INSERT INTO store (id, section, project, data) VALUES (:id, :section, :project, :data)", inserts)
+            inserts.append(
+                {'id': section_id, 'section': 'defaults', 'project': project, 'data': defaults_data})
+        cur.executemany(
+            "INSERT INTO store (id, section, project, data) VALUES (:id, :section, :project, :data)", inserts)
         self.db.commit()
 
         inserts = []
         section_id = self.create_section_id(project)
-        cur.execute("SELECT * FROM store WHERE section ='services' AND project=?", (project,))
+        cur.execute(
+            "SELECT * FROM store WHERE section ='services' AND project=?", (project,))
         if not len(cur.fetchall()):
-            inserts.append({'id': section_id, 'section': 'services', 'project': project, 'data': services_data})
+            inserts.append(
+                {'id': section_id, 'section': 'services', 'project': project, 'data': services_data})
 
-        cur.executemany("INSERT INTO store (id, section, project, data) VALUES (:id, :section, :project, :data)", inserts)
+        cur.executemany(
+            "INSERT INTO store (id, section, project, data) VALUES (:id, :section, :project, :data)", inserts)
         self.db.commit()
 
     def _demo_project(self, project):
         cur = self.db.cursor()
-        cur.execute("SELECT * FROM store WHERE section ='wms_capabilities' AND project=?", (project,))
+        cur.execute(
+            "SELECT * FROM store WHERE section ='wms_capabilities' AND project=?", (project,))
         if not len(cur.fetchall()):
             for id in DEMO_CONFIG:
                 inserts = []
                 section_id = self.create_section_id(project)
                 data = json.dumps(DEMO_CONFIG[id]['data'])
-                inserts.append({'id': section_id, 'section': DEMO_CONFIG[id]['section'], 'project': project, 'data': data})
-                cur.executemany("INSERT INTO store (id, section, project, data) VALUES (:id, :section, :project, :data)", inserts)
+                inserts.append(
+                    {'id': section_id, 'section': DEMO_CONFIG[id]['section'], 'project': project, 'data': data})
+                cur.executemany(
+                    "INSERT INTO store (id, section, project, data) VALUES (:id, :section, :project, :data)", inserts)
                 self.db.commit()
 
     def create_section_id(self, project):
@@ -210,7 +227,7 @@ class SQLiteStore(object):
 
         cur = self.db.cursor()
         cur.execute("SELECT id, data, parent, rank, manual, locked FROM store WHERE section = ? AND project = ?",
-            (section, project))
+                    (section, project))
         for row in cur.fetchall():
             data = {}
             data['data'] = json.loads(row['data'])
@@ -240,7 +257,7 @@ class SQLiteStore(object):
     def get(self, id, section, project, with_rank=False, with_manual=False, with_locked=False):
         cur = self.db.cursor()
         cur.execute("SELECT data, parent, rank, manual, locked FROM store WHERE id = ? AND section = ? AND project = ?",
-            (id, section, project))
+                    (id, section, project))
         row = cur.fetchone()
         if row:
             data = {}
@@ -270,7 +287,7 @@ class SQLiteStore(object):
 
         cur = self.db.cursor()
         cur.execute("INSERT INTO store (id, section, project, data, parent, rank, manual, locked) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-            (section_id, section, project, data, parent, rank, manual, locked))
+                    (section_id, section, project, data, parent, rank, manual, locked))
         self.db.commit()
         return cur.lastrowid
 
@@ -285,25 +302,28 @@ class SQLiteStore(object):
 
         cur = self.db.cursor()
         cur.execute("UPDATE store SET data = ?, parent = ?, rank = ?, manual = ?, locked = ? WHERE id = ? AND SECTION = ? AND project = ?",
-            (data, parent, rank, manual, locked, id, section, project))
+                    (data, parent, rank, manual, locked, id, section, project))
         self.db.commit()
 
     def updates(self, section, project, data):
-        #ensure all needed values are present or None
-        data = [{'id': d['_id'], 'rank': d['_rank'] if '_rank' in d else None, 'parent': d['_parent'] if '_parent' in d else None, 'manual': d['_manual'] if '_manual' in d else False, 'locked': d['_locked'] if '_locked' in d else False} for d in data if '_id' in d]
+        # ensure all needed values are present or None
+        data = [{'id': d['_id'], 'rank': d['_rank'] if '_rank' in d else None, 'parent': d['_parent'] if '_parent' in d else None, 'manual': d[
+            '_manual'] if '_manual' in d else False, 'locked': d['_locked'] if '_locked' in d else False} for d in data if '_id' in d]
         cur = self.db.cursor()
-        cur.executemany("UPDATE store SET parent = :parent, rank = :rank, manual = :manual, locked = :locked WHERE id = :id", data)
+        cur.executemany(
+            "UPDATE store SET parent = :parent, rank = :rank, manual = :manual, locked = :locked WHERE id = :id", data)
         self.db.commit()
 
     def delete(self, id, section, project):
         cur = self.db.cursor()
         cur.execute("DELETE FROM store WHERE id = ? AND SECTION = ? AND project = ?",
-            (id, section, project))
+                    (id, section, project))
         self.db.commit()
         return cur.rowcount == 1
 
     def copy_project(self, project, name):
-        sections = ['wms_capabilities', 'defaults', 'services', 'layers', 'globals', 'caches', 'grids', 'sources']
+        sections = ['wms_capabilities', 'defaults', 'services',
+                    'layers', 'globals', 'caches', 'grids', 'sources']
         for section in sections:
             data = self.get_all(section, project, with_id=True, default=[])
             for result in data:
@@ -312,31 +332,34 @@ class SQLiteStore(object):
 
     def exists_in_data(self, section, project, search):
         cur = self.db.cursor()
-        cur.execute("SELECT id FROM store WHERE section = ? AND project = ? AND data LIKE ?", (section, project, search))
+        cur.execute(
+            "SELECT id FROM store WHERE section = ? AND project = ? AND data LIKE ?", (section, project, search))
         row = cur.fetchone()
         return row[0] if row else False
 
     def exist_project(self, project):
         cur = self.db.cursor()
-        cur.execute("SELECT id FROM store WHERE section = 'defaults' AND project = ?", (project,))
+        cur.execute(
+            "SELECT id FROM store WHERE section = 'defaults' AND project = ?", (project,))
         result = cur.fetchall()
         return len(result) > 0
 
     def check_dependencies(self, id, project, look_for):
         cur = self.db.cursor()
-        cur.execute("SELECT section, data FROM store WHERE project = ? AND section in (%s)" % (', '.join(["'%s'" % section for section in look_for.keys()]), ), (project,))
+        cur.execute("SELECT section, data FROM store WHERE project = ? AND section in (%s)" % (
+            ', '.join(["'%s'" % section for section in look_for.keys()]), ), (project,))
         result = cur.fetchall()
 
         response = {}
 
         for row in result:
-            section =  row[0]
+            section = row[0]
             data = json.loads(row[1])
             if look_for[section] in data and id in data[look_for[section]]:
                 dependency = {'name': data['name']}
-                if data.has_key('title'):
+                if 'title' in data:
                     dependency['title'] = data['title']
-                if response.has_key(section):
+                if section in response:
                     response[section].append(dependency)
                 else:
                     response[section] = [dependency]

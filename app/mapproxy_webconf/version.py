@@ -1,6 +1,7 @@
 from __future__ import print_function
 import pkg_resources
 
+
 def version_string():
     """
     Return the current version number of MapProxy WebConf.

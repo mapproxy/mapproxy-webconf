@@ -9,7 +9,7 @@ class TempDirTest(object):
     def teardown(self):
         try:
             shutil.rmtree(self.tmp_dir)
-        except OSError, ex:
+        except OSError as ex:
             if ex.errno != errno.ENOENT:
                 raise
 

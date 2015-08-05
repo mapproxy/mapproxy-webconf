@@ -4,4 +4,5 @@ mapproxy.sqlite
 testing
 *.egg-info
 *.ropeproject
+.tox
 config.ini
